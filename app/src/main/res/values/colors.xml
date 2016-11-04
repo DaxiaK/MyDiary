@@ -7,12 +7,12 @@
 
     <!--Theme-->
     <color name="themeColor_taki">#67B5E6</color>
-    <color name="themeColor_mistuha">#ff7f72</color>
+    <color name="themeColor_mistuha">#ff7e70</color>
 
 
     <!--entries-->
     <color name="theme_dark_color_taki">#70A3B4</color>
-    <color name="theme_dark_color_mistuha">#8B643C</color>
+    <color name="theme_dark_color_mistuha">#de5a40</color>
 
     <!--radio_button-->
     <color name="radio_button_unselected_color">@android:color/transparent</color>
