@@ -2,43 +2,43 @@
 
 ## Summary
 
-I veray like Makoto Shinkai's (新海 誠) movies!  This project is just try to create  the app - "My Diary" in "your name." on Android. In this movie , "My Diary" is a important app between Taki(瀧) and Mitsuha(三葉) . As a fan, I think maybe I can implement this app. If you also like "your name.", please join me to finish the "My Diary" , let it be true.
+I like Makoto Shinkai's (新海 誠) movies very much! This project is just trying to create the app - "My Diary" in "your name." on Android. In this movie, "My Diary" is an important app between Taki(瀧) and Mitsuha(三葉). As a fan, I think maybe I can implement this app. If you also like "your name.", please join me to finish the "My Diary",and let it become real.
 
 This project will need :
 * Android developer
 * GUI designer
 * Japanese/English translation 
 
-This project is created again in 20161104.Because  it have some my personal info in old git  repository.
+This project is created again in 2016-11-04. Because it have some my personal info in old git repository.
 
-So if you already make a star or fork ,  you can do it again , thanks :)
+So if you have already a starred or forked the repo,  you can do it again, thanks :)
 
-## Why is only Android verison?
+## Why is there only Android version?
 
-In fact , Android version is more difficult than iOS ,becaus this app is run on iOS in the movie. But I will only create Android version becasue:
+In fact, Android version is more difficult than iOS, because this app is running on iOS in the movie. But I will only create the Android version for now because:
 
 1. I don't have any mac now :P 
-2. Android's apk is easy to release.
+2. Android apk is easy to release.
 
-so , maybe I will try to create iOS version after this app is running.
+so, maybe I will try to create an iOS version after this app is running.
 
 
-## Fuunction
+## Functionality
 
  **Work:**
 * Add topic
 * Delete topic
-* Show diary lsit
+* Show diary list
 * Add diary
 * Delete diary
 * Change date in calendar page (page curl effect not ready)
 
 ## Schedule
 
-This list is what function I will finish , the number is  sequence for coding.
+This list is what functionality I will implement , the number is the sequence for coding.
 
 
-1. Optimized diry viewpager 
+1. Optimized diary page viewer 
 2. Theme
 3. Create memo
 4. Allow edit topic , diary
@@ -59,10 +59,10 @@ Finshed:
 3. Add location in diary
 
 
-## Usecase
+## Use case
 
-Because DVD/BD doesn't be released  now, so the use case is from my memory and network information. 
-If you have any idea or find some function what I lose  , you can tell me or update the use case in **/UML/MyDiary.mdj**  by [starUML](http://staruml.io/):
+Because DVD/BD aren't released yet, so the use case is made from my memory and network information. 
+If you have any idea or find some functionality that I miss, you can tell me or update the use case in **/UML/MyDiary.mdj**  by [starUML](http://staruml.io/):
 
 ![](/screenshot/usercase.png) 
 
@@ -101,4 +101,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ## Contact me
 
 Daxia (guava.bala@gmail.com)
-
