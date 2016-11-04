@@ -6,14 +6,15 @@
     <color name="colorAccent">#67B5E6</color>
 
     <!--Theme-->
-    <color name="themeColor">#67B5E6</color>
+    <color name="themeColor_taki">#67B5E6</color>
+    <color name="themeColor_mistuha">#FF7D70</color>
 
 
     <!--entries-->
-    <color name="entries_main_color">#70A3B4</color>
+    <color name="theme_dark_color_taki">#70A3B4</color>
+    <color name="theme_dark_color_mistuha">#b3371f</color>
 
     <!--radio_button-->
-    <color name="radio_button_selected_color">#70A3B4</color>
     <color name="radio_button_unselected_color">@android:color/transparent</color>
 
     <!--Button-->

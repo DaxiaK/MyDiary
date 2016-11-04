@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,9 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -21,6 +26,7 @@ import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
@@ -49,15 +55,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private PopupWindow mPopupWindow;
     private ImageView IV_main_popup_add;
+
     /**
      * DB
      */
     private DBManager dbManager;
 
     /**
-     * Ui
+     * UI
      */
+    private ThemeManager themeManager;
+    private LinearLayout LL_main_profile;
+    private TextView TV_main_profile_username;
     private RelativeLayout RL_main_bottom_bar;
+    private EditText EDT_main_topic_search;
     private ImageView IV_main_setting;
 
 
@@ -66,8 +77,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        themeManager = ThemeManager.getInstance();
+
+        LL_main_profile = (LinearLayout) findViewById(R.id.LL_main_profile);
+        LL_main_profile.setOnClickListener(this);
+
+        TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
         RL_main_bottom_bar = (RelativeLayout) findViewById(R.id.RL_main_bottom_bar);
 
+        EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
         IV_main_setting = (ImageView) findViewById(R.id.IV_main_setting);
         IV_main_setting.setOnClickListener(this);
 
@@ -76,10 +94,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topicList = new ArrayList<>();
         dbManager = new DBManager(MainActivity.this);
 
+        initProfile();
+        initBottomBar();
         loadTopic();
         initPopupWindow();
         //Init topic adapter
         initTopicAdapter();
+    }
+
+    private void initProfile() {
+        TV_main_profile_username.setText(themeManager.getThemeUserName(MainActivity.this));
+        LL_main_profile.setBackgroundResource(themeManager.getProfileBgResource());
+    }
+
+    private void initBottomBar() {
+        EDT_main_topic_search.setBackgroundColor(themeManager.getThemeMainColor(this));
+        IV_main_setting.setColorFilter(themeManager.getThemeMainColor(this));
     }
 
     private void loadTopic() {
@@ -121,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         IV_main_popup_add = (ImageView) popuoView.findViewById(R.id.IV_main_popup_add);
         IV_main_popup_add.setOnClickListener(this);
+        LinearLayout LL_main_popup = (LinearLayout) popuoView.findViewById(R.id.LL_main_popup);
+        LL_main_popup.setBackgroundResource(themeManager.getPopupBgResource(this));
     }
 
     private void initTopicAdapter() {
@@ -138,6 +170,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.LL_main_profile:
+                themeManager.toggleTheme(this);
+                //Send Toast
+                Toast.makeText(this, getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
+                //Restart App
+                Intent i = getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                finish();
+                startActivity(i);
+                break;
             case R.id.IV_main_setting:
                 mPopupWindow.showAsDropDown(IV_main_setting, RL_main_bottom_bar.getWidth(), 0);
                 break;

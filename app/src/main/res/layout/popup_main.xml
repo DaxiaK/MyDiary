@@ -5,9 +5,9 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/LL_main_popup"
         android:layout_width="80dp"
         android:layout_height="100dp"
-        android:background="@drawable/popup_shadow"
         android:gravity="center"
         android:orientation="vertical">
 

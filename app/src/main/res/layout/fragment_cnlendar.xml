@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RL_calendar_content_bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/themeColor">
+    android:layout_height="match_parent">
 
 
     <LinearLayout
@@ -24,8 +24,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingRight="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:paddingTop="10dp">
 
 
@@ -34,7 +34,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textColor="@color/entries_main_color"
                     android:textSize="40sp" />
 
                 <TextView
@@ -43,7 +42,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text=""
-                    android:textColor="@color/entries_main_color"
                     android:textSize="100sp"
                     android:textStyle="bold" />
 
@@ -53,7 +51,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text=""
-                    android:textColor="@color/entries_main_color"
                     android:textSize="25sp" />
 
             </LinearLayout>
@@ -65,8 +62,7 @@
         android:id="@+id/RL_calendar_edit_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_bar_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/themeColor">
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/IV_calendar_menu"

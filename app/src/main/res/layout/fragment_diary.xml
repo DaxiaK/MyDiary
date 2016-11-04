@@ -14,9 +14,9 @@
             android:fillViewport="true">
 
             <RelativeLayout
+                android:id="@+id/RL_diary_info"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/themeColor"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -60,7 +60,6 @@
                         android:id="@+id/RL_diary_day_and_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/themeColor"
                         android:orientation="horizontal">
 
                         <TextView
@@ -85,7 +84,6 @@
                         android:id="@+id/RL_diary_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/themeColor"
                         android:orientation="horizontal">
 
                         <TextView
@@ -108,8 +106,7 @@
         android:id="@+id/RL_diary_edit_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_bar_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/themeColor">
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/IV_diary_photo"

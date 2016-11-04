@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries.entries;
 
+import android.support.annotation.ColorInt;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,12 +31,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     private DateFormat dateFormat = new SimpleDateFormat("HH:mm");
     private String[] daysSimpleName;
     private DiaryViewerDialogFragment.DiaryViewerCallback mDiaryViewerCallback;
+    private ThemeManager themeManager;
 
     public EntriesAdapter(Fragment fragment, List<EntriesEntity> topicList, DiaryViewerDialogFragment.DiaryViewerCallback callback) {
         this.mFragment = fragment;
         this.entriesList = topicList;
         this.mDiaryViewerCallback = callback;
-        daysSimpleName = mFragment.getResources().getStringArray(R.array.days_simple_name);
+        this.daysSimpleName = mFragment.getResources().getStringArray(R.array.days_simple_name);
+        this.themeManager = ThemeManager.getInstance();
     }
 
 
@@ -42,7 +46,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     public EntriesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_entries_item, parent, false);
-        return new EntriesViewHolder(view);
+        return new EntriesViewHolder(view, themeManager.getThemeDarkColor(mFragment.getActivity()));
     }
 
     @Override
@@ -113,7 +117,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 
         private ImageView IV_entries_item_weather, IV_entries_item_mood, IV_entries_item_bookmark, IV_entries_item_attachment;
 
-        protected EntriesViewHolder(View view) {
+        protected EntriesViewHolder(View view,@ColorInt int color) {
             super(view);
             this.rootView = view;
             this.TV_entries_item_header = (TextView) rootView.findViewById(R.id.TV_entries_item_header);
@@ -123,10 +127,27 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             this.TV_entries_item_time = (TextView) rootView.findViewById(R.id.TV_entries_item_time);
             this.TV_entries_item_title = (TextView) rootView.findViewById(R.id.TV_entries_item_title);
             this.TV_entries_item_summary = (TextView) rootView.findViewById(R.id.TV_entries_item_summary);
+
             this.IV_entries_item_weather = (ImageView) rootView.findViewById(R.id.IV_entries_item_weather);
             this.IV_entries_item_mood = (ImageView) rootView.findViewById(R.id.IV_entries_item_mood);
             this.IV_entries_item_bookmark = (ImageView) rootView.findViewById(R.id.IV_entries_item_bookmark);
             this.IV_entries_item_attachment = (ImageView) rootView.findViewById(R.id.IV_entries_item_attachment);
+
+            initThemeColor(color);
+        }
+
+        private void initThemeColor(@ColorInt int color) {
+            this.TV_entries_item_date.setTextColor(color);
+            this.TV_entries_item_day.setTextColor(color);
+            this.TV_entries_item_time.setTextColor(color);
+            this.TV_entries_item_title.setTextColor(color);
+            this.TV_entries_item_summary.setTextColor(color);
+
+            this.IV_entries_item_weather.setColorFilter(color);
+            this.IV_entries_item_mood.setColorFilter(color);
+            this.IV_entries_item_bookmark.setColorFilter(color);
+            this.IV_entries_item_attachment.setColorFilter(color);
+
         }
 
         public ImageView getIVWeather() {

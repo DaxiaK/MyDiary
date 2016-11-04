@@ -14,7 +14,9 @@ public class SPFManager {
     //Config
     private static final String SPF_CONFIG_NEME = "CONFIG";
     //Location
-    private static final String CONFIG_OPEN_DIARY_LOACTION = "OPEN_DIARY_LOACTION";
+    private static final String CONFIG_OPEN_DIARY_LOCATION = "OPEN_DIARY_LOCATION";
+    private static final String CONFIG_THEME = "CONFIG_THEME";
+
 
     //System
     private static final String SPF_SYSTEM = "SYSTEM";
@@ -29,13 +31,26 @@ public class SPFManager {
     public static boolean getDiaryLocation(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
         //default is close
-        return settings.getBoolean(CONFIG_OPEN_DIARY_LOACTION, false);
+        return settings.getBoolean(CONFIG_OPEN_DIARY_LOCATION, false);
     }
 
     public static void setDiaryLocation(Context context, boolean open) {
         SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
         SharedPreferences.Editor PE = settings.edit();
-        PE.putBoolean(CONFIG_OPEN_DIARY_LOACTION, open);
+        PE.putBoolean(CONFIG_OPEN_DIARY_LOCATION, open);
+        PE.commit();
+    }
+
+    public static int getTheme(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+        //default is close
+        return settings.getInt(CONFIG_THEME, ThemeManager.TAKI);
+    }
+
+    public static void setTheme(Context context, int theme) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putInt(CONFIG_THEME, theme);
         PE.commit();
     }
 

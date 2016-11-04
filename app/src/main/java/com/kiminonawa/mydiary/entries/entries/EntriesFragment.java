@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
      * UI
      */
     private TextView TV_entries_count;
+    private RelativeLayout RL_entries_content,RL_entries_edit_bar;
     private final static int MAX_TEXT_LENGTH = 15;
 
     /**
@@ -51,7 +54,11 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         View rootView = inflater.inflate(R.layout.fragment_entries, container, false);
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);
+        RL_entries_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_content);
+        RL_entries_content.setBackgroundResource(ThemeManager.getInstance().getEntriesBgResource());
 
+        RL_entries_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_entries_edit_bar);
+        RL_entries_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
         entriesList = new ArrayList<>();
         return rootView;
     }

@@ -1,15 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RL_entries_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/theme_bg">
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
         android:id="@+id/RL_entries_edit_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bottom_bar_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/themeColor">
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/IV_entries_menu"
@@ -64,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/RL_entries_edit_bar"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"/>
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
 
 </RelativeLayout>

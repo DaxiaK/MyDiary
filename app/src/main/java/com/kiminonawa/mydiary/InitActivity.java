@@ -10,6 +10,7 @@ import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 public class InitActivity extends Activity {
 
@@ -21,6 +22,9 @@ public class InitActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
         loadSampleData();
+        ThemeManager themeManager = ThemeManager.getInstance();
+        themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
+
         Handler initHandler = new Handler();
         initHandler.postDelayed(new Runnable() {
             @Override
