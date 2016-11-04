@@ -79,6 +79,19 @@ public class ThemeManager {
         return bgResourceId;
     }
 
+    public int getPopupBgResource(Context context) {
+        int bgResourceId = R.drawable.popup_shadow_taki;
+        switch (currentTheme) {
+            case TAKI:
+                bgResourceId = R.drawable.popup_shadow_taki;
+                break;
+            case MITSUHA:
+                bgResourceId = R.drawable.popup_shadow_mistuha;
+                break;
+        }
+        return bgResourceId;
+    }
+
     public int getThemeDarkColor(Context context) {
         int darkColor = R.color.theme_dark_color_taki;
         switch (currentTheme) {

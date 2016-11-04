@@ -151,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         IV_main_popup_add = (ImageView) popuoView.findViewById(R.id.IV_main_popup_add);
         IV_main_popup_add.setOnClickListener(this);
+        LinearLayout LL_main_popup = (LinearLayout) popuoView.findViewById(R.id.LL_main_popup);
+        LL_main_popup.setBackgroundResource(themeManager.getPopupBgResource(this));
     }
 
     private void initTopicAdapter() {

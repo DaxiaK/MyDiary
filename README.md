@@ -37,18 +37,27 @@ so , maybe I will try to create iOS version after this app is running.
 
 This list is what function I will finish , the number is  sequence for coding.
 
+
+1. Optimized diry viewpager 
+2. Theme
+3. Create memo
+4. Allow edit topic , diary
+5. Allow order for topic , memo
+6. Add bookmark for diary
+7. Add web block in diary
+8. Add photo in diary
+9. Google account backup
+10. More theme , More profile
+11. Create contacts
+12. Add music in diary
+
+Finshed:
+
+
 1. Add  mood in diary
 2. Add  weather in diary 
 3. Add location in diary
-4. Optimized diry viewpager 
-5. Create memo
-6. Allow edit topic , diary
-7. Allow order for topic , memo
-8. Add bookmark for diary
-9. Add web block in diary
-10. Add photo in diary
-11. Create contacts
-12. Add music in diary
+
 
 ## Usecase
 
