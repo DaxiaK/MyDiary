@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MyDiary</string>
+
+    <!--Topic type-->
+    <string name="topic_create_name">主題名稱:</string>
+
+    <!--Dialog -->
+    <string name="dialog_button_ok">確定</string>
+    <string name="dialog_button_cancel">取消</string>
+
+    <!--Diary Activity-->
+    <string name="segmented_entries">項目</string>
+    <string name="segmented_calendar">日曆</string>
+    <string name="segmented_Diary">日記</string>
+
+    <!--Entries -->
+    <string name="entries_count">%1$d 項目</string>
+
+    <!--Diary -->
+    <string name="diary_no_location">無定位</string>
+    <string name="diary_location_permission_title">授權</string>
+    <string name="diary_location_permission_content">需要授權來取得位置名稱</string>
+
+    <string name="diary_title_hint">日記標題</string>
+    <string name="diary_content_hint">在此寫下你的日記內容</string>
+
+    <string name="toast_diary_empty">日記內容是空的</string>
+    <string name="toast_refashioning">位置資訊整理中</string>
+
+</resources>

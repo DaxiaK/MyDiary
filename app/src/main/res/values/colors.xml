@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Default-->
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#EFF6F6</color>
+    <color name="colorAccent">#67B5E6</color>
+
+    <!--Theme-->
+    <color name="themeColor">#67B5E6</color>
+
+
+    <!--entries-->
+    <color name="entries_main_color">#70A3B4</color>
+
+    <!--radio_button-->
+    <color name="radio_button_selected_color">#70A3B4</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+
+    <!--Button-->
+    <color name="button_disable_color">#9D9FA2</color>
+
+    <!--Edittext-->
+    <color name="edit_stroke">#CACACA</color>
+    <color name="edit_content_background">#ffffff</color>
+
+    <!--Textview-->
+    <color name="textview_shadow">#000000</color>
+
+
+</resources>

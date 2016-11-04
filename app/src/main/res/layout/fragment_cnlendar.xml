@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/themeColor">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/LL_calendar_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp">
+
+
+                <TextView
+                    android:id="@+id/TV_calendar_months"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/entries_main_color"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/TV_calendar_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="@color/entries_main_color"
+                    android:textSize="100sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/TV_calendar_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text=""
+                    android:textColor="@color/entries_main_color"
+                    android:textSize="25sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/RL_calendar_edit_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/themeColor">
+
+        <ImageView
+            android:id="@+id/IV_calendar_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_menu_white_24dp"
+            android:tint="@color/button_disable_color" />
+
+        <ImageView
+            android:id="@+id/IV_calendar_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/IV_calendar_menu"
+            android:src="@drawable/ic_mode_edit_white_24dp"
+            android:tint="@color/button_disable_color" />
+
+        <ImageView
+            android:id="@+id/IV_calendar_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/IV_calendar_edit"
+            android:src="@drawable/ic_camera_enhance_white_24dp"
+            android:tint="@color/button_disable_color" />
+
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/calendar_edit_bar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_3dp"
+        android:layout_above="@id/RL_calendar_edit_bar"
+        android:background="@drawable/view_top_shadow" />
+
+    <View
+        android:id="@+id/View_calendar_content_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_3dp"
+        android:background="@drawable/view_bottom_shadow" />
+
+
+</RelativeLayout>

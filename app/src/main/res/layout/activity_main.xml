@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/RL_main_profile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/profile_theme_bg"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_profile_image"
+            android:tint="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="Taki"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/RL_main_bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+
+        <ImageView
+            android:id="@+id/IV_main_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_settings_black_24dp"
+            android:tint="@color/themeColor" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/IV_main_setting"
+            android:background="@color/themeColor"
+            android:drawableLeft="@drawable/ic_search_white_18dp"
+            android:drawableTint="@color/button_disable_color" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView_topic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/RL_main_bottom_bar"
+        android:layout_below="@id/RL_main_profile"
+        android:background="@android:color/white"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp" />
+
+    <View
+        android:id="@+id/profile_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_5dp"
+        android:layout_below="@id/RL_main_profile"
+        android:background="@drawable/view_bottom_shadow" />
+
+    <View
+        android:id="@+id/search_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_3dp"
+        android:layout_above="@id/RL_main_bottom_bar"
+        android:background="@drawable/view_top_shadow" />
+
+</RelativeLayout>

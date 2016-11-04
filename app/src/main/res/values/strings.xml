@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">MyDiary</string>
+
+    <!--Topic type-->
+    <string name="topic_create_name">Topic name:</string>
+
+    <!--Dialog -->
+    <string name="dialog_button_ok">ok</string>
+    <string name="dialog_button_cancel">cancel</string>
+
+    <!--Diary Activity-->
+    <string name="segmented_entries">Entries</string>
+    <string name="segmented_calendar">Calendar</string>
+    <string name="segmented_Diary">Diary</string>
+
+    <!--Entries -->
+    <string name="entries_count">%1$d Entries</string>
+
+    <!--Diary -->
+    <string name="diary_no_location">No location</string>
+    <string name="diary_location_permission_title">Permission</string>
+    <string name="diary_location_permission_content">We need permission to get location name.</string>
+
+    <string name="diary_title_hint">Diary title</string>
+    <string name="diary_content_hint">Write your diary here.</string>
+
+    <string name="toast_diary_empty">Diary is empty.</string>
+    <string name="toast_refashioning">Location is refashioning.</string>
+
+</resources>
