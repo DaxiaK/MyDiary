@@ -9,9 +9,9 @@ This project will need :
 * GUI designer
 * Japanese/English translation 
 
-This project is created again in 20161104.
-Because  it have some my personal info in old git .
-So if you already maek a star or fork ,  you can do it again , thanks!
+This project is created again in 20161104.Because  it have some my personal info in old git  repository.
+
+So if you already make a star or fork ,  you can do it again , thanks :)
 
 ## Why is only Android verison?
 
