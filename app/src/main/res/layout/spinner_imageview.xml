@@ -4,5 +4,4 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="2dp"
-    android:paddingBottom="2dp"
-    android:tint="@color/entries_main_color" />
+    android:paddingBottom="2dp" />

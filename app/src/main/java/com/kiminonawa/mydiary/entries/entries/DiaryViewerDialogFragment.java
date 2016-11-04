@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.entries.entries;
 
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,11 +13,13 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
 import java.text.SimpleDateFormat;
@@ -43,6 +46,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     /**
      * UI
      */
+
+    private RelativeLayout RL_diary_info, RL_diary_edit_bar;
 
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private ImageView IV_diary_weather, IV_diary_mood;
@@ -84,7 +89,15 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         this.getDialog().setCanceledOnTouchOutside(false);
 
         View rootView = inflater.inflate(R.layout.fragment_diary, container);
+
+        RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
+        RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
+        RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+        RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
+        EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
+                PorterDuff.Mode.SRC_ATOP);
         EDT_diary_content = (EditText) rootView.findViewById(R.id.EDT_diary_content);
 
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);

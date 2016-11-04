@@ -12,10 +12,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
 import java.util.Calendar;
@@ -34,16 +36,17 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
     //Temp value
     private int miniTouchGestureWidth = 120;
     private TimeTools timeTools;
-
+    private ThemeManager themeManager;
     /**
      * Animation
      */
-    Animation fadeOutAm, fadeInAm;
+    private Animation fadeOutAm, fadeInAm;
 
     /**
      * UI
      */
     private LinearLayout LL_calendar_content;
+    private RelativeLayout RL_calendar_content_bg, RL_calendar_edit_bar;
     private View View_calendar_content_shadow;
     private TextView TV_calendar_months, TV_calendar_date, TV_calendar_day;
 
@@ -58,6 +61,7 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
         currentDate = new Date();
         calendar.setTime(currentDate);
         timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
+        themeManager = ThemeManager.getInstance();
         initAnimation();
     }
 
@@ -66,11 +70,23 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cnlendar, container, false);
 
+        RL_calendar_content_bg = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content_bg);
+        RL_calendar_content_bg.setBackgroundColor(themeManager.getThemeMainColor(getActivity()));
+
+        RL_calendar_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_edit_bar);
+        RL_calendar_edit_bar.setBackgroundColor(themeManager.getThemeMainColor(getActivity()));
+
         LL_calendar_content = (LinearLayout) rootView.findViewById(R.id.LL_calendar_content);
         View_calendar_content_shadow = rootView.findViewById(R.id.View_calendar_content_shadow);
+
         TV_calendar_months = (TextView) rootView.findViewById(R.id.TV_calendar_months);
         TV_calendar_date = (TextView) rootView.findViewById(R.id.TV_calendar_date);
         TV_calendar_day = (TextView) rootView.findViewById(R.id.TV_calendar_day);
+
+        TV_calendar_months.setTextColor(themeManager.getThemeDarkColor(getActivity()));
+        TV_calendar_date.setTextColor(themeManager.getThemeDarkColor(getActivity()));
+        TV_calendar_day.setTextColor(themeManager.getThemeDarkColor(getActivity()));
+
         updateCalendar();
 
         LL_calendar_content.setOnTouchListener(canlderOnTouchListener);

@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="5dp"
-        android:alpha="0.9"
         android:background="@drawable/rv_entries_item_bg"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
@@ -45,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/entries_main_color"
+                    android:textColor="@color/theme_dark_color_taki"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -54,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/entries_main_color"
+                    android:textColor="@color/theme_dark_color_taki"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -75,24 +74,21 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:src="@drawable/ic_weather_sunny"
-                        android:tint="@color/themeColor" />
+                        android:src="@drawable/ic_weather_sunny"/>
 
                     <ImageView
                         android:id="@+id/IV_entries_item_mood"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:src="@drawable/ic_mood_happy"
-                        android:tint="@color/themeColor" />
+                        android:src="@drawable/ic_mood_happy" />
 
                     <ImageView
                         android:id="@+id/IV_entries_item_bookmark"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:src="@drawable/ic_bookmark_border"
-                        android:tint="@color/themeColor" />
+                        android:src="@drawable/ic_bookmark_border" />
                 </LinearLayout>
 
                 <ImageView
@@ -103,8 +99,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_attach"
-                    android:tint="@color/themeColor" />
+                    android:src="@drawable/ic_attach" />
 
             </RelativeLayout>
 
@@ -120,7 +115,6 @@
                     android:id="@+id/TV_entries_item_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/entries_main_color"
                     android:textSize="12sp" />
 
                 <TextView
@@ -129,7 +123,6 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/entries_main_color"
                     android:textSize="14sp" />
 
                 <TextView
@@ -139,7 +132,6 @@
                     android:layout_marginTop="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/entries_main_color"
                     android:textSize="10sp" />
             </LinearLayout>
 

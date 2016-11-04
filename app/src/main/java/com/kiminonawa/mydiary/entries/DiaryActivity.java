@@ -15,6 +15,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.calendar.CalendarFragment;
 import com.kiminonawa.mydiary.entries.diary.DiaryFragment;
 import com.kiminonawa.mydiary.entries.entries.EntriesFragment;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
@@ -55,12 +56,14 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         LL_diary_topbar_content = (LinearLayout) findViewById(R.id.LL_diary_topbar_content);
         SG_diary_topbar = (SegmentedGroup) findViewById(R.id.SG_diary_topbar);
         SG_diary_topbar.setOnCheckedChangeListener(this);
+        SG_diary_topbar.setTintColor(ThemeManager.getInstance().getThemeDarkColor(this));
         But_diary_topbar_entries = (RadioButton) findViewById(R.id.But_diary_topbar_entries);
         But_diary_topbar_calendar = (RadioButton) findViewById(R.id.But_diary_topbar_calendar);
         But_diary_topbar_diary = (RadioButton) findViewById(R.id.But_diary_topbar_diary);
         But_diary_topbar_entries.setChecked(true);
 
         TV_diary_topbar_title = (TextView) findViewById(R.id.TV_diary_topbar_title);
+        TV_diary_topbar_title.setTextColor(ThemeManager.getInstance().getThemeDarkColor(this));
 
         String diaryTitle = getIntent().getStringExtra("diaryTitle");
         if (diaryTitle == null) {

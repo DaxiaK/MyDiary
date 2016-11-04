@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MyDiary</string>
 
+    <!--Profile-->
+    <string name="profile_username_taki">Taki</string>
+    <string name="profile_username_mitsuha">Mitsuha</string>
+
     <!--Topic type-->
     <string name="topic_create_name">Topic name:</string>
 

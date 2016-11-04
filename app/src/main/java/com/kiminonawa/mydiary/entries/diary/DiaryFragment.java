@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.entries.diary;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
 import java.io.IOException;
@@ -57,6 +60,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * UI
      */
     private LinearLayout LL_diary_time_information;
+    private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private SwipeRefreshLayout SRL_diary_content;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private Spinner SP_diary_weather, SP_diary_mood;
@@ -106,6 +110,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
 
+        RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
+        RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
+        RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+        RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+
         LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
         SRL_diary_content = (SwipeRefreshLayout) rootView.findViewById(R.id.SRL_diary_content);
         SRL_diary_content.setOnRefreshListener(this);
@@ -122,6 +131,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_mood.setVisibility(View.VISIBLE);
 
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
+        EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
+                PorterDuff.Mode.SRC_ATOP);
         EDT_diary_content = (EditText) rootView.findViewById(R.id.EDT_diary_content);
 
 
