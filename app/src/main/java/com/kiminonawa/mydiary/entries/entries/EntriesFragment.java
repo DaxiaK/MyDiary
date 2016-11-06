@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,19 +17,22 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDialogFragment.DiaryViewerCallback {
+public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
 
     /**
      * UI
      */
     private TextView TV_entries_count;
-    private RelativeLayout RL_entries_content,RL_entries_edit_bar;
+    private RelativeLayout RL_entries_content, RL_entries_edit_bar;
+    private TextView TV_entries_edit_msg;
+    private ImageView IV_entries_edit;
     private final static int MAX_TEXT_LENGTH = 15;
 
     /**
@@ -52,6 +56,12 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_entries, container, false);
+
+        IV_entries_edit = (ImageView) rootView.findViewById(R.id.IV_entries_edit);
+        IV_entries_edit.setOnClickListener(this);
+        TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
+        TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);
         RL_entries_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_content);
@@ -116,10 +126,39 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
                 String.format(getResources().getString(R.string.entries_count), entriesList.size()));
     }
 
+    public void setEditModeUI(boolean isEditMode) {
+        if (isEditMode) {
+            entriesAdapter.setEditMode(false);
+            TV_entries_edit_msg.setVisibility(View.GONE);
+            IV_entries_edit.setImageDrawable(ViewTools.getDrawable(getActivity(), R.drawable.ic_mode_edit_white_24dp));
+        } else {
+            entriesAdapter.setEditMode(true);
+            TV_entries_edit_msg.setVisibility(View.VISIBLE);
+            IV_entries_edit.setImageDrawable(ViewTools.getDrawable(getActivity(), R.drawable.ic_mode_edit_cancel_white_24dp));
+        }
+    }
+
     @Override
     public void deleteDiary() {
         loadEntries();
         entriesAdapter.notifyDataSetChanged();
         countEntries();
+    }
+
+    @Override
+    public void updateDiary() {
+        loadEntries();
+        entriesAdapter.notifyDataSetChanged();
+        countEntries();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.IV_entries_edit: {
+                setEditModeUI(entriesAdapter.isEditMode());
+                break;
+            }
+        }
     }
 }

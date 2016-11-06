@@ -23,6 +23,16 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
+        <TextView
+            android:id="@+id/TV_topic_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/IV_topic_arrow_right"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/TV_topic_title"
@@ -30,18 +40,19 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/IV_topic_arrow_right"
+            android:layout_toLeftOf="@id/TV_topic_count"
             android:layout_toRightOf="@id/IV_topic_icon"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/black" />
+        android:background="@color/topic_divider" />
 
 </RelativeLayout>

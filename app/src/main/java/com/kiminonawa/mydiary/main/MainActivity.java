@@ -96,10 +96,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initProfile();
         initBottomBar();
-        loadTopic();
         initPopupWindow();
-        //Init topic adapter
         initTopicAdapter();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Init topic adapter
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged();
     }
 
     private void initProfile() {
@@ -120,15 +126,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (topicCursor.getInt(2)) {
                 case ITopic.TYPE_CONTACTS:
                     topicList.add(
-                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1)));
+                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1), 0));
                     break;
                 case ITopic.TYPE_DIARY:
                     topicList.add(
-                            new Diary(topicCursor.getLong(0), topicCursor.getString(1)));
+                            new Diary(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getDiaryCountByTopicId(topicCursor.getLong(0))));
                     break;
                 case ITopic.TYPE_MEMO:
                     topicList.add(
-                            new Memo(topicCursor.getLong(0), topicCursor.getString(1)));
+                            new Memo(topicCursor.getLong(0), topicCursor.getString(1), 0));
                     break;
             }
             topicCursor.moveToNext();
@@ -214,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public boolean isLongPressDragEnabled() {
-            return true;
+            return false;
         }
 
         @Override

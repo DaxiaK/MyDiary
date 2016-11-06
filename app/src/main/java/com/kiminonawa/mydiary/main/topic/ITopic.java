@@ -30,4 +30,6 @@ public interface ITopic {
     @DrawableRes
     int getIcon();
 
+    int getCount();
+
 }

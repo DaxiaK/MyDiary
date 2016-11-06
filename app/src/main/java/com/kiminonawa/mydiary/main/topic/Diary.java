@@ -10,10 +10,13 @@ public class Diary implements ITopic {
 
     private String title;
     private long id;
+    private int count;
 
-    public Diary(long id, String title) {
+
+    public Diary(long id, String title,int count) {
         this.id = id;
         this.title = title;
+        this.count = count;
     }
 
     @Override
@@ -34,5 +37,10 @@ public class Diary implements ITopic {
     @Override
     public int getIcon() {
         return R.drawable.ic_topic_diary;
+    }
+
+    @Override
+    public int getCount() {
+        return count;
     }
 }

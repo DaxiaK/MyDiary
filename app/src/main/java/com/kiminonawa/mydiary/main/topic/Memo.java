@@ -10,10 +10,12 @@ public class Memo implements ITopic {
 
     private String title;
     private long id;
+    private int count;
 
-    public Memo(long id, String title) {
+    public Memo(long id, String title ,int count) {
         this.id = id;
         this.title = title;
+        this.count = count;
     }
 
     @Override
@@ -34,5 +36,11 @@ public class Memo implements ITopic {
     @Override
     public int getIcon() {
         return R.drawable.ic_topic_memo;
+    }
+
+
+    @Override
+    public int getCount() {
+        return count;
     }
 }

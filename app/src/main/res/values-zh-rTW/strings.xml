@@ -8,6 +8,8 @@
 
     <!--Topic type-->
     <string name="topic_create_name">主題名稱:</string>
+    <string name="topic_dialog_delete_title">刪除</string>
+    <string name="topic_dialog_delete_content">確定要刪除 %1$s 嗎?</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">確定</string>
@@ -20,6 +22,7 @@
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
+    <string name="entries_edit_view">點選要編輯的日記</string>
 
     <!--Diary -->
     <string name="diary_no_location">無定位</string>

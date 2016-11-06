@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.entries.entries;
 
 import android.support.annotation.ColorInt;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,13 +26,15 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 
 
     private List<EntriesEntity> entriesList;
-    private Fragment mFragment;
+    private EntriesFragment mFragment;
     private DateFormat dateFormat = new SimpleDateFormat("HH:mm");
     private String[] daysSimpleName;
     private DiaryViewerDialogFragment.DiaryViewerCallback mDiaryViewerCallback;
     private ThemeManager themeManager;
 
-    public EntriesAdapter(Fragment fragment, List<EntriesEntity> topicList, DiaryViewerDialogFragment.DiaryViewerCallback callback) {
+    private boolean isEditMode = false;
+
+    public EntriesAdapter(EntriesFragment fragment, List<EntriesEntity> topicList, DiaryViewerDialogFragment.DiaryViewerCallback callback) {
         this.mFragment = fragment;
         this.entriesList = topicList;
         this.mDiaryViewerCallback = callback;
@@ -85,11 +86,22 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             @Override
             public void onClick(View v) {
                 DiaryViewerDialogFragment diaryViewerDialog =
-                        DiaryViewerDialogFragment.newInstance(entriesList.get(position).getId());
+                        DiaryViewerDialogFragment.newInstance(entriesList.get(position).getId(), isEditMode);
                 diaryViewerDialog.setCallBack(mDiaryViewerCallback);
                 diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
+                if (isEditMode) {
+                    mFragment.setEditModeUI(isEditMode);
+                }
             }
         });
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        isEditMode = editMode;
     }
 
     private boolean showHeader(final int position) {
@@ -117,7 +129,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 
         private ImageView IV_entries_item_weather, IV_entries_item_mood, IV_entries_item_bookmark, IV_entries_item_attachment;
 
-        protected EntriesViewHolder(View view,@ColorInt int color) {
+        protected EntriesViewHolder(View view, @ColorInt int color) {
             super(view);
             this.rootView = view;
             this.TV_entries_item_header = (TextView) rootView.findViewById(R.id.TV_entries_item_header);
