@@ -48,7 +48,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        if(topicList.get(position).getType() != ITopic.TYPE_DIARY){
+        if (topicList.get(position).getType() != ITopic.TYPE_DIARY) {
             //Alpha 125 , disable color
             holder.getRootView().setBackgroundColor(Color.parseColor("#7D9D9FA2"));
         } else {
@@ -57,6 +57,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getTitleView().setText(topicList.get(position).getTitle());
+        holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +90,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
+        private TextView TV_topic_count;
         private View rootView;
 
         protected TopicViewHolder(View view) {
@@ -96,6 +98,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.rootView = view;
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
+            this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
         }
 
         protected ImageView getIconView() {
@@ -104,6 +107,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         protected TextView getTitleView() {
             return TV_topic_title;
+        }
+
+        public TextView getTVCount() {
+            return TV_topic_count;
         }
 
         protected View getRootView() {

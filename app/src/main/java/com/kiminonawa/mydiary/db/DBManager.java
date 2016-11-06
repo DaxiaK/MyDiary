@@ -60,6 +60,20 @@ public class DBManager {
         return c;
     }
 
+    public int getDiaryCountByTopicId(long topicId) {
+        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry.TABLE_NAME + " WHERE " + DiaryEntry.COLUMN_REF_TOPIC__ID + "=?",
+                new String[]{String.valueOf(topicId)});
+        int count = 0;
+        if (null != cursor) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        return count;
+    }
+
     public long delTopic(long topicId) {
         return db.delete(
                 TopicEntry.TABLE_NAME,

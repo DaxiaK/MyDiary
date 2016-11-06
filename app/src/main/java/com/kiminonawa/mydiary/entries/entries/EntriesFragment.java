@@ -60,7 +60,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         IV_entries_edit = (ImageView) rootView.findViewById(R.id.IV_entries_edit);
         IV_entries_edit.setOnClickListener(this);
         TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
-        TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
+        TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);

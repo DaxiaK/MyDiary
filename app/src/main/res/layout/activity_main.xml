@@ -70,8 +70,8 @@
         android:layout_below="@id/LL_main_profile"
         android:background="@android:color/white"
         android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:paddingTop="10dp" />
 
     <View
