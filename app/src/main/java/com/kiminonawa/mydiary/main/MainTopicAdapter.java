@@ -81,7 +81,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setCancelable(false)
                 .setTitle(mContext.getString(R.string.topic_dialog_delete_title))
-                .setMessage( String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
+                .setMessage(String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
                 .setNegativeButton(mContext.getString(R.string.dialog_button_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -98,6 +98,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         dbManager.closeDB();
                         topicList.remove(position);
                         notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, getItemCount());
                     }
                 });
         builder.show();
