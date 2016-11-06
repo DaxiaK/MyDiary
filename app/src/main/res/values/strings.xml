@@ -8,6 +8,8 @@
 
     <!--Topic type-->
     <string name="topic_create_name">Topic name:</string>
+    <string name="topic_dialog_delete_title">Delete</string>
+    <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>

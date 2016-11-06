@@ -1,8 +1,10 @@
 package com.kiminonawa.mydiary.main;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,14 +77,30 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
     @Override
-    public void onItemDismiss(int position) {
-        DBManager dbManager = new DBManager(mContext);
-        dbManager.opeDB();
-        dbManager.delTopic(topicList.get(position).getId());
-        dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-        dbManager.closeDB();
-        topicList.remove(position);
-        notifyItemRemoved(position);
+    public void onItemDismiss(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setCancelable(false)
+                .setTitle(mContext.getString(R.string.topic_dialog_delete_title))
+                .setMessage( String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
+                .setNegativeButton(mContext.getString(R.string.dialog_button_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        notifyDataSetChanged();
+                    }
+                })
+                .setPositiveButton(mContext.getString(R.string.dialog_button_ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBManager dbManager = new DBManager(mContext);
+                        dbManager.opeDB();
+                        dbManager.delTopic(topicList.get(position).getId());
+                        dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                        dbManager.closeDB();
+                        topicList.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                });
+        builder.show();
     }
 
 
