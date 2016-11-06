@@ -20,6 +20,7 @@
 
     <!--Entries -->
     <string name="entries_count">%1$d Entries</string>
+    <string name="entries_edit_view">Click diary for editing</string>
 
     <!--Diary -->
     <string name="diary_no_location">No location</string>

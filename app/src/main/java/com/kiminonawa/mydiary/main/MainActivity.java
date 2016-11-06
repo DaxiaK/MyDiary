@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public boolean isLongPressDragEnabled() {
-            return true;
+            return false;
         }
 
         @Override

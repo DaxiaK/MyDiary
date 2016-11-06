@@ -14,11 +14,13 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
@@ -38,6 +40,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
     public interface DiaryViewerCallback {
         void deleteDiary();
+        void updateDiary();
     }
 
     private DiaryViewerCallback callback;
@@ -51,9 +54,12 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private ImageView IV_diary_weather, IV_diary_mood;
+    private Spinner SP_diary_weather, SP_diary_mood;
 
     private EditText EDT_diary_title, EDT_diary_content;
     private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_delete, IV_diary_clear, IV_diary_save;
+
+    private boolean isEditMode;
 
     /**
      * Info
@@ -67,10 +73,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         super.onCreate(savedInstanceState);
     }
 
-    public static DiaryViewerDialogFragment newInstance(long diaryId) {
+    public static DiaryViewerDialogFragment newInstance(long diaryId, boolean isEditMode) {
         Bundle args = new Bundle();
         DiaryViewerDialogFragment fragment = new DiaryViewerDialogFragment();
         args.putLong("diaryId", diaryId);
+        args.putBoolean("isEditMode", isEditMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,8 +87,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         // request a window without the title
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        isEditMode = getArguments().getBoolean("isEditMode", false);
         return dialog;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -106,27 +115,17 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
 
-        IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
-        IV_diary_weather.setVisibility(View.VISIBLE);
-        IV_diary_mood = (ImageView) rootView.findViewById(R.id.IV_diary_mood);
-        IV_diary_mood.setVisibility(View.VISIBLE);
 
         IV_diary_close_dialog = (ImageView) rootView.findViewById(R.id.IV_diary_close_dialog);
         IV_diary_close_dialog.setVisibility(View.VISIBLE);
         IV_diary_close_dialog.setOnClickListener(this);
         IV_diary_location = (ImageView) rootView.findViewById(R.id.IV_diary_location);
+
         IV_diary_delete = (ImageView) rootView.findViewById(R.id.IV_diary_delete);
-        IV_diary_delete.setOnClickListener(this);
         IV_diary_clear = (ImageView) rootView.findViewById(R.id.IV_diary_clear);
-        IV_diary_clear.setVisibility(View.GONE);
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
-        IV_diary_save.setVisibility(View.GONE);
 
-        EDT_diary_title.setClickable(false);
-        EDT_diary_title.setKeyListener(null);
-        EDT_diary_content.setClickable(false);
-        EDT_diary_content.setKeyListener(null);
-
+        initView(rootView);
         return rootView;
     }
 
@@ -159,6 +158,48 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         }
     }
 
+    private void initView(View rootView) {
+        if (isEditMode) {
+            SP_diary_mood = (Spinner) rootView.findViewById(R.id.SP_diary_mood);
+            SP_diary_mood.setVisibility(View.VISIBLE);
+            SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
+            SP_diary_weather.setVisibility(View.VISIBLE);
+
+            initMoodSpinner();
+            initWeatherSpinner();
+
+            IV_diary_delete.setVisibility(View.GONE);
+            IV_diary_clear.setOnClickListener(this);
+            IV_diary_save.setOnClickListener(this);
+        } else {
+            IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
+            IV_diary_weather.setVisibility(View.VISIBLE);
+            IV_diary_mood = (ImageView) rootView.findViewById(R.id.IV_diary_mood);
+            IV_diary_mood.setVisibility(View.VISIBLE);
+
+            IV_diary_delete.setOnClickListener(this);
+            IV_diary_clear.setVisibility(View.GONE);
+            IV_diary_save.setVisibility(View.GONE);
+
+            EDT_diary_title.setClickable(false);
+            EDT_diary_title.setKeyListener(null);
+            EDT_diary_content.setClickable(false);
+            EDT_diary_content.setKeyListener(null);
+        }
+    }
+
+
+    private void initMoodSpinner() {
+        ImageArrayAdapter moodArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getMoodArray());
+        SP_diary_mood.setAdapter(moodArrayAdapter);
+    }
+
+    private void initWeatherSpinner() {
+        ImageArrayAdapter weatherArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getWeatherArray());
+        SP_diary_weather.setAdapter(weatherArrayAdapter);
+    }
+
+
     private void setDiaryTime(Date diaryDate) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(diaryDate);
@@ -171,8 +212,13 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     private void setIcon(int mood, int weather) {
-        IV_diary_mood.setImageResource(DiaryInfo.getMoodResourceId(mood));
-        IV_diary_weather.setImageResource(DiaryInfo.getWeathetrResourceId(weather));
+        if (isEditMode) {
+            SP_diary_mood.setSelection(mood);
+            SP_diary_weather.setSelection(weather);
+        } else {
+            IV_diary_mood.setImageResource(DiaryInfo.getMoodResourceId(mood));
+            IV_diary_weather.setImageResource(DiaryInfo.getWeathetrResourceId(weather));
+        }
     }
 
 
@@ -188,6 +234,14 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         dbManager.closeDB();
     }
 
+    private void updateDiary() {
+        DBManager dbManager = new DBManager(getActivity());
+        dbManager.opeDB();
+        dbManager.updateDiary(diaryId, EDT_diary_title.getText().toString(), EDT_diary_content.getText().toString(),
+                SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition());
+        dbManager.closeDB();
+    }
+
     @Override
     public void onClick(View v) {
 
@@ -198,6 +252,14 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             case R.id.IV_diary_delete:
                 deleteDiary();
                 callback.deleteDiary();
+                dismiss();
+                break;
+            case R.id.IV_diary_clear:
+                dismiss();
+                break;
+            case R.id.IV_diary_save:
+                updateDiary();
+                callback.updateDiary();
                 dismiss();
                 break;
         }

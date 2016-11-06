@@ -20,6 +20,7 @@
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
+    <string name="entries_edit_view">點選要編輯的日記</string>
 
     <!--Diary -->
     <string name="diary_no_location">無定位</string>

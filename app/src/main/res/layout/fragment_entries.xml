@@ -26,8 +26,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="25dp"
             android:layout_toRightOf="@id/IV_entries_menu"
-            android:src="@drawable/ic_mode_edit_white_24dp"
-            android:tint="@color/button_disable_color" />
+            android:src="@drawable/ic_mode_edit_white_24dp" />
 
         <ImageView
             android:id="@+id/IV_entries_photo"
@@ -50,7 +49,6 @@
             android:textSize="18sp" />
     </RelativeLayout>
 
-
     <View
         android:id="@+id/entries_edit_bar_shadow"
         android:layout_width="match_parent"
@@ -66,5 +64,16 @@
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
+
+
+    <TextView
+        android:id="@+id/TV_entries_edit_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:text="@string/entries_edit_view"
+        android:textSize="18sp" />
 
 </RelativeLayout>

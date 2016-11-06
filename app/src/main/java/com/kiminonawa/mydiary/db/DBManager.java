@@ -79,13 +79,29 @@ public class DBManager {
      * Diary
      */
     public long insetDiary(long time, String title, String content,
-                           int mood, int weather, boolean attachment, long refTopicId , String locationName) {
+                           int mood, int weather, boolean attachment, long refTopicId, String locationName) {
         return db.insert(
                 DiaryEntry.TABLE_NAME,
                 null,
                 this.createDiaryCV(time, title, content,
-                        mood, weather, attachment, refTopicId,locationName));
+                        mood, weather, attachment, refTopicId, locationName));
     }
+
+    public long updateDiary(long diaryId, String title, String content,
+                            int mood, int weather) {
+        ContentValues values = new ContentValues();
+        values.put(DiaryEntry.COLUMN_TITLE, title);
+        values.put(DiaryEntry.COLUMN_CONTENT, content);
+        values.put(DiaryEntry.COLUMN_MOOD, mood);
+        values.put(DiaryEntry.COLUMN_WEATHER, weather);
+
+        return db.update(
+                DiaryEntry.TABLE_NAME,
+                values,
+                DiaryEntry._ID + " = ?",
+                new String[]{String.valueOf(diaryId)});
+    }
+
 
     public long delDiary(long diaryId) {
         return db.delete(
@@ -121,7 +137,7 @@ public class DBManager {
 
     private ContentValues createDiaryCV(long time, String title, String content,
                                         int mood, int weather, boolean attachment, long refTopicId,
-                                        String  locationName) {
+                                        String locationName) {
         ContentValues values = new ContentValues();
         values.put(DiaryEntry.COLUMN_TIME, time);
         values.put(DiaryEntry.COLUMN_TITLE, title);
