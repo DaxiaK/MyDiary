@@ -37,19 +37,19 @@ so, maybe I will try to create an iOS version after this app is running.
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-
-1. Optimized diary page viewer 
-2. Theme
-3. Create memo
-4. Allow edit topic , diary
-5. Allow order for topic , memo
-6. Add bookmark for diary
-7. Add web block in diary
-8. Add photo in diary
-9. Google account backup
-10. More theme , More profile
-11. Create contacts
-12. Add music in diary
+1. Allow edit topic , diary
+2. Add some mistake-proofing in this version
+3. Optimized diary page viewer
+4. Create memo
+5. Support JP
+6. Add web block in diary
+7. Add photo in diary
+8. Google account backup
+9. More theme , More profile
+10. Allow order for topic , memo
+11. Add bookmark for diary
+12. Create contacts
+13. Add music in diary
 
 Finshed:
 
@@ -57,6 +57,7 @@ Finshed:
 1. Add  mood in diary
 2. Add  weather in diary 
 3. Add location in diary
+4. Theme
 
 
 ## Use case
