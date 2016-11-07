@@ -189,13 +189,14 @@ public class DBManager {
                 this.createMemoCV(content, isChecked, refTopicId));
     }
 
-    private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
-        ContentValues values = new ContentValues();
-        values.put(MemoEntry.COLUMN_CONTENT, content);
-        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
-        values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
-        return values;
+
+    public long delMemo(long memoId) {
+        return db.delete(
+                MemoEntry.TABLE_NAME,
+                MemoEntry._ID + " = ?"
+                , new String[]{String.valueOf(memoId)});
     }
+
 
     public Cursor selectMemo(long topicId) {
         Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
@@ -216,6 +217,25 @@ public class DBManager {
                 new String[]{String.valueOf(memoId)});
     }
 
+    public long updateMemoContent(long memoId, String memoContent) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CONTENT, memoContent);
+        return db.update(
+                MemoEntry.TABLE_NAME,
+                values,
+                MemoEntry._ID + " = ?",
+                new String[]{String.valueOf(memoId)});
+    }
+
+
+
+    private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CONTENT, content);
+        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
+        values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
+        return values;
+    }
 
     /**
      * Debug

@@ -44,7 +44,8 @@
         android:layout_alignParentRight="true"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_mode_edit_white_24dp" />
+        android:src="@drawable/ic_mode_edit_white_24dp"
+        app:fabSize="mini" />
 
     <View
         android:layout_width="match_parent"

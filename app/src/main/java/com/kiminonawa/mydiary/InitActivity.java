@@ -40,7 +40,6 @@ public class InitActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        initHandler.removeCallbacksAndMessages(null);
     }
 
     private void loadSampleData() {
@@ -73,10 +72,13 @@ public class InitActivity extends Activity {
             dbManager.insetMemo("脚をひらくな！", true, 1);
             dbManager.insetMemo("体は見ない/触らない！！", false, 1);
             dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", true, 1);
-            dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！", true, 1);
-            for (int i = 1; i < 30; i++) {
-                dbManager.insetMemo(String.valueOf(i), false, 1);
-            }
+
+            dbManager.insetMemo("司とベタベタする.....", true, 2);
+            dbManager.insetMemo("奧寺先輩と馴れ馴れしくするな.....", true, 2);
+            dbManager.insetMemo("女言葉NG！", false, 2);
+            dbManager.insetMemo("遅刻するな！", true, 2);
+            dbManager.insetMemo("訛り禁止！", false, 2);
+            dbManager.insetMemo("無駄つかい禁止！", true, 2);
 
             dbManager.closeDB();
             SPFManager.setFirstRun(InitActivity.this, false);

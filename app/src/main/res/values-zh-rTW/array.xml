@@ -2,38 +2,38 @@
 <resources>
 
     <array name="months_full_name">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
     </array>
 
     <array name="days_simple_name">
-        <item>Sun.</item>
-        <item>Mon.</item>
-        <item>Tue.</item>
-        <item>Wed.</item>
-        <item>Thu.</item>
-        <item>Fri.</item>
-        <item>Sat.</item>
+        <item>一.</item>
+        <item>二.</item>
+        <item>三.</item>
+        <item>四.</item>
+        <item>五.</item>
+        <item>六.</item>
+        <item>日.</item>
     </array>
 
     <array name="days_full_name">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
+        <item>星期一</item>
+        <item>星期二</item>
+        <item>星期三</item>
+        <item>星期四</item>
+        <item>星期五</item>
+        <item>星期六</item>
+        <item>星期日</item>
     </array>
 
     <array name="topic_type">

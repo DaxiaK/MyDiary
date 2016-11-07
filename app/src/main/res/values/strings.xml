@@ -35,4 +35,7 @@
     <string name="toast_diary_empty">Diary is empty.</string>
     <string name="toast_refashioning">Location is refashioning.</string>
 
+    <!--Topic type-->
+    <string name="memo_item_add">Add</string>
+
 </resources>

@@ -35,4 +35,7 @@
     <string name="toast_diary_empty">日記內容是空的</string>
     <string name="toast_refashioning">位置資訊整理中</string>
 
+    <!--Topic type-->
+    <string name="memo_item_add">新增項目</string>
+
 </resources>
