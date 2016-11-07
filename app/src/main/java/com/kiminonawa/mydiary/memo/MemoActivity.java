@@ -1,15 +1,21 @@
 package com.kiminonawa.mydiary.memo;
 
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MemoActivity extends AppCompatActivity {
 
@@ -27,10 +33,15 @@ public class MemoActivity extends AppCompatActivity {
     private FloatingActionButton FAB_memo_edit;
 
     /**
+     * DB
+     */
+    private DBManager dbManager;
+    /**
      * RecyclerView
      */
-
     private RecyclerView RecyclerView_memo;
+    private MemoAdapter memoAdapter;
+    private List<MemoEntity> memoList;
 
 
     @Override
@@ -57,8 +68,36 @@ public class MemoActivity extends AppCompatActivity {
             diaryTitle = "Memo";
         }
         TV_memo_topbar_title.setText(diaryTitle);
+
+        RecyclerView_memo = (RecyclerView) findViewById(R.id.RecyclerView_memo);
+        memoList = new ArrayList<>();
+        dbManager = new DBManager(MemoActivity.this);
+
+        loadMemo();
+        initTopicAdapter();
     }
 
+    private void loadMemo() {
+        memoList.clear();
+        dbManager.opeDB();
+        Cursor memoCursor = dbManager.selectMemo(topicId);
+        for (int i = 0; i < memoCursor.getCount(); i++) {
+            memoList.add(
+                    new MemoEntity(memoCursor.getLong(0), memoCursor.getString(2), memoCursor.getInt(3) > 0 ? true : false));
+            memoCursor.moveToNext();
+        }
+        memoCursor.close();
+        dbManager.closeDB();
+    }
+
+    private void initTopicAdapter() {
+        //Init topic adapter
+        LinearLayoutManager lmr = new LinearLayoutManager(this);
+        RecyclerView_memo.setLayoutManager(lmr);
+        RecyclerView_memo.setHasFixedSize(true);
+        memoAdapter = new MemoAdapter(MemoActivity.this, memoList, dbManager);
+        RecyclerView_memo.setAdapter(memoAdapter);
+    }
 
 
 }

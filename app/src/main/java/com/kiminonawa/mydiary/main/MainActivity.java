@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
                 case ITopic.TYPE_MEMO:
                     topicList.add(
-                            new Memo(topicCursor.getLong(0), topicCursor.getString(1), 0));
+                            new Memo(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getMemoCountByTopicId(topicCursor.getLong(0))));
                     break;
             }
             topicCursor.moveToNext();
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Restart App
                 Intent i = getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|FLAG_ACTIVITY_NEW_TASK);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
                 finish();
                 startActivity(i);
                 break;

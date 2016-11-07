@@ -16,6 +16,7 @@ public class InitActivity extends Activity {
 
 
     private int initTime = 3000; // 3S
+    private Handler initHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class InitActivity extends Activity {
         ThemeManager themeManager = ThemeManager.getInstance();
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
 
-        Handler initHandler = new Handler();
+        initHandler = new Handler();
         initHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -34,6 +35,12 @@ public class InitActivity extends Activity {
                 InitActivity.this.startActivity(goMainPageIntent);
             }
         }, initTime);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        initHandler.removeCallbacksAndMessages(null);
     }
 
     private void loadSampleData() {
@@ -61,12 +68,15 @@ public class InitActivity extends Activity {
                     DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, 3, "Tokyo");
 
             //Insert sample memo
-            dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", false, 1);
-            dbManager.insetMemo("体は見ない/触らない！！", false, 1);
-            dbManager.insetMemo("脚をひらくな！", false, 1);
-            dbManager.insetMemo("男子に触るな！", false, 1);
             dbManager.insetMemo("女子にも触るな！", false, 1);
-
+            dbManager.insetMemo("男子に触るな！", false, 1);
+            dbManager.insetMemo("脚をひらくな！", true, 1);
+            dbManager.insetMemo("体は見ない/触らない！！", false, 1);
+            dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", true, 1);
+            dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！お風呂ぜっっったい禁止！！！！！！！", true, 1);
+            for (int i = 1; i < 30; i++) {
+                dbManager.insetMemo(String.valueOf(i), false, 1);
+            }
 
             dbManager.closeDB();
             SPFManager.setFirstRun(InitActivity.this, false);

@@ -32,7 +32,8 @@
         android:id="@+id/RecyclerView_memo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/RL_memo_topbar_content" />
+        android:layout_below="@+id/RL_memo_topbar_content"
+        android:padding="5dp" />
 
 
     <android.support.design.widget.FloatingActionButton

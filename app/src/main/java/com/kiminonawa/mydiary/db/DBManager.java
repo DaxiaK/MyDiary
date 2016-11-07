@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -63,6 +63,20 @@ public class DBManager {
 
     public int getDiaryCountByTopicId(long topicId) {
         Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry.TABLE_NAME + " WHERE " + DiaryEntry.COLUMN_REF_TOPIC__ID + "=?",
+                new String[]{String.valueOf(topicId)});
+        int count = 0;
+        if (null != cursor) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        return count;
+    }
+
+    public int getMemoCountByTopicId(long topicId) {
+        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + MemoEntry.TABLE_NAME + " WHERE " + MemoEntry.COLUMN_REF_TOPIC__ID + "=?",
                 new String[]{String.valueOf(topicId)});
         int count = 0;
         if (null != cursor) {
@@ -191,6 +205,17 @@ public class DBManager {
         }
         return c;
     }
+
+    public long updateMemoChecked(long memoId, boolean isChecked) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
+        return db.update(
+                MemoEntry.TABLE_NAME,
+                values,
+                MemoEntry._ID + " = ?",
+                new String[]{String.valueOf(memoId)});
+    }
+
 
     /**
      * Debug
