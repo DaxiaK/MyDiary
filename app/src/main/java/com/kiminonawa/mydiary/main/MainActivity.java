@@ -32,6 +32,8 @@ import com.kiminonawa.mydiary.shared.ViewTools;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         DialogCreateTopic.TopicCreatedCallback {
 
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Restart App
                 Intent i = getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|FLAG_ACTIVITY_NEW_TASK);
                 finish();
                 startActivity(i);
                 break;

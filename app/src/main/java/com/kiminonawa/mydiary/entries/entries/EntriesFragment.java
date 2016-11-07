@@ -99,6 +99,8 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         RecyclerView_entries.setLayoutManager(lmr);
         entriesAdapter = new EntriesAdapter(EntriesFragment.this, entriesList, this);
         RecyclerView_entries.setAdapter(entriesAdapter);
+        //true for close all view
+        setEditModeUI(true);
     }
 
     private void loadEntries() {
