@@ -1,10 +1,8 @@
-package com.kiminonawa.mydiary.main;
+package com.kiminonawa.mydiary.memo;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.memo.MemoActivity;
 
 import java.util.List;
 
@@ -24,23 +20,23 @@ import java.util.List;
  * Created by daxia on 2016/10/17.
  */
 
-public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements MainActivity.ItemTouchHelperAdapter {
+public class memoAdapter extends RecyclerView.Adapter<memoAdapter.MemoViewHolder>  {
 
 
     private List<ITopic> topicList;
     private Context mContext;
 
-    public MainTopicAdapter(Context context, List<ITopic> topicList) {
+    public memoAdapter(Context context, List<ITopic> topicList) {
         this.mContext = context;
         this.topicList = topicList;
     }
 
 
     @Override
-    public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MemoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_topic_item, parent, false);
-        return new TopicViewHolder(view);
+        return new MemoViewHolder(view);
     }
 
     @Override
@@ -49,7 +45,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
     @Override
-    public void onBindViewHolder(TopicViewHolder holder, final int position) {
+    public void onBindViewHolder(MemoViewHolder holder, final int position) {
 
         if (topicList.get(position).getType() == ITopic.TYPE_CONTACTS) {
             //Alpha 125 , disable color
@@ -84,43 +80,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         });
     }
 
-    @Override
-    public void onItemDismiss(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setCancelable(false)
-                .setTitle(mContext.getString(R.string.topic_dialog_delete_title))
-                .setMessage(String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
-                .setNegativeButton(mContext.getString(R.string.dialog_button_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        notifyDataSetChanged();
-                    }
-                })
-                .setPositiveButton(mContext.getString(R.string.dialog_button_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DBManager dbManager = new DBManager(mContext);
-                        dbManager.opeDB();
-                        dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                        dbManager.closeDB();
-                        topicList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
-                    }
-                });
-        builder.show();
-    }
 
-
-    protected class TopicViewHolder extends RecyclerView.ViewHolder {
+    protected class MemoViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private View rootView;
 
-        protected TopicViewHolder(View view) {
+        protected MemoViewHolder(View view) {
             super(view);
             this.rootView = view;
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -162,6 +163,33 @@ public class DBManager {
         values.put(DiaryEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         values.put(DiaryEntry.COLUMN_LOCATION, locationName);
         return values;
+    }
+
+    /**
+     * MEMO
+     */
+    public long insetMemo(String content, boolean isChecked, long refTopicId) {
+        return db.insert(
+                MemoEntry.TABLE_NAME,
+                null,
+                this.createMemoCV(content, isChecked, refTopicId));
+    }
+
+    private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CONTENT, content);
+        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
+        values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
+        return values;
+    }
+
+    public Cursor selectMemo(long topicId) {
+        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                MemoEntry._ID + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
     /**

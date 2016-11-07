@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/RL_memo_topbar_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:alpha="0.8"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/TV_memo_topbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView_memo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/RL_memo_topbar_content" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FAB_memo_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_mode_edit_white_24dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_5dp"
+        android:layout_below="@id/RL_memo_topbar_content"
+        android:background="@drawable/view_bottom_shadow" />
+
+
+</RelativeLayout>
