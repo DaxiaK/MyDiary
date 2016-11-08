@@ -52,11 +52,13 @@
         <EditText
             android:id="@+id/EDT_main_topic_search"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="26dp"
             android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/IV_main_setting"
+            android:background="@drawable/edittext_rounded_corner_bg"
             android:drawableLeft="@drawable/ic_search_white_18dp"
             android:drawableTint="@color/button_disable_color" />
 
@@ -71,7 +73,6 @@
         android:background="@android:color/white"
         android:paddingBottom="10dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="10dp" />
 
     <View

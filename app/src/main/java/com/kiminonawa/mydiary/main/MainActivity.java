@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set layout
         setContentView(R.layout.activity_main);
 
         themeManager = ThemeManager.getInstance();
@@ -121,7 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initBottomBar() {
-        EDT_main_topic_search.setBackgroundColor(themeManager.getThemeMainColor(this));
+        EDT_main_topic_search.getBackground().setColorFilter(themeManager.getThemeMainColor(this),
+                PorterDuff.Mode.SRC_ATOP);
         IV_main_setting.setColorFilter(themeManager.getThemeMainColor(this));
     }
 
@@ -167,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         IV_main_popup_change_theme = (ImageView) popuoView.findViewById(R.id.IV_main_popup_change_theme);
         IV_main_popup_change_theme.setOnClickListener(this);
         LinearLayout LL_main_popup = (LinearLayout) popuoView.findViewById(R.id.LL_main_popup);
-        LL_main_popup.setBackgroundResource(themeManager.getPopupBgResource(this));
+        LL_main_popup.setBackgroundResource(themeManager.getPopupBgResource());
     }
 
     private void initTopicAdapter() {

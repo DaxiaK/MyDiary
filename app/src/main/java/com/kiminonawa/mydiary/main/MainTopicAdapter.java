@@ -17,6 +17,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             //Alpha 125 , disable color
             holder.getRootView().setBackgroundColor(Color.parseColor("#7D9D9FA2"));
         } else {
-            holder.getRootView().setBackgroundColor(Color.WHITE);
+            holder.getRootView().setBackgroundResource(ThemeManager.getInstance().getTopicItemSelectResource());
         }
 
         holder.getIconView().setImageResource(topicList.get(position).getIcon());

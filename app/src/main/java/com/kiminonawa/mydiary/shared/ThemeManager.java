@@ -66,6 +66,19 @@ public class ThemeManager {
         return bgResourceId;
     }
 
+    public int getTopicItemSelectResource(){
+        int bgResourceId = R.drawable.main_topic_item_selector_taki;
+        switch (currentTheme) {
+            case TAKI:
+                bgResourceId = R.drawable.main_topic_item_selector_taki;
+                break;
+            case MITSUHA:
+                bgResourceId = R.drawable.main_topic_item_selector_mitsuha;
+                break;
+        }
+        return bgResourceId;
+    }
+
     public int getEntriesBgResource(){
         int bgResourceId = R.drawable.theme_bg_taki;
         switch (currentTheme) {
@@ -79,7 +92,7 @@ public class ThemeManager {
         return bgResourceId;
     }
 
-    public int getPopupBgResource(Context context) {
+    public int getPopupBgResource() {
         int bgResourceId = R.drawable.popup_shadow_taki;
         switch (currentTheme) {
             case TAKI:
@@ -131,6 +144,7 @@ public class ThemeManager {
         }
         return userName;
     }
+
 
 
 }
