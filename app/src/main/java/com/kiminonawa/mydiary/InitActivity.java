@@ -53,23 +53,6 @@ public class InitActivity extends Activity {
 
         DBManager dbManager = new DBManager(InitActivity.this);
         dbManager.opeDB();
-        if (SPFManager.getFirstRun(InitActivity.this)) {
-            //Insert sample topic
-            dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
-            dbManager.insertTopic("電話番号", ITopic.TYPE_CONTACTS);
-            //Insert sample diary
-            dbManager.insetDiary(1475665800000L, "東京生活3❤",
-                    "There are many coffee shop in Tokyo!",
-                    DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, 3, "Tokyo");
-            dbManager.insetDiary(1475241600000L, "No Title",
-                    "My name is TAKI , I am a man!",
-                    DiaryInfo.MOOD_SOSO, DiaryInfo.WEATHER_SUNNY, true, 3, "Itomori");
-            dbManager.insetDiary(1475144400000L, "東京生活2",
-                    "Today is second day , I like Tokyo!",
-                    DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, 3, "Tokyo");
-            SPFManager.setFirstRun(InitActivity.this, false);
-        }
-
         //Because memo function is run in version 6 ,
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(InitActivity.this) < 6) {
@@ -93,10 +76,29 @@ public class InitActivity extends Activity {
                 dbManager.insetMemo("無駄つかい禁止！", true, takiMemoId);
             }
         }
+
+        if (SPFManager.getFirstRun(InitActivity.this)) {
+            //Insert sample topic
+            long diaryId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
+            if (diaryId != -1) {
+                dbManager.insertTopic("電話番号", ITopic.TYPE_CONTACTS);
+                //Insert sample diary
+                dbManager.insetDiary(1475665800000L, "東京生活3❤",
+                        "There are many coffee shop in Tokyo!",
+                        DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, diaryId, "Tokyo");
+                dbManager.insetDiary(1475241600000L, "No Title",
+                        "My name is TAKI , I am a man!",
+                        DiaryInfo.MOOD_SOSO, DiaryInfo.WEATHER_SUNNY, true, diaryId, "Itomori");
+                dbManager.insetDiary(1475144400000L, "東京生活2",
+                        "Today is second day , I like Tokyo!",
+                        DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, diaryId, "Tokyo");
+                SPFManager.setFirstRun(InitActivity.this, false);
+            }
+        }
         dbManager.closeDB();
 
         //Save currentVersion
-        if(SPFManager.getVersionCode(InitActivity.this)< BuildConfig.VERSION_CODE){
+        if (SPFManager.getVersionCode(InitActivity.this) < BuildConfig.VERSION_CODE) {
             SPFManager.setVersionCode(InitActivity.this);
         }
 
