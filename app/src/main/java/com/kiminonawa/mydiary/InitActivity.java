@@ -12,8 +12,15 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
-public class InitActivity extends Activity {
 
+/**
+ * Version History
+ * ----
+ * 20161108
+ * Add memo function & show memo sample data in versionCode 6
+ * ----
+ */
+public class InitActivity extends Activity {
 
     private int initTime = 3000; // 3S
     private Handler initHandler;
@@ -43,18 +50,13 @@ public class InitActivity extends Activity {
     }
 
     private void loadSampleData() {
+
+        DBManager dbManager = new DBManager(InitActivity.this);
+        dbManager.opeDB();
         if (SPFManager.getFirstRun(InitActivity.this)) {
-
-            DBManager dbManager = new DBManager(InitActivity.this);
-            dbManager.opeDB();
-
             //Insert sample topic
-            dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO);
-            dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO);
             dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
             dbManager.insertTopic("電話番号", ITopic.TYPE_CONTACTS);
-
-
             //Insert sample diary
             dbManager.insetDiary(1475665800000L, "東京生活3❤",
                     "There are many coffee shop in Tokyo!",
@@ -65,23 +67,38 @@ public class InitActivity extends Activity {
             dbManager.insetDiary(1475144400000L, "東京生活2",
                     "Today is second day , I like Tokyo!",
                     DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, 3, "Tokyo");
-
-            //Insert sample memo
-            dbManager.insetMemo("女子にも触るな！", false, 1);
-            dbManager.insetMemo("男子に触るな！", false, 1);
-            dbManager.insetMemo("脚をひらくな！", true, 1);
-            dbManager.insetMemo("体は見ない/触らない！！", false, 1);
-            dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", true, 1);
-
-            dbManager.insetMemo("司とベタベタする.....", true, 2);
-            dbManager.insetMemo("奧寺先輩と馴れ馴れしくするな.....", true, 2);
-            dbManager.insetMemo("女言葉NG！", false, 2);
-            dbManager.insetMemo("遅刻するな！", true, 2);
-            dbManager.insetMemo("訛り禁止！", false, 2);
-            dbManager.insetMemo("無駄つかい禁止！", true, 2);
-
-            dbManager.closeDB();
             SPFManager.setFirstRun(InitActivity.this, false);
         }
+
+        //Because memo function is run in version 6 ,
+        //So , if version < 6 , show the sample memo data
+        if (SPFManager.getVersionCode(InitActivity.this) < 6) {
+            //Insert sample topic
+            long mitsuhaMemoId = dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO);
+            long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO);
+            //Insert sample memo
+            if (mitsuhaMemoId != -1) {
+                dbManager.insetMemo("女子にも触るな！", false, mitsuhaMemoId);
+                dbManager.insetMemo("男子に触るな！", false, mitsuhaMemoId);
+                dbManager.insetMemo("脚をひらくな！", true, mitsuhaMemoId);
+                dbManager.insetMemo("体は見ない/触らない！！", false, mitsuhaMemoId);
+                dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId);
+            }
+            if (takiMemoId != -1) {
+                dbManager.insetMemo("司とベタベタする.....", true, takiMemoId);
+                dbManager.insetMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId);
+                dbManager.insetMemo("女言葉NG！", false, takiMemoId);
+                dbManager.insetMemo("遅刻するな！", true, takiMemoId);
+                dbManager.insetMemo("訛り禁止！", false, takiMemoId);
+                dbManager.insetMemo("無駄つかい禁止！", true, takiMemoId);
+            }
+        }
+        dbManager.closeDB();
+
+        //Save currentVersion
+        if(SPFManager.getVersionCode(InitActivity.this)< BuildConfig.VERSION_CODE){
+            SPFManager.setVersionCode(InitActivity.this);
+        }
+
     }
 }
