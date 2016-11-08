@@ -59,6 +59,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         EDT_your_name_name = (EditText) rootView.findViewById(R.id.EDT_your_name_name);
         EDT_your_name_name.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
                 PorterDuff.Mode.SRC_ATOP);
+        EDT_your_name_name.setText(SPFManager.getYourName(getActivity()));
 
         But_your_name_ok = (Button) rootView.findViewById(R.id.But_your_name_ok);
         But_your_name_ok.setOnClickListener(this);
