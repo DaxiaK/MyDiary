@@ -13,18 +13,31 @@
         android:paddingBottom="15dp"
         android:paddingTop="15dp">
 
-
-        <EditText
-            android:id="@+id/EDT_edit_memo_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
-            android:inputType="textMultiLine"
-            android:maxLines="5"
-            android:paddingLeft="5dp"
-            android:scrollbars="vertical"
-            android:textColor="@android:color/black" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TV_your_name_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/dialog_your_name_is"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/EDT_your_name_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:inputType="textCapCharacters"
+                android:maxLines="1" />
+        </LinearLayout>
 
 
         <RelativeLayout
@@ -33,26 +46,26 @@
             android:layout_marginTop="10dp">
 
             <Space
-                android:id="@+id/Space_edit_memo"
+                android:id="@+id/Space_your_name"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
 
             <Button
-                android:id="@+id/But_edit_memo_cancel"
+                android:id="@+id/But_your_name_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/Space_edit_memo"
+                android:layout_toLeftOf="@id/Space_your_name"
                 android:gravity="center"
                 android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/But_edit_memo_ok"
+                android:id="@+id/But_your_name_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/Space_edit_memo"
+                android:layout_toRightOf="@id/Space_your_name"
                 android:gravity="center"
                 android:text="@string/dialog_button_ok"
                 android:textAllCaps="false" />

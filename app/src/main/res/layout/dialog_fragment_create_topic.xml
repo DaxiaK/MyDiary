@@ -24,7 +24,8 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/topic_create_name" />
+                android:text="@string/topic_create_name"
+                android:textColor="@android:color/black" />
 
             <EditText
                 android:id="@+id/EDT_topic_create_name"
@@ -32,6 +33,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:inputType="textCapCharacters"
+                android:textColor="@android:color/black"
                 android:maxLines="1" />
         </LinearLayout>
 

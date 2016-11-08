@@ -102,7 +102,18 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         DBManager dbManager = new DBManager(mContext);
                         dbManager.opeDB();
                         dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+
+                        switch (topicList.get(position).getType()) {
+                            case ITopic.TYPE_CONTACTS:
+                                break;
+                            case ITopic.TYPE_DIARY:
+                                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                                break;
+                            case ITopic.TYPE_MEMO:
+                                dbManager.delAllMemoInTopic(topicList.get(position).getId());
+
+                                break;
+                        }
                         dbManager.closeDB();
                         topicList.remove(position);
                         notifyItemRemoved(position);
