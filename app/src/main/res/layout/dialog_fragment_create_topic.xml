@@ -41,6 +41,8 @@
             android:id="@+id/SP_topic_create_type"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/spinner_bg" />
 
 

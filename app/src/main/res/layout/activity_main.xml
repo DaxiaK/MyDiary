@@ -25,7 +25,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:textColor="@android:color/white" />
+            android:shadowColor="@color/textview_shadow"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="3"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
@@ -52,13 +57,15 @@
         <EditText
             android:id="@+id/EDT_main_topic_search"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
+            android:layout_height="26dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/IV_main_setting"
+            android:background="@drawable/edittext_rounded_corner_bg"
             android:drawableLeft="@drawable/ic_search_white_18dp"
-            android:drawableTint="@color/button_disable_color" />
+            android:drawableTint="@color/button_disable_color"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
@@ -71,7 +78,6 @@
         android:background="@android:color/white"
         android:paddingBottom="10dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
         android:paddingTop="10dp" />
 
     <View
