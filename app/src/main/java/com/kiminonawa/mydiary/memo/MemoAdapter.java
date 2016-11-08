@@ -54,7 +54,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         if (isEditMode) {
             if (viewType == TYPE_HEADER) {
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.rv_memo_item_add, parent, false);
+                        .inflate(R.layout.rv_memo_item_add_header, parent, false);
                 return new MemoViewHeader(view);
             } else if (viewType == TYPE_ITEM) {
                 view = LayoutInflater.from(parent.getContext())

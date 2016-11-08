@@ -44,6 +44,14 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     private MemoAdapter memoAdapter;
     private List<MemoEntity> memoList;
 
+    @Override
+    public void onBackPressed() {
+        if (memoAdapter.isEditMode()) {
+            setEditModeUI(memoAdapter.isEditMode());
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
