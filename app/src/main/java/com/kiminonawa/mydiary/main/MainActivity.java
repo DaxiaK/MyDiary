@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mPopupWindow.dismiss();
                 break;
             case R.id.IV_main_popup_change_theme:
+                mPopupWindow.dismiss();
                 themeManager.toggleTheme(this);
                 //Send Toast
                 Toast.makeText(this, getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
