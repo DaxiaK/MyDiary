@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 
 /**
@@ -62,6 +63,20 @@ public class DBManager {
 
     public int getDiaryCountByTopicId(long topicId) {
         Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry.TABLE_NAME + " WHERE " + DiaryEntry.COLUMN_REF_TOPIC__ID + "=?",
+                new String[]{String.valueOf(topicId)});
+        int count = 0;
+        if (null != cursor) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        return count;
+    }
+
+    public int getMemoCountByTopicId(long topicId) {
+        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + MemoEntry.TABLE_NAME + " WHERE " + MemoEntry.COLUMN_REF_TOPIC__ID + "=?",
                 new String[]{String.valueOf(topicId)});
         int count = 0;
         if (null != cursor) {
@@ -161,6 +176,70 @@ public class DBManager {
         values.put(DiaryEntry.COLUMN_ATTACHMENT, attachment);
         values.put(DiaryEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         values.put(DiaryEntry.COLUMN_LOCATION, locationName);
+        return values;
+    }
+
+    /**
+     * MEMO
+     */
+    public long insetMemo(String content, boolean isChecked, long refTopicId) {
+        return db.insert(
+                MemoEntry.TABLE_NAME,
+                null,
+                this.createMemoCV(content, isChecked, refTopicId));
+    }
+
+
+    public long delMemo(long memoId) {
+        return db.delete(
+                MemoEntry.TABLE_NAME,
+                MemoEntry._ID + " = ?"
+                , new String[]{String.valueOf(memoId)});
+    }
+
+    public long delAllMemoInTopic(long topicId) {
+        return db.delete(
+                MemoEntry.TABLE_NAME,
+                MemoEntry.COLUMN_REF_TOPIC__ID + " = ?"
+                , new String[]{String.valueOf(topicId)});
+    }
+
+
+    public Cursor selectMemo(long topicId) {
+        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                MemoEntry._ID + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    public long updateMemoChecked(long memoId, boolean isChecked) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
+        return db.update(
+                MemoEntry.TABLE_NAME,
+                values,
+                MemoEntry._ID + " = ?",
+                new String[]{String.valueOf(memoId)});
+    }
+
+    public long updateMemoContent(long memoId, String memoContent) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CONTENT, memoContent);
+        return db.update(
+                MemoEntry.TABLE_NAME,
+                values,
+                MemoEntry._ID + " = ?",
+                new String[]{String.valueOf(memoId)});
+    }
+
+
+    private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_CONTENT, content);
+        values.put(MemoEntry.COLUMN_CHECKED, isChecked);
+        values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         return values;
     }
 

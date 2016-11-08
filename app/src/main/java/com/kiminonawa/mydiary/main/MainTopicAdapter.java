@@ -16,6 +16,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.memo.MemoActivity;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        if (topicList.get(position).getType() != ITopic.TYPE_DIARY) {
+        if (topicList.get(position).getType() == ITopic.TYPE_CONTACTS) {
             //Alpha 125 , disable color
             holder.getRootView().setBackgroundColor(Color.parseColor("#7D9D9FA2"));
         } else {
@@ -70,6 +71,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goEntriesPageIntent);
+                        break;
+                    case ITopic.TYPE_MEMO:
+                        Intent goMemoPageIntent = new Intent(mContext, MemoActivity.class);
+                        //Send topicId for memo & entries
+                        goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
+                        goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                        mContext.startActivity(goMemoPageIntent);
                         break;
                 }
             }
@@ -94,7 +102,18 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         DBManager dbManager = new DBManager(mContext);
                         dbManager.opeDB();
                         dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+
+                        switch (topicList.get(position).getType()) {
+                            case ITopic.TYPE_CONTACTS:
+                                break;
+                            case ITopic.TYPE_DIARY:
+                                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                                break;
+                            case ITopic.TYPE_MEMO:
+                                dbManager.delAllMemoInTopic(topicList.get(position).getId());
+
+                                break;
+                        }
                         dbManager.closeDB();
                         topicList.remove(position);
                         notifyItemRemoved(position);

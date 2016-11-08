@@ -13,6 +13,9 @@
     <!--Main-->
     <color name="topic_divider">#CACACA</color>
 
+    <!--Memo-->
+    <color name="memo_icon_tint">#718698</color>
+
     <!--entries-->
     <color name="theme_dark_color_taki">#70A3B4</color>
     <color name="theme_dark_color_mistuha">#b3371f</color>

@@ -20,7 +20,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 /**
  * Created by daxia on 2016/8/27.
  */
-public class DialogCreateTopic extends DialogFragment implements View.OnClickListener {
+public class CreateTopicDialogFragment extends DialogFragment implements View.OnClickListener {
 
 
     public interface TopicCreatedCallback {
@@ -69,22 +69,10 @@ public class DialogCreateTopic extends DialogFragment implements View.OnClickLis
     }
 
     private void initTopicTypeSpinner() {
-        ArrayAdapter topicTypeAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,
+        ArrayAdapter topicTypeAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_simple_text,
                 getResources().getStringArray(R.array.topic_type));
         SP_topic_create_type.setAdapter(topicTypeAdapter);
         SP_topic_create_type.setSelection(1);
-        //TODO add memo & contancts
-//        SP_topic_create_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                //Do nothing
-//            }
-//        });
     }
 
     public void setCallBack(TopicCreatedCallback callback) {

@@ -209,7 +209,8 @@
                     android:layout_weight="0.7"
                     android:hint="@string/diary_title_hint"
                     android:inputType="textCapCharacters"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textColor="@android:color/black" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -264,7 +265,8 @@
                 android:background="@android:color/transparent"
                 android:gravity="top|left"
                 android:hint="@string/diary_content_hint"
-                android:padding="2dp" />
+                android:padding="2dp"
+                android:textColor="@android:color/black" />
         </LinearLayout>
 
     </ScrollView>

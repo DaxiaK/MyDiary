@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.shared.EditMode;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.text.DateFormat;
@@ -22,7 +23,7 @@ import java.util.List;
  * Created by daxia on 2016/10/17.
  */
 
-public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesViewHolder> {
+public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesViewHolder> implements EditMode {
 
 
     private List<EntriesEntity> entriesList;
@@ -96,13 +97,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         });
     }
 
-    public boolean isEditMode() {
-        return isEditMode;
-    }
-
-    public void setEditMode(boolean editMode) {
-        isEditMode = editMode;
-    }
 
     private boolean showHeader(final int position) {
         if (position == 0) {
@@ -119,6 +113,17 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             }
         }
     }
+
+    @Override
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    @Override
+    public void setEditMode(boolean editMode) {
+        isEditMode = editMode;
+    }
+
 
     protected class EntriesViewHolder extends RecyclerView.ViewHolder {
 
