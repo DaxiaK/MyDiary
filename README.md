@@ -32,33 +32,32 @@ so, maybe I will try to create an iOS version after this app is running.
 * Add diary
 * Delete diary
 * Change date in calendar page (page curl effect not ready)
+* Add  mood in diary
+* Add  weather in diary 
+* Add location in diary
+* Basic theme
+* Allow edit diary
+* Add memo
 
 ## Schedule
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Allow edit topic , diary
-2. Add some mistake-proofing in this version
-3. Optimized diary page viewer
-4. Create memo
-5. Support JP
-6. Add web block in diary
-7. Add photo in diary
-8. Google account backup
-9. More theme , More profile
-10. Allow order for topic , memo
-11. Add bookmark for diary
-12. Create contacts
-13. Add music in diary
+1. Optimized diary page viewer
+2. Support JP
+3. Create contacts
+4. Add web block in diary
+5. Add photo in diary
+6. Google account backup
+7. More theme , More profile
+8. Allow order for topic , memo
+9. Add bookmark for diary
+10. Add music in diary
 
-Finshed:
+Coding & Designing:
 
-
-1. Add  mood in diary
-2. Add  weather in diary 
-3. Add location in diary
-4. Theme
-
+1. Add mistake-proofing
+2. OOBE 
 
 ## Use case
 
