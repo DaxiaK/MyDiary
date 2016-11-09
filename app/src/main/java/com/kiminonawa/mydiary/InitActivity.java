@@ -15,6 +15,8 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 
 /**
  * Version History
+ * 20161109
+ * Add contacts function in version 9
  * ----
  * 20161108
  * Add memo function & show memo sample data in versionCode 6

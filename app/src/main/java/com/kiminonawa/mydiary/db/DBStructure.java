@@ -37,4 +37,14 @@ public class DBStructure {
         public static final String COLUMN_CHECKED = "memo_checked";
         public static final String COLUMN_REF_TOPIC__ID = "memo_ref_topic_id";
     }
+
+
+    public static abstract class ContactsEntry implements BaseColumns {
+        public static final String TABLE_NAME = "contacts_entry";
+        public static final String COLUMN_NAME = "contacts_name";
+        public static final String COLUMN_NUMBER = "contacts_number";
+        public static final String COLUMN_PHOTO = "contacts_photo";
+        public static final String COLUMN_REF_TOPIC__ID = "contacts_ref_topic_id";
+
+    }
 }

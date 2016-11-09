@@ -49,9 +49,11 @@
 
     <com.kiminonawa.mydiary.contacts.SortTextLayout
         android:id="@+id/STL_contacts"
-        android:layout_width="30dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent"
-        android:layout_below="@+id/RL_contacts_topbar_content" />
+        android:layout_below="@+id/RL_contacts_topbar_content"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp" />
 
     <View
         android:layout_width="match_parent"

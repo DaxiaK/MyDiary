@@ -5,8 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -15,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Version 3 by Daxia:
-     * Add local contacts
+     * Add mydiary's contacts
      * --------------
      * Version 2 by Daxia:
      * Add location row.
@@ -67,6 +68,16 @@ public class DBHelper extends SQLiteOpenHelper {
                     FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
                     " )";
 
+    private static final String SQL_CREATE_CONTACTS_ENTRIES =
+            "CREATE TABLE " + ContactsEntry.TABLE_NAME + " (" +
+                    ContactsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
+                    ContactsEntry.TABLE_NAME + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_PHOTO + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
+                    " )";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -76,15 +87,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TOPIC_ENTRIES);
         db.execSQL(SQL_CREATE_DIARY_ENTRIES);
         db.execSQL(SQL_CREATE_MEMO_ENTRIES);
-
+        db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
             db.beginTransaction();
-            boolean success = false;
-
-            if (oldVersion <= 1) {
+            if (oldVersion < 2) {
                 oldVersion++;
                 String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
                 String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
@@ -92,8 +101,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(addTopicOrderSql);
                 db.execSQL(SQL_CREATE_MEMO_ENTRIES);
             }
-            if (oldVersion <= 2) {
-
+            if (oldVersion < 3) {
+                db.execSQL(SQL_CREATE_MEMO_ENTRIES);
             }
 
             //Check update success

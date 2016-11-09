@@ -45,14 +45,6 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private MemoAdapter memoAdapter;
     private List<MemoEntity> memoList;
 
-    @Override
-    public void onBackPressed() {
-        if (memoAdapter.isEditMode()) {
-            setEditModeUI(memoAdapter.isEditMode());
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
