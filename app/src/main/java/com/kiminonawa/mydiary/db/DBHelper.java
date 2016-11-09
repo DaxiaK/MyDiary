@@ -14,6 +14,9 @@ import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 3 by Daxia:
+     * Add local contacts
+     * --------------
      * Version 2 by Daxia:
      * Add location row.
      * Add memo table.
@@ -22,7 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -80,23 +83,21 @@ public class DBHelper extends SQLiteOpenHelper {
         if (newVersion > oldVersion) {
             db.beginTransaction();
             boolean success = false;
-            switch (oldVersion) {
-                case 1: {
-                    oldVersion++;
-                    String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
-                    String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
-                    db.execSQL(addLocationSql);
-                    db.execSQL(addTopicOrderSql);
-                    db.execSQL(SQL_CREATE_MEMO_ENTRIES);
-                    success = true;
-                    break;
-                }
+
+            if (oldVersion <= 1) {
+                oldVersion++;
+                String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
+                String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
+                db.execSQL(addLocationSql);
+                db.execSQL(addTopicOrderSql);
+                db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+            }
+            if (oldVersion <= 2) {
+
             }
 
             //Check update success
-            if (success) {
-                db.setTransactionSuccessful();
-            }
+            db.setTransactionSuccessful();
             db.endTransaction();
         } else {
             onCreate(db);

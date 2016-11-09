@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/RL_contacts_topbar_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:alpha="0.8"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/IV_contacts_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_mode_edit_white_24dp" />
+
+        <TextView
+            android:id="@+id/IV_contacts_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/IV_contacts_add"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/RL_contacts_topbar_content"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp" />
+
+    <com.kiminonawa.mydiary.contacts.SortTextLayout
+        android:id="@+id/STL_contacts"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/RL_contacts_topbar_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_5dp"
+        android:layout_below="@id/RL_contacts_topbar_content"
+        android:background="@drawable/view_bottom_shadow" />
+</RelativeLayout>
