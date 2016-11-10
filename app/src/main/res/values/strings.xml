@@ -30,15 +30,15 @@
     <!--Diary -->
     <string name="diary_no_location">No location</string>
     <string name="diary_location_permission_title">Permission</string>
-    <string name="diary_location_permission_content">We need permission to get location name.</string>
+    <string name="diary_location_permission_content">We need permission to get location name</string>
 
     <string name="diary_title_hint">Diary title</string>
-    <string name="diary_content_hint">Write your diary here.</string>
+    <string name="diary_content_hint">Write your diary here</string>
 
-    <string name="toast_diary_empty">Diary is empty.</string>
-    <string name="toast_refashioning">Location is refashioning.</string>
+    <string name="toast_diary_empty">Diary is empty</string>
+    <string name="toast_refashioning">Location is refashioning</string>
 
-    <!--Topic type-->
+    <!--Memo-->
     <string name="memo_item_add">Add</string>
 
 </resources>

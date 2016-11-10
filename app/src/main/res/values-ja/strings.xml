@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">MyDiary</string>
+
+    <!--Profile-->
+    <string name="profile_username_taki">立花　瀧</string>
+    <string name="profile_username_mitsuha"><宮水></宮水>　三葉</string>
+    <string name="toast_change_theme">テーマを切り替えている...</string>
+    <string name="dialog_your_name_is">君の名は</string>
+
+
+    <!--Topic type-->
+    <string name="topic_create_name">タイトル:</string>
+    <string name="topic_dialog_delete_title">削除</string>
+    <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
+
+    <!--Dialog -->
+    <string name="dialog_button_ok">はい</string>
+    <string name="dialog_button_cancel">いいえ</string>
+
+    <!--Diary Activity-->
+    <string name="segmented_entries">項目</string>
+    <string name="segmented_calendar">カレーダー</string>
+    <string name="segmented_Diary">にっき</string>
+
+    <!--Entries -->
+    <string name="entries_count">%1$d 項目</string>
+    <string name="entries_edit_view">以下の項目をクリックすると、編集します</string>
+    <string name="entries_edit_dialog_delete_title">削除</string>
+    <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
+
+    <!--Diary -->
+    <string name="diary_no_location">位置情報が取得できない</string>
+    <string name="diary_location_permission_title">許可</string>
+    <string name="diary_location_permission_content">位置情報の許可が必要です</string>
+
+    <string name="diary_title_hint">日記のタイトル</string>
+    <string name="diary_content_hint">ここに日記の内容を書きます</string>
+
+    <string name="toast_diary_empty">日記の内容はありません</string>
+    <string name="toast_refashioning">位置情報が取得します</string>
+
+    <!--Memo-->
+    <string name="memo_item_add">項目を追加します</string>
+
+</resources>
