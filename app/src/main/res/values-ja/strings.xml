@@ -24,7 +24,7 @@
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
-    <string name="entries_edit_view">ここにクリックして、編集します</string>
+    <string name="entries_edit_view">以下の項目をクリックすると、編集します</string>
     <string name="entries_edit_dialog_delete_title">削除</string>
     <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
 
