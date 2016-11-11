@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
@@ -242,6 +243,36 @@ public class DBManager {
         values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         return values;
     }
+
+    /**
+     * Contacts
+     */
+
+    public long insetContacts(String name, String phoneNumber, String photo, long refTopicId) {
+        return db.insert(
+                ContactsEntry.TABLE_NAME,
+                null,
+                this.createContactsCV(name, phoneNumber, photo, refTopicId));
+    }
+
+    public Cursor selectContacts(long topicId) {
+        Cursor c = db.query(ContactsEntry.TABLE_NAME, null, ContactsEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                ContactsEntry._ID + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    private ContentValues createContactsCV(String name, String phoneNumber, String photo, long refTopicId) {
+        ContentValues values = new ContentValues();
+        values.put(ContactsEntry.COLUMN_NAME, name);
+        values.put(ContactsEntry.COLUMN_PHONENUMBER, phoneNumber);
+        values.put(ContactsEntry.COLUMN_PHOTO, photo);
+        values.put(ContactsEntry.COLUMN_REF_TOPIC__ID, refTopicId);
+        return values;
+    }
+
 
     /**
      * Debug

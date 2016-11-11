@@ -59,7 +59,5 @@ public class SortTextLayout extends LinearLayout {
 
     public interface CharacterClickListener {
         void clickCharacter(String character);
-
-        void clickArrow();
     }
 }

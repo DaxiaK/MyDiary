@@ -41,7 +41,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     TopicEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                     TopicEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_TYPE + INTEGER_TYPE + COMMA_SEP +
-                    TopicEntry.COLUMN_ORDER + INTEGER_TYPE +
+                    TopicEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
+                    TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE +
                     " )";
 
     private static final String SQL_CREATE_DIARY_ENTRIES =
@@ -72,7 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + ContactsEntry.TABLE_NAME + " (" +
                     ContactsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                     ContactsEntry.TABLE_NAME + TEXT_TYPE + COMMA_SEP +
-                    ContactsEntry.COLUMN_NUMBER + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_PHONENUMBER + TEXT_TYPE + COMMA_SEP +
                     ContactsEntry.COLUMN_PHOTO + TEXT_TYPE + COMMA_SEP +
                     ContactsEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
                     FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
@@ -102,7 +103,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(SQL_CREATE_MEMO_ENTRIES);
             }
             if (oldVersion < 3) {
-                db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+                //SubTitle for topic only
+                String addTopicSubtitleSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_SUBTITLE + " " + TEXT_TYPE;
+                db.execSQL(addTopicSubtitleSql);
+                db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
             }
 
             //Check update success

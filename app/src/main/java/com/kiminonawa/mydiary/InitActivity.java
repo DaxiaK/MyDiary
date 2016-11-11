@@ -55,6 +55,17 @@ public class InitActivity extends Activity {
 
         DBManager dbManager = new DBManager(InitActivity.this);
         dbManager.opeDB();
+        //Contacts function work in version 8
+        if (SPFManager.getVersionCode(InitActivity.this) < 8) {
+            //Insert sample cntacts
+            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS);
+
+            //Insert sample memo
+            if (sampleContactsId != -1) {
+                dbManager.insetContacts("宮水三葉", "090 000 000", "", sampleContactsId);
+            }
+        }
+
         //Because memo function is run in version 6 ,
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(InitActivity.this) < 6) {
@@ -83,7 +94,6 @@ public class InitActivity extends Activity {
             //Insert sample topic
             long diaryId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
             if (diaryId != -1) {
-                dbManager.insertTopic("電話番号", ITopic.TYPE_CONTACTS);
                 //Insert sample diary
                 dbManager.insetDiary(1475665800000L, "東京生活3❤",
                         "There are many coffee shop in Tokyo!",
