@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.util.List;
 
@@ -19,59 +20,65 @@ import java.util.List;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicViewHolder> {
 
 
-    private List<ContactsEntity> contactsList;
     private Context mContext;
 
-    public ContactsAdapter(Context context, List<ContactsEntity> contactsList) {
+
+    //Datalist
+    private List<ContactsEntity> contactsNamesList;
+
+    public ContactsAdapter(Context context, List<ContactsEntity> contactsNamesList) {
         this.mContext = context;
-        this.contactsList = contactsList;
+        this.contactsNamesList = contactsNamesList;
     }
 
 
     @Override
     public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.rv_topic_item, parent, false);
+                .inflate(R.layout.rv_contacts_item, parent, false);
         return new TopicViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        return contactsList.size();
+        return contactsNamesList.size();
     }
 
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-
+        holder.getTVName().setText(contactsNamesList.get(position).getName());
+        holder.getTVPhoneNumber().setText(contactsNamesList.get(position).getPhoneNumber());
     }
 
 
     protected class TopicViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView IV_topic_icon;
-        private TextView TV_topic_title;
-        private TextView TV_topic_count;
+        private ImageView IV_contacts_photo;
+        private TextView TV_contacts_name;
+        private TextView TV_contacts_phone_number;
         private View rootView;
 
         protected TopicViewHolder(View view) {
             super(view);
             this.rootView = view;
-            this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
-            this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
-            this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
+            this.IV_contacts_photo = (ImageView) rootView.findViewById(R.id.IV_contacts_photo);
+            this.TV_contacts_name = (TextView) rootView.findViewById(R.id.TV_contacts_name);
+            this.TV_contacts_phone_number = (TextView) rootView.findViewById(R.id.TV_contacts_phone_number);
+
+            this.TV_contacts_name.setTextColor(ThemeManager.getInstance().getThemeMainColor(mContext));
         }
 
-        protected ImageView getIconView() {
-            return IV_topic_icon;
+        public ImageView getIVPhoto() {
+            return IV_contacts_photo;
         }
 
-        protected TextView getTitleView() {
-            return TV_topic_title;
+        public TextView getTVName() {
+            return TV_contacts_name;
         }
 
-        public TextView getTVCount() {
-            return TV_topic_count;
+        public TextView getTVPhoneNumber() {
+            return TV_contacts_phone_number;
         }
 
         protected View getRootView() {

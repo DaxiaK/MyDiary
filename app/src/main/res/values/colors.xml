@@ -33,5 +33,8 @@
     <!--Textview-->
     <color name="textview_shadow">#000000</color>
 
+    <!--Contacts-->
+    <color name="contacts_photo_tint">#AFABAE</color>
+
 
 </resources>

@@ -23,12 +23,12 @@ public class SortTextLayout extends LinearLayout {
     }
 
     private void initSortText() {
+        addView(buildTextLayout("#"));
         for (char i = 'A'; i <= 'Z'; i++) {
             final String character = i + "";
             TextView tv = buildTextLayout(character);
             addView(tv);
         }
-        addView(buildTextLayout("#"));
     }
 
     private TextView buildTextLayout(final String character) {

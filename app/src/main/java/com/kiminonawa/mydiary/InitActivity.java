@@ -16,7 +16,7 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 /**
  * Version History
  * 20161109
- * Add contacts function in version 9
+ * Add contacts function in version 10
  * ----
  * 20161108
  * Add memo function & show memo sample data in versionCode 6
@@ -55,17 +55,6 @@ public class InitActivity extends Activity {
 
         DBManager dbManager = new DBManager(InitActivity.this);
         dbManager.opeDB();
-        //Contacts function work in version 8
-        if (SPFManager.getVersionCode(InitActivity.this) < 8) {
-            //Insert sample cntacts
-            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS);
-
-            //Insert sample memo
-            if (sampleContactsId != -1) {
-                dbManager.insetContacts("宮水三葉", "090 000 000", "", sampleContactsId);
-            }
-        }
-
         //Because memo function is run in version 6 ,
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(InitActivity.this) < 6) {
@@ -107,6 +96,24 @@ public class InitActivity extends Activity {
                 SPFManager.setFirstRun(InitActivity.this, false);
             }
         }
+
+        //Contacts function work in version 10
+        if (SPFManager.getVersionCode(InitActivity.this) < 10) {
+            //Insert sample cntacts
+            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS);
+
+            //Insert sample memo
+            if (sampleContactsId != -1) {
+                dbManager.insetContacts("宮水1葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水2葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水3葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水4葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水5葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水6葉", "090 000 000", "", sampleContactsId);
+                dbManager.insetContacts("宮水7葉", "090 000 000", "", sampleContactsId);
+            }
+        }
+
         dbManager.closeDB();
 
         //Save currentVersion

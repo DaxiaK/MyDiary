@@ -16,7 +16,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Version 3 by Daxia:
-     * Add mydiary's contacts
+     * Add local contacts table
+     * Add memo subtitle row.
      * --------------
      * Version 2 by Daxia:
      * Add location row.
@@ -72,11 +73,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_CONTACTS_ENTRIES =
             "CREATE TABLE " + ContactsEntry.TABLE_NAME + " (" +
                     ContactsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
-                    ContactsEntry.TABLE_NAME + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     ContactsEntry.COLUMN_PHONENUMBER + TEXT_TYPE + COMMA_SEP +
                     ContactsEntry.COLUMN_PHOTO + TEXT_TYPE + COMMA_SEP +
                     ContactsEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
-                    FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
+                    FOREIGN + " (" + ContactsEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
                     " )";
 
 
