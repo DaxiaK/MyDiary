@@ -18,6 +18,7 @@
         android:textSize="50sp" />
 
     <RelativeLayout
+        android:id="@+id/RL_entries_item_content"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="5dp"
