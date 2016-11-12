@@ -19,7 +19,7 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsActivity extends FragmentActivity implements View.OnClickListener {
+public class ContactsActivity extends FragmentActivity implements View.OnClickListener, ContactsDetailDialogFragment.ContactsDetailCallback {
 
 
     /**
@@ -119,7 +119,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         layoutManager = new LinearLayoutManager(this);
         RecyclerView_contacts.setLayoutManager(layoutManager);
         RecyclerView_contacts.setHasFixedSize(true);
-        contactsAdapter = new ContactsAdapter(ContactsActivity.this, contactsNamesList);
+        contactsAdapter = new ContactsAdapter(ContactsActivity.this, contactsNamesList, topicId, this);
         RecyclerView_contacts.setAdapter(contactsAdapter);
     }
 
@@ -128,9 +128,29 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.IV_contacts_add:
                 ContactsDetailDialogFragment contactsDetailDialogFragment =
-                        ContactsDetailDialogFragment.newInstance(-1, "", "");
+                        ContactsDetailDialogFragment.newInstance(ContactsDetailDialogFragment.ADD_NEW_CONTACTS,
+                                "", "", topicId);
+                contactsDetailDialogFragment.setCallBack(this);
                 contactsDetailDialogFragment.show(getSupportFragmentManager(), "contactsDetailDialogFragment");
                 break;
         }
+    }
+
+    @Override
+    public void addContacts() {
+        loadContacts();
+        contactsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateContacts() {
+        loadContacts();
+        contactsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteContacts() {
+        loadContacts();
+        contactsAdapter.notifyDataSetChanged();
     }
 }

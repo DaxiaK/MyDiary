@@ -42,6 +42,8 @@
                 android:layout_marginRight="5dp"
                 android:gravity="left"
                 android:hint="聯絡人名字"
+                android:inputType="textCapCharacters"
+                android:maxLines="1"
                 android:paddingLeft="7dp"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/contacts_edittext_hint"
@@ -55,8 +57,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:gravity="center"
+            android:gravity="right"
             android:hint="電話號碼"
+            android:inputType="phone"
+            android:maxLines="1"
             android:textColor="@android:color/white"
             android:textColorHint="@color/contacts_edittext_hint"
             android:textSize="20sp" />
@@ -81,7 +85,7 @@
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/But_contacts_detail_cancel"
+            android:id="@+id/But_contacts_detail_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -91,11 +95,11 @@
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/But_contacts_detail_ok"
+            android:id="@+id/But_contacts_detail_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/But_contacts_detail_cancel"
+            android:layout_toLeftOf="@id/But_contacts_detail_ok"
             android:gravity="center"
             android:text="@string/dialog_button_cancel"
             android:textAllCaps="false" />

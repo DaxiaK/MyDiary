@@ -21,12 +21,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
 
     private FragmentActivity mActivity;
+
+    private ContactsDetailDialogFragment.ContactsDetailCallback callback;
+    private long topicId;
     //Datalist
     private List<ContactsEntity> contactsNamesList;
 
-    public ContactsAdapter(FragmentActivity activity, List<ContactsEntity> contactsNamesList) {
+    public ContactsAdapter(FragmentActivity activity, List<ContactsEntity> contactsNamesList, long topicId,
+                           ContactsDetailDialogFragment.ContactsDetailCallback callback) {
         this.mActivity = activity;
         this.contactsNamesList = contactsNamesList;
+        this.topicId = topicId;
+        this.callback = callback;
     }
 
 
@@ -102,7 +108,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
         public boolean onLongClick(View v) {
             ContactsDetailDialogFragment contactsDetailDialogFragment =
                     ContactsDetailDialogFragment.newInstance(contactsNamesList.get(itemPosition).getContactsId(),
-                            contactsNamesList.get(itemPosition).getName(), contactsNamesList.get(itemPosition).getPhoneNumber());
+                            contactsNamesList.get(itemPosition).getName(), contactsNamesList.get(itemPosition).getPhoneNumber(),
+                            topicId);
+            contactsDetailDialogFragment.setCallBack(callback);
             contactsDetailDialogFragment.show(mActivity.getSupportFragmentManager(), "contactsDetailDialogFragment");
             return true;
         }

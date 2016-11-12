@@ -46,5 +46,6 @@
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">Permission</string>
     <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
+    <string name="contacts_call_phone_no_call_function">Your device can not call phone</string>
 
 </resources>

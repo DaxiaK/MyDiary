@@ -18,17 +18,20 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
-import static com.kiminonawa.mydiary.R.id.EDT_diary_content;
-import static com.kiminonawa.mydiary.R.id.EDT_diary_title;
-import static com.kiminonawa.mydiary.R.id.SP_diary_mood;
-import static com.kiminonawa.mydiary.R.id.SP_diary_weather;
-
 
 /**
  * Created by daxia on 2016/8/27.
  */
 public class ContactsDetailDialogFragment extends DialogFragment implements View.OnClickListener {
 
+
+    public interface ContactsDetailCallback {
+        void addContacts();
+
+        void updateContacts();
+
+        void deleteContacts();
+    }
 
     /**
      * UI
@@ -38,21 +41,31 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
     private Button But_contacts_detail_delete, But_contacts_detail_cancel, But_contacts_detail_ok;
 
     /**
+     * CallBack
+     */
+    private ContactsDetailCallback callback;
+
+    /**
      * Contacts Info
      */
     private long contactsId;
     private String contactsName, contactsPhoneNumber;
+    private long topicId;
+
     //Edit or add contacts
     private boolean isEditMode = false;
+    public static final long ADD_NEW_CONTACTS = -1;
 
 
-    public static ContactsDetailDialogFragment newInstance(long contactsId, String contactsName, String contactsPhoneNumber) {
+    public static ContactsDetailDialogFragment newInstance(long contactsId,
+                                                           String contactsName, String contactsPhoneNumber, long topicId) {
         Bundle args = new Bundle();
         ContactsDetailDialogFragment fragment = new ContactsDetailDialogFragment();
         //contactsId = -1 is edit
         args.putLong("contactsId", contactsId);
         args.putString("contactsName", contactsName);
         args.putString("contactsPhoneNumber", contactsPhoneNumber);
+        args.putLong("topicId", topicId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,27 +111,33 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         contactsId = getArguments().getLong("contactsId", -1);
-        contactsName = getArguments().getString("contactsName", "");
-        contactsPhoneNumber = getArguments().getString("contactsPhoneNumber", "");
-        if (contactsId == -1) {
+        if (contactsId == ADD_NEW_CONTACTS) {
             isEditMode = false;
             But_contacts_detail_delete.setVisibility(View.GONE);
-            But_contacts_detail_delete.setOnClickListener(this);
+
+            topicId = getArguments().getLong("topicId", -1);
         } else {
             isEditMode = true;
             But_contacts_detail_delete.setVisibility(View.VISIBLE);
+            But_contacts_detail_delete.setOnClickListener(this);
 
+            contactsName = getArguments().getString("contactsName", "");
+            contactsPhoneNumber = getArguments().getString("contactsPhoneNumber", "");
             EDT_contacts_detail_name.setText(contactsName);
             EDT_contacts_detail_phone_number.setText(contactsPhoneNumber);
         }
+    }
+
+    public void setCallBack(ContactsDetailCallback callback) {
+        this.callback = callback;
     }
 
 
     private void addContacts() {
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.insertContacts(EDT_contacts_detail_name.getText().toString(), EDT_contacts_detail_phone_number.getText().toString(),
-                "",);
+        dbManager.insertContacts(EDT_contacts_detail_name.getText().toString(),
+                EDT_contacts_detail_phone_number.getText().toString(), "", topicId);
         dbManager.closeDB();
     }
 
@@ -141,9 +160,11 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
 
     private void buttonOkEvent() {
         if (isEditMode) {
-
+            updateContacts();
+            callback.updateContacts();
         } else {
-
+            addContacts();
+            callback.addContacts();
         }
     }
 
@@ -152,13 +173,15 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.But_contacts_detail_delete:
-                deleteContacrs();
+                deleteContacts();
+                callback.deleteContacts();
                 dismiss();
                 break;
             case R.id.But_contacts_detail_cancel:
                 dismiss();
                 break;
             case R.id.But_contacts_detail_ok:
+                buttonOkEvent();
                 dismiss();
                 break;
         }

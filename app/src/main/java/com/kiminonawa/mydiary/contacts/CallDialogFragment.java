@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.contacts;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -160,8 +163,16 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.But_contacts_call_call:
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contactsPhoneNumber));
-                startActivity(intent);
+                TelephonyManager tm = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+                if (tm.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE) {
+                    //No module for calling phone
+                    Toast.makeText(getActivity(), getString(R.string.contacts_call_phone_no_call_function), Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    //Can call phone
+                    Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + contactsPhoneNumber));
+                    startActivity(intent);
+                }
                 dismiss();
                 break;
             case R.id.But_contacts_call_cancel:

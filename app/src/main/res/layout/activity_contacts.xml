@@ -63,7 +63,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/LL_contacts_topbar_content"
         android:paddingBottom="5dp"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:visibility="invisible"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerView_contacts"
