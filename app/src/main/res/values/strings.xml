@@ -48,4 +48,7 @@
     <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
     <string name="contacts_call_phone_no_call_function">Your device can not call phone</string>
 
+    <string name="contacts_detail_edt_name">Name</string>
+    <string name="contacts_detail_edt_phone_number">Phone</string>
+
 </resources>

@@ -18,36 +18,30 @@
         android:paddingRight="10dp"
         android:paddingTop="20dp">
 
-        <LinearLayout
+
+        <ImageView
+            android:id="@+id/IV_contacts_detail_photo"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_profile_image"
+            android:tint="@android:color/white" />
+
+        <EditText
+            android:id="@+id/EDT_contacts_detail_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <ImageView
-                android:id="@+id/IV_contacts_detail_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/ic_profile_image"
-                android:tint="@android:color/white" />
-
-            <EditText
-                android:id="@+id/EDT_contacts_detail_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:gravity="center"
-                android:hint="聯絡人名字"
-                android:inputType="textCapCharacters"
-                android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/contacts_edittext_hint"
-                android:textSize="28sp" />
-        </LinearLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/contacts_detail_edt_name"
+            android:inputType="textCapCharacters"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/contacts_edittext_hint"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/EDT_contacts_detail_phone_number"
@@ -57,12 +51,13 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:gravity="center"
-            android:hint="電話號碼"
+            android:hint="@string/contacts_detail_edt_phone_number"
             android:inputType="phone"
             android:maxLines="1"
+            android:paddingTop="0dp"
             android:textColor="@android:color/white"
             android:textColorHint="@color/contacts_edittext_hint"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 

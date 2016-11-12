@@ -49,4 +49,7 @@
     <!--<string name="contacts_call_phone_permission_content">電話をかけるための許可が必要です</string>-->
     <!--<string name="contacts_call_phone_no_call_function">お使いの端末は電話に出られません</string>-->
 
+    <string name="contacts_detail_edt_name">名前</string>
+    <string name="contacts_detail_edt_phone_number">電話</string>
+
 </resources>
