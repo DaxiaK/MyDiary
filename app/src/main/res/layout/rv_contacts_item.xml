@@ -42,6 +42,6 @@
         android:layout_marginLeft="10dp"
         android:gravity="right"
         android:textColor="@color/contacts_photo_tint"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
 </LinearLayout>

@@ -63,19 +63,19 @@ public class InitActivity extends Activity {
             long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO);
             //Insert sample memo
             if (mitsuhaMemoId != -1) {
-                dbManager.insetMemo("女子にも触るな！", false, mitsuhaMemoId);
-                dbManager.insetMemo("男子に触るな！", false, mitsuhaMemoId);
-                dbManager.insetMemo("脚をひらくな！", true, mitsuhaMemoId);
-                dbManager.insetMemo("体は見ない/触らない！！", false, mitsuhaMemoId);
-                dbManager.insetMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId);
+                dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId);
+                dbManager.insertMemo("男子に触るな！", false, mitsuhaMemoId);
+                dbManager.insertMemo("脚をひらくな！", true, mitsuhaMemoId);
+                dbManager.insertMemo("体は見ない/触らない！！", false, mitsuhaMemoId);
+                dbManager.insertMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId);
             }
             if (takiMemoId != -1) {
-                dbManager.insetMemo("司とベタベタする.....", true, takiMemoId);
-                dbManager.insetMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId);
-                dbManager.insetMemo("女言葉NG！", false, takiMemoId);
-                dbManager.insetMemo("遅刻するな！", true, takiMemoId);
-                dbManager.insetMemo("訛り禁止！", false, takiMemoId);
-                dbManager.insetMemo("無駄つかい禁止！", true, takiMemoId);
+                dbManager.insertMemo("司とベタベタする.....", true, takiMemoId);
+                dbManager.insertMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId);
+                dbManager.insertMemo("女言葉NG！", false, takiMemoId);
+                dbManager.insertMemo("遅刻するな！", true, takiMemoId);
+                dbManager.insertMemo("訛り禁止！", false, takiMemoId);
+                dbManager.insertMemo("無駄つかい禁止！", true, takiMemoId);
             }
         }
 
@@ -84,13 +84,13 @@ public class InitActivity extends Activity {
             long diaryId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
             if (diaryId != -1) {
                 //Insert sample diary
-                dbManager.insetDiary(1475665800000L, "東京生活3❤",
+                dbManager.insertDiary(1475665800000L, "東京生活3❤",
                         "There are many coffee shop in Tokyo!",
                         DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, diaryId, "Tokyo");
-                dbManager.insetDiary(1475241600000L, "No Title",
+                dbManager.insertDiary(1475241600000L, "No Title",
                         "My name is TAKI , I am a man!",
                         DiaryInfo.MOOD_SOSO, DiaryInfo.WEATHER_SUNNY, true, diaryId, "Itomori");
-                dbManager.insetDiary(1475144400000L, "東京生活2",
+                dbManager.insertDiary(1475144400000L, "東京生活2",
                         "Today is second day , I like Tokyo!",
                         DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, diaryId, "Tokyo");
                 SPFManager.setFirstRun(InitActivity.this, false);
@@ -104,13 +104,13 @@ public class InitActivity extends Activity {
 
             //Insert sample memo
             if (sampleContactsId != -1) {
-                dbManager.insetContacts("宮水1葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水2葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水3葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水4葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水5葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水6葉", "090 000 000", "", sampleContactsId);
-                dbManager.insetContacts("宮水7葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水1葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水2葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水3葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水4葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水5葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水6葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("宮水7葉", "090 000 000", "", sampleContactsId);
             }
         }
 

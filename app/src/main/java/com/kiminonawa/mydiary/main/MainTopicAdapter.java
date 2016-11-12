@@ -107,13 +107,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
                         switch (topicList.get(position).getType()) {
                             case ITopic.TYPE_CONTACTS:
+                                dbManager.delAllContactsInTopic(topicList.get(position).getId());
                                 break;
                             case ITopic.TYPE_DIARY:
                                 dbManager.delAllDiaryInTopic(topicList.get(position).getId());
                                 break;
                             case ITopic.TYPE_MEMO:
                                 dbManager.delAllMemoInTopic(topicList.get(position).getId());
-
                                 break;
                         }
                         dbManager.closeDB();

@@ -35,6 +35,7 @@
 
     <!--Contacts-->
     <color name="contacts_photo_tint">#AFABAE</color>
+    <color name="contacts_edittext_hint">#d4d2d4</color>
 
 
 </resources>

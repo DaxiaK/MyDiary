@@ -16,6 +16,7 @@
     <string name="dialog_button_ok">ok</string>
     <string name="dialog_button_call">call</string>
     <string name="dialog_button_cancel">cancel</string>
+    <string name="dialog_button_delete">delete</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>

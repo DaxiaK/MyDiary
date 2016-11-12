@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +19,7 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsActivity extends FragmentActivity {
+public class ContactsActivity extends FragmentActivity implements View.OnClickListener {
 
 
     /**
@@ -69,6 +70,7 @@ public class ContactsActivity extends FragmentActivity {
         LL_contacts_topbar_content = (LinearLayout) findViewById(R.id.LL_contacts_topbar_content);
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
         IV_contacts_add = (ImageView) findViewById(R.id.IV_contacts_add);
+        IV_contacts_add.setOnClickListener(this);
 
         IV_contacts_title = (TextView) findViewById(R.id.IV_contacts_title);
         String diaryTitle = getIntent().getStringExtra("diaryTitle");
@@ -91,7 +93,7 @@ public class ContactsActivity extends FragmentActivity {
         initTopicAdapter();
     }
 
-    private void initTopbar(){
+    private void initTopbar() {
         EDT_main_topic_search.getBackground().setColorFilter(themeManager.getThemeMainColor(this),
                 PorterDuff.Mode.SRC_ATOP);
         IV_contacts_title.setTextColor(themeManager.getThemeMainColor(this));
@@ -121,4 +123,14 @@ public class ContactsActivity extends FragmentActivity {
         RecyclerView_contacts.setAdapter(contactsAdapter);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.IV_contacts_add:
+                ContactsDetailDialogFragment contactsDetailDialogFragment =
+                        ContactsDetailDialogFragment.newInstance(-1, "", "");
+                contactsDetailDialogFragment.show(getSupportFragmentManager(), "contactsDetailDialogFragment");
+                break;
+        }
+    }
 }

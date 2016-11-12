@@ -11,7 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +94,6 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("test", "onViewCreated");
         if (checkPermission(REQUEST_CALL_PHONE_PERMISSION)) {
             RequestPermissionsResult = true;
             havePermission = true;
@@ -124,15 +122,9 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
-    @Override
-    public void onStart() {
-        Log.e("test", "onStart");
-        super.onStart();
-    }
 
     @Override
     public void onResume() {
-        Log.e("test", "onResume");
         super.onResume();
         if (RequestPermissionsResult) {
             if (havePermission) {
@@ -145,18 +137,6 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
                 dismiss();
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        Log.e("test", "onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        Log.e("test", "onStop");
-        super.onStop();
     }
 
     private boolean checkPermission(final int requestCode) {

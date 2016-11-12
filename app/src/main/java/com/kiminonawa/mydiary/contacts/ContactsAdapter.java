@@ -44,34 +44,29 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
-
         holder.getTVName().setText(contactsNamesList.get(position).getName());
         holder.getTVPhoneNumber().setText(contactsNamesList.get(position).getPhoneNumber());
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CallDialogFragment callDialogFragment =
-                        CallDialogFragment.newInstance(contactsNamesList.get(position).getName(), contactsNamesList.get(position).getPhoneNumber());
-                callDialogFragment.show(mActivity.getSupportFragmentManager(), "callDialogFragment");
-            }
-        });
+        holder.setItemPosition(position);
     }
 
 
-    protected class TopicViewHolder extends RecyclerView.ViewHolder {
+    protected class TopicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private ImageView IV_contacts_photo;
         private TextView TV_contacts_name;
         private TextView TV_contacts_phone_number;
         private View rootView;
+        private int itemPosition;
 
         protected TopicViewHolder(View view) {
             super(view);
             this.rootView = view;
+            this.rootView.setOnClickListener(this);
+            this.rootView.setOnLongClickListener(this);
+
             this.IV_contacts_photo = (ImageView) rootView.findViewById(R.id.IV_contacts_photo);
             this.TV_contacts_name = (TextView) rootView.findViewById(R.id.TV_contacts_name);
             this.TV_contacts_phone_number = (TextView) rootView.findViewById(R.id.TV_contacts_phone_number);
-
             this.TV_contacts_name.setTextColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
         }
 
@@ -89,6 +84,27 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
         protected View getRootView() {
             return rootView;
+        }
+
+        public void setItemPosition(int itemPosition) {
+            this.itemPosition = itemPosition;
+        }
+
+        @Override
+        public void onClick(View v) {
+            CallDialogFragment callDialogFragment =
+                    CallDialogFragment.newInstance(contactsNamesList.get(itemPosition).getName(),
+                            contactsNamesList.get(itemPosition).getPhoneNumber());
+            callDialogFragment.show(mActivity.getSupportFragmentManager(), "callDialogFragment");
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            ContactsDetailDialogFragment contactsDetailDialogFragment =
+                    ContactsDetailDialogFragment.newInstance(contactsNamesList.get(itemPosition).getContactsId(),
+                            contactsNamesList.get(itemPosition).getName(), contactsNamesList.get(itemPosition).getPhoneNumber());
+            contactsDetailDialogFragment.show(mActivity.getSupportFragmentManager(), "contactsDetailDialogFragment");
+            return true;
         }
     }
 }

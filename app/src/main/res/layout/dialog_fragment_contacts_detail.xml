@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/LL_contacts_detail_top_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:minHeight="40dp"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/IV_contacts_detail_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_profile_image"
+                android:tint="@android:color/white" />
+
+            <EditText
+                android:id="@+id/EDT_contacts_detail_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:gravity="left"
+                android:hint="聯絡人名字"
+                android:paddingLeft="7dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="@color/contacts_edittext_hint"
+                android:textSize="33sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/EDT_contacts_detail_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="電話號碼"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/contacts_edittext_hint"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+
+        <Button
+            android:id="@+id/But_contacts_detail_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="@string/dialog_button_delete"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/But_contacts_detail_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:text="@string/dialog_button_ok"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/But_contacts_detail_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/But_contacts_detail_cancel"
+            android:gravity="center"
+            android:text="@string/dialog_button_cancel"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+
+</LinearLayout>
