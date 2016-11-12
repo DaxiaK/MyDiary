@@ -1,6 +1,6 @@
 package com.kiminonawa.mydiary.contacts;
 
-import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +20,12 @@ import java.util.List;
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicViewHolder> {
 
 
-    private Context mContext;
-
-
+    private FragmentActivity mActivity;
     //Datalist
     private List<ContactsEntity> contactsNamesList;
 
-    public ContactsAdapter(Context context, List<ContactsEntity> contactsNamesList) {
-        this.mContext = context;
+    public ContactsAdapter(FragmentActivity activity, List<ContactsEntity> contactsNamesList) {
+        this.mActivity = activity;
         this.contactsNamesList = contactsNamesList;
     }
 
@@ -49,6 +47,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
         holder.getTVName().setText(contactsNamesList.get(position).getName());
         holder.getTVPhoneNumber().setText(contactsNamesList.get(position).getPhoneNumber());
+        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CallDialogFragment callDialogFragment =
+                        CallDialogFragment.newInstance(contactsNamesList.get(position).getName(), contactsNamesList.get(position).getPhoneNumber());
+                callDialogFragment.show(mActivity.getSupportFragmentManager(), "callDialogFragment");
+            }
+        });
     }
 
 
@@ -66,7 +72,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
             this.TV_contacts_name = (TextView) rootView.findViewById(R.id.TV_contacts_name);
             this.TV_contacts_phone_number = (TextView) rootView.findViewById(R.id.TV_contacts_phone_number);
 
-            this.TV_contacts_name.setTextColor(ThemeManager.getInstance().getThemeMainColor(mContext));
+            this.TV_contacts_name.setTextColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
         }
 
         public ImageView getIVPhoto() {

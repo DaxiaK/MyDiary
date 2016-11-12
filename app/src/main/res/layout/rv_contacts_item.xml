@@ -41,7 +41,6 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="10dp"
         android:gravity="right"
-        android:text="0900 000 000"
         android:textColor="@color/contacts_photo_tint"
         android:textSize="20dp" />
 

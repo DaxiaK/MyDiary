@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/RL_contacts_call_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:minHeight="40dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/TV_contacts_call_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+
+        <Space
+            android:id="@+id/Space_contacts_call"
+            android:layout_width="10dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true" />
+
+        <Button
+            android:id="@+id/But_contacts_call_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/Space_contacts_call"
+            android:gravity="center"
+            android:text="@string/dialog_button_cancel"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/But_contacts_call_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/Space_contacts_call"
+            android:gravity="center"
+            android:text="@string/dialog_button_call"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+</LinearLayout>
