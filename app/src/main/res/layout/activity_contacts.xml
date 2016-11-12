@@ -56,26 +56,28 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-
-    <com.kiminonawa.mydiary.contacts.SortTextLayout
-        android:id="@+id/STL_contacts"
-        android:layout_width="20dp"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/LL_contacts_topbar_content"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:visibility="invisible"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView_contacts"
+    <RelativeLayout
+        android:id="@+id/RL_contacts_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/LL_contacts_topbar_content"
-        android:layout_toRightOf="@+id/STL_contacts"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="10dp" />
+        android:layout_below="@+id/LL_contacts_topbar_content">
+
+        <com.kiminonawa.mydiary.contacts.SortTextLayout
+            android:id="@+id/STL_contacts"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerView_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/STL_contacts"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

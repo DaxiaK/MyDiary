@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.contacts;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -34,14 +35,14 @@ public class SortTextLayout extends LinearLayout {
     private TextView buildTextLayout(final String character) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1);
 
-        TextView sorttextView = new TextView(mContext);
-        sorttextView.setLayoutParams(layoutParams);
-        sorttextView.setGravity(Gravity.CENTER);
-        sorttextView.setClickable(true);
+        TextView sortTextView = new TextView(mContext);
+        sortTextView.setLayoutParams(layoutParams);
+        sortTextView.setGravity(Gravity.CENTER);
+        sortTextView.setClickable(true);
 
-        sorttextView.setText(character);
+        sortTextView.setText(character);
 
-        sorttextView.setOnClickListener(new OnClickListener() {
+        sortTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
@@ -49,7 +50,8 @@ public class SortTextLayout extends LinearLayout {
                 }
             }
         });
-        return sorttextView;
+        sortTextView.setTextColor(Color.WHITE);
+        return sortTextView;
     }
 
 

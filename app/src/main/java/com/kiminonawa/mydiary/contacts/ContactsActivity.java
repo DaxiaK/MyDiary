@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -32,7 +32,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
      */
     private ThemeManager themeManager;
 
-    private LinearLayout LL_contacts_topbar_content;
+    private RelativeLayout RL_contacts_content;
     private TextView IV_contacts_title;
     private EditText EDT_main_topic_search;
     private SortTextLayout STL_contacts;
@@ -67,7 +67,9 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         /**
          * init UI
          */
-        LL_contacts_topbar_content = (LinearLayout) findViewById(R.id.LL_contacts_topbar_content);
+        RL_contacts_content = (RelativeLayout) findViewById(R.id.RL_contacts_content);
+        RL_contacts_content.setBackgroundResource(themeManager.getContactsBgResource());
+
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
         IV_contacts_add = (ImageView) findViewById(R.id.IV_contacts_add);
         IV_contacts_add.setOnClickListener(this);

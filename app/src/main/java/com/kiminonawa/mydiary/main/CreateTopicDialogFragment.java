@@ -55,7 +55,8 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.getDialog().setCanceledOnTouchOutside(true);
+        this.getDialog().setCanceledOnTouchOutside(false);
+
         View rootView = inflater.inflate(R.layout.dialog_fragment_create_topic, container);
         EDT_topic_create_name = (EditText) rootView.findViewById(R.id.EDT_topic_create_name);
         SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
