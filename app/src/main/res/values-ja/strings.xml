@@ -14,11 +14,13 @@
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
     <!--Dialog -->
-    <string name="dialog_button_ok">はい</string>
-    <string name="dialog_button_cancel">いいえ</string>
+    <string name="dialog_button_ok">ok</string>
+    <string name="dialog_button_cancel">キャンセル</string>
+    <string name="dialog_button_delete">削除</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
+    <string name="dialog_button_call">発信</string>
     <string name="segmented_calendar">カレーダー</string>
     <string name="segmented_Diary">にっき</string>
 
@@ -41,5 +43,10 @@
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>
+
+    <!--Contacts-->
+    <string name="contacts_call_phone_permission_title">許可</string>
+    <!--<string name="contacts_call_phone_permission_content">電話をかけるための許可が必要です</string>-->
+    <!--<string name="contacts_call_phone_no_call_function">お使いの端末は電話に出られません</string>-->
 
 </resources>
