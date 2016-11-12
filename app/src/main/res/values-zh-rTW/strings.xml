@@ -15,7 +15,9 @@
 
     <!--Dialog -->
     <string name="dialog_button_ok">確定</string>
+    <string name="dialog_button_call">撥打</string>
     <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_button_delete">刪除</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
@@ -41,5 +43,11 @@
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>
+
+    <!--Contacts-->
+    <string name="contacts_call_phone_permission_title">授權</string>
+    <string name="contacts_call_phone_permission_content">需要授權來撥打電話</string>
+    <string name="contacts_call_phone_no_call_function">你的裝置無法撥打電話</string>
+
 
 </resources>

@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (topicCursor.getInt(2)) {
                 case ITopic.TYPE_CONTACTS:
                     topicList.add(
-                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1), 0));
+                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getContactsCountByTopicId(topicCursor.getLong(0))));
                     break;
                 case ITopic.TYPE_DIARY:
                     topicList.add(

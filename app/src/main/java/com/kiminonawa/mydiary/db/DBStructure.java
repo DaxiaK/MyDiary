@@ -28,6 +28,7 @@ public class DBStructure {
         public static final String COLUMN_ORDER = "topic_order";
         public static final String COLUMN_NAME = "topic_name";
         public static final String COLUMN_TYPE = "topic_type";
+        public static final String COLUMN_SUBTITLE = "topic_subtitle";
     }
 
     public static abstract class MemoEntry implements BaseColumns {
@@ -36,5 +37,15 @@ public class DBStructure {
         public static final String COLUMN_CONTENT = "memo_content";
         public static final String COLUMN_CHECKED = "memo_checked";
         public static final String COLUMN_REF_TOPIC__ID = "memo_ref_topic_id";
+    }
+
+
+    public static abstract class ContactsEntry implements BaseColumns {
+        public static final String TABLE_NAME = "contacts_entry";
+        public static final String COLUMN_NAME = "contacts_name";
+        public static final String COLUMN_PHONENUMBER = "contacts_phone_number";
+        public static final String COLUMN_PHOTO = "contacts_photo";
+        public static final String COLUMN_REF_TOPIC__ID = "contacts_ref_topic_id";
+
     }
 }

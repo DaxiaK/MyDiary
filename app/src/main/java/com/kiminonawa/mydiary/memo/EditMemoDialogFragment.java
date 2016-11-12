@@ -111,7 +111,7 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         if (topicId != -1) {
             DBManager dbManager = new DBManager(getActivity());
             dbManager.opeDB();
-            dbManager.insetMemo(EDT_edit_memo_content.getText().toString(), false, topicId);
+            dbManager.insertMemo(EDT_edit_memo_content.getText().toString(), false, topicId);
             dbManager.closeDB();
         }
     }

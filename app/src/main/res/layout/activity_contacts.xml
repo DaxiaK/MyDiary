@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/LL_contacts_topbar_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:alpha="0.8"
+        android:background="@android:color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/IV_contacts_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_add_white_24dp" />
+
+            <TextView
+                android:id="@+id/IV_contacts_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="34dp"
+                android:layout_marginRight="34dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/EDT_main_topic_search"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_rounded_corner_bg"
+            android:drawableLeft="@drawable/ic_search_white_18dp"
+            android:drawableTint="@color/button_disable_color"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+
+    <com.kiminonawa.mydiary.contacts.SortTextLayout
+        android:id="@+id/STL_contacts"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/LL_contacts_topbar_content"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:visibility="invisible"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerView_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/LL_contacts_topbar_content"
+        android:layout_toRightOf="@+id/STL_contacts"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height_5dp"
+        android:layout_below="@id/LL_contacts_topbar_content"
+        android:background="@drawable/view_bottom_shadow" />
+</RelativeLayout>
