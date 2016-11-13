@@ -17,9 +17,11 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class ContactsActivity extends FragmentActivity implements View.OnClickListener, ContactsDetailDialogFragment.ContactsDetailCallback {
+public class ContactsActivity extends FragmentActivity implements View.OnClickListener,
+        ContactsDetailDialogFragment.ContactsDetailCallback, LatterSortLayout.OnTouchingLetterChangedListener {
 
 
     /**
@@ -35,8 +37,10 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private RelativeLayout RL_contacts_content;
     private TextView IV_contacts_title;
     private EditText EDT_main_topic_search;
-    private SortTextLayout STL_contacts;
+    private LatterSortLayout STL_contacts;
     private ImageView IV_contacts_add;
+    private TextView TV_contact_short_sort;
+
 
     /**
      * DB
@@ -49,7 +53,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private ContactsAdapter contactsAdapter;
     private LinearLayoutManager layoutManager;
 
-    //Datalist
+    //Contacts list from DB
     private List<ContactsEntity> contactsNamesList;
 
 
@@ -70,6 +74,13 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         RL_contacts_content = (RelativeLayout) findViewById(R.id.RL_contacts_content);
         RL_contacts_content.setBackgroundResource(themeManager.getContactsBgResource());
 
+        TV_contact_short_sort = (TextView) findViewById(R.id.TV_contact_short_sort);
+        TV_contact_short_sort.setBackgroundColor(themeManager.getThemeDarkColor(ContactsActivity.this));
+
+        STL_contacts = (LatterSortLayout) findViewById(R.id.STL_contacts);
+        STL_contacts.setSortTextView(TV_contact_short_sort);
+        STL_contacts.setOnTouchingLetterChangedListener(this);
+
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
         IV_contacts_add = (ImageView) findViewById(R.id.IV_contacts_add);
         IV_contacts_add.setOnClickListener(this);
@@ -85,7 +96,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         /**
          * init RecyclerVie
          */
-        STL_contacts = (SortTextLayout) findViewById(R.id.STL_contacts);
+        STL_contacts = (LatterSortLayout) findViewById(R.id.STL_contacts);
         RecyclerView_contacts = (RecyclerView) findViewById(R.id.RecyclerView_contacts);
         contactsNamesList = new ArrayList<>();
         dbManager = new DBManager(ContactsActivity.this);
@@ -114,6 +125,19 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         }
         contactsCursor.close();
         dbManager.closeDB();
+        sortContacts();
+    }
+
+    private void sortContacts() {
+        for (ContactsEntity contactsEntity : contactsNamesList) {
+            String sortString = contactsEntity.getName().substring(0, 1).toUpperCase();
+            if (sortString.matches("[A-Z]")) {
+                contactsEntity.setSortLetters(sortString.toUpperCase());
+            } else {
+                contactsEntity.setSortLetters("#");
+            }
+        }
+        Collections.sort(contactsNamesList, new LetterComparator());
     }
 
     private void initTopicAdapter() {
@@ -154,5 +178,13 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     public void deleteContacts() {
         loadContacts();
         contactsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTouchingLetterChanged(String s) {
+        int position = contactsAdapter.getPositionForSection(s.charAt(0));
+        if (position != -1) {
+            RecyclerView_contacts.getLayoutManager().scrollToPosition(position);
+        }
     }
 }

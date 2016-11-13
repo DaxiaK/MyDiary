@@ -104,13 +104,29 @@ public class InitActivity extends Activity {
 
             //Insert sample memo
             if (sampleContactsId != -1) {
-                dbManager.insertContacts("宮水1葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水2葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水3葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水4葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水5葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水6葉", "090 000 000", "", sampleContactsId);
-                dbManager.insertContacts("宮水7葉", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("A", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("B", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("G1", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("G2", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("G3", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("G4", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("G5", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H1", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H2", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H3", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H4", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H5", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("H5", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("k", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("l", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("m", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("y", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("z1", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("z2", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("供水1業", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("水1業", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("QAQ", "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts("沒有人在這邊", "090 000 000", "", sampleContactsId);
             }
         }
 

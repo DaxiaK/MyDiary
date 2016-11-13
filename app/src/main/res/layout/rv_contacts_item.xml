@@ -17,10 +17,10 @@
 
         <ImageView
             android:id="@+id/IV_contacts_photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_profile_image"
+            android:src="@drawable/ic_contacts_image_default"
             android:tint="@color/contacts_photo_tint" />
 
         <TextView

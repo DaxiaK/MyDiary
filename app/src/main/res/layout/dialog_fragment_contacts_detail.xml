@@ -21,11 +21,11 @@
 
         <ImageView
             android:id="@+id/IV_contacts_detail_photo"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_profile_image"
+            android:src="@drawable/ic_contacts_image_default"
             android:tint="@android:color/white" />
 
         <EditText

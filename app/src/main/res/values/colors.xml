@@ -10,6 +10,9 @@
     <color name="themeColor_mistuha">#EF7265</color>
 
 
+    <!--Button-->
+    <color name="default_button_board_color">#E6E6E6</color>
+
     <!--Main-->
     <color name="topic_divider">#CACACA</color>
 

@@ -62,7 +62,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/LL_contacts_topbar_content">
 
-        <com.kiminonawa.mydiary.contacts.SortTextLayout
+        <com.kiminonawa.mydiary.contacts.LatterSortLayout
             android:id="@+id/STL_contacts"
             android:layout_width="30dp"
             android:layout_height="match_parent"
@@ -77,6 +77,18 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp" />
+
+
+        <TextView
+            android:id="@+id/TV_contact_short_sort"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30sp"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <View

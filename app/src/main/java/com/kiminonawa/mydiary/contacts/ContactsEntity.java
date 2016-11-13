@@ -9,6 +9,7 @@ public class ContactsEntity {
     private String name;
     private String phoneNumber;
     private String photo;
+    private String sortLetters;
 
 
     public ContactsEntity(long contactsId, String name, String phoneNumber, String photo) {
@@ -34,6 +35,14 @@ public class ContactsEntity {
 
     public String getPhoto() {
         return photo;
+    }
+
+    public String getSortLetters() {
+        return sortLetters;
+    }
+
+    public void setSortLetters(String sortLetters) {
+        this.sortLetters = sortLetters;
     }
 
 }

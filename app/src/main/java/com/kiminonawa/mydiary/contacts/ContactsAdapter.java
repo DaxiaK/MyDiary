@@ -24,7 +24,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
     private ContactsDetailDialogFragment.ContactsDetailCallback callback;
     private long topicId;
-    //Datalist
+
     private List<ContactsEntity> contactsNamesList;
 
     public ContactsAdapter(FragmentActivity activity, List<ContactsEntity> contactsNamesList, long topicId,
@@ -53,6 +53,18 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
         holder.getTVName().setText(contactsNamesList.get(position).getName());
         holder.getTVPhoneNumber().setText(contactsNamesList.get(position).getPhoneNumber());
         holder.setItemPosition(position);
+    }
+
+    public int getPositionForSection(char section) {
+        for (int i = 0; i < getItemCount(); i++) {
+            String sortStr = contactsNamesList.get(i).getSortLetters();
+            char firstChar = sortStr.toUpperCase().charAt(0);
+            if (firstChar == section) {
+                return i;
+            }
+        }
+        return -1;
+
     }
 
 
