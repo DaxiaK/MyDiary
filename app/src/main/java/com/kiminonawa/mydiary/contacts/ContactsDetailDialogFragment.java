@@ -10,13 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 
 /**
@@ -38,7 +38,7 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
      */
     private LinearLayout LL_contacts_detail_top_content;
     private EditText EDT_contacts_detail_name, EDT_contacts_detail_phone_number;
-    private Button But_contacts_detail_delete, But_contacts_detail_cancel, But_contacts_detail_ok;
+    private MyDiaryButton But_contacts_detail_delete, But_contacts_detail_cancel, But_contacts_detail_ok;
 
     /**
      * CallBack
@@ -99,10 +99,10 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
         EDT_contacts_detail_name.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         EDT_contacts_detail_phone_number.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
-        But_contacts_detail_delete = (Button) rootView.findViewById(R.id.But_contacts_detail_delete);
-        But_contacts_detail_cancel = (Button) rootView.findViewById(R.id.But_contacts_detail_cancel);
+        But_contacts_detail_delete = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_detail_delete);
+        But_contacts_detail_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_detail_cancel);
         But_contacts_detail_cancel.setOnClickListener(this);
-        But_contacts_detail_ok = (Button) rootView.findViewById(R.id.But_contacts_detail_ok);
+        But_contacts_detail_ok = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_detail_ok);
         But_contacts_detail_ok.setOnClickListener(this);
         return rootView;
     }

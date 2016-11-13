@@ -1,4 +1,6 @@
-package com.kiminonawa.mydiary.contacts;
+package com.kiminonawa.mydiary.shared.gui;
+
+import com.kiminonawa.mydiary.contacts.ContactsEntity;
 
 import java.util.Comparator;
 

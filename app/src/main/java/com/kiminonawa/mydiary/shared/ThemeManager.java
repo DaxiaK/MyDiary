@@ -105,6 +105,19 @@ public class ThemeManager {
         return bgResourceId;
     }
 
+    public int getButtonBgResource() {
+        int bgResourceId = R.drawable.button_bg_taki;
+        switch (currentTheme) {
+            case TAKI:
+                bgResourceId = R.drawable.button_bg_taki;
+                break;
+            case MITSUHA:
+                bgResourceId = R.drawable.button_bg_mitsuha;
+                break;
+        }
+        return bgResourceId;
+    }
+
     public int getContactsBgResource() {
         int bgResourceId = R.drawable.contacts_bg_taki;
         switch (currentTheme) {

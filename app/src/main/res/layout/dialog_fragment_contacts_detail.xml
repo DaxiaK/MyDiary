@@ -68,7 +68,7 @@
         android:layout_marginTop="10dp">
 
 
-        <Button
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_detail_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:text="@string/dialog_button_delete"
             android:textAllCaps="false" />
 
-        <Button
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_detail_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:text="@string/dialog_button_ok"
             android:textAllCaps="false" />
 
-        <Button
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_detail_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

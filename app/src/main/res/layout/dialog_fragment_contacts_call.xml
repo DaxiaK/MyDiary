@@ -40,7 +40,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerInParent="true" />
 
-        <Button
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_call_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,16 +48,15 @@
             android:gravity="center"
             android:text="@string/dialog_button_cancel"
             android:textAllCaps="false"
-            android:background="@drawable/button_mitsuha"/>
+            android:background="@drawable/button_bg_mitsuha"/>
 
-        <Button
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_call_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/Space_contacts_call"
             android:gravity="center"
             android:text="@string/dialog_button_call"
-            android:background="@drawable/button_mitsuha"
             android:textAllCaps="false" />
     </RelativeLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.LetterComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;

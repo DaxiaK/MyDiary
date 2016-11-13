@@ -11,7 +11,9 @@
 
 
     <!--Button-->
-    <color name="default_button_board_color">#E6E6E6</color>
+    <color name="button_board_color">#b2b2b2</color>
+    <color name="button_text_color">#b2b2b2</color>
+    <color name="button_text_color_p">#ffffff</color>
 
     <!--Main-->
     <color name="topic_divider">#CACACA</color>

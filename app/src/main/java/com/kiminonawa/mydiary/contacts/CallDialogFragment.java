@@ -17,13 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 
 /**
@@ -37,7 +37,7 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
      */
     private RelativeLayout RL_contacts_call_name;
     private TextView TV_contacts_call_name;
-    private Button But_contacts_call_cancel, But_contacts_call_call;
+    private MyDiaryButton But_contacts_call_cancel, But_contacts_call_call;
 
     /**
      * Contacts Info
@@ -87,9 +87,9 @@ public class CallDialogFragment extends DialogFragment implements View.OnClickLi
 
         RL_contacts_call_name.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
-        But_contacts_call_call = (Button) rootView.findViewById(R.id.But_contacts_call_call);
+        But_contacts_call_call = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_call_call);
         But_contacts_call_call.setOnClickListener(this);
-        But_contacts_call_cancel = (Button) rootView.findViewById(R.id.But_contacts_call_cancel);
+        But_contacts_call_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_call_cancel);
         But_contacts_call_cancel.setOnClickListener(this);
         return rootView;
     }
