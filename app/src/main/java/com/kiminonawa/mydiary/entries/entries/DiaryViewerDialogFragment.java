@@ -250,8 +250,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dismiss();
                 break;
             case R.id.IV_diary_delete:
-                deleteDiary();
-                callback.deleteDiary();
+                DiaryDeleteDialogFragment diaryDeleteDialogFragment = new DiaryDeleteDialogFragment();
+                diaryDeleteDialogFragment.show(getFragmentManager(), "diaryDeleteDialogFragment");
+//                deleteDiary();
+//                callback.deleteDiary();
                 dismiss();
                 break;
             case R.id.IV_diary_clear:
