@@ -8,7 +8,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 10
-        versionName "0.1.6.20161114-01-demo"
+        //D = demo , H = hotfix
+        versionName "0.1.6.161114_02_d_h"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -23,6 +23,7 @@ import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
 import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
+import com.kiminonawa.mydiary.shared.gui.DeleteDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,7 +33,8 @@ import java.util.Date;
  * Created by daxia on 2016/10/27.
  */
 
-public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener {
+public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
+        DeleteDialogFragment.DeleteCallback {
 
 
     /**
@@ -40,6 +42,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
     public interface DiaryViewerCallback {
         void deleteDiary();
+
         void updateDiary();
     }
 
@@ -227,12 +230,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
 
-    private void deleteDiary() {
-        DBManager dbManager = new DBManager(getActivity());
-        dbManager.opeDB();
-        dbManager.delDiary(diaryId);
-        dbManager.closeDB();
-    }
 
     private void updateDiary() {
         DBManager dbManager = new DBManager(getActivity());
@@ -243,6 +240,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
+    public void delete() {
+        callback.deleteDiary();
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
@@ -250,8 +252,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dismiss();
                 break;
             case R.id.IV_diary_delete:
-                deleteDiary();
-                callback.deleteDiary();
+                DiaryDeleteDialogFragment diaryDeleteDialogFragment = DiaryDeleteDialogFragment.newInstance(diaryId);
+                diaryDeleteDialogFragment.setCallBack(this);
+                diaryDeleteDialogFragment.show(getFragmentManager(), "diaryDeleteDialogFragment");
                 dismiss();
                 break;
             case R.id.IV_diary_clear:
