@@ -7,7 +7,7 @@ android {
         applicationId "com.kiminonawa.mydiary"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 10
+        versionCode 11
         //D = demo , H = hotfix
         versionName "0.1.6.161114_02_d_h"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
