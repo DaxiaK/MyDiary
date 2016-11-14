@@ -46,7 +46,6 @@
     <string name="memo_item_add">Add</string>
     <string name="toast_memo_empty">Memo is empty!</string>
 
-
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">Permission</string>
     <string name="contacts_call_phone_permission_content">We need permission to call phone</string>

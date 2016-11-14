@@ -47,7 +47,6 @@
     <string name="memo_item_add">新增項目</string>
     <string name="toast_memo_empty">備忘錄是空的!</string>
 
-
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">授權</string>
     <string name="contacts_call_phone_permission_content">需要授權來撥打電話</string>

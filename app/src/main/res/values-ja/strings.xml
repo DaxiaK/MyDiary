@@ -7,11 +7,13 @@
     <string name="toast_change_theme">テーマを切り替えている...</string>
     <string name="dialog_your_name_is">君の名は</string>
 
-
     <!--Topic type-->
     <string name="topic_create_name">タイトル:</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
+
+    <string name="toast_topic_empty">タイトルは空です!</string>
+
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
@@ -43,13 +45,17 @@
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>
+    <string name="toast_memo_empty">メモは空です!</string>
 
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">許可</string>
-    <!--<string name="contacts_call_phone_permission_content">電話をかけるための許可が必要です</string>-->
-    <!--<string name="contacts_call_phone_no_call_function">お使いの端末は電話に出られません</string>-->
+    <string name="contacts_call_phone_permission_content">電話をかけるための許可が必要です</string>
+    <string name="contacts_call_phone_no_call_function">お使いの端末は電話に出られません</string>
 
     <string name="contacts_detail_edt_name">名前</string>
     <string name="contacts_detail_edt_phone_number">電話</string>
+
+    <string name="toast_contacts_empty">連絡先が空です!</string>
+
 
 </resources>
