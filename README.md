@@ -38,21 +38,24 @@ so, maybe I will try to create an iOS version after this app is running.
 * Basic theme
 * Allow edit diary
 * Add memo
+* Support JP
+* Create contacts
+* Optimized diary page viewer 
 
 ## Schedule
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Optimized diary page viewer
-2. Support JP
-3. Create contacts
-4. Add web block in diary
-5. Add photo in diary
-6. Google account backup
-7. More theme , More profile
-8. Allow order for topic , memo
-9. Add bookmark for diary
-10. Add music in diary
+1. Google account backup
+2. Allow changing diary time
+3. page curl effect
+2. Add web block in diary
+3. Add photo in diary
+4. Google account backup
+5. More theme , More profile
+6. Allow order for topic , memo
+7. Add bookmark for diary
+8. Add music in diary
 
 Coding & Designing:
 

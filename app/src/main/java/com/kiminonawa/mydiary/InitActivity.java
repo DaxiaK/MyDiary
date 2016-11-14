@@ -104,7 +104,7 @@ public class InitActivity extends Activity {
 
             //Insert sample memo
             if (sampleContactsId != -1) {
-                dbManager.insertContacts(getString(R.string.profile_username_mitsuha), "090 000 000", "", sampleContactsId);
+                dbManager.insertContacts(getString(R.string.profile_username_mitsuha), "090000000", "", sampleContactsId);
             }
         }
 
