@@ -117,7 +117,7 @@
                     android:id="@+id/TV_entries_item_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/TV_entries_item_title"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/TV_entries_item_summary"
@@ -134,7 +134,7 @@
                     android:layout_marginTop="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </RelativeLayout>

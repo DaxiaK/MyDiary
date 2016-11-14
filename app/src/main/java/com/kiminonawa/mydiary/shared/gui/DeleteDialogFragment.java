@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -26,13 +27,14 @@ public abstract class DeleteDialogFragment extends DialogFragment implements Vie
         void delete();
     }
 
-    private DeleteCallback callback;
+    protected DeleteCallback callback;
     /**
      * UI
      */
-    private MyDiaryButton But_delete_ok, But_delete_cancel;
+    protected MyDiaryButton But_delete_ok, But_delete_cancel;
 
-    private RelativeLayout RL_delete_view;
+    protected RelativeLayout RL_delete_view;
+    protected TextView TV_delete_content;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public abstract class DeleteDialogFragment extends DialogFragment implements Vie
                 ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
 
+        TV_delete_content = (TextView) rootView.findViewById(R.id.TV_delete_content);
         But_delete_ok = (MyDiaryButton) rootView.findViewById(R.id.But_delete_ok);
         But_delete_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_delete_cancel);
 

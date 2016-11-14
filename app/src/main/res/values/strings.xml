@@ -28,7 +28,6 @@
     <!--Entries -->
     <string name="entries_count">%1$d Entries</string>
     <string name="entries_edit_view">Click diary for editing</string>
-    <string name="entries_edit_dialog_delete_title">Delete</string>
     <string name="entries_edit_dialog_delete_content">Do you really want to delete this diary?</string>
 
     <!--Diary -->
