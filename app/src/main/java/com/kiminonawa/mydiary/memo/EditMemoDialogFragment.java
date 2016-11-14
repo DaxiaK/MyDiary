@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -125,19 +126,28 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         }
     }
 
+    private void okButtonEvent() {
+
+        if (EDT_edit_memo_content.getText().toString().length() > 0) {
+            if (isAdd) {
+                addMemo();
+                callback.addMemo();
+            } else {
+                updateMemo();
+                callback.updateMemo();
+            }
+            dismiss();
+        }else{
+            Toast.makeText(getActivity(), getString(R.string.toast_memo_empty), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.But_edit_memo_ok:
-                if (isAdd) {
-                    addMemo();
-                    callback.addMemo();
-                } else {
-                    updateMemo();
-                    callback.updateMemo();
-                }
-                dismiss();
+                okButtonEvent();
                 break;
             case R.id.But_edit_memo_cancel:
                 dismiss();

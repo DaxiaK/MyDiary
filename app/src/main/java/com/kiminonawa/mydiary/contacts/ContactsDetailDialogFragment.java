@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -159,12 +160,18 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
     }
 
     private void buttonOkEvent() {
-        if (isEditMode) {
-            updateContacts();
-            callback.updateContacts();
+        if (EDT_contacts_detail_name.getText().toString().length() > 0
+                && EDT_contacts_detail_phone_number.getText().toString().length() > 0) {
+            if (isEditMode) {
+                updateContacts();
+                callback.updateContacts();
+            } else {
+                addContacts();
+                callback.addContacts();
+            }
+            dismiss();
         } else {
-            addContacts();
-            callback.addContacts();
+            Toast.makeText(getActivity(), getString(R.string.toast_contacts_empty), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,7 +189,6 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
                 break;
             case R.id.But_contacts_detail_ok:
                 buttonOkEvent();
-                dismiss();
                 break;
         }
     }

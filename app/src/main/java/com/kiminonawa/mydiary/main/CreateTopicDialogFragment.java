@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -92,9 +93,13 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.But_topic_create_ok:
-                createTopic();
-                callback.TopicCreated();
-                dismiss();
+                if (EDT_topic_create_name.getText().toString().length() > 0) {
+                    createTopic();
+                    callback.TopicCreated();
+                    dismiss();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.toast_topic_empty), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.But_topic_create_cancel:
                 dismiss();

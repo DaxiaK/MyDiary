@@ -62,21 +62,18 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 switch (topicList.get(position).getType()) {
                     case ITopic.TYPE_CONTACTS:
                         Intent goContactsPageIntent = new Intent(mContext, ContactsActivity.class);
-                        //Send topicId for memo & entries
                         goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goContactsPageIntent);
                         break;
                     case ITopic.TYPE_DIARY:
                         Intent goEntriesPageIntent = new Intent(mContext, DiaryActivity.class);
-                        //Send topicId for memo & entries
                         goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goEntriesPageIntent);
                         break;
                     case ITopic.TYPE_MEMO:
                         Intent goMemoPageIntent = new Intent(mContext, MemoActivity.class);
-                        //Send topicId for memo & entries
                         goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goMemoPageIntent);
