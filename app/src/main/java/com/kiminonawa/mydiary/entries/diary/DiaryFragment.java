@@ -314,7 +314,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.insetDiary(calendar.getTimeInMillis(),
+        dbManager.insertDiary(calendar.getTimeInMillis(),
                 EDT_diary_title.getText().toString(), EDT_diary_content.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 false, getTopicId(), locationName);

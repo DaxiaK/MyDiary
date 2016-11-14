@@ -5,8 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -14,6 +15,10 @@ import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 3 by Daxia:
+     * Add local contacts table
+     * Add memo subtitle row.
+     * --------------
      * Version 2 by Daxia:
      * Add location row.
      * Add memo table.
@@ -22,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -37,7 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     TopicEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
                     TopicEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_TYPE + INTEGER_TYPE + COMMA_SEP +
-                    TopicEntry.COLUMN_ORDER + INTEGER_TYPE +
+                    TopicEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
+                    TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE +
                     " )";
 
     private static final String SQL_CREATE_DIARY_ENTRIES =
@@ -64,6 +70,16 @@ public class DBHelper extends SQLiteOpenHelper {
                     FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
                     " )";
 
+    private static final String SQL_CREATE_CONTACTS_ENTRIES =
+            "CREATE TABLE " + ContactsEntry.TABLE_NAME + " (" +
+                    ContactsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
+                    ContactsEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_PHONENUMBER + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_PHOTO + TEXT_TYPE + COMMA_SEP +
+                    ContactsEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + ContactsEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
+                    " )";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,30 +89,29 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TOPIC_ENTRIES);
         db.execSQL(SQL_CREATE_DIARY_ENTRIES);
         db.execSQL(SQL_CREATE_MEMO_ENTRIES);
-
+        db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
             db.beginTransaction();
-            boolean success = false;
-            switch (oldVersion) {
-                case 1: {
-                    oldVersion++;
-                    String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
-                    String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
-                    db.execSQL(addLocationSql);
-                    db.execSQL(addTopicOrderSql);
-                    db.execSQL(SQL_CREATE_MEMO_ENTRIES);
-                    success = true;
-                    break;
-                }
+            if (oldVersion < 2) {
+                oldVersion++;
+                String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
+                String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
+                db.execSQL(addLocationSql);
+                db.execSQL(addTopicOrderSql);
+                db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+            }
+            if (oldVersion < 3) {
+                //SubTitle for topic only
+                String addTopicSubtitleSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_SUBTITLE + " " + TEXT_TYPE;
+                db.execSQL(addTopicSubtitleSql);
+                db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
             }
 
             //Check update success
-            if (success) {
-                db.setTransactionSuccessful();
-            }
+            db.setTransactionSuccessful();
             db.endTransaction();
         } else {
             onCreate(db);

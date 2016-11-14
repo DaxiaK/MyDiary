@@ -3,7 +3,6 @@ package com.kiminonawa.mydiary.main;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
@@ -52,13 +52,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        if (topicList.get(position).getType() == ITopic.TYPE_CONTACTS) {
-            //Alpha 125 , disable color
-            holder.getRootView().setBackgroundColor(Color.parseColor("#7D9D9FA2"));
-        } else {
-            holder.getRootView().setBackgroundResource(ThemeManager.getInstance().getTopicItemSelectResource());
-        }
-
+        holder.getRootView().setBackgroundResource(ThemeManager.getInstance().getTopicItemSelectResource());
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getTitleView().setText(topicList.get(position).getTitle());
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
@@ -66,16 +60,20 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             @Override
             public void onClick(View v) {
                 switch (topicList.get(position).getType()) {
+                    case ITopic.TYPE_CONTACTS:
+                        Intent goContactsPageIntent = new Intent(mContext, ContactsActivity.class);
+                        goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
+                        goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                        mContext.startActivity(goContactsPageIntent);
+                        break;
                     case ITopic.TYPE_DIARY:
                         Intent goEntriesPageIntent = new Intent(mContext, DiaryActivity.class);
-                        //Send topicId for memo & entries
                         goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goEntriesPageIntent);
                         break;
                     case ITopic.TYPE_MEMO:
                         Intent goMemoPageIntent = new Intent(mContext, MemoActivity.class);
-                        //Send topicId for memo & entries
                         goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
                         mContext.startActivity(goMemoPageIntent);
@@ -106,13 +104,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
                         switch (topicList.get(position).getType()) {
                             case ITopic.TYPE_CONTACTS:
+                                dbManager.delAllContactsInTopic(topicList.get(position).getId());
                                 break;
                             case ITopic.TYPE_DIARY:
                                 dbManager.delAllDiaryInTopic(topicList.get(position).getId());
                                 break;
                             case ITopic.TYPE_MEMO:
                                 dbManager.delAllMemoInTopic(topicList.get(position).getId());
-
                                 break;
                         }
                         dbManager.closeDB();

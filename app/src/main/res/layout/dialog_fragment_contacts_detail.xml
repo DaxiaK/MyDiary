@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/LL_contacts_detail_top_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:minHeight="40dp"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="20dp">
+
+
+        <ImageView
+            android:id="@+id/IV_contacts_detail_photo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_contacts_image_default"
+            android:tint="@android:color/white" />
+
+        <EditText
+            android:id="@+id/EDT_contacts_detail_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/contacts_detail_edt_name"
+            android:inputType="textCapCharacters"
+            android:maxLines="1"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/contacts_edittext_hint"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/EDT_contacts_detail_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/contacts_detail_edt_phone_number"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:paddingTop="0dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@color/contacts_edittext_hint"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+
+
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+            android:id="@+id/But_contacts_detail_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="@string/dialog_button_delete"
+            android:textAllCaps="false" />
+
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+            android:id="@+id/But_contacts_detail_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:text="@string/dialog_button_ok"
+            android:textAllCaps="false" />
+
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+            android:id="@+id/But_contacts_detail_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/But_contacts_detail_ok"
+            android:gravity="center"
+            android:text="@string/dialog_button_cancel"
+            android:textAllCaps="false" />
+    </RelativeLayout>
+
+</LinearLayout>

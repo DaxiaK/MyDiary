@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
@@ -89,6 +90,21 @@ public class DBManager {
         return count;
     }
 
+
+    public int getContactsCountByTopicId(long topicId) {
+        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + ContactsEntry.TABLE_NAME + " WHERE " + ContactsEntry.COLUMN_REF_TOPIC__ID + "=?",
+                new String[]{String.valueOf(topicId)});
+        int count = 0;
+        if (null != cursor) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        return count;
+    }
+
     public long delTopic(long topicId) {
         return db.delete(
                 TopicEntry.TABLE_NAME,
@@ -107,7 +123,7 @@ public class DBManager {
     /**
      * Diary
      */
-    public long insetDiary(long time, String title, String content,
+    public long insertDiary(long time, String title, String content,
                            int mood, int weather, boolean attachment, long refTopicId, String locationName) {
         return db.insert(
                 DiaryEntry.TABLE_NAME,
@@ -182,7 +198,7 @@ public class DBManager {
     /**
      * MEMO
      */
-    public long insetMemo(String content, boolean isChecked, long refTopicId) {
+    public long insertMemo(String content, boolean isChecked, long refTopicId) {
         return db.insert(
                 MemoEntry.TABLE_NAME,
                 null,
@@ -242,6 +258,64 @@ public class DBManager {
         values.put(MemoEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         return values;
     }
+
+    /**
+     * Contacts
+     */
+
+    public long insertContacts(String name, String phoneNumber, String photo, long refTopicId) {
+        return db.insert(
+                ContactsEntry.TABLE_NAME,
+                null,
+                this.createContactsCV(name, phoneNumber, photo, refTopicId));
+    }
+
+    public long updateContacts(long contactsId, String name, String phoneNumber, String photo) {
+        ContentValues values = new ContentValues();
+        values.put(ContactsEntry.COLUMN_NAME, name);
+        values.put(ContactsEntry.COLUMN_PHONENUMBER, phoneNumber);
+        values.put(ContactsEntry.COLUMN_PHOTO, photo);
+
+        return db.update(
+                ContactsEntry.TABLE_NAME,
+                values,
+                ContactsEntry._ID + " = ?",
+                new String[]{String.valueOf(contactsId)});
+    }
+
+
+    public long delContacts(long contactsId) {
+        return db.delete(
+                ContactsEntry.TABLE_NAME,
+                ContactsEntry._ID + " = ?"
+                , new String[]{String.valueOf(contactsId)});
+    }
+
+    public long delAllContactsInTopic(long topicId) {
+        return db.delete(
+                ContactsEntry.TABLE_NAME,
+                ContactsEntry.COLUMN_REF_TOPIC__ID + " = ?"
+                , new String[]{String.valueOf(topicId)});
+    }
+
+    public Cursor selectContacts(long topicId) {
+        Cursor c = db.query(ContactsEntry.TABLE_NAME, null, ContactsEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                ContactsEntry._ID + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    private ContentValues createContactsCV(String name, String phoneNumber, String photo, long refTopicId) {
+        ContentValues values = new ContentValues();
+        values.put(ContactsEntry.COLUMN_NAME, name);
+        values.put(ContactsEntry.COLUMN_PHONENUMBER, phoneNumber);
+        values.put(ContactsEntry.COLUMN_PHOTO, photo);
+        values.put(ContactsEntry.COLUMN_REF_TOPIC__ID, refTopicId);
+        return values;
+    }
+
 
     /**
      * Debug

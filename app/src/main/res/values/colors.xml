@@ -10,6 +10,11 @@
     <color name="themeColor_mistuha">#EF7265</color>
 
 
+    <!--Button-->
+    <color name="button_board_color">#b2b2b2</color>
+    <color name="button_text_color">#b2b2b2</color>
+    <color name="button_text_color_p">#ffffff</color>
+
     <!--Main-->
     <color name="topic_divider">#CACACA</color>
 
@@ -32,6 +37,10 @@
 
     <!--Textview-->
     <color name="textview_shadow">#000000</color>
+
+    <!--Contacts-->
+    <color name="contacts_photo_tint">#AFABAE</color>
+    <color name="contacts_edittext_hint">#d4d2d4</color>
 
 
 </resources>

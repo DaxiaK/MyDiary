@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -83,7 +84,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         } else {
             holder.getIVAttachment().setVisibility(View.GONE);
         }
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+        holder.getRLContent().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DiaryViewerDialogFragment diaryViewerDialog =
@@ -134,6 +135,8 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
 
         private ImageView IV_entries_item_weather, IV_entries_item_mood, IV_entries_item_bookmark, IV_entries_item_attachment;
 
+        private RelativeLayout RL_entries_item_content;
+
         protected EntriesViewHolder(View view, @ColorInt int color) {
             super(view);
             this.rootView = view;
@@ -150,6 +153,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             this.IV_entries_item_bookmark = (ImageView) rootView.findViewById(R.id.IV_entries_item_bookmark);
             this.IV_entries_item_attachment = (ImageView) rootView.findViewById(R.id.IV_entries_item_attachment);
 
+            this.RL_entries_item_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_item_content);
             initThemeColor(color);
         }
 
@@ -207,8 +211,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             return IV_entries_item_attachment;
         }
 
-        public View getRootView() {
-            return rootView;
+        public RelativeLayout getRLContent() {
+            return RL_entries_item_content;
         }
+
     }
 }

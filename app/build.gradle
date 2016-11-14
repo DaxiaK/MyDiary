@@ -7,7 +7,7 @@ android {
         applicationId "com.kiminonawa.mydiary"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 9
+        versionCode 10
         versionName "0.1.5.20161110-01-demo"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

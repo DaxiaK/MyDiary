@@ -13,15 +13,15 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
-        android:text="10"
         android:textColor="@android:color/white"
         android:textSize="50sp" />
 
     <RelativeLayout
+        android:id="@+id/RL_entries_item_content"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/rv_entries_item_bg"
+        android:background="@drawable/rv_item_radius_bg"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -41,18 +41,20 @@
 
                 <TextView
                     android:id="@+id/TV_entries_item_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:textColor="@color/theme_dark_color_taki"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/TV_entries_item_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:textColor="@color/theme_dark_color_taki"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -74,7 +76,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:src="@drawable/ic_weather_sunny"/>
+                        android:src="@drawable/ic_weather_sunny" />
 
                     <ImageView
                         android:id="@+id/IV_entries_item_mood"

@@ -12,9 +12,13 @@
     <string name="topic_dialog_delete_title">Delete</string>
     <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
 
+    <string name="toast_topic_empty">Topic is empty!</string>
+
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
+    <string name="dialog_button_call">call</string>
     <string name="dialog_button_cancel">cancel</string>
+    <string name="dialog_button_delete">delete</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>
@@ -40,5 +44,17 @@
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>
+    <string name="toast_memo_empty">Memo is empty!</string>
+
+    <!--Contacts-->
+    <string name="contacts_call_phone_permission_title">Permission</string>
+    <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
+    <string name="contacts_call_phone_no_call_function">Your device can not call phone</string>
+
+    <string name="contacts_detail_edt_name">Name</string>
+    <string name="contacts_detail_edt_phone_number">Phone</string>
+
+    <string name="toast_contacts_empty">Contacts is empty!</string>
+
 
 </resources>
