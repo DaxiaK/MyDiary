@@ -1,46 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:layout_marginBottom="20dp"
-    android:background="@drawable/rv_item_radius_bg"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/TV_contacts_item_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:shadowColor="@color/textview_shadow"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:textColor="@android:color/white"
+        android:textSize="30sp" />
 
     <LinearLayout
+        android:id="@+id/LL_contacts_item_contant"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="90dp"
+        android:background="@drawable/rv_item_radius_bg"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
 
-        <ImageView
-            android:id="@+id/IV_contacts_photo"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_contacts_image_default"
-            android:tint="@color/contacts_photo_tint" />
+            <ImageView
+                android:id="@+id/IV_contacts_photo"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_contacts_image_default"
+                android:tint="@color/contacts_photo_tint" />
+
+            <TextView
+                android:id="@+id/TV_contacts_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:gravity="left"
+                android:textSize="33sp" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/TV_contacts_name"
+            android:id="@+id/TV_contacts_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:gravity="left"
-            android:textSize="33sp" />
+            android:gravity="right"
+            android:textColor="@color/contacts_photo_tint"
+            android:textSize="20sp" />
+
+
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/TV_contacts_phone_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="10dp"
-        android:gravity="right"
-        android:textColor="@color/contacts_photo_tint"
-        android:textSize="20sp" />
-
 </LinearLayout>

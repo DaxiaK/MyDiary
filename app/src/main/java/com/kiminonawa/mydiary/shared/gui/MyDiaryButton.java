@@ -40,5 +40,8 @@ public class MyDiaryButton extends Button {
         super.onDraw(canvas);
         this.setBackgroundResource(ThemeManager.getInstance().getButtonBgResource());
         this.setTextColor(ColorTools.getColorStateList(getContext(), R.color.button_default_text_color));
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            this.setStateListAnimator(null);
+        }
     }
 }

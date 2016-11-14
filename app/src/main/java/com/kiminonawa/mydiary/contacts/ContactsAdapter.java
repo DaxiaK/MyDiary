@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -50,6 +51,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
+        if (showHeader(position)) {
+            holder.getHeader().setVisibility(View.VISIBLE);
+            holder.getHeader().setText(contactsNamesList.get(position).getSortLetters());
+        } else {
+            holder.getHeader().setVisibility(View.GONE);
+        }
+
         holder.getTVName().setText(contactsNamesList.get(position).getName());
         holder.getTVPhoneNumber().setText(contactsNamesList.get(position).getPhoneNumber());
         holder.setItemPosition(position);
@@ -67,25 +75,47 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
 
     }
 
+    private boolean showHeader(final int position) {
+        if (position == 0) {
+            return true;
+        } else {
+            if (!contactsNamesList.get(position - 1).getSortLetters().equals(
+                    contactsNamesList.get(position).getSortLetters())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
 
     protected class TopicViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
+        //Header
+        private TextView TV_contacts_item_header;
+
+        //Item
+        private LinearLayout LL_contacts_item_contant;
         private ImageView IV_contacts_photo;
         private TextView TV_contacts_name;
         private TextView TV_contacts_phone_number;
-        private View rootView;
         private int itemPosition;
 
         protected TopicViewHolder(View view) {
             super(view);
-            this.rootView = view;
-            this.rootView.setOnClickListener(this);
-            this.rootView.setOnLongClickListener(this);
+            this.TV_contacts_item_header = (TextView) view.findViewById(R.id.TV_contacts_item_header);
+            this.LL_contacts_item_contant = (LinearLayout) view.findViewById(R.id.LL_contacts_item_contant);
 
-            this.IV_contacts_photo = (ImageView) rootView.findViewById(R.id.IV_contacts_photo);
-            this.TV_contacts_name = (TextView) rootView.findViewById(R.id.TV_contacts_name);
-            this.TV_contacts_phone_number = (TextView) rootView.findViewById(R.id.TV_contacts_phone_number);
+            this.LL_contacts_item_contant.setOnClickListener(this);
+            this.LL_contacts_item_contant.setOnLongClickListener(this);
+            this.IV_contacts_photo = (ImageView) view.findViewById(R.id.IV_contacts_photo);
+            this.TV_contacts_name = (TextView) view.findViewById(R.id.TV_contacts_name);
+            this.TV_contacts_phone_number = (TextView) view.findViewById(R.id.TV_contacts_phone_number);
             this.TV_contacts_name.setTextColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
+        }
+
+        public TextView getHeader() {
+            return TV_contacts_item_header;
         }
 
         public ImageView getIVPhoto() {
@@ -100,9 +130,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
             return TV_contacts_phone_number;
         }
 
-        protected View getRootView() {
-            return rootView;
-        }
 
         public void setItemPosition(int itemPosition) {
             this.itemPosition = itemPosition;

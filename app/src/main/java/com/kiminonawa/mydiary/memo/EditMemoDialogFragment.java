@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 /**
  * Created by daxia on 2016/10/27.
@@ -36,7 +36,7 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
     /**
      * UI
      */
-    private Button But_edit_memo_ok, But_edit_memo_cancel;
+    private MyDiaryButton But_edit_memo_ok, But_edit_memo_cancel;
     private EditText EDT_edit_memo_content;
 
     /**
@@ -80,8 +80,8 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         this.getDialog().setCanceledOnTouchOutside(false);
         View rootView = inflater.inflate(R.layout.dialog_fragment_edit_memo, container);
         EDT_edit_memo_content = (EditText) rootView.findViewById(R.id.EDT_edit_memo_content);
-        But_edit_memo_ok = (Button) rootView.findViewById(R.id.But_edit_memo_ok);
-        But_edit_memo_cancel = (Button) rootView.findViewById(R.id.But_edit_memo_cancel);
+        But_edit_memo_ok = (MyDiaryButton) rootView.findViewById(R.id.But_edit_memo_ok);
+        But_edit_memo_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_edit_memo_cancel);
 
         EDT_edit_memo_content.getBackground().mutate().setColorFilter(
                 ThemeManager.getInstance().getThemeMainColor(getActivity()), PorterDuff.Mode.SRC_ATOP);

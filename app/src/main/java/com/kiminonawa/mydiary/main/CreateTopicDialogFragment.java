@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 
 /**
@@ -36,7 +36,7 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
      * UI
      */
     private EditText EDT_topic_create_name;
-    private Button But_topic_create_ok, But_topic_create_cancel;
+    private MyDiaryButton But_topic_create_ok, But_topic_create_cancel;
     private Spinner SP_topic_create_type;
 
     @Override
@@ -61,9 +61,9 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
         EDT_topic_create_name = (EditText) rootView.findViewById(R.id.EDT_topic_create_name);
         SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
 
-        But_topic_create_ok = (Button) rootView.findViewById(R.id.But_topic_create_ok);
+        But_topic_create_ok = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_ok);
         But_topic_create_ok.setOnClickListener(this);
-        But_topic_create_cancel = (Button) rootView.findViewById(R.id.But_topic_create_cancel);
+        But_topic_create_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_cancel);
         But_topic_create_cancel.setOnClickListener(this);
         initTopicTypeSpinner();
         return rootView;

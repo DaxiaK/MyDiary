@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 
 /**
@@ -36,7 +36,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
      * UI
      */
     private EditText EDT_your_name_name;
-    private Button But_your_name_ok, But_your_name_cancel;
+    private MyDiaryButton But_your_name_ok, But_your_name_cancel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +61,9 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 PorterDuff.Mode.SRC_ATOP);
         EDT_your_name_name.setText(SPFManager.getYourName(getActivity()));
 
-        But_your_name_ok = (Button) rootView.findViewById(R.id.But_your_name_ok);
+        But_your_name_ok = (MyDiaryButton) rootView.findViewById(R.id.But_your_name_ok);
         But_your_name_ok.setOnClickListener(this);
-        But_your_name_cancel = (Button) rootView.findViewById(R.id.But_your_name_cancel);
+        But_your_name_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_your_name_cancel);
         But_your_name_cancel.setOnClickListener(this);
         return rootView;
     }
