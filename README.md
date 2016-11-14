@@ -46,23 +46,24 @@ so, maybe I will try to create an iOS version after this app is running.
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Google account backup
+1. Google account backup & setting page
 2. Allow changing diary time
 3. page curl effect
 4. Add web block in diary
 5. Add photo in diary
 6. Implments search
-7. Support Chinese sort
-8. More theme , More profile
-9. Allow order for topic , memo
-10. Add bookmark for diary
-11. Add music in diary
-12. Supprot JP sort
+7. More theme , More profile
+8. OOBE (Alpha) 
+9. Support Chinese sort
+10. Allow order for topic , memo
+11. Add password (beta)
+12. Add bookmark for diary
+13. Add music in diary
+14. Supprot JP sort
 
 Coding & Designing:
 
 1. Add mistake-proofing
-2. OOBE 
 
 ## Use case
 
