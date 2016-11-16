@@ -45,7 +45,7 @@
                         android:layout_marginTop="10dp"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="10sp" />
+                        android:textSize="10dp" />
 
                     <TextView
                         android:id="@+id/TV_diary_date"
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="50sp"
+                        android:textSize="50dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -68,7 +68,7 @@
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
 
                         <TextView
                             android:id="@+id/TV_diary_time"
@@ -77,7 +77,7 @@
                             android:layout_marginLeft="10dp"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -93,7 +93,7 @@
                             android:layout_marginTop="5dp"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="10sp" />
+                            android:textSize="10dp" />
 
                     </LinearLayout>
                 </LinearLayout>

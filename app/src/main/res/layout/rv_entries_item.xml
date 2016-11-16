@@ -14,7 +14,7 @@
         android:shadowDy="1"
         android:shadowRadius="2"
         android:textColor="@android:color/white"
-        android:textSize="50sp" />
+        android:textSize="50dp" />
 
     <RelativeLayout
         android:id="@+id/RL_entries_item_content"
@@ -46,7 +46,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@color/theme_dark_color_taki"
-                    android:textSize="30sp"
+                    android:textSize="30dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -56,7 +56,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:textColor="@color/theme_dark_color_taki"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -117,7 +117,7 @@
                     android:id="@+id/TV_entries_item_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/TV_entries_item_title"
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/TV_entries_item_summary"
@@ -134,7 +134,7 @@
                     android:layout_marginTop="3dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </LinearLayout>
 
         </RelativeLayout>

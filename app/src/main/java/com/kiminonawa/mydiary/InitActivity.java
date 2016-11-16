@@ -36,6 +36,11 @@ public class InitActivity extends Activity {
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
 
         initHandler = new Handler();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -47,9 +52,11 @@ public class InitActivity extends Activity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        initHandler.removeCallbacksAndMessages(null);
     }
+
 
     private void loadSampleData() {
 
