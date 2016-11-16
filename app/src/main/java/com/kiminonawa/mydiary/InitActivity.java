@@ -26,16 +26,20 @@ public class InitActivity extends Activity {
 
     private int initTime = 3000; // 3S
     private Handler initHandler;
+    private boolean showReleaseNote = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
-        loadSampleData();
         ThemeManager themeManager = ThemeManager.getInstance();
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
-
         initHandler = new Handler();
+        //Show release note
+        if (!SPFManager.getDescriptionClose(InitActivity.this)) {
+            showReleaseNote = true;
+        }
+        loadSampleData();
     }
 
     @Override
@@ -45,6 +49,7 @@ public class InitActivity extends Activity {
             @Override
             public void run() {
                 Intent goMainPageIntent = new Intent(InitActivity.this, MainActivity.class);
+                goMainPageIntent.putExtra("showReleaseNote", showReleaseNote);
                 finish();
                 InitActivity.this.startActivity(goMainPageIntent);
             }
@@ -119,6 +124,8 @@ public class InitActivity extends Activity {
 
         //Save currentVersion
         if (SPFManager.getVersionCode(InitActivity.this) < BuildConfig.VERSION_CODE) {
+            SPFManager.setDescriptionClose(InitActivity.this, false);
+            showReleaseNote = true;
             SPFManager.setVersionCode(InitActivity.this);
         }
 

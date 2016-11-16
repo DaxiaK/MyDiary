@@ -103,6 +103,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initBottomBar();
         initPopupWindow();
         initTopicAdapter();
+
+        //Release note dialog
+        if (getIntent().getBooleanExtra("showReleaseNote", false)) {
+            ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
+            releaseNoteDialogFragment.show(getSupportFragmentManager(),"releaseNoteDialogFragment");
+        }
     }
 
     @Override

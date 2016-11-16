@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">MyDiary</string>
 
+    <!--Release Note-->
+    <string name="release_note_title">Release note</string>
+    <string name="release_note">**0.1.6.161116_01_d_h**\n-Fix bug\n-Modify layout</string>
+    <string name="release_note_close_remind">Don\'t remind</string>
+
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>
@@ -48,7 +53,7 @@
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">Permission</string>
     <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
-    <string name="contacts_call_phone_no_call_function">Your device can not call phone</string>
+    <string name="contacts_call_phone_no_call_function">Your device can\'t call phone</string>
 
     <string name="contacts_detail_edt_name">Name</string>
     <string name="contacts_detail_edt_phone_number">Phone</string>
