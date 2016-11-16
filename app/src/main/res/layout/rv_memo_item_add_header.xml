@@ -26,7 +26,7 @@
         android:gravity="center_vertical"
         android:text="@string/memo_item_add"
         android:textStyle="bold"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:layout_width="match_parent"

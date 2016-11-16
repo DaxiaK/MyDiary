@@ -16,7 +16,7 @@
         android:shadowDy="1"
         android:shadowRadius="2"
         android:textColor="@android:color/white"
-        android:textSize="30sp" />
+        android:textSize="30dp" />
 
     <LinearLayout
         android:id="@+id/LL_contacts_item_contant"
@@ -50,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:gravity="left"
-                android:textSize="33sp" />
+                android:textSize="33dp" />
         </LinearLayout>
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_marginLeft="10dp"
             android:gravity="right"
             android:textColor="@color/contacts_photo_tint"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
 
 
     </LinearLayout>

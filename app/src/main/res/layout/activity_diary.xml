@@ -70,7 +70,7 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
     </LinearLayout>
 
 

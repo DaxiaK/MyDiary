@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.contacts;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,7 +60,7 @@ public class LatterSortLayout extends LinearLayout {
         sortTextView.setLayoutParams(layoutParams);
         sortTextView.setGravity(Gravity.CENTER);
         sortTextView.setClickable(true);
-
+        sortTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         sortTextView.setText(character);
         sortTextView.setTextColor(Color.WHITE);
         return sortTextView;

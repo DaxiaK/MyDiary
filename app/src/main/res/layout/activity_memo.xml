@@ -33,7 +33,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
     </RelativeLayout>
 
 

@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.ViewTools;
 
 /**
  * Created by daxia on 2016/11/13.
@@ -35,13 +36,20 @@ public class MyDiaryButton extends Button {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
         this.setBackgroundResource(ThemeManager.getInstance().getButtonBgResource());
         this.setTextColor(ColorTools.getColorStateList(getContext(), R.color.button_default_text_color));
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             this.setStateListAnimator(null);
         }
+        this.setMinimumWidth(ViewTools.dpToPixel(getContext().getResources(), 110));
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
     }
 }

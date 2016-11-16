@@ -37,7 +37,7 @@
         android:layout_toLeftOf="@id/IV_memo_item_delete"
         android:layout_toRightOf="@id/TV_memo_item_dot"
         android:gravity="center_vertical"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:layout_width="match_parent"

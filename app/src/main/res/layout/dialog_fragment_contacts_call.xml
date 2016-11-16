@@ -24,7 +24,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:textColor="@android:color/white"
-            android:textSize="40sp" />
+            android:textSize="40dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,8 +47,7 @@
             android:layout_toRightOf="@id/Space_contacts_call"
             android:gravity="center"
             android:text="@string/dialog_button_cancel"
-            android:textAllCaps="false"
-            android:background="@drawable/button_bg_mitsuha"/>
+            android:textAllCaps="false"/>
 
         <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_contacts_call_call"

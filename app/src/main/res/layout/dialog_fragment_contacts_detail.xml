@@ -41,7 +41,7 @@
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textColorHint="@color/contacts_edittext_hint"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
 
         <EditText
             android:id="@+id/EDT_contacts_detail_phone_number"
@@ -57,7 +57,7 @@
             android:paddingTop="0dp"
             android:textColor="@android:color/white"
             android:textColorHint="@color/contacts_edittext_hint"
-            android:textSize="18sp" />
+            android:textSize="18dp" />
 
     </LinearLayout>
 

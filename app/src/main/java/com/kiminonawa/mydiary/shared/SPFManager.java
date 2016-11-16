@@ -33,6 +33,8 @@ public class SPFManager {
     private static final String FIRST_RUN = "FIRST_RUN";
     private static final String SYSTEM_VERSIONCODE = "VERSIONCODE";
     public static final int DEFAULT_VERSIONCODE = -1;
+    private static final String DESCRIPTION_CLOSE = "DESCRIPTION_CLOSE";
+
 
     /**
      * Config method
@@ -108,6 +110,18 @@ public class SPFManager {
     public static int getVersionCode(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         return settings.getInt(SYSTEM_VERSIONCODE, DEFAULT_VERSIONCODE);
+    }
+
+    public static boolean getDescriptionClose(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        return settings.getBoolean(DESCRIPTION_CLOSE, false);
+    }
+
+    public static void setDescriptionClose(Context context, boolean close) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putBoolean(DESCRIPTION_CLOSE, close);
+        PE.commit();
     }
 
 
