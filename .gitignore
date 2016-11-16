@@ -10,3 +10,6 @@
 #Added
 .idea/*
 *.apk
+
+#google sign-in
+app/google-services.json
