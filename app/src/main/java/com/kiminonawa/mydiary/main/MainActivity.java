@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.UserProfile;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
@@ -47,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         void onItemDismiss(int position);
     }
 
+    /**
+     * Profile
+     */
+    private UserProfile profile;
+    private ThemeManager themeManager;
     /**
      * RecyclerView
      */
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * UI
      */
-    private ThemeManager themeManager;
+    private ImageView IV_main_profile_photo;
     private LinearLayout LL_main_profile;
     private TextView TV_main_profile_username;
     private RelativeLayout RL_main_bottom_bar;
@@ -82,11 +89,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Set layout
         setContentView(R.layout.activity_main);
 
+        //init object
         themeManager = ThemeManager.getInstance();
+        profile = UserProfile.getInstance();
 
+        //init Ui
         LL_main_profile = (LinearLayout) findViewById(R.id.LL_main_profile);
         LL_main_profile.setOnClickListener(this);
 
+        IV_main_profile_photo = (ImageView) findViewById(R.id.IV_main_profile_photo);
         TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
         RL_main_bottom_bar = (RelativeLayout) findViewById(R.id.RL_main_bottom_bar);
 
@@ -114,11 +125,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initProfile() {
-        String YourNameIs = SPFManager.getYourName(MainActivity.this);
+        String YourNameIs = profile.getName();
         if (YourNameIs == null || "".equals(YourNameIs)) {
-            YourNameIs = themeManager.getThemeUserName(MainActivity.this);
+            YourNameIs = SPFManager.getYourName(MainActivity.this);
+            if (YourNameIs == null || "".equals(YourNameIs)) {
+                YourNameIs = themeManager.getThemeUserName(MainActivity.this);
+            }
         }
         TV_main_profile_username.setText(YourNameIs);
+        Uri photoUri = profile.getPhoto();
+        if (photoUri != null) {
+            IV_main_profile_photo.setImageURI(photoUri);
+        }
         LL_main_profile.setBackgroundResource(themeManager.getProfileBgResource());
     }
 

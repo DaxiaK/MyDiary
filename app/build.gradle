@@ -33,6 +33,13 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.4.0'
 
     testCompile 'junit:junit:4.12'
+
+    // Dependency for Google Sign-In
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
+
     //Lib
     compile 'info.hoang8f:android-segmented:1.0.6'
 }
+
+apply plugin: 'com.google.gms.google-services'
+
