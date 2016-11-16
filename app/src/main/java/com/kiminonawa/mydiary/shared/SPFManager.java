@@ -25,6 +25,12 @@ public class SPFManager {
      */
     private static final String SPF_PROFILE = "PROFILE";
     private static final String PROFILE_YOUR_NAME_IS = "YOUR_NAME_IS";
+    private static final String PROFILE_LOGIN_TYPE = "LOGIN_TYPE";
+
+    public static final int LOGIN_TYPE_NONE = 0;
+    public static final int LOGIN_TYPE_LOCAL = 1;
+    public static final int LOGIN_TYPE_GOOGLE = 2;
+
 
     /**
      * System
@@ -71,6 +77,19 @@ public class SPFManager {
         SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
         //default is space
         return settings.getString(PROFILE_YOUR_NAME_IS, "");
+    }
+
+    public static void setLoginType(Context context, int loginType) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putInt(PROFILE_LOGIN_TYPE, loginType);
+        PE.commit();
+    }
+
+
+    public static int getLoginType(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
+        return settings.getInt(PROFILE_LOGIN_TYPE, LOGIN_TYPE_NONE);
     }
 
     public static void setYourName(Context context, String yourNameIs) {

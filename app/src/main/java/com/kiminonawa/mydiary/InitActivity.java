@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,6 +30,9 @@ import com.kiminonawa.mydiary.shared.UserProfile;
 
 /**
  * Version History
+ * 20161117
+ * Add google sign-in in version 13
+ * ----
  * 20161109
  * Add contacts function in version 10
  * ----
@@ -62,7 +66,6 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
-        loadSampleData();
         ThemeManager themeManager = ThemeManager.getInstance();
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
 
@@ -74,18 +77,26 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        loadSampleData();
+        if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_NONE) {
+            SignInButton sign_in_button = (SignInButton) findViewById(R.id.sign_in_button);
+            Button But_local_login = (Button) findViewById(R.id.But_local_login);
+            sign_in_button.setVisibility(View.VISIBLE);
+            sign_in_button.setOnClickListener(this);
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
-
+            But_local_login.setVisibility(View.VISIBLE);
+            But_local_login.setOnClickListener(this);
+        } else if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_LOCAL) {
+            gotoMainActivity();
+        } else if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_GOOGLE) {
+            //Do nothing
+        }
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -114,6 +125,7 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            SPFManager.setLoginType(InitActivity.this, SPFManager.LOGIN_TYPE_GOOGLE);
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
@@ -249,6 +261,9 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
         switch (v.getId()) {
             case R.id.sign_in_button:
                 signIn();
+                break;
+            case R.id.But_local_login:
+                SPFManager.setLoginType(InitActivity.this, SPFManager.LOGIN_TYPE_LOCAL);
                 break;
         }
     }
