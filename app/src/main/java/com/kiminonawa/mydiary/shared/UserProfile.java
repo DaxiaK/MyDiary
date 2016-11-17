@@ -11,6 +11,7 @@ public class UserProfile {
     /**
      *
      */
+    private int loginType;
     private String name;
     private String email;
     private String personId;
@@ -33,6 +34,15 @@ public class UserProfile {
             }
         }
         return instance;
+    }
+
+
+    public int getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(int loginType) {
+        this.loginType = loginType;
     }
 
     public String getName() {

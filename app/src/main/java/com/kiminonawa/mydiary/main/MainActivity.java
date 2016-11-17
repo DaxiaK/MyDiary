@@ -125,9 +125,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initProfile() {
-        String YourNameIs = profile.getName();
+        String YourNameIs = SPFManager.getYourName(MainActivity.this);
         if (YourNameIs == null || "".equals(YourNameIs)) {
-            YourNameIs = SPFManager.getYourName(MainActivity.this);
+            YourNameIs = profile.getName();
             if (YourNameIs == null || "".equals(YourNameIs)) {
                 YourNameIs = themeManager.getThemeUserName(MainActivity.this);
             }

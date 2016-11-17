@@ -52,6 +52,10 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
     /**
+     * Login
+     */
+    private UserProfile profile;
+    /**
      * UI
      */
     private ProgressDialog mProgressDialog;
@@ -68,7 +72,8 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
         setContentView(R.layout.activity_init);
         ThemeManager themeManager = ThemeManager.getInstance();
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
-
+        profile = UserProfile.getInstance();
+        profile.setLoginType(SPFManager.getLoginType(InitActivity.this));
         //Set google sign-in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -78,7 +83,7 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         loadSampleData();
-        if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_NONE) {
+        if (profile.getLoginType() == SPFManager.LOGIN_TYPE_NONE) {
             SignInButton sign_in_button = (SignInButton) findViewById(R.id.sign_in_button);
             Button But_local_login = (Button) findViewById(R.id.But_local_login);
             sign_in_button.setVisibility(View.VISIBLE);
@@ -86,9 +91,9 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
 
             But_local_login.setVisibility(View.VISIBLE);
             But_local_login.setOnClickListener(this);
-        } else if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_LOCAL) {
+        } else if (profile.getLoginType() == SPFManager.LOGIN_TYPE_LOCAL) {
             gotoMainActivity();
-        } else if (SPFManager.getLoginType(InitActivity.this) == SPFManager.LOGIN_TYPE_GOOGLE) {
+        } else if (profile.getLoginType() == SPFManager.LOGIN_TYPE_GOOGLE) {
             //Do nothing
         }
 
@@ -126,6 +131,8 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             SPFManager.setLoginType(InitActivity.this, SPFManager.LOGIN_TYPE_GOOGLE);
+            profile.setLoginType(SPFManager.LOGIN_TYPE_GOOGLE);
+
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }
@@ -264,6 +271,7 @@ public class InitActivity extends FragmentActivity implements GoogleApiClient.On
                 break;
             case R.id.But_local_login:
                 SPFManager.setLoginType(InitActivity.this, SPFManager.LOGIN_TYPE_LOCAL);
+                profile.setLoginType(SPFManager.LOGIN_TYPE_LOCAL);
                 break;
         }
     }
