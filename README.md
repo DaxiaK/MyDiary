@@ -48,18 +48,21 @@ This list is what functionality I will implement , the number is the sequence fo
 
 1. Google account backup & setting page
 2. Allow changing diary time
-3. page curl effect
-4. Add web block in diary
-5. Add photo in diary
+3. Add web block in diary
+4. Add photo in diary
+5. page curl effect
 6. Implments search
 7. More theme , More profile
 8. OOBE (Alpha) 
 9. Support Chinese sort
 10. Allow order for topic , memo
 11. Add password (beta)
-12. Add bookmark for diary
-13. Add music in diary
-14. Supprot JP sort
+12. Tags
+13. UI review & support xxxHpdi \
+14. Add contacts from phone
+15. Add bookmark for diary
+16. Add music in diary
+17. Supprot JP sort
 
 Coding & Designing:
 
