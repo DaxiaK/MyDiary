@@ -2,11 +2,14 @@ package com.kiminonawa.mydiary.entries.diary;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -30,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,6 +48,7 @@ import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -82,6 +87,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     //Test Imageview
     private ImageView IV_test;
+
+    /**
+     * popup
+     */
+    private PopupWindow photoPopupWindow;
+    private ImageView IV_diary_camera_add_a_photo, IV_diary_camera_select_a_photo;
     /**
      * Location
      */
@@ -116,7 +127,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      */
     private static final int REQUEST_START_CAMERA_CODE = 1;
     private static final int REQUEST_SELECT_IMAGE_CODE = 2;
-    private List<String> camreaNameList;
+    private List<String> imageNameList;
 
     /**
      * File
@@ -133,7 +144,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
         fileManager = new FileManager(getActivity(), getTopicId());
-        camreaNameList = new ArrayList<>();
+        imageNameList = new ArrayList<>();
     }
 
     @Override
@@ -192,6 +203,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
+            initPopupWindow();
         }
         isCreatedView = true;
     }
@@ -222,14 +234,14 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + camreaNameList.get(camreaNameList.size() - 1));
+                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + imageNameList.get(imageNameList.size() - 1));
                 Bitmap thumbnailBitmap = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
                 IV_test.setImageBitmap(thumbnailBitmap);
                 bitmap = null;
                 System.gc();
             } else {
                 Log.e("test", "cancel");
-                camreaNameList.remove(camreaNameList.size() - 1);
+                imageNameList.remove(imageNameList.size() - 1);
             }
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
             if (resultCode == RESULT_OK) {
@@ -341,7 +353,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void checkFileIsLicit(Uri uri) {
         String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
-
+        imageNameList.add(tempFileName);
         try {
 //                InputStream inputStream = getContentResolver().openInputStream(uri);
 //                //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
@@ -482,6 +494,23 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
+    private void initPopupWindow() {
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popuoView = inflater.inflate(R.layout.popup_diary_photo, null);
+        photoPopupWindow = new PopupWindow(getActivity());
+        photoPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        photoPopupWindow.setTouchable(true);
+        photoPopupWindow.setOutsideTouchable(true);
+        photoPopupWindow.setContentView(popuoView);
+
+        IV_diary_camera_add_a_photo = (ImageView) popuoView.findViewById(R.id.IV_diary_camera_add_a_photo);
+        IV_diary_camera_add_a_photo.setOnClickListener(this);
+        IV_diary_camera_select_a_photo = (ImageView) popuoView.findViewById(R.id.IV_diary_camera_select_a_photo);
+        IV_diary_camera_select_a_photo.setOnClickListener(this);
+        LinearLayout LL_diary_camera_popup = (LinearLayout) popuoView.findViewById(R.id.LL_diary_camera_popup);
+        LL_diary_camera_popup.setBackgroundResource(ThemeManager.getInstance().getPopupBgResource());
+    }
+
     private void clearDiary() {
         EDT_diary_title.setText("");
         EDT_diary_content.setText("");
@@ -511,21 +540,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 initLocationIcon();
                 break;
             case R.id.IV_diary_photo:
-//                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
-//                    if (camreaNameList.size() < 5) {
-//                        String cameraIntenttempFileName = "/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-//                        camreaNameList.add(cameraIntenttempFileName);
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        File tmpFile = new File(fileManager.getTempDiaryDir(), cameraIntenttempFileName);
-//                        Uri outputFileUri = Uri.fromFile(tmpFile);
-//                        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-//                        startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
-//                    } else {
-//                        Toast.makeText(getActivity(), "目前只支援最多5張照片", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//
-                fileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
+                photoPopupWindow.showAsDropDown(RL_diary_edit_bar, RL_diary_edit_bar.getWidth() / 2, RL_diary_edit_bar.getHeight());
                 break;
             case R.id.IV_diary_clear:
                 clearDiary();
@@ -539,6 +554,25 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.IV_diary_camera_add_a_photo:
+                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
+                    if (imageNameList.size() < 5) {
+                        String cameraIntenttempFileName = "/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+                        imageNameList.add(cameraIntenttempFileName);
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File tmpFile = new File(fileManager.getTempDiaryDir(), cameraIntenttempFileName);
+                        Uri outputFileUri = Uri.fromFile(tmpFile);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                        startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
+                    } else {
+                        Toast.makeText(getActivity(), "目前只支援最多5張照片", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                break;
+            case R.id.IV_diary_camera_select_a_photo:
+                fileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
                 break;
         }
     }

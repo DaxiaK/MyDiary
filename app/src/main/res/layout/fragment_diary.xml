@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_camera_enhance_white_24dp" />
+            android:src="@drawable/ic_photo_camera_white_24dp" />
 
         <ImageView
             android:id="@+id/IV_diary_location"
