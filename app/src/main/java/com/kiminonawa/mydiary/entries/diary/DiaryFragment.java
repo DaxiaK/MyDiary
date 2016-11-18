@@ -2,21 +2,28 @@ package com.kiminonawa.mydiary.entries.diary;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,18 +39,22 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 
 
@@ -56,6 +67,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SwipeRefreshLayout.OnRefreshListener, LocationListener {
 
 
+    private String TAG = "DiaryFragment";
+
     /**
      * UI
      */
@@ -67,6 +80,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private EditText EDT_diary_title, EDT_diary_content;
     private ImageView IV_diary_menu, IV_diary_location, IV_diary_photo, IV_diary_delete, IV_diary_clear, IV_diary_save;
 
+    //Test Imageview
+    private ImageView IV_test;
     /**
      * Location
      */
@@ -76,6 +91,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private String locationProvider;
     private DiaryHandler diaryHandler = new DiaryHandler(this);
     private boolean isLocation;
+
     /**
      * Lazy load
      */
@@ -85,6 +101,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * Permission
      */
     private static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_CAMERA_PERMISSION = 2;
 
     /**
      * Time
@@ -93,6 +110,18 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private Date nowDate;
     private TimeTools timeTools;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+    /**
+     * Camera & Select image
+     */
+    private static final int REQUEST_START_CAMERA_CODE = 1;
+    private static final int REQUEST_SELECT_IMAGE_CODE = 2;
+    private List<String> camreaNameList;
+
+    /**
+     * File
+     */
+    private FileManager fileManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +132,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         locationProvider = LocationManager.NETWORK_PROVIDER;
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
+        fileManager = new FileManager(getActivity(), getTopicId());
+        camreaNameList = new ArrayList<>();
     }
 
     @Override
@@ -140,13 +171,17 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         IV_diary_location = (ImageView) rootView.findViewById(R.id.IV_diary_location);
         IV_diary_location.setOnClickListener(this);
         IV_diary_photo = (ImageView) rootView.findViewById(R.id.IV_diary_photo);
+        IV_diary_photo.setOnClickListener(this);
         IV_diary_delete = (ImageView) rootView.findViewById(R.id.IV_diary_delete);
+        IV_diary_delete.setVisibility(View.GONE);
         IV_diary_clear = (ImageView) rootView.findViewById(R.id.IV_diary_clear);
         IV_diary_clear.setOnClickListener(this);
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
         IV_diary_save.setOnClickListener(this);
 
-        IV_diary_delete.setVisibility(View.GONE);
+
+        //Test
+        IV_test = (ImageView) rootView.findViewById(R.id.IV_test);
         return rootView;
     }
 
@@ -179,6 +214,31 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_START_CAMERA_CODE) {
+            if (resultCode == RESULT_OK) {
+                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + camreaNameList.get(camreaNameList.size() - 1));
+                Bitmap thumbnailBitmap = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
+                IV_test.setImageBitmap(thumbnailBitmap);
+                bitmap = null;
+                System.gc();
+            } else {
+                Log.e("test", "cancel");
+                camreaNameList.remove(camreaNameList.size() - 1);
+            }
+        } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    Uri uri = data.getData();
+                    checkFileIsLicit(uri);
+                }
+            }
+        }
     }
 
     @Override
@@ -218,29 +278,149 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     TV_diary_location.setText(noLocation);
                 }
                 break;
+            case REQUEST_CAMERA_PERMISSION:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 0);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                            .setTitle(getString(R.string.diary_location_permission_title))
+                            .setMessage(getString(R.string.diary_location_permission_content))
+                            .setPositiveButton(getString(R.string.dialog_button_ok), null);
+                    builder.show();
+                }
+                break;
         }
     }
 
 
     private boolean checkPermission(final int requestCode) {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        requestCode);
-                return false;
-            } else { // No explanation needed, we can request the permission.
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        requestCode);
-                return false;
-            }
+        switch (requestCode) {
+            case REQUEST_ACCESS_FINE_LOCATION_PERMISSION:
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                requestCode);
+                        return false;
+                    } else { // No explanation needed, we can request the permission.
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                requestCode);
+                        return false;
+                    }
+                }
+                break;
+            case REQUEST_CAMERA_PERMISSION:
+                if (ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.CAMERA)) {
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                requestCode);
+                        return false;
+                    } else { // No explanation needed, we can request the permission.
+                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                requestCode);
+                        return false;
+                    }
+                }
+                break;
         }
         return true;
+    }
+
+    private void checkFileIsLicit(Uri uri) {
+        String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
+
+        try {
+//                InputStream inputStream = getContentResolver().openInputStream(uri);
+//                //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+//                this.bitmap = BitmapFactory.decodeStream(inputStream, null, getBitmapOptions(4));
+
+            Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri, 1920, 1080);
+            int originSize = resizeBmp1.getWidth() * resizeBmp1.getHeight();
+            int scaleSize = 1920 * 1080;
+            double scale = 1;
+
+            if (originSize > scaleSize) {
+                scale = Math.sqrt((double) originSize / (double) scaleSize);
+            }
+            Bitmap bitmap = Bitmap.createScaledBitmap(resizeBmp1,
+                    (int) ((double) resizeBmp1.getWidth() / scale),
+                    (int) ((double) resizeBmp1.getHeight() / scale),
+                    true);
+
+            IV_test.setImageBitmap(bitmap);
+            //inputStream.close();
+            //resizeBmp1.recycle();
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
+        Log.d(TAG, "filename = " + tempFileName);
+    }
+
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+//        if (height*width > reqHeight*reqWidth) {
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight*halfWidth / inSampleSize*inSampleSize) > reqHeight*reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+
+        while ((height * width) / (inSampleSize * inSampleSize) > reqHeight * reqWidth) {
+            inSampleSize *= 2;
+        }
+
+        if ((height * width) / (inSampleSize * inSampleSize) < reqHeight * reqWidth) {
+            inSampleSize /= 2;
+        }
+
+        return inSampleSize;
+    }
+
+    private Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
+
+        InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(inputStream, null, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inPurgeable = true;
+        options.inInputShareable = true;
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        // close the input stream
+        inputStream.close();
+
+        // reopen the input stream
+        inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeStream(inputStream, null, options);
     }
 
 
@@ -329,6 +509,23 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 isLocation = !isLocation;
                 SPFManager.setDiaryLocation(getActivity(), isLocation);
                 initLocationIcon();
+                break;
+            case R.id.IV_diary_photo:
+//                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
+//                    if (camreaNameList.size() < 5) {
+//                        String cameraIntenttempFileName = "/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+//                        camreaNameList.add(cameraIntenttempFileName);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        File tmpFile = new File(fileManager.getTempDiaryDir(), cameraIntenttempFileName);
+//                        Uri outputFileUri = Uri.fromFile(tmpFile);
+//                        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+//                        startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
+//                    } else {
+//                        Toast.makeText(getActivity(), "目前只支援最多5張照片", Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//
+                fileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
                 break;
             case R.id.IV_diary_clear:
                 clearDiary();
