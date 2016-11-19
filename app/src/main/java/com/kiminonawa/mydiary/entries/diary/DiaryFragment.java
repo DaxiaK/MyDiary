@@ -38,6 +38,9 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -47,7 +50,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +64,7 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, LocationListener ,DiaryPhotoDialogFragment.PhotoCallBack{
+        SwipeRefreshLayout.OnRefreshListener, LocationListener, DiaryPhotoDialogFragment.PhotoCallBack {
 
 
     private String TAG = "DiaryFragment";
@@ -71,15 +73,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * UI
      */
     private LinearLayout LL_diary_time_information;
+    private LinearLayout LL_diary_item_content;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private SwipeRefreshLayout SRL_diary_content;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private Spinner SP_diary_weather, SP_diary_mood;
-    private EditText EDT_diary_title, EDT_diary_content;
+    private EditText EDT_diary_title;
     private ImageView IV_diary_menu, IV_diary_location, IV_diary_photo, IV_diary_delete, IV_diary_clear, IV_diary_save;
-
-    //Test Imageview
-    private ImageView IV_test;
 
     /**
      * Location
@@ -111,9 +111,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     /**
-     * diary photo
+     * diary item
      */
-    private List<String> imageNameList;
+    DiaryItemHelper diaryItemHelper;
 
     /**
      * File
@@ -129,8 +129,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         locationProvider = LocationManager.NETWORK_PROVIDER;
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
-        fileManager = new FileManager(getActivity(), getTopicId());
-        imageNameList = new ArrayList<>();
+        fileManager = new FileManager(getActivity());
     }
 
     @Override
@@ -161,8 +160,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
         EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
                 PorterDuff.Mode.SRC_ATOP);
-        EDT_diary_content = (EditText) rootView.findViewById(R.id.EDT_diary_content);
-
+        //For create diary
+        LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
 
         IV_diary_menu = (ImageView) rootView.findViewById(R.id.IV_diary_menu);
         IV_diary_location = (ImageView) rootView.findViewById(R.id.IV_diary_location);
@@ -176,8 +175,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
         IV_diary_save.setOnClickListener(this);
 
-        //Test
-        IV_test = (ImageView) rootView.findViewById(R.id.IV_test);
         return rootView;
     }
 
@@ -188,6 +185,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
+            Log.e("test", "run");
         }
         isCreatedView = true;
     }
@@ -199,6 +197,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
+            diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
+            diaryItemHelper.initDiary(getActivity());
         }
     }
 
@@ -312,77 +312,70 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void checkFileIsLicit(Uri uri) {
-        String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
-        imageNameList.add(tempFileName);
+//        String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
         try {
-//                InputStream inputStream = getContentResolver().openInputStream(uri);
-//                //bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-//                this.bitmap = BitmapFactory.decodeStream(inputStream, null, getBitmapOptions(4));
-
-            Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri, 1920, 1080);
-            int originSize = resizeBmp1.getWidth() * resizeBmp1.getHeight();
-            int scaleSize = 1920 * 1080;
-            double scale = 1;
-
-            if (originSize > scaleSize) {
-                scale = Math.sqrt((double) originSize / (double) scaleSize);
-            }
-            Bitmap bitmap = Bitmap.createScaledBitmap(resizeBmp1,
-                    (int) ((double) resizeBmp1.getWidth() / scale),
-                    (int) ((double) resizeBmp1.getHeight() / scale),
-                    true);
-
-            IV_test.setImageBitmap(bitmap);
+            Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri);
+            //Add photo
+            diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), resizeBmp1));
+            //Add new edittext
+            diaryItemHelper.CreateItem(new DiaryText(getActivity(), false));
             //inputStream.close();
             //resizeBmp1.recycle();
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
-        Log.d(TAG, "filename = " + tempFileName);
+//        Log.d(TAG, "filename = " + tempFileName);
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
+
+        Log.e("Test", "options = " + options.outHeight + "  , " + options.outWidth);
         int inSampleSize = 1;
 
-//        if (height*width > reqHeight*reqWidth) {
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight*halfWidth / inSampleSize*inSampleSize) > reqHeight*reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
+        if (height > reqHeight || width > reqWidth) {
 
-        while ((height * width) / (inSampleSize * inSampleSize) > reqHeight * reqWidth) {
-            inSampleSize *= 2;
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
+            // with both dimensions larger than or equal to the requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+
+            // This offers some additional logic in case the image has a strange
+            // aspect ratio. For example, a panorama may have a much larger
+            // width than height. In these cases the total pixels might still
+            // end up being too large to fit comfortably in memory, so we should
+            // be more aggressive with sample down the image (=larger inSampleSize).
+
+            final float totalPixels = width * height;
+
+            // Anything more than 2x the requested pixels we'll sample down further
+            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                inSampleSize++;
+            }
         }
-
-        if ((height * width) / (inSampleSize * inSampleSize) < reqHeight * reqWidth) {
-            inSampleSize /= 2;
-        }
-
         return inSampleSize;
     }
 
-    private Bitmap getBitmapFromReturnedImage(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
+    private Bitmap getBitmapFromReturnedImage(Uri selectedImage) throws IOException {
 
         InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeStream(inputStream, null, options);
 
         // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inSampleSize = calculateInSampleSize(options, diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight());
         options.inPurgeable = true;
         options.inInputShareable = true;
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
 
         // close the input stream
         inputStream.close();
@@ -457,7 +450,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void clearDiary() {
         EDT_diary_title.setText("");
-        EDT_diary_content.setText("");
     }
 
     private void saveDiary() {
@@ -468,7 +460,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
         dbManager.insertDiary(calendar.getTimeInMillis(),
-                EDT_diary_title.getText().toString(), EDT_diary_content.getText().toString(),
+                EDT_diary_title.getText().toString(), "",
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 false, getTopicId(), locationName);
         dbManager.closeDB();
@@ -484,17 +476,21 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 initLocationIcon();
                 break;
             case R.id.IV_diary_photo:
-               if(checkPermission(REQUEST_CAMERA_PERMISSION)){
-                   DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
-                   diaryPhotoDialogFragment.setCallBack(this);
-                   diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
-               }
+                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
+                    if (diaryItemHelper.getNowPhotoCount() < 5) {
+                        DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
+                        diaryPhotoDialogFragment.setCallBack(this);
+                        diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+                    } else {
+                        //Avoiding the OOM , set the MAX item.
+                    }
+                }
                 break;
             case R.id.IV_diary_clear:
                 clearDiary();
                 break;
             case R.id.IV_diary_save:
-                if (EDT_diary_title.length() > 0 && EDT_diary_content.length() > 0) {
+                if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
                     ((DiaryActivity) getActivity()).gotoPage(0);
                 } else if (SRL_diary_content.isRefreshing()) {
@@ -542,7 +538,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void addPhoto(Bitmap bitmap) {
-        IV_test.setImageBitmap(bitmap);
+        //Add photo
+        diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), bitmap));
+        //Add new edittext
+        diaryItemHelper.CreateItem(new DiaryText(getActivity(), false));
+
     }
 
     @Override

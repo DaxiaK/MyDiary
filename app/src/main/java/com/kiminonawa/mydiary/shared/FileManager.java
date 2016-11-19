@@ -30,12 +30,10 @@ public class FileManager {
     private File tempDiaryDir;
     private Context mContext;
     private final static String tempDiaryDirStr = "diary/temp/";
-    private String topicId;
 
-    public FileManager(Context context, long topicId) {
+    public FileManager(Context context) {
         this.mContext = context;
         this.tempDiaryDir = mContext.getExternalFilesDir(tempDiaryDirStr);
-        this.topicId = String.valueOf(topicId);
     }
 
     public File getTempDiaryDir() {

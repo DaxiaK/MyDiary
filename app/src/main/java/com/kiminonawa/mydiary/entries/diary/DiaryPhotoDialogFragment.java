@@ -3,8 +3,10 @@ package com.kiminonawa.mydiary.entries.diary;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.widget.RelativeLayout;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+
+import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -41,12 +45,19 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     private static final int REQUEST_START_CAMERA_CODE = 1;
     private static final int REQUEST_SELECT_IMAGE_CODE = 2;
 
+    /**
+     * File
+     */
+    private FileManager fileManager;
+    private String tempFileName;
+
     private PhotoCallBack callBack;
 
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
+        fileManager = new FileManager(getActivity());
         return dialog;
     }
 
@@ -72,7 +83,8 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
-                callBack.addPhoto((Bitmap) data.getExtras().get("data"));
+                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + tempFileName);
+                callBack.addPhoto(bitmap);
             } else {
                 Log.e("test", "cancel");
             }
@@ -96,8 +108,12 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.IV_diary_photo_add_a_photo:
-                Intent intentCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intentCamera, REQUEST_START_CAMERA_CODE);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                tempFileName = "/" + String.valueOf(System.currentTimeMillis());
+                File tmpFile = new File(fileManager.getTempDiaryDir(), tempFileName);
+                Uri outputFileUri = Uri.fromFile(tmpFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
                 break;
             case R.id.IV_diary_photo_select_a_photo:
                 FileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);

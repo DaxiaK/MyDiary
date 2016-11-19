@@ -59,7 +59,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private ImageView IV_diary_weather, IV_diary_mood;
     private Spinner SP_diary_weather, SP_diary_mood;
 
-    private EditText EDT_diary_title, EDT_diary_content;
+    private EditText EDT_diary_title;
     private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_delete, IV_diary_clear, IV_diary_save;
 
     private boolean isEditMode;
@@ -110,7 +110,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
         EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
                 PorterDuff.Mode.SRC_ATOP);
-        EDT_diary_content = (EditText) rootView.findViewById(R.id.EDT_diary_content);
 
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
@@ -142,7 +141,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dbManager.opeDB();
                 Cursor diaryCursor = dbManager.selectDiaryByDiaryId(diaryId);
                 EDT_diary_title.setText(diaryCursor.getString(2));
-                EDT_diary_content.setText(diaryCursor.getString(3));
+//                EDT_diary_content.setText(diaryCursor.getString(3));
                 setDiaryTime(new Date(diaryCursor.getLong(1)));
                 String locationNmae = diaryCursor.getString(8);
                 if (locationNmae != null && !"".equals(locationNmae)) {
@@ -186,8 +185,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
             EDT_diary_title.setClickable(false);
             EDT_diary_title.setKeyListener(null);
-            EDT_diary_content.setClickable(false);
-            EDT_diary_content.setKeyListener(null);
+//            EDT_diary_content.setClickable(false);
+//            EDT_diary_content.setKeyListener(null);
         }
     }
 
@@ -234,7 +233,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private void updateDiary() {
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.updateDiary(diaryId, EDT_diary_title.getText().toString(), EDT_diary_content.getText().toString(),
+        dbManager.updateDiary(diaryId, EDT_diary_title.getText().toString(),"",
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition());
         dbManager.closeDB();
     }
