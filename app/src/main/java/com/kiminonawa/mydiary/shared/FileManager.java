@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 
 public class FileManager {
 
-    private String TAG = "FileManager";
+    private static final String TAG = "FileManager";
 
     /**
      * The path is :
@@ -78,7 +78,7 @@ public class FileManager {
         return displayName;
     }
 
-    public void startBrowseImageFile(Fragment fragment, int requestCode) {
+    public static void startBrowseImageFile(Fragment fragment, int requestCode) {
         try {
             Intent intentImage = new Intent();
             intentImage.setType("image/*");

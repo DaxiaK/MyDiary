@@ -2,20 +2,16 @@ package com.kiminonawa.mydiary.entries.diary;
 
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,7 +43,6 @@ import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -59,7 +53,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 
 
@@ -69,7 +62,7 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, LocationListener {
+        SwipeRefreshLayout.OnRefreshListener, LocationListener ,DiaryPhotoDialogFragment.PhotoCallBack{
 
 
     private String TAG = "DiaryFragment";
@@ -88,11 +81,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     //Test Imageview
     private ImageView IV_test;
 
-    /**
-     * popup
-     */
-    private PopupWindow photoPopupWindow;
-    private ImageView IV_diary_camera_add_a_photo, IV_diary_camera_select_a_photo;
     /**
      * Location
      */
@@ -123,10 +111,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 
     /**
-     * Camera & Select image
+     * diary photo
      */
-    private static final int REQUEST_START_CAMERA_CODE = 1;
-    private static final int REQUEST_SELECT_IMAGE_CODE = 2;
     private List<String> imageNameList;
 
     /**
@@ -190,7 +176,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
         IV_diary_save.setOnClickListener(this);
 
-
         //Test
         IV_test = (ImageView) rootView.findViewById(R.id.IV_test);
         return rootView;
@@ -203,7 +188,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
-            initPopupWindow();
         }
         isCreatedView = true;
     }
@@ -228,30 +212,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onResume();
     }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_START_CAMERA_CODE) {
-            if (resultCode == RESULT_OK) {
-                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + imageNameList.get(imageNameList.size() - 1));
-                Bitmap thumbnailBitmap = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
-                IV_test.setImageBitmap(thumbnailBitmap);
-                bitmap = null;
-                System.gc();
-            } else {
-                Log.e("test", "cancel");
-                imageNameList.remove(imageNameList.size() - 1);
-            }
-        } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
-            if (resultCode == RESULT_OK) {
-                if (data != null) {
-                    Uri uri = data.getData();
-                    checkFileIsLicit(uri);
-                }
-            }
-        }
-    }
 
     @Override
     public void onStop() {
@@ -494,22 +454,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
-    private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popuoView = inflater.inflate(R.layout.popup_diary_photo, null);
-        photoPopupWindow = new PopupWindow(getActivity());
-        photoPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        photoPopupWindow.setTouchable(true);
-        photoPopupWindow.setOutsideTouchable(true);
-        photoPopupWindow.setContentView(popuoView);
-
-        IV_diary_camera_add_a_photo = (ImageView) popuoView.findViewById(R.id.IV_diary_camera_add_a_photo);
-        IV_diary_camera_add_a_photo.setOnClickListener(this);
-        IV_diary_camera_select_a_photo = (ImageView) popuoView.findViewById(R.id.IV_diary_camera_select_a_photo);
-        IV_diary_camera_select_a_photo.setOnClickListener(this);
-        LinearLayout LL_diary_camera_popup = (LinearLayout) popuoView.findViewById(R.id.LL_diary_camera_popup);
-        LL_diary_camera_popup.setBackgroundResource(ThemeManager.getInstance().getPopupBgResource());
-    }
 
     private void clearDiary() {
         EDT_diary_title.setText("");
@@ -540,7 +484,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 initLocationIcon();
                 break;
             case R.id.IV_diary_photo:
-                photoPopupWindow.showAsDropDown(RL_diary_edit_bar, RL_diary_edit_bar.getWidth() / 2, RL_diary_edit_bar.getHeight());
+               if(checkPermission(REQUEST_CAMERA_PERMISSION)){
+                   DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
+                   diaryPhotoDialogFragment.setCallBack(this);
+                   diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+               }
                 break;
             case R.id.IV_diary_clear:
                 clearDiary();
@@ -554,25 +502,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.IV_diary_camera_add_a_photo:
-                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
-                    if (imageNameList.size() < 5) {
-                        String cameraIntenttempFileName = "/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-                        imageNameList.add(cameraIntenttempFileName);
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File tmpFile = new File(fileManager.getTempDiaryDir(), cameraIntenttempFileName);
-                        Uri outputFileUri = Uri.fromFile(tmpFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                        startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
-                    } else {
-                        Toast.makeText(getActivity(), "目前只支援最多5張照片", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                break;
-            case R.id.IV_diary_camera_select_a_photo:
-                fileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
                 break;
         }
     }
@@ -609,6 +538,16 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    @Override
+    public void addPhoto(Bitmap bitmap) {
+        IV_test.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void selectPhoto(Uri uri) {
+        checkFileIsLicit(uri);
     }
 
     private static class DiaryHandler extends Handler {
