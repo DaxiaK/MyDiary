@@ -44,4 +44,9 @@ public class DiaryText implements IDairyRow {
     public View getView() {
         return EDT_diary_text;
     }
+
+    @Override
+    public String getContent() {
+        return EDT_diary_text.getText().toString();
+    }
 }

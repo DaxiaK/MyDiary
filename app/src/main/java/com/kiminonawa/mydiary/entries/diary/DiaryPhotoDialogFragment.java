@@ -31,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
 public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
     interface PhotoCallBack {
-        void addPhoto(Bitmap bitmap);
+        void addPhoto(Bitmap bitmap, String fileName);
 
         void selectPhoto(Uri uri);
     }
@@ -84,7 +84,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
                 Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + tempFileName);
-                callBack.addPhoto(bitmap);
+                callBack.addPhoto(bitmap, tempFileName);
             } else {
                 Log.e("test", "cancel");
             }

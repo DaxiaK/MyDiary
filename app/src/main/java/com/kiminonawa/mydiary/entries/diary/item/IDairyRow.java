@@ -14,4 +14,5 @@ public interface IDairyRow {
 
     int getType();
     View getView();
+    String getContent();
 }

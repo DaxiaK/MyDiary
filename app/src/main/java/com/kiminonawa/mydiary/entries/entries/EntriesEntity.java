@@ -17,15 +17,18 @@ public class EntriesEntity {
     private boolean hasAttachment;
 
 
-    public EntriesEntity(long id, Date createDate, String title, String summary,
+    public EntriesEntity(long id, Date createDate, String title,
                          int weatherId, int moodId, boolean hasAttachment) {
         this.id = id;
         this.createDate = createDate;
         this.title = title;
-        this.summary = summary;
         this.weatherId = weatherId;
         this.moodId = moodId;
         this.hasAttachment = hasAttachment;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
     }
 
     public long getId() {

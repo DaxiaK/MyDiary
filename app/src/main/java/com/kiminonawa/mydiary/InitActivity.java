@@ -7,6 +7,7 @@ import android.os.Handler;
 
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
@@ -15,6 +16,9 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 
 /**
  * Version History
+ * 20161120
+ * Implement diaryDB v2 , update sample data
+ * ----
  * 20161109
  * Add contacts function in version 10
  * ----
@@ -91,21 +95,14 @@ public class InitActivity extends Activity {
             }
         }
 
-        if (SPFManager.getFirstRun(InitActivity.this)) {
+        if (SPFManager.getVersionCode(InitActivity.this) < 10) {
             //Insert sample topic
-            long diaryId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
-            if (diaryId != -1) {
+            long topicOnDiarySampleId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
+            if (topicOnDiarySampleId != -1) {
                 //Insert sample diary
-                dbManager.insertDiary(1475665800000L, "東京生活3❤",
-                        "There are many coffee shop in Tokyo!",
-                        DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, diaryId, "Tokyo");
-                dbManager.insertDiary(1475241600000L, "No Title",
-                        "My name is TAKI , I am a man!",
-                        DiaryInfo.MOOD_SOSO, DiaryInfo.WEATHER_SUNNY, true, diaryId, "Itomori");
-                dbManager.insertDiary(1475144400000L, "東京生活2",
-                        "Today is second day , I like Tokyo!",
-                        DiaryInfo.MOOD_UNHAPPY, DiaryInfo.WEATHER_CLOUD, false, diaryId, "Tokyo");
-                SPFManager.setFirstRun(InitActivity.this, false);
+                long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
+                        DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
+                dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "HIHI\nQAQ\ndasda\n\n\n\n\nQQQQQQ", diarySampleId);
             }
         }
 

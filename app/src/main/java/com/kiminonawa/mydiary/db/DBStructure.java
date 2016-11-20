@@ -11,17 +11,39 @@ public class DBStructure {
     public static abstract class DiaryEntry implements BaseColumns {
         public static final String TABLE_NAME = "diary_entry";
         public static final String COLUMN_TIME = "diary_time";
-        //TODO Fix the column name
+        //Fix  diary_count -> diary_title in V2
         public static final String COLUMN_TITLE = "diary_count";
-        public static final String COLUMN_RIGHT_TITLE = "diary_title";
         public static final String COLUMN_CONTENT = "diary_content";
         public static final String COLUMN_MOOD = "diary_mood";
         public static final String COLUMN_WEATHER = "diary_weather";
         public static final String COLUMN_ATTACHMENT = "diary_attachment";
         public static final String COLUMN_REF_TOPIC__ID = "diary_ref_topic_id";
         public static final String COLUMN_LOCATION = "diary_location";
-
     }
+
+    public static abstract class DiaryEntry_V2 implements BaseColumns {
+        public static final String TABLE_NAME = "diary_entry_v2";
+        public static final String COLUMN_TIME = "diary_time";
+        public static final String COLUMN_TITLE = "diary_title";
+        public static final String COLUMN_MOOD = "diary_mood";
+        public static final String COLUMN_WEATHER = "diary_weather";
+        public static final String COLUMN_ATTACHMENT = "diary_attachment";
+        public static final String COLUMN_REF_TOPIC__ID = "diary_ref_topic_id";
+        public static final String COLUMN_LOCATION = "diary_location";
+    }
+
+    /**
+     * Type see @IDairyRow
+     */
+    public static abstract class DiaryItemEntry_V2 implements BaseColumns {
+        public static final String TABLE_NAME = "diary_item_entry_v2";
+        public static final String COLUMN_TYPE = "diary_item_type";
+        public static final String COLUMN_POSITION = "diary_item_position";
+        public static final String COLUMN_CONTENT = "diary_item_CONTENT";
+        public static final String COLUMN_REF_DIARY__ID = "item_ref_diary_id";
+    }
+
+
 
     public static abstract class TopicEntry implements BaseColumns {
         public static final String TABLE_NAME = "topic_entry";

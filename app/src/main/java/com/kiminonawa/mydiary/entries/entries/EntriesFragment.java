@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
@@ -107,16 +108,31 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         entriesList.clear();
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        Cursor diaryCursor = dbManager.selectDiary(getTopicId());
+        //Select diary info
+        Cursor diaryCursor = dbManager.selectDiaryInfo(getTopicId());
         for (int i = 0; i < diaryCursor.getCount(); i++) {
+            //get diary info
             String title = diaryCursor.getString(2);
-            String content = diaryCursor.getString(3);
-            entriesList.add(
-                    new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
-                            title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
-                            content.substring(0, Math.min(MAX_TEXT_LENGTH, content.length())),
-                            diaryCursor.getInt(5), diaryCursor.getInt(4),
-                            diaryCursor.getInt(6) > 0 ? true : false));
+            EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
+                    title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
+                    diaryCursor.getInt(5), diaryCursor.getInt(4),
+                    diaryCursor.getInt(6) > 0 ? true : false);
+
+            //select first diary content
+            Cursor diaryContentCursor = dbManager.selectDiaryContent(entity.getId());
+            if (diaryContentCursor != null) {
+                String summary = "";
+                //Check content Type
+                if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
+                    summary = "圖片";
+                } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
+                    summary = diaryContentCursor.getString(3).substring(0, Math.min(MAX_TEXT_LENGTH, title.length()));
+                }
+                entity.setSummary(summary);
+                diaryContentCursor.close();
+            }
+            //Add entity
+            entriesList.add(entity);
             diaryCursor.moveToNext();
         }
         diaryCursor.close();

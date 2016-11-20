@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
+import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
@@ -15,6 +17,9 @@ import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 4 by Daxia:
+     * design db DiaryEntry  -> DiaryEntry_v2
+     * --------------
      * Version 3 by Daxia:
      * Add local contacts table
      * Add memo subtitle row.
@@ -60,6 +65,29 @@ public class DBHelper extends SQLiteOpenHelper {
                     FOREIGN + " (" + DiaryEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
                     " )";
 
+    private static final String SQL_CREATE_DIARY_ENTRIES_V2 =
+            "CREATE TABLE " + DiaryEntry_V2.TABLE_NAME + " (" +
+                    DiaryEntry_V2._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
+                    DiaryEntry_V2.COLUMN_TIME + INTEGER_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_MOOD + INTEGER_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_WEATHER + INTEGER_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_ATTACHMENT + INTEGER_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                    DiaryEntry_V2.COLUMN_LOCATION + TEXT_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + DiaryEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
+                    " )";
+
+    private static final String SQL_CREATE_DIARY_ITEM_ENTRIES_V2 =
+            "CREATE TABLE " + DiaryItemEntry_V2.TABLE_NAME + " (" +
+                    DiaryItemEntry_V2._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
+                    DiaryItemEntry_V2.COLUMN_TYPE + INTEGER_TYPE + COMMA_SEP +
+                    DiaryItemEntry_V2.COLUMN_POSITION + INTEGER_TYPE + COMMA_SEP +
+                    DiaryItemEntry_V2.COLUMN_CONTENT + TEXT_TYPE + COMMA_SEP +
+                    DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + INTEGER_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + DBStructure.DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + ")" + REFERENCES + DiaryEntry.TABLE_NAME + "(" + DiaryEntry._ID + ")" +
+                    " )";
+
     private static final String SQL_CREATE_MEMO_ENTRIES =
             "CREATE TABLE " + MemoEntry.TABLE_NAME + " (" +
                     MemoEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
@@ -87,7 +115,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TOPIC_ENTRIES);
-        db.execSQL(SQL_CREATE_DIARY_ENTRIES);
+
+        //Diary V2 work from db version 4
+        db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
+        db.execSQL(SQL_CREATE_DIARY_ITEM_ENTRIES_V2);
+
         db.execSQL(SQL_CREATE_MEMO_ENTRIES);
         db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
     }
@@ -109,7 +141,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(addTopicSubtitleSql);
                 db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
             }
-
+            if (oldVersion < 4) {
+                //TODO make it work right!
+            }
             //Check update success
             db.setTransactionSuccessful();
             db.endTransaction();

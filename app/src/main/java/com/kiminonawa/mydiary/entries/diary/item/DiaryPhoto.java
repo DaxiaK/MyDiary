@@ -12,9 +12,11 @@ import android.widget.ImageView;
 public class DiaryPhoto implements IDairyRow {
 
     private ImageView IV_diary_photo;
+    private String photoFileName;
 
 
-    public DiaryPhoto(Context context, Bitmap bitmap) {
+    public DiaryPhoto(Context context, Bitmap bitmap, String photoFileName) {
+        this.photoFileName = photoFileName;
         createEditText(context, bitmap);
 
     }
@@ -34,4 +36,10 @@ public class DiaryPhoto implements IDairyRow {
     public View getView() {
         return IV_diary_photo;
     }
+
+    @Override
+    public String getContent() {
+        return photoFileName;
+    }
+
 }

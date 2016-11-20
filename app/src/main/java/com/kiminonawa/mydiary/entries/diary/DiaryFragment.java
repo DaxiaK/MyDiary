@@ -312,11 +312,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void checkFileIsLicit(Uri uri) {
-//        String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
+        String tempFileName = fileManager.getFileNameByUri(getActivity(), uri);
         try {
             Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri);
             //Add photo
-            diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), resizeBmp1));
+            diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), resizeBmp1, fileManager.getFileNameByUri(getActivity(), uri)));
             //Add new edittext
             diaryItemHelper.CreateItem(new DiaryText(getActivity(), false));
             //inputStream.close();
@@ -324,7 +324,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
-//        Log.d(TAG, "filename = " + tempFileName);
+        Log.d(TAG, "filename = " + tempFileName);
     }
 
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -459,10 +459,18 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.insertDiary(calendar.getTimeInMillis(),
-                EDT_diary_title.getText().toString(), "",
+        //Save info
+        long diaryInfoId = dbManager.insertDiaryInfo(calendar.getTimeInMillis(),
+                EDT_diary_title.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 false, getTopicId(), locationName);
+        //Save content
+        if (diaryInfoId != -1) {
+            for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
+                dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
+                        , diaryItemHelper.get(i).getContent(), diaryInfoId);
+            }
+        }
         dbManager.closeDB();
         clearDiary();
     }
@@ -537,9 +545,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     @Override
-    public void addPhoto(Bitmap bitmap) {
+    public void addPhoto(Bitmap bitmap, String fileName) {
         //Add photo
-        diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), bitmap));
+        diaryItemHelper.CreateItem(new DiaryPhoto(getActivity(), bitmap, fileName));
         //Add new edittext
         diaryItemHelper.CreateItem(new DiaryText(getActivity(), false));
 
