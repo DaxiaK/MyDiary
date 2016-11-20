@@ -140,7 +140,7 @@ public class DBManager {
                 this.createDiaryContentCV(type, position, content, diaryId));
     }
 
-//    public long updateDiary(long diaryId, String title, String content,
+    //    public long updateDiary(long diaryId, String title, String content,
 //                            int mood, int weather) {
 //        ContentValues values = new ContentValues();
 //        values.put(DiaryEntry.COLUMN_TITLE, title);
@@ -163,11 +163,29 @@ public class DBManager {
                 , new String[]{String.valueOf(diaryId)});
     }
 
-    public long delAllDiaryInTopic(long topicId) {
-        return db.delete(
-                DiaryEntry_V2.TABLE_NAME,
-                DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?"
-                , new String[]{String.valueOf(topicId)});
+    //TODO Test this sql
+    public void delAllDiaryInTopic(long topicId) {
+        db.execSQL("DELETE FROM " + DiaryEntry_V2.TABLE_NAME
+                + " WHERE " + DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " IN ("
+                + " SELECT " + " * "
+                + " FROM " + DiaryEntry_V2.TABLE_NAME + " de "
+                + " LEFT OUTER JOIN " + DiaryItemEntry_V2.TABLE_NAME + " die "
+                + " ON " + " de." + DiaryEntry_V2._ID + " = " + " die." + DiaryItemEntry_V2.COLUMN_REF_DIARY__ID
+                + " WHERE " + " de." + DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = '" + topicId + "' ) ");
+    }
+
+    public Cursor test(long topicId) {
+        Cursor c = db.rawQuery(" SELECT " + " de." + DiaryEntry_V2._ID + " , " + " de." + DiaryEntry_V2.COLUMN_REF_TOPIC__ID
+                        + " FROM " + DiaryEntry_V2.TABLE_NAME + " de "
+                        + " LEFT OUTER JOIN " + DiaryItemEntry_V2.TABLE_NAME + " die "
+                        + " ON " + " de." + DiaryEntry_V2._ID + " = " + " die." + DiaryItemEntry_V2.COLUMN_REF_DIARY__ID
+                        + " WHERE " + " de." + DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = '" + topicId + "'  "
+                , null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        showCursor(c);
+        return c;
     }
 
 
