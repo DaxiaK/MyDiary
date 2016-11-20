@@ -109,7 +109,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
         switch (v.getId()) {
             case R.id.IV_diary_photo_add_a_photo:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                tempFileName = "/" + String.valueOf(System.currentTimeMillis());
+                tempFileName = "/" + fileManager.createRandomFileName();
                 File tmpFile = new File(fileManager.getTempDiaryDir(), tempFileName);
                 Uri outputFileUri = Uri.fromFile(tmpFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);

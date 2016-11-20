@@ -1,17 +1,17 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
-import android.content.Context;
 import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Created by daxia on 2016/11/19.
  */
 
-public class DiaryItemHelper {
+public class DiaryItemHelper extends Observable {
 
     private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
@@ -30,6 +30,11 @@ public class DiaryItemHelper {
         Log.e("test", "height = " + visibleHeight + " width = " + visibleWidth);
     }
 
+    /**
+     * Observable
+     */
+
+
     public int getVisibleHeight() {
         return visibleHeight;
     }
@@ -38,23 +43,30 @@ public class DiaryItemHelper {
         return visibleWidth;
     }
 
-    public void initDiary(Context context) {
+    public void initDiary() {
         //Remove old data
         itemContentLayout.removeAllViews();
         diaryItemList.clear();
         nowPhotoCount = 0;
-        //Add defult edittest item
-        CreateItem(new DiaryText(context, true));
+        setChanged();
+        notifyObservers();
     }
 
-    public void CreateItem(IDairyRow diaryItem) {
+    public void createItem(IDairyRow diaryItem) {
         if (diaryItem instanceof DiaryPhoto) {
             nowPhotoCount++;
             Log.e("test", "count - " + nowPhotoCount);
         }
+        if (diaryItemList.size() == 0) {
+            setChanged();
+            notifyObservers();
+        }
         diaryItemList.add(diaryItem);
         itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
+        setChanged();
+        notifyObservers();
     }
+
 
     public int getNowPhotoCount() {
         return nowPhotoCount;
@@ -68,5 +80,16 @@ public class DiaryItemHelper {
         return diaryItemList.get(position);
     }
 
+    public void remove(int position) {
+        if (diaryItemList.get(position) instanceof DiaryPhoto) {
+            nowPhotoCount--;
+            Log.e("test", "count - " + nowPhotoCount);
+        }
+        diaryItemList.remove(position);
+        if (diaryItemList.size() < 0) {
+            setChanged();
+            notifyObservers();
+        }
+    }
 
 }

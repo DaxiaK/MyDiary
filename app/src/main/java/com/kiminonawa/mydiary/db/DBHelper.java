@@ -85,7 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     DiaryItemEntry_V2.COLUMN_POSITION + INTEGER_TYPE + COMMA_SEP +
                     DiaryItemEntry_V2.COLUMN_CONTENT + TEXT_TYPE + COMMA_SEP +
                     DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + INTEGER_TYPE + COMMA_SEP +
-                    FOREIGN + " (" + DBStructure.DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + ")" + REFERENCES + DiaryEntry.TABLE_NAME + "(" + DiaryEntry._ID + ")" +
+                    FOREIGN + " (" + DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + ")" + REFERENCES + DiaryEntry_V2.TABLE_NAME + "(" + DiaryEntry_V2._ID + ")" +
                     " )";
 
     private static final String SQL_CREATE_MEMO_ENTRIES =

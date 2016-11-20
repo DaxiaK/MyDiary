@@ -33,7 +33,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
     private TextView TV_entries_count;
     private RelativeLayout RL_entries_content, RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
-    private ImageView IV_entries_edit;
+    private ImageView IV_entries_edit, IV_entries_photo;
     private final static int MAX_TEXT_LENGTH = 15;
 
     /**
@@ -60,6 +60,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
 
         IV_entries_edit = (ImageView) rootView.findViewById(R.id.IV_entries_edit);
         IV_entries_edit.setOnClickListener(this);
+        IV_entries_photo = (ImageView) rootView.findViewById(R.id.IV_entries_photo);
         TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
         TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
@@ -109,24 +110,25 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
         //Select diary info
-        Cursor diaryCursor = dbManager.selectDiaryInfo(getTopicId());
+        Cursor diaryCursor = dbManager.selectDiaryList(getTopicId());
         for (int i = 0; i < diaryCursor.getCount(); i++) {
             //get diary info
             String title = diaryCursor.getString(2);
             EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
                     title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
-                    diaryCursor.getInt(5), diaryCursor.getInt(4),
-                    diaryCursor.getInt(6) > 0 ? true : false);
+                    diaryCursor.getInt(4), diaryCursor.getInt(3),
+                    diaryCursor.getInt(5) > 0 ? true : false);
 
             //select first diary content
-            Cursor diaryContentCursor = dbManager.selectDiaryContent(entity.getId());
+            Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(entity.getId());
             if (diaryContentCursor != null) {
                 String summary = "";
                 //Check content Type
                 if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
-                    summary = "圖片";
+                    summary = getString(R.string.entries_summary_photo);
                 } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
-                    summary = diaryContentCursor.getString(3).substring(0, Math.min(MAX_TEXT_LENGTH, title.length()));
+                    summary = diaryContentCursor.getString(3)
+                            .substring(0, Math.min(MAX_TEXT_LENGTH, diaryContentCursor.getString(3).length()));
                 }
                 entity.setSummary(summary);
                 diaryContentCursor.close();
@@ -173,10 +175,13 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.IV_entries_edit: {
+            case R.id.IV_entries_edit:
                 setEditModeUI(entriesAdapter.isEditMode());
                 break;
-            }
+            case R.id.IV_entries_photo:
+                //TODO show some thing like album
+                break;
+
         }
     }
 }

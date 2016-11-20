@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.gui.DeleteDialogFragment;
 
 /**
@@ -26,10 +27,10 @@ public class DiaryDeleteDialogFragment extends DeleteDialogFragment {
 
 
     private void deleteDiary() {
-//        DBManager dbManager = new DBManager(getActivity());
-//        dbManager.opeDB();
-//        dbManager.delDiary(diaryId);
-//        dbManager.closeDB();
+        DBManager dbManager = new DBManager(getActivity());
+        dbManager.opeDB();
+        dbManager.delDiary(diaryId);
+        dbManager.closeDB();
     }
 
     @Override

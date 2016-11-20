@@ -11,6 +11,7 @@ import android.util.Log;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 
 /**
  * Created by daxia on 2016/11/18.
@@ -38,6 +39,20 @@ public class FileManager {
 
     public File getTempDiaryDir() {
         return tempDiaryDir;
+    }
+
+    public void clearTempDiaryDir() {
+        File tempDirFile = mContext.getExternalFilesDir(tempDiaryDirStr);
+        if (tempDirFile.isDirectory()) {
+            String[] children = tempDirFile.list();
+            for (int i = 0; i < children.length; i++) {
+                new File(tempDirFile, children[i]).delete();
+            }
+        }
+    }
+
+    public String getFileRootDir() {
+        return mContext.getExternalFilesDir("").getPath();
     }
 
 
@@ -85,6 +100,10 @@ public class FileManager {
         } catch (android.content.ActivityNotFoundException ex) {
             Log.e(TAG, ex.toString());
         }
+    }
+
+    public static String createRandomFileName() {
+        return UUID.randomUUID().toString();
     }
 
 }

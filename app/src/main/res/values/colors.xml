@@ -24,6 +24,7 @@
     <!--entries-->
     <color name="theme_dark_color_taki">#70A3B4</color>
     <color name="theme_dark_color_mistuha">#b3371f</color>
+    <color name="diary_photo_layout_delete_bg">#9D9FA2</color>
 
     <!--radio_button-->
     <color name="radio_button_unselected_color">@android:color/transparent</color>

@@ -19,7 +19,6 @@
 
     <string name="toast_topic_empty">タイトルは空です!</string>
 
-
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
     <string name="dialog_button_cancel">キャンセル</string>
@@ -35,6 +34,7 @@
     <string name="entries_count">%1$d 項目</string>
     <string name="entries_edit_view">以下の項目をクリックすると、編集します</string>
     <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
+    <string name="entries_summary_photo">**フォト**</string>
 
     <!--Diary -->
     <string name="diary_no_location">位置情報が取得できない</string>

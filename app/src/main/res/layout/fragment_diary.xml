@@ -258,28 +258,43 @@
             </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/LL_diary_item_content"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <!--<ImageView-->
-                <!--android:id="@+id/IV_test"-->
-                <!--android:layout_width="200dp"-->
-                <!--android:layout_height="200dp" />-->
+                <TextView
+                    android:id="@+id/TV_diary_item_content_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/diary_content_hint"
+                    android:textSize="30dp"
+                    android:visibility="gone" />
 
-                <!--<EditText-->
-                <!--android:id="@+id/EDT_diary_content"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@android:color/transparent"-->
-                <!--android:gravity="top|left"-->
-                <!--android:hint="@string/diary_content_hint"-->
-                <!--android:padding="2dp"-->
-                <!--android:textColor="@android:color/black" />-->
+                <LinearLayout
+                    android:id="@+id/LL_diary_item_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/IV_test"-->
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="200dp" />-->
+
+                    <!--<EditText-->
+                    <!--android:id="@+id/EDT_diary_content"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:background="@android:color/transparent"-->
+                    <!--android:gravity="top|left"-->
+                    <!--android:hint="@string/diary_content_hint"-->
+                    <!--android:padding="2dp"-->
+                    <!--android:textColor="@android:color/black" />-->
+
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
 
     </ScrollView>

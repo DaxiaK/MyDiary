@@ -39,7 +39,7 @@ public class DBStructure {
         public static final String TABLE_NAME = "diary_item_entry_v2";
         public static final String COLUMN_TYPE = "diary_item_type";
         public static final String COLUMN_POSITION = "diary_item_position";
-        public static final String COLUMN_CONTENT = "diary_item_CONTENT";
+        public static final String COLUMN_CONTENT = "diary_item_content";
         public static final String COLUMN_REF_DIARY__ID = "item_ref_diary_id";
     }
 

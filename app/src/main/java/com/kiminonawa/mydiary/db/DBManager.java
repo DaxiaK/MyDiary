@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
@@ -157,22 +156,22 @@ public class DBManager {
 //    }
 //
 //
-//    public long delDiary(long diaryId) {
-//        return db.delete(
-//                DiaryEntry.TABLE_NAME,
-//                DiaryEntry._ID + " = ?"
-//                , new String[]{String.valueOf(diaryId)});
-//    }
+    public long delDiary(long diaryId) {
+        return db.delete(
+                DiaryEntry_V2.TABLE_NAME,
+                DiaryEntry_V2._ID + " = ?"
+                , new String[]{String.valueOf(diaryId)});
+    }
 
     public long delAllDiaryInTopic(long topicId) {
         return db.delete(
-                DiaryEntry.TABLE_NAME,
-                DiaryEntry.COLUMN_REF_TOPIC__ID + " = ?"
+                DiaryEntry_V2.TABLE_NAME,
+                DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?"
                 , new String[]{String.valueOf(topicId)});
     }
 
 
-    public Cursor selectDiaryInfo(long topicId) {
+    public Cursor selectDiaryList(long topicId) {
         Cursor c = db.query(DiaryEntry_V2.TABLE_NAME, null, DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
                 DiaryEntry_V2.COLUMN_TIME + " DESC", null);
         if (c != null) {
@@ -181,22 +180,24 @@ public class DBManager {
         return c;
     }
 
-    public Cursor selectDiaryContent(long diaryId) {
-        Cursor c = db.query(DiaryItemEntry_V2.TABLE_NAME, null, DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + " = ?", new String[]{String.valueOf(diaryId)}, null, null,
-                DiaryItemEntry_V2.COLUMN_POSITION + " DESC", null);
+    public Cursor selectDiaryInfoByDiaryId(long diaryId) {
+        Cursor c = db.query(DiaryEntry_V2.TABLE_NAME, null, DiaryEntry_V2._ID + " = ?", new String[]{String.valueOf(diaryId)},
+                null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
     }
 
-//    public Cursor selectDiaryByDiaryId(long diaryId) {
-//        Cursor c = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry._ID + " = ?", new String[]{String.valueOf(diaryId)}, null, null, null);
-//        if (c != null) {
-//            c.moveToFirst();
-//        }
-//        return c;
-//    }
+    public Cursor selectDiaryContentByDiaryId(long diaryId) {
+        Cursor c = db.query(DiaryItemEntry_V2.TABLE_NAME, null, DiaryItemEntry_V2._ID + " = ?", new String[]{String.valueOf(diaryId)},
+                null, null, DiaryItemEntry_V2.COLUMN_POSITION + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
 
     private ContentValues createDiaryInfoCV(long time, String title,
                                             int mood, int weather, boolean attachment, long refTopicId,

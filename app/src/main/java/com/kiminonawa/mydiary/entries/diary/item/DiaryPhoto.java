@@ -5,26 +5,31 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
+
 /**
  * Created by daxia on 2016/11/19.
  */
 
 public class DiaryPhoto implements IDairyRow {
 
-    private ImageView IV_diary_photo;
+    private DiaryPhotoLayout DiaryPhotoLayout;
     private String photoFileName;
 
 
-    public DiaryPhoto(Context context, Bitmap bitmap, String photoFileName) {
+    public DiaryPhoto(Context context, Bitmap bitmap, String photoFileName, int position, View.OnClickListener clickListener) {
         this.photoFileName = photoFileName;
-        createEditText(context, bitmap);
-
+        createPhoto(context, bitmap);
+        DiaryPhotoLayout.setDeleteOnClick(clickListener,position);
     }
 
-    private void createEditText(Context context, Bitmap bitmap) {
-        IV_diary_photo = new ImageView(context);
-        IV_diary_photo.setImageBitmap(bitmap);
-        IV_diary_photo.setAdjustViewBounds(true);
+    private void createPhoto(Context context, Bitmap bitmap) {
+        DiaryPhotoLayout = new DiaryPhotoLayout(context);
+        DiaryPhotoLayout.setPhotoBitmap(bitmap);
+    }
+
+    public ImageView getPhoto() {
+        return DiaryPhotoLayout.getPhoto();
     }
 
     @Override
@@ -34,7 +39,7 @@ public class DiaryPhoto implements IDairyRow {
 
     @Override
     public View getView() {
-        return IV_diary_photo;
+        return DiaryPhotoLayout;
     }
 
     @Override

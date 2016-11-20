@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.entries;
 
 import android.app.Dialog;
+import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -138,20 +139,19 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             if (diaryId != -1) {
                 DBManager dbManager = new DBManager(getActivity());
                 dbManager.opeDB();
-//                Cursor diaryCursor = dbManager.selectDiaryByDiaryId(diaryId);
-//                EDT_diary_title.setText(diaryCursor.getString(2));
-////                EDT_diary_content.setText(diaryCursor.getString(3));
-//                setDiaryTime(new Date(diaryCursor.getLong(1)));
-//                String locationNmae = diaryCursor.getString(8);
-//                if (locationNmae != null && !"".equals(locationNmae)) {
-//                    TV_diary_location.setText(locationNmae);
-//                    IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
-//                } else {
-//                    TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
-//                    IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
-//                }
-//                setIcon(diaryCursor.getInt(4), diaryCursor.getInt(5));
-//                diaryCursor.close();
+                Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
+                EDT_diary_title.setText(diaryInfoCursor.getString(2));
+                setDiaryTime(new Date(diaryInfoCursor.getLong(1)));
+                String locationName = diaryInfoCursor.getString(7);
+                if (locationName != null && !"".equals(locationName)) {
+                    TV_diary_location.setText(locationName);
+                    IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
+                } else {
+                    TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
+                    IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
+                }
+                setIcon(diaryInfoCursor.getInt(4), diaryInfoCursor.getInt(5));
+                diaryInfoCursor.close();
                 dbManager.closeDB();
             }
         } catch (NullPointerException e) {
