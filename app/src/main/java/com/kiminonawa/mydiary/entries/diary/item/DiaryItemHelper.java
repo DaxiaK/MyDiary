@@ -60,12 +60,12 @@ public class DiaryItemHelper extends Observable {
             nowPhotoCount++;
             Log.e("test", "count - " + nowPhotoCount);
         }
-        if (diaryItemList.size() == 0) {
+        diaryItemList.add(diaryItem);
+        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
+        if (diaryItemList.size() == 1) {
             setChanged();
             notifyObservers();
         }
-        diaryItemList.add(diaryItem);
-        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
     }
 
     public void createItem(IDairyRow diaryItem, int position) {
@@ -73,12 +73,13 @@ public class DiaryItemHelper extends Observable {
             nowPhotoCount++;
             Log.e("test", "count - " + nowPhotoCount);
         }
-        if (diaryItemList.size() == 0) {
+        diaryItemList.add(position, diaryItem);
+        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView(), position);
+        if (diaryItemList.size() == 1) {
             setChanged();
             notifyObservers();
         }
-        diaryItemList.add(position, diaryItem);
-        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView(), position);
+
     }
 
 
@@ -100,7 +101,7 @@ public class DiaryItemHelper extends Observable {
             Log.e("test", "count - " + nowPhotoCount);
         }
         diaryItemList.remove(position);
-        if (diaryItemList.size() < 0) {
+        if (diaryItemList.size() == 0) {
             setChanged();
             notifyObservers();
         }

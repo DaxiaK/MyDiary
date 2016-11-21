@@ -28,12 +28,15 @@ public class DiaryText implements IDairyRow {
         EDT_diary_text.setTextColor(Color.BLACK);
         EDT_diary_text.setBackgroundColor(Color.TRANSPARENT);
         EDT_diary_text.setGravity(Gravity.TOP | Gravity.LEFT);
-        //2dp
+        //2dp paddding
         int padding = ViewTools.dpToPixel(context.getResources(), 2);
         EDT_diary_text.setPadding(padding, padding, padding, padding);
         EDT_diary_text.requestFocus();
     }
 
+    public void setPositionTag(int positionTag) {
+        EDT_diary_text.setTag(positionTag);
+    }
 
     @Override
     public void setContent(String content) {
