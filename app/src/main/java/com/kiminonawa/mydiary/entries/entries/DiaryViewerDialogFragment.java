@@ -13,14 +13,21 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
 import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.gui.DeleteDialogFragment;
@@ -60,14 +67,17 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private Spinner SP_diary_weather, SP_diary_mood;
 
     private EditText EDT_diary_title;
+    private LinearLayout LL_diary_item_content;
     private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_delete, IV_diary_clear, IV_diary_save;
 
     private boolean isEditMode;
 
     /**
-     * Info
+     * diary content & info
      */
     private long diaryId;
+    private DiaryItemHelper diaryItemHelper;
+    private FileManager fileManager;
 
 
     //TODO Make this dialog's background has radius.
@@ -117,6 +127,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
 
+        LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
+
 
         IV_diary_close_dialog = (ImageView) rootView.findViewById(R.id.IV_diary_close_dialog);
         IV_diary_close_dialog.setVisibility(View.VISIBLE);
@@ -128,6 +140,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
 
         initView(rootView);
+        diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
         return rootView;
     }
 
@@ -137,6 +150,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         try {
             diaryId = getArguments().getLong("diaryId", -1L);
             if (diaryId != -1) {
+                fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 DBManager dbManager = new DBManager(getActivity());
                 dbManager.opeDB();
                 Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
@@ -152,6 +166,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 }
                 setIcon(diaryInfoCursor.getInt(4), diaryInfoCursor.getInt(5));
                 diaryInfoCursor.close();
+                //Get diary detail
+                loadDiaryItemContent(dbManager);
                 dbManager.closeDB();
             }
         } catch (NullPointerException e) {
@@ -200,6 +216,24 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         SP_diary_weather.setAdapter(weatherArrayAdapter);
     }
 
+    private void loadDiaryItemContent(DBManager dbManager) {
+        Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(diaryId);
+        //TODO make flow is only using iDiaryRow
+        for (int i = 0; i < diaryContentCursor.getCount(); i++) {
+            if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
+                DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity(), diaryContentCursor.getInt(2), this);
+                diaryPhoto.setContent(fileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3));
+                diaryItemHelper.createItem(diaryPhoto);
+            } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setContent(diaryContentCursor.getString(3));
+                diaryItemHelper.createItem(diaryText);
+            }
+            diaryContentCursor.moveToNext();
+        }
+        diaryContentCursor.close();
+    }
+
 
     private void setDiaryTime(Date diaryDate) {
         Calendar calendar = Calendar.getInstance();
@@ -226,7 +260,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     public void setCallBack(DiaryViewerCallback callback) {
         this.callback = callback;
     }
-
 
 
     private void updateDiary() {

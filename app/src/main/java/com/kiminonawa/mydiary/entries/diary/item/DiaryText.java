@@ -26,13 +26,16 @@ public class DiaryText implements IDairyRow {
         EDT_diary_text.setTextColor(Color.BLACK);
         EDT_diary_text.setBackgroundColor(Color.TRANSPARENT);
         EDT_diary_text.setGravity(Gravity.TOP | Gravity.LEFT);
-        //Default is 5 line
-        EDT_diary_text.setText("\n\n\n\n\n");
         //2dp
         int padding = ViewTools.dpToPixel(context.getResources(), 2);
         EDT_diary_text.setPadding(padding, padding, padding, padding);
         EDT_diary_text.requestFocus();
+    }
 
+
+    @Override
+    public void setContent(String content) {
+        EDT_diary_text.setText(content);
     }
 
     @Override

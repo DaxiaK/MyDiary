@@ -330,8 +330,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         try {
             Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri);
             //Add photo
-            diaryItemHelper.createItem(new DiaryPhoto(getActivity(), resizeBmp1, fileManager.createRandomFileName(),
-                    diaryItemHelper.getItemSize(), this));
+            DiaryPhoto diaryPhoto =new DiaryPhoto(getActivity(),  diaryItemHelper.getItemSize(), this);
+            diaryPhoto.setPhoto(resizeBmp1, fileManager.createRandomFileName());
+            diaryItemHelper.createItem(diaryPhoto);
             //Add new edittext
             diaryItemHelper.createItem(new DiaryText(getActivity()));
             //inputStream.close();
@@ -468,7 +469,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void saveDiary() {
-        //Save text
+        //Create locationName
         String locationName = TV_diary_location.getText().toString();
         if (noLocation.equals(locationName)) {
             locationName = "";
@@ -615,7 +616,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void addPhoto(Bitmap bitmap, String fileName) {
         //Add photo
-        diaryItemHelper.createItem(new DiaryPhoto(getActivity(), bitmap, fileName, diaryItemHelper.getItemSize(), this));
+        DiaryPhoto diaryPhoto =new DiaryPhoto(getActivity(),  diaryItemHelper.getItemSize(), this);
+        diaryPhoto.setPhoto(bitmap, fileManager.createRandomFileName());
+        diaryItemHelper.createItem(diaryPhoto);
         //Add new edittext
         diaryItemHelper.createItem(new DiaryText(getActivity()));
 

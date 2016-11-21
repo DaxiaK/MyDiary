@@ -175,7 +175,7 @@ public class DBManager {
     }
 
     public Cursor test(long topicId) {
-        Cursor c = db.rawQuery(" SELECT " + " de." + DiaryEntry_V2._ID + " , " + " de." + DiaryEntry_V2.COLUMN_REF_TOPIC__ID
+        Cursor c = db.rawQuery(" SELECT " + " de." + DiaryEntry_V2.COLUMN_REF_TOPIC__ID
                         + " FROM " + DiaryEntry_V2.TABLE_NAME + " de "
                         + " LEFT OUTER JOIN " + DiaryItemEntry_V2.TABLE_NAME + " die "
                         + " ON " + " de." + DiaryEntry_V2._ID + " = " + " die." + DiaryItemEntry_V2.COLUMN_REF_DIARY__ID
@@ -208,8 +208,8 @@ public class DBManager {
     }
 
     public Cursor selectDiaryContentByDiaryId(long diaryId) {
-        Cursor c = db.query(DiaryItemEntry_V2.TABLE_NAME, null, DiaryItemEntry_V2._ID + " = ?", new String[]{String.valueOf(diaryId)},
-                null, null, DiaryItemEntry_V2.COLUMN_POSITION + " DESC", null);
+        Cursor c = db.query(DiaryItemEntry_V2.TABLE_NAME, null, DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + " = ?", new String[]{String.valueOf(diaryId)},
+                null, null, DiaryItemEntry_V2.COLUMN_POSITION + " ASC", null);
         if (c != null) {
             c.moveToFirst();
         }

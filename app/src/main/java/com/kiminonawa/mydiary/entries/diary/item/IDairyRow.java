@@ -12,7 +12,8 @@ public interface IDairyRow {
     int TYPE_PHOTO = 1;
     int TYPE_WEB_BLOCK = 2;
 
+    void setContent(String content);
+    String getContent();
     int getType();
     View getView();
-    String getContent();
 }

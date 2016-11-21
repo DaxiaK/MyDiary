@@ -28,17 +28,37 @@ public class FileManager {
      * 2.diary saved
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
      */
-    private File tempDiaryDir;
+    private File photoFileDir;
     private Context mContext;
     private final static String tempDiaryDirStr = "diary/temp/";
 
+    /**
+     * Create trem dir file manager
+     *
+     * @param context
+     */
     public FileManager(Context context) {
         this.mContext = context;
-        this.tempDiaryDir = mContext.getExternalFilesDir(tempDiaryDirStr);
+        this.photoFileDir = mContext.getExternalFilesDir(tempDiaryDirStr);
     }
 
+    /**
+     * Create diary  dir file manager
+     *
+     * @return
+     */
+    public FileManager(Context context, long topicId, long diaryId) {
+        this.mContext = context;
+        this.photoFileDir = mContext.getExternalFilesDir("/" + topicId + "/" + diaryId + "/");
+    }
+
+
     public File getTempDiaryDir() {
-        return tempDiaryDir;
+        return photoFileDir;
+    }
+
+    public File getDiaryDir() {
+        return photoFileDir;
     }
 
     public void clearTempDiaryDir() {
