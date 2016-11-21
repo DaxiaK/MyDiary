@@ -218,17 +218,26 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void loadDiaryItemContent(DBManager dbManager) {
         Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(diaryId);
-        //TODO make flow is only using iDiaryRow
         for (int i = 0; i < diaryContentCursor.getCount(); i++) {
+            IDairyRow diaryItem = null;
+            String content = "";
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
-                DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity(), diaryContentCursor.getInt(2), this);
-                diaryPhoto.setContent(fileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3));
-                diaryItemHelper.createItem(diaryPhoto);
+                diaryItem = new DiaryPhoto(getActivity());
+                content = fileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
+                if (isEditMode) {
+                    ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
+                } else {
+                    diaryItem.setEditMode(false);
+                }
             } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
-                DiaryText diaryText = new DiaryText(getActivity());
-                diaryText.setContent(diaryContentCursor.getString(3));
-                diaryItemHelper.createItem(diaryText);
+                diaryItem = new DiaryText(getActivity());
+                content = diaryContentCursor.getString(3);
+                if(!isEditMode){
+                    diaryItem.setEditMode(false);
+                }
             }
+            diaryItem.setContent(content);
+            diaryItemHelper.createItem(diaryItem);
             diaryContentCursor.moveToNext();
         }
         diaryContentCursor.close();

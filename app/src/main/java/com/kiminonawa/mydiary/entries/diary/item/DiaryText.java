@@ -19,6 +19,8 @@ public class DiaryText implements IDairyRow {
 
     public DiaryText(Context context) {
         createEditText(context);
+        //Default is editable
+        setEditMode(true);
     }
 
     private void createEditText(Context context) {
@@ -46,6 +48,22 @@ public class DiaryText implements IDairyRow {
     @Override
     public View getView() {
         return EDT_diary_text;
+    }
+
+    @Override
+    public void setEditMode(boolean isEditMode) {
+        if (isEditMode) {
+            EDT_diary_text.setFocusable(true);
+            EDT_diary_text.setFocusableInTouchMode(true);
+            EDT_diary_text.setClickable(true);
+            EDT_diary_text.setEnabled(true);
+        } else {
+            EDT_diary_text.setFocusable(false);
+            EDT_diary_text.setFocusableInTouchMode(false);
+            EDT_diary_text.setClickable(false);
+            EDT_diary_text.setEnabled(false);
+
+        }
     }
 
     @Override

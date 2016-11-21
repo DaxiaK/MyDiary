@@ -83,7 +83,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getTempDiaryDir() + tempFileName);
+                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getDiaryDir() + tempFileName);
                 callBack.addPhoto(bitmap, tempFileName);
             } else {
                 Log.e("test", "cancel");
@@ -110,7 +110,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
             case R.id.IV_diary_photo_add_a_photo:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 tempFileName = "/" + fileManager.createRandomFileName();
-                File tmpFile = new File(fileManager.getTempDiaryDir(), tempFileName);
+                File tmpFile = new File(fileManager.getDiaryDir(), tempFileName);
                 Uri outputFileUri = Uri.fromFile(tmpFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, REQUEST_START_CAMERA_CODE);

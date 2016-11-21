@@ -53,15 +53,12 @@ public class FileManager {
     }
 
 
-    public File getTempDiaryDir() {
-        return photoFileDir;
-    }
 
     public File getDiaryDir() {
         return photoFileDir;
     }
 
-    public void clearTempDiaryDir() {
+    public void clearDiaryDir() {
         File tempDirFile = mContext.getExternalFilesDir(tempDiaryDirStr);
         if (tempDirFile.isDirectory()) {
             String[] children = tempDirFile.list();

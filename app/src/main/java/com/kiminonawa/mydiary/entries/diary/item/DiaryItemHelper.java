@@ -13,6 +13,9 @@ import java.util.Observable;
 
 public class DiaryItemHelper extends Observable {
 
+    public final static int MAX_PHOTO_COUNT = 7;
+
+
     private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
     private int nowPhotoCount = 0;
@@ -63,8 +66,19 @@ public class DiaryItemHelper extends Observable {
         }
         diaryItemList.add(diaryItem);
         itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
-        setChanged();
-        notifyObservers();
+    }
+
+    public void createItem(IDairyRow diaryItem, int position) {
+        if (diaryItem instanceof DiaryPhoto) {
+            nowPhotoCount++;
+            Log.e("test", "count - " + nowPhotoCount);
+        }
+        if (diaryItemList.size() == 0) {
+            setChanged();
+            notifyObservers();
+        }
+        diaryItemList.add(position, diaryItem);
+        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView(), position);
     }
 
 

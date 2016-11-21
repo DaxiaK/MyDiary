@@ -28,9 +28,17 @@ public class DiaryPhotoLayout extends LinearLayout {
         IV_diary_photo.setImageBitmap(bitmap);
     }
 
-    public void setDeleteOnClick(OnClickListener listener , int position) {
+    public void setDeleteOnClick(OnClickListener listener, int position) {
         IV_diary_photo_delete.setOnClickListener(listener);
         IV_diary_photo_delete.setTag(position);
+    }
+
+    public void setVisibleViewByMode(boolean isEditMode) {
+        if (isEditMode) {
+            IV_diary_photo_delete.setVisibility(VISIBLE);
+        } else {
+            IV_diary_photo_delete.setVisibility(GONE);
+        }
     }
 
     public ImageView getPhoto() {

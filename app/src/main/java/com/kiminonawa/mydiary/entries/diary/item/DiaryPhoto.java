@@ -21,9 +21,14 @@ public class DiaryPhoto implements IDairyRow {
     private String photoFileName;
 
 
-    public DiaryPhoto(Context context, int position, View.OnClickListener clickListener) {
+    public DiaryPhoto(Context context) {
         DiaryPhotoLayout = new DiaryPhotoLayout(context);
-        DiaryPhotoLayout.setDeleteOnClick(clickListener, position);
+        //Default is editable
+        setEditMode(true);
+    }
+
+    public void setDeleteClickListener(int positionTag, View.OnClickListener clickListener) {
+        DiaryPhotoLayout.setDeleteOnClick(clickListener, positionTag);
     }
 
     public void setPhoto(Bitmap bitmap, String photoFileName) {
@@ -38,7 +43,7 @@ public class DiaryPhoto implements IDairyRow {
     @Override
     public void setContent(String content) {
         //This content is path
-        Log.e("test",content);
+        Log.e("test", content);
         File imgFile = new File(content);
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(content);
@@ -54,6 +59,11 @@ public class DiaryPhoto implements IDairyRow {
     @Override
     public View getView() {
         return DiaryPhotoLayout;
+    }
+
+    @Override
+    public void setEditMode(boolean isEditMode) {
+        DiaryPhotoLayout.setVisibleViewByMode(isEditMode);
     }
 
     @Override
