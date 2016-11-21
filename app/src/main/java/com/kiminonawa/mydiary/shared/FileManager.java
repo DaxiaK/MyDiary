@@ -124,7 +124,7 @@ public class FileManager {
 
 
     public static boolean isImage(String fileName) {
-        return fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png");
+        return fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png");
     }
 
 }

@@ -95,6 +95,7 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
             }
         }
         dbManager.closeDB();
+        //TODO test app enter background
         //Clear Temp
         //fileManager.clearDiaryDir();
         return null;
