@@ -24,6 +24,8 @@
     <string name="dialog_button_cancel">キャンセル</string>
     <string name="dialog_button_delete">削除</string>
 
+    <string name="process_dialog_loading">読み込んでいます...</string>
+
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
     <string name="dialog_button_call">発信</string>
@@ -46,6 +48,9 @@
 
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
+    <string name="toast_not_image">ファイルは画像ではありません。</string>
+    <string name="toast_camera_error">拍照有些問題</string>
+
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>

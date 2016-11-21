@@ -53,7 +53,6 @@ public class FileManager {
     }
 
 
-
     public File getDiaryDir() {
         return photoFileDir;
     }
@@ -73,7 +72,7 @@ public class FileManager {
     }
 
 
-    public String getFileNameByUri(Context context, Uri uri) {
+    public static String getFileNameByUri(Context context, Uri uri) {
         String displayName = "";
         if (uri.getScheme().toString().startsWith("content")) {
             Cursor cursor = context.getContentResolver()
@@ -121,6 +120,11 @@ public class FileManager {
 
     public static String createRandomFileName() {
         return UUID.randomUUID().toString();
+    }
+
+
+    public static boolean isImage(String fileName) {
+        return fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png");
     }
 
 }

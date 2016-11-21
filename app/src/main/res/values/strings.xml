@@ -25,6 +25,8 @@
     <string name="dialog_button_cancel">cancel</string>
     <string name="dialog_button_delete">delete</string>
 
+    <string name="process_dialog_loading">Loading...</string>
+
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>
     <string name="segmented_calendar">Calendar</string>
@@ -46,6 +48,8 @@
 
     <string name="toast_diary_empty">Diary is empty</string>
     <string name="toast_refashioning">Location is refashioning</string>
+    <string name="toast_not_image">The file is not a image</string>
+    <string name="toast_camera_error">カメラは、いくつかの問題があります</string>
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>

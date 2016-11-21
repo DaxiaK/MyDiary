@@ -3,7 +3,6 @@ package com.kiminonawa.mydiary.entries.diary.item;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +18,9 @@ public class DiaryPhoto implements IDairyRow {
 
     private DiaryPhotoLayout DiaryPhotoLayout;
     private String photoFileName;
+
+    //For Save
+    private Bitmap tempBitmap;
 
 
     public DiaryPhoto(Context context) {
@@ -40,10 +42,18 @@ public class DiaryPhoto implements IDairyRow {
         return DiaryPhotoLayout.getPhoto();
     }
 
+
+    public Bitmap getTempBitmap() {
+        return tempBitmap;
+    }
+
+    public void setTempBitmap(Bitmap tempBitmap) {
+        this.tempBitmap = tempBitmap;
+    }
+
     @Override
     public void setContent(String content) {
         //This content is path
-        Log.e("test", content);
         File imgFile = new File(content);
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(content);

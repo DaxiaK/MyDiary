@@ -121,7 +121,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
 
             //select first diary content
             Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(entity.getId());
-            if (diaryContentCursor != null) {
+            if (diaryContentCursor != null && diaryContentCursor.getCount() > 0) {
                 String summary = "";
                 //Check content Type
                 if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {

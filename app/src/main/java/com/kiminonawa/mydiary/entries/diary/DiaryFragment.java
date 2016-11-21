@@ -33,21 +33,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
-import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -69,7 +65,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
         SwipeRefreshLayout.OnRefreshListener, LocationListener, DiaryPhotoDialogFragment.PhotoCallBack,
-        Observer {
+        Observer, SaveDiaryTask.TaskCallBack {
 
 
     private String TAG = "DiaryFragment";
@@ -195,7 +191,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
-            Log.e("test", "run");
         }
         isCreatedView = true;
     }
@@ -491,32 +486,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         if (noLocation.equals(locationName)) {
             locationName = "";
         }
-        DBManager dbManager = new DBManager(getActivity());
-        dbManager.opeDB();
-        //Save info
-        long diaryInfoId = dbManager.insertDiaryInfo(calendar.getTimeInMillis(),
+        new SaveDiaryTask(getActivity(), calendar.getTimeInMillis(),
                 EDT_diary_title.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check has attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                getTopicId(), locationName);
-        //Save content
-        if (diaryInfoId != -1) {
-            for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
-                //Save data
-                dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
-                        , diaryItemHelper.get(i).getContent(), diaryInfoId);
-                //Copy photo to sdcard
-                if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
-                    ImageView diaryPhoto = ((DiaryPhoto) diaryItemHelper.get(i)).getPhoto();
-                    diaryPhoto.buildDrawingCache();
-                    savePhoto(diaryInfoId, diaryItemHelper.get(i).getContent(), diaryPhoto.getDrawingCache());
-                }
-            }
-        }
-        dbManager.closeDB();
-        //Clear
-        clearDiary();
+                getTopicId(), locationName, diaryItemHelper, fileManager, this).execute("");
     }
 
     private void openPhotoBottomSheet() {
@@ -524,31 +499,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         diaryPhotoDialogFragment.setCallBack(this);
         diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
     }
-
-    private void savePhoto(long diaryId, String filename, Bitmap bitmap) {
-        FileOutputStream out = null;
-        String savePath = fileManager.getFileRootDir() + "/" + String.valueOf(getTopicId()) +
-                "/" + String.valueOf(diaryId);
-        File saveFile = new File(savePath);
-        if (!saveFile.exists()) {
-            saveFile.mkdirs();
-        }
-        try {
-            out = new FileOutputStream(savePath + "/" + filename);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out); // bmp is your Bitmap instance
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 
     private DiaryTextTag checkoutOldDiaryContent() {
         View focusView = getActivity().getCurrentFocus();
@@ -576,7 +526,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void onLocationChanged(Location location) {
-//        Log.d("test", "onLocationCganged");
         diaryLocations = new Location(location);
         diaryHandler.removeCallbacksAndMessages(null);
         diaryHandler.sendEmptyMessage(0);
@@ -627,23 +576,35 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             }
         } catch (Exception e) {
             Log.d(TAG, e.toString());
+            Toast.makeText(getActivity(), getString(R.string.toast_camera_error), Toast.LENGTH_LONG).show();
         }
 
     }
 
     @Override
     public void selectPhoto(Uri uri) {
-        checkFileIsLicit(uri);
+        if (FileManager.isImage(
+                FileManager.getFileNameByUri(getActivity(), uri))) {
+            checkFileIsLicit(uri);
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void update(Observable observable, Object data) {
-        Log.e("test", "Update");
         if (diaryItemHelper.getItemSize() > 0) {
             TV_diary_item_content_hint.setVisibility(View.GONE);
         } else {
             TV_diary_item_content_hint.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onDiarySaved() {
+        //Clear
+        clearDiary();
+        ((DiaryActivity) getActivity()).gotoPage(0);
     }
 
     @Override
@@ -684,7 +645,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 Log.e("test", "getItemSize =" + diaryItemHelper.getItemSize());
                 if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
-                    ((DiaryActivity) getActivity()).gotoPage(0);
                 } else if (SRL_diary_content.isRefreshing()) {
                     Toast.makeText(getActivity(), getString(R.string.toast_refashioning), Toast.LENGTH_SHORT).show();
                 } else {

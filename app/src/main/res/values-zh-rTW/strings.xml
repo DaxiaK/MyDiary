@@ -26,6 +26,8 @@
     <string name="dialog_button_cancel">取消</string>
     <string name="dialog_button_delete">刪除</string>
 
+    <string name="process_dialog_loading">載入中...</string>
+
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
     <string name="segmented_calendar">日曆</string>
@@ -47,6 +49,9 @@
 
     <string name="toast_diary_empty">日記內容是空的</string>
     <string name="toast_refashioning">位置資訊整理中</string>
+    <string name="toast_not_image">該檔案不是圖片</string>
+    <string name="toast_camera_error">拍照有些問題</string>
+
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,15 +84,11 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
             if (resultCode == RESULT_OK) {
                 Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getDiaryDir() + tempFileName);
                 callBack.addPhoto(bitmap, tempFileName);
-            } else {
-                Log.e("test", "cancel");
             }
             dismiss();
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
             if (resultCode == RESULT_OK) {
                 callBack.selectPhoto(data.getData());
-            } else {
-                Log.e("test", "cancel");
             }
             dismiss();
         }
