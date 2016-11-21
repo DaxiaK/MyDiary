@@ -164,7 +164,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                     TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
                     IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
                 }
-                setIcon(diaryInfoCursor.getInt(4), diaryInfoCursor.getInt(5));
+                setIcon(diaryInfoCursor.getInt(3), diaryInfoCursor.getInt(4));
                 diaryInfoCursor.close();
                 //Get diary detail
                 loadDiaryItemContent(dbManager);

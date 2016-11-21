@@ -34,8 +34,9 @@ public class DiaryText implements IDairyRow {
         EDT_diary_text.requestFocus();
     }
 
-    public void setPositionTag(int positionTag) {
-        EDT_diary_text.setTag(positionTag);
+    public void setTag(int positionTag) {
+        DiaryTextTag tag = new DiaryTextTag(positionTag);
+        EDT_diary_text.setTag(tag);
     }
 
     @Override

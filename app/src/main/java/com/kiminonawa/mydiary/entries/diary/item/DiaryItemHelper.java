@@ -74,7 +74,7 @@ public class DiaryItemHelper extends Observable {
             Log.e("test", "count - " + nowPhotoCount);
         }
         diaryItemList.add(position, diaryItem);
-        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView(), position);
+        itemContentLayout.addView(diaryItem.getView(), position);
         if (diaryItemList.size() == 1) {
             setChanged();
             notifyObservers();

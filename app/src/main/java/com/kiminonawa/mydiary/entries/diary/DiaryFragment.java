@@ -39,6 +39,7 @@ import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
@@ -328,19 +329,29 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private void checkFileIsLicit(Uri uri) {
         try {
             Bitmap resizeBmp1 = getBitmapFromReturnedImage(uri);
-            String nextEditTextStr = checkoutOldDiaryContent();
-            //Add photo
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
             diaryPhoto.setPhoto(resizeBmp1, fileManager.createRandomFileName());
-            diaryItemHelper.createItem(diaryPhoto);
-            //Add new edittext
-            DiaryText diaryText = new DiaryText(getActivity());
-            diaryText.setPositionTag(diaryItemHelper.getItemSize());
-            diaryText.setContent(nextEditTextStr);
-            diaryItemHelper.createItem(diaryText);
-            //inputStream.close();
-            //resizeBmp1.recycle();
+            DiaryTextTag tag = checkoutOldDiaryContent();
+            //Check edittext is focused
+            if (tag != null) {
+                //Add new edittext
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setTag(tag.getPositionTag());
+                diaryText.setContent(tag.getNextEditTextStr());
+                diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                //Add photo
+                diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+                //inputStream.close();
+                //resizeBmp1.recycle();
+            } else {
+                //Add photo
+                diaryItemHelper.createItem(diaryPhoto);
+                //Add new edittext
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setTag(diaryItemHelper.getItemSize());
+                diaryItemHelper.createItem(diaryText);
+            }
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
@@ -404,7 +415,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeStream(inputStream, null, options);
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+        inputStream.close();
+        return bitmap;
     }
 
 
@@ -523,7 +536,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         try {
             out = new FileOutputStream(savePath + "/" + filename);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -538,20 +550,22 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
 
-    private String checkoutOldDiaryContent() {
+    private DiaryTextTag checkoutOldDiaryContent() {
         View focusView = getActivity().getCurrentFocus();
-        if (focusView instanceof EditText && focusView.getTag() != null) {
+        DiaryTextTag tag = null;
+        if (focusView instanceof EditText && focusView.getTag() != null &&
+                focusView.getTag() instanceof DiaryTextTag) {
             EditText currentEditText = (EditText) focusView;
+            tag = (DiaryTextTag) focusView.getTag();
             if (currentEditText.getText().toString().length() > 0) {
                 int index = currentEditText.getSelectionStart();
                 String nextEditTextStr = currentEditText.getText().toString()
                         .substring(index, currentEditText.getText().toString().length());
-
                 currentEditText.getText().delete(index, currentEditText.getText().toString().length());
-                return nextEditTextStr;
+                tag.setNextEditTextStr(nextEditTextStr);
             }
         }
-        return "";
+        return tag;
     }
 
     @Override
@@ -590,15 +604,30 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void addPhoto(Bitmap bitmap, String fileName) {
-        //Add photo
-        DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
-        diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
-        diaryPhoto.setPhoto(bitmap, fileManager.createRandomFileName());
-        diaryItemHelper.createItem(diaryPhoto);
-        //Add new edittext
-        DiaryText diaryText = new DiaryText(getActivity());
-        diaryText.setPositionTag(diaryItemHelper.getItemSize());
-        diaryItemHelper.createItem(diaryText);
+        try {
+            DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
+            diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
+            diaryPhoto.setPhoto(bitmap, fileName);
+            DiaryTextTag tag = checkoutOldDiaryContent();
+            //Check edittext is focused
+            if (tag != null) {
+                //Add new edittext
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setTag(tag.getPositionTag());
+                diaryText.setContent(tag.getNextEditTextStr());
+                diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                //Add photo
+                diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+            } else {
+                //Add photo
+                diaryItemHelper.createItem(diaryPhoto);
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setTag(diaryItemHelper.getItemSize());
+                diaryItemHelper.createItem(diaryText);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
 
     }
 
@@ -623,9 +652,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             case R.id.LL_diary_item_content:
                 if (diaryItemHelper.getItemSize() == 0) {
                     diaryItemHelper.initDiary();
-                    //Add defult edittest item
+                    //Add default edittest item
                     DiaryText diaryText = new DiaryText(getActivity());
-                    diaryText.setPositionTag(diaryItemHelper.getItemSize());
+                    diaryText.setTag(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
                 }
                 break;
@@ -652,6 +681,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 clearDiary();
                 break;
             case R.id.IV_diary_save:
+                Log.e("test", "getItemSize =" + diaryItemHelper.getItemSize());
                 if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
                     ((DiaryActivity) getActivity()).gotoPage(0);
