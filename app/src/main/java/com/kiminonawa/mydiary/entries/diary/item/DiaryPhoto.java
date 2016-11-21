@@ -16,30 +16,31 @@ import java.io.File;
 
 public class DiaryPhoto implements IDairyRow {
 
-    private DiaryPhotoLayout DiaryPhotoLayout;
+    private DiaryPhotoLayout diaryPhotoLayout;
     private String photoFileName;
+    private int position;
 
     //For Save
     private Bitmap tempBitmap;
 
-
     public DiaryPhoto(Context context) {
-        DiaryPhotoLayout = new DiaryPhotoLayout(context);
+        diaryPhotoLayout = new DiaryPhotoLayout(context);
         //Default is editable
         setEditMode(true);
     }
 
     public void setDeleteClickListener(int positionTag, View.OnClickListener clickListener) {
-        DiaryPhotoLayout.setDeleteOnClick(clickListener, positionTag);
+        diaryPhotoLayout.setDeleteOnClick(clickListener);
+        diaryPhotoLayout.setPositiontag(positionTag);
     }
 
     public void setPhoto(Bitmap bitmap, String photoFileName) {
         this.photoFileName = photoFileName;
-        DiaryPhotoLayout.setPhotoBitmap(bitmap);
+        diaryPhotoLayout.setPhotoBitmap(bitmap);
     }
 
     public ImageView getPhoto() {
-        return DiaryPhotoLayout.getPhoto();
+        return diaryPhotoLayout.getPhoto();
     }
 
 
@@ -57,8 +58,19 @@ public class DiaryPhoto implements IDairyRow {
         File imgFile = new File(content);
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(content);
-            DiaryPhotoLayout.getPhoto().setImageBitmap(bitmap);
+            diaryPhotoLayout.getPhoto().setImageBitmap(bitmap);
         }
+    }
+
+    @Override
+    public void setPosition(int position) {
+        this.position = position;
+        diaryPhotoLayout.setPositiontag(position);
+    }
+
+    @Override
+    public int getPosition() {
+        return position;
     }
 
     @Override
@@ -68,12 +80,12 @@ public class DiaryPhoto implements IDairyRow {
 
     @Override
     public View getView() {
-        return DiaryPhotoLayout;
+        return diaryPhotoLayout;
     }
 
     @Override
     public void setEditMode(boolean isEditMode) {
-        DiaryPhotoLayout.setVisibleViewByMode(isEditMode);
+        diaryPhotoLayout.setVisibleViewByMode(isEditMode);
     }
 
     @Override

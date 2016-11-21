@@ -2,8 +2,6 @@ package com.kiminonawa.mydiary.entries.diary;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,7 +28,7 @@ import static android.app.Activity.RESULT_OK;
 public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
     interface PhotoCallBack {
-        void addPhoto(Bitmap bitmap, String fileName);
+        void addPhoto(String fileName);
 
         void selectPhoto(Uri uri);
     }
@@ -82,8 +80,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
-                Bitmap bitmap = BitmapFactory.decodeFile(fileManager.getDiaryDir() + tempFileName);
-                callBack.addPhoto(bitmap, tempFileName);
+                callBack.addPhoto(tempFileName);
             }
             dismiss();
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {

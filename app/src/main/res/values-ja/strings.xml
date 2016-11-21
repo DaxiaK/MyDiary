@@ -49,7 +49,7 @@
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
     <string name="toast_not_image">ファイルは画像ではありません。</string>
-    <string name="toast_camera_error">拍照有些問題</string>
+    <string name="toast_photo_error">写真のパスに問題があります</string>
 
 
     <!--Memo-->

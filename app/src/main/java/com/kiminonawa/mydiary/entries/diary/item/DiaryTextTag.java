@@ -2,8 +2,8 @@ package com.kiminonawa.mydiary.entries.diary.item;
 
 /**
  * Created by daxia on 2016/11/21.
+ * To avoid getting the error focus , and send more data in one method.
  */
-
 public class DiaryTextTag {
 
     private int positionTag;

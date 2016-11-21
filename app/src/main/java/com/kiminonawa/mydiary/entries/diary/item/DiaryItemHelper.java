@@ -58,7 +58,6 @@ public class DiaryItemHelper extends Observable {
     public void createItem(IDairyRow diaryItem) {
         if (diaryItem instanceof DiaryPhoto) {
             nowPhotoCount++;
-            Log.e("test", "count - " + nowPhotoCount);
         }
         diaryItemList.add(diaryItem);
         itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
@@ -98,12 +97,29 @@ public class DiaryItemHelper extends Observable {
     public void remove(int position) {
         if (diaryItemList.get(position) instanceof DiaryPhoto) {
             nowPhotoCount--;
-            Log.e("test", "count - " + nowPhotoCount);
         }
         diaryItemList.remove(position);
         if (diaryItemList.size() == 0) {
             setChanged();
             notifyObservers();
+        }
+    }
+
+    public void resortPosition() {
+        for (int i = 0; i < diaryItemList.size(); i++) {
+            diaryItemList.get(i).setPosition(i);
+        }
+    }
+
+    public void mergerAdjacentText(int position) {
+        if (diaryItemList.get(position).getType() == IDairyRow.TYPE_TEXT) {
+            if (position != 0 && diaryItemList.get(position - 1).getType() == IDairyRow.TYPE_TEXT) {
+                //First Item
+                String mergerStr = diaryItemList.get(position).getContent();
+                ((DiaryText) diaryItemList.get(position - 1)).insertText(mergerStr);
+                itemContentLayout.removeViewAt(position);
+                diaryItemList.remove(position);
+            }
         }
     }
 

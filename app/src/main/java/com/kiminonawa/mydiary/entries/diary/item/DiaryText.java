@@ -15,6 +15,7 @@ import com.kiminonawa.mydiary.shared.ViewTools;
 public class DiaryText implements IDairyRow {
 
     private EditText EDT_diary_text;
+    private int position;
 
 
     public DiaryText(Context context) {
@@ -33,10 +34,9 @@ public class DiaryText implements IDairyRow {
         EDT_diary_text.setPadding(padding, padding, padding, padding);
         EDT_diary_text.requestFocus();
     }
+    public void insertText(String text){
+        EDT_diary_text.getText().insert(EDT_diary_text.getText().length(), text);
 
-    public void setTag(int positionTag) {
-        DiaryTextTag tag = new DiaryTextTag(positionTag);
-        EDT_diary_text.setTag(tag);
     }
 
     @Override
@@ -68,6 +68,22 @@ public class DiaryText implements IDairyRow {
             EDT_diary_text.setEnabled(false);
 
         }
+    }
+
+    @Override
+    public void setPosition(int position) {
+        this.position = position;
+        if (EDT_diary_text.getTag() != null && EDT_diary_text.getTag() instanceof DiaryTextTag) {
+            ((DiaryTextTag) EDT_diary_text.getTag()).setPositionTag(position);
+        } else {
+            DiaryTextTag tag = new DiaryTextTag(position);
+            EDT_diary_text.setTag(tag);
+        }
+    }
+
+    @Override
+    public int getPosition() {
+        return position;
     }
 
     @Override

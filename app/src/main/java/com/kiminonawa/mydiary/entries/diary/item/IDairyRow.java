@@ -22,4 +22,9 @@ public interface IDairyRow {
 
     void setEditMode(boolean isEditMode);
 
+    //For resort after add new item
+    void setPosition(int position);
+
+    int getPosition();
+
 }
