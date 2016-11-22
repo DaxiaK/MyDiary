@@ -18,7 +18,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +38,7 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -65,8 +65,7 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, LocationListener, DiaryPhotoDialogFragment.PhotoCallBack,
-        Observer, SaveDiaryTask.TaskCallBack {
+        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.TaskCallBack {
 
 
     private String TAG = "DiaryFragment";
@@ -77,7 +76,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private LinearLayout LL_diary_time_information;
     private LinearLayout LL_diary_item_content;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
-    private SwipeRefreshLayout SRL_diary_content;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private Spinner SP_diary_weather, SP_diary_mood;
     private EditText EDT_diary_title;
@@ -102,7 +100,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * Permission
      */
     private static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 1;
-    private static final int REQUEST_CAMERA_PERMISSION = 2;
+    private static final int REQUEST_CAMERA_AND_WRITE_ES_PERMISSION = 2;
     private boolean firstAllowLocationPermission = false;
     private boolean firstAllowCameraPermission = false;
 
@@ -146,8 +144,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
         LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
-        SRL_diary_content = (SwipeRefreshLayout) rootView.findViewById(R.id.SRL_diary_content);
-        SRL_diary_content.setOnRefreshListener(this);
+
 
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
@@ -218,7 +215,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onResume();
         //For PermissionsResult
         if (firstAllowLocationPermission) {
-            initDiaryInfo(true);
+            initDiaryInfo();
             firstAllowLocationPermission = false;
         }
         //For PermissionsResult
@@ -261,14 +258,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                             .setMessage(getString(R.string.diary_location_permission_content))
                             .setPositiveButton(getString(R.string.dialog_button_ok), null);
                     builder.show();
-                    SRL_diary_content.setRefreshing(false);
                     setCurrentTime();
                     TV_diary_location.setText(noLocation);
                 }
                 break;
-            case REQUEST_CAMERA_PERMISSION:
+            case REQUEST_CAMERA_AND_WRITE_ES_PERMISSION:
                 if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        && checkAllPermissionResult(grantResults)) {
                     firstAllowCameraPermission = true;
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
@@ -279,6 +275,15 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
         }
+    }
+
+    private boolean checkAllPermissionResult(int[] grantResults) {
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -303,16 +308,19 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     }
                 }
                 break;
-            case REQUEST_CAMERA_PERMISSION:
+            case REQUEST_CAMERA_AND_WRITE_ES_PERMISSION:
                 if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                        ContextCompat.checkSelfPermission(getActivity(),
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.CAMERA)) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 requestCode);
                         return false;
                     } else {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 requestCode);
                         return false;
                     }
@@ -324,7 +332,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void checkFileIsLicit(Uri uri) {
         try {
-            Bitmap resizeBmp = getBitmapFromReturnedImage(uri);
+            Bitmap resizeBmp = ExifUtil.rotateBitmap(getActivity(), uri, getBitmapFromReturnedImage(uri));
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(resizeBmp, fileManager.createRandomFileName());
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -360,16 +368,30 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         final int height = options.outHeight;
         final int width = options.outWidth;
 
-        Log.e("Test", "options h,w = " + options.outHeight + "  , " + options.outWidth);
-        Log.e("Test", "req h,w = " + reqHeight + "  , " + reqWidth);
         int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
 
-        while ((height * width) / (inSampleSize * inSampleSize) > reqHeight * reqWidth) {
-            inSampleSize *= 2;
-        }
+            // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
+            // with both dimensions larger than or equal to the requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
 
-        if ((height * width) / (inSampleSize * inSampleSize) < reqHeight * reqWidth) {
-            inSampleSize /= 2;
+            // This offers some additional logic in case the image has a strange
+            // aspect ratio. For example, a panorama may have a much larger
+            // width than height. In these cases the total pixels might still
+            // end up being too large to fit comfortably in memory, so we should
+            // be more aggressive with sample down the image (=larger inSampleSize).
+
+            final float totalPixels = width * height;
+
+            // Anything more than 2x the requested pixels we'll sample down further
+            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                inSampleSize++;
+            }
         }
         return inSampleSize;
     }
@@ -429,16 +451,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
 
-    private void initDiaryInfo(boolean showRefreshing) {
+    private void initDiaryInfo() {
         if (isLocation && locationManager.isProviderEnabled(locationProvider)) {
-            if (showRefreshing) {
-                diaryHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        SRL_diary_content.setRefreshing(true);
-                    }
-                });
-            }
+
             if (checkPermission(REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
                 if (locationManager.isProviderEnabled(locationProvider)) {
                     locationManager.requestLocationUpdates(locationProvider, 3000, 0, this);
@@ -449,7 +464,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         } else {
             setCurrentTime();
             TV_diary_location.setText(noLocation);
-            SRL_diary_content.setRefreshing(false);
         }
     }
 
@@ -467,9 +481,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private void initLocationIcon() {
         if (isLocation) {
             IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
-            initDiaryInfo(true);
+            initDiaryInfo();
         } else {
-            SRL_diary_content.setRefreshing(false);
             diaryHandler.removeCallbacksAndMessages(null);
             IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
             setCurrentTime();
@@ -531,11 +544,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         return tag;
     }
 
-    @Override
-    public void onRefresh() {
-        initDiaryInfo(false);
-    }
-
 
     @Override
     public void onLocationChanged(Location location) {
@@ -566,9 +574,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void addPhoto(String fileName) {
-
         try {
-            Bitmap resizeBmp = getBitmapFromFilePath(fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName);
+            String src = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            Bitmap resizeBmp = ExifUtil.rotateBitmap(src, getBitmapFromFilePath(src));
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(resizeBmp, fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -597,7 +605,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         } finally {
             diaryItemHelper.resortPosition();
         }
-
     }
 
     @Override
@@ -651,7 +658,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 initLocationIcon();
                 break;
             case R.id.IV_diary_photo:
-                if (checkPermission(REQUEST_CAMERA_PERMISSION)) {
+                if (checkPermission(REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                     if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                         openPhotoBottomSheet();
                     } else {
@@ -666,8 +673,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 Log.e("test", "getItemSize =" + diaryItemHelper.getItemSize());
                 if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
-                } else if (SRL_diary_content.isRefreshing()) {
-                    Toast.makeText(getActivity(), getString(R.string.toast_refashioning), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();
                 }
@@ -689,7 +694,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             if (theFrag != null) {
                 theFrag.setCurrentTime();
                 theFrag.TV_diary_location.setText(getLocationName(theFrag));
-                theFrag.SRL_diary_content.setRefreshing(false);
             }
         }
 

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.kiminonawa.mydiary.shared.ScreenHepler;
-import com.kiminonawa.mydiary.shared.ViewTools;
 
 /**
  * Created by daxia on 2016/11/19.
