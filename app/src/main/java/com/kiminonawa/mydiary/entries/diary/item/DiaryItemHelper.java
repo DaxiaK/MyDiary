@@ -19,25 +19,29 @@ public class DiaryItemHelper extends Observable {
     private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
     private int nowPhotoCount = 0;
+    private static int visibleHeight = -1, visibleWidth = -1;
 
-    /**
-     * Make all item < 1 view, so It should be computed show area.
-     */
-    private int visibleHeight, visibleWidth;
 
     public DiaryItemHelper(LinearLayout itemContentLayout) {
         this.itemContentLayout = itemContentLayout;
         this.diaryItemList = new ArrayList<>();
-        this.visibleHeight = itemContentLayout.getHeight();
-        this.visibleWidth = itemContentLayout.getWidth();
-        Log.e("test", "height = " + visibleHeight + " width = " + visibleWidth);
+        Log.e("DiaryItemHelper", "height = " + itemContentLayout.getHeight()
+                + " width = " +  itemContentLayout.getWidth());
+    }
+
+    /**
+     * Make all item < 1 view, so It should be computed show area.
+     * The height & Width is fixed value for a device.
+     */
+    public static void setVisibleArea(int weight, int height) {
+        visibleHeight = height;
+        visibleWidth = weight;
+        Log.e("setVisibleArea", "height = " + visibleHeight + " width = " + visibleWidth);
     }
 
     /**
      * Observable
      */
-
-
     public int getVisibleHeight() {
         return visibleHeight;
     }
@@ -70,7 +74,6 @@ public class DiaryItemHelper extends Observable {
     public void createItem(IDairyRow diaryItem, int position) {
         if (diaryItem instanceof DiaryPhoto) {
             nowPhotoCount++;
-            Log.e("test", "count - " + nowPhotoCount);
         }
         diaryItemList.add(position, diaryItem);
         itemContentLayout.addView(diaryItem.getView(), position);

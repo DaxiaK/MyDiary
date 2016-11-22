@@ -7,10 +7,12 @@ import android.os.Handler;
 
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ScreenHepler;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 
@@ -44,6 +46,14 @@ public class InitActivity extends Activity {
             showReleaseNote = true;
         }
         loadSampleData();
+        //Init Object
+        int imageHeight = ScreenHepler.getScreenHeight(InitActivity.this) -
+                //diary activity topbar + diary info + diary botton bar + padding
+                ScreenHepler.dpToPixel(getResources(), 80 + 120 + 40 + (2 * 5));
+        int imageWeight = ScreenHepler.getScreenWidth(InitActivity.this) -
+                ScreenHepler.dpToPixel(getResources(), 2 * 5);
+        DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
+
     }
 
     @Override
