@@ -21,7 +21,7 @@ public class ExifUtil {
     public static Bitmap rotateBitmap(String src, Bitmap bitmap) {
         try {
             int orientation = getExifOrientation(src);
-            rotate(bitmap, orientation);
+            return rotate(bitmap, orientation);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class ExifUtil {
     }
 
     public static Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap) {
-        String path = FileManager.getRealPathFromURI(context, Uri.parse(uri.getPath()));
+        String path = FileManager.getRealPathFromURI(context, uri);
         return rotateBitmap(path, bitmap);
     }
 
