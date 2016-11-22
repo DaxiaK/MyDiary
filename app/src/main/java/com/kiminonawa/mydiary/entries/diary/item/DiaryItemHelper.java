@@ -26,7 +26,7 @@ public class DiaryItemHelper extends Observable {
         this.itemContentLayout = itemContentLayout;
         this.diaryItemList = new ArrayList<>();
         Log.e("DiaryItemHelper", "height = " + itemContentLayout.getHeight()
-                + " width = " +  itemContentLayout.getWidth());
+                + " width = " + itemContentLayout.getWidth());
     }
 
     /**
@@ -115,7 +115,7 @@ public class DiaryItemHelper extends Observable {
     }
 
     public void mergerAdjacentText(int position) {
-        if (diaryItemList.get(position).getType() == IDairyRow.TYPE_TEXT) {
+        if (diaryItemList.size() > 0 && diaryItemList.get(position).getType() == IDairyRow.TYPE_TEXT) {
             if (position != 0 && diaryItemList.get(position - 1).getType() == IDairyRow.TYPE_TEXT) {
                 //First Item
                 String mergerStr = diaryItemList.get(position).getContent();

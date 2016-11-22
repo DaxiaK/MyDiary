@@ -292,16 +292,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             case REQUEST_ACCESS_FINE_LOCATION_PERMISSION:
                 if (ContextCompat.checkSelfPermission(getActivity(),
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // Should we show an explanation?
                     if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        // Show an expanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                 requestCode);
                         return false;
-                    } else { // No explanation needed, we can request the permission.
+                    } else {
                         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                 requestCode);
                         return false;
@@ -374,16 +370,14 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             final int heightRatio = Math.round((float) height / (float) reqHeight);
             final int widthRatio = Math.round((float) width / (float) reqWidth);
 
-            // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
-            // with both dimensions larger than or equal to the requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
+            inSampleSize = Math.max(heightRatio, widthRatio);
 
             // This offers some additional logic in case the image has a strange
             // aspect ratio. For example, a panorama may have a much larger
             // width than height. In these cases the total pixels might still
             // end up being too large to fit comfortably in memory, so we should
             // be more aggressive with sample down the image (=larger inSampleSize).
-
             final float totalPixels = width * height;
 
             // Anything more than 2x the requested pixels we'll sample down further
