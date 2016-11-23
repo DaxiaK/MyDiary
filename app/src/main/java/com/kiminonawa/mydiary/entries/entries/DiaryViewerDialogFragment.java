@@ -4,9 +4,9 @@ import android.app.Dialog;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +14,17 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
-import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
+import com.kiminonawa.mydiary.entries.diary.DiaryPhotoDialogFragment;
 import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
@@ -41,7 +44,7 @@ import java.util.Date;
  */
 
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
-        DeleteDialogFragment.DeleteCallback {
+        DeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.TaskCallBack {
 
 
     /**
@@ -61,6 +64,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
 
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
+    private ProgressBar PB_diary_item_content_hint;
 
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private ImageView IV_diary_weather, IV_diary_mood;
@@ -68,7 +72,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private EditText EDT_diary_title;
     private LinearLayout LL_diary_item_content;
-    private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_delete, IV_diary_clear, IV_diary_save;
+    private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_photo,
+            IV_diary_delete, IV_diary_clear, IV_diary_save;
     private boolean isEditMode;
 
     /**
@@ -77,6 +82,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private long diaryId;
     private DiaryItemHelper diaryItemHelper;
     private FileManager fileManager;
+
+    /**
+     * Edit Mode
+     */
+    private CopyDiaryToEditCacheTask mTask;
 
 
     //TODO Make this dialog's background has radius.
@@ -116,6 +126,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
         RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
+        PB_diary_item_content_hint = (ProgressBar) rootView.findViewById(R.id.PB_diary_item_content_hint);
+
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
         EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
                 PorterDuff.Mode.SRC_ATOP);
@@ -131,8 +143,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         IV_diary_close_dialog = (ImageView) rootView.findViewById(R.id.IV_diary_close_dialog);
         IV_diary_close_dialog.setVisibility(View.VISIBLE);
         IV_diary_close_dialog.setOnClickListener(this);
+
         IV_diary_location = (ImageView) rootView.findViewById(R.id.IV_diary_location);
 
+        IV_diary_photo = (ImageView) rootView.findViewById(R.id.IV_diary_photo);
         IV_diary_delete = (ImageView) rootView.findViewById(R.id.IV_diary_delete);
         IV_diary_clear = (ImageView) rootView.findViewById(R.id.IV_diary_clear);
         IV_diary_save = (ImageView) rootView.findViewById(R.id.IV_diary_save);
@@ -145,32 +159,56 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        try {
-            diaryId = getArguments().getLong("diaryId", -1L);
-            if (diaryId != -1) {
+        diaryId = getArguments().getLong("diaryId", -1L);
+        if (diaryId != -1) {
+            if (isEditMode) {
+                fileManager = new FileManager(getActivity(), true);
+                fileManager.clearDiaryDir();
+                PB_diary_item_content_hint.setVisibility(View.VISIBLE);
+                mTask = new CopyDiaryToEditCacheTask(getActivity(), fileManager, this);
+                //Make ths ProgressBar show 1s+.
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Copy the file into editCash
+                        mTask.execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
+                    }
+                }, 1000);
+            } else {
                 fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
-                DBManager dbManager = new DBManager(getActivity());
-                dbManager.opeDB();
-                Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
-                EDT_diary_title.setText(diaryInfoCursor.getString(2));
-                setDiaryTime(new Date(diaryInfoCursor.getLong(1)));
-                String locationName = diaryInfoCursor.getString(7);
-                if (locationName != null && !"".equals(locationName)) {
-                    TV_diary_location.setText(locationName);
-                    IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
-                } else {
-                    TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
-                    IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
-                }
-                setIcon(diaryInfoCursor.getInt(4), diaryInfoCursor.getInt(5));
-                diaryInfoCursor.close();
-                //Get diary detail
-                loadDiaryItemContent(dbManager);
-                dbManager.closeDB();
+                initData();
             }
-        } catch (NullPointerException e) {
-            Log.d("DiaryViewerDialog", e.toString());
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTask != null) {
+            mTask.cancel(true);
+        }
+        dismiss();
+    }
+
+    private void initData() {
+        DBManager dbManager = new DBManager(getActivity());
+        dbManager.opeDB();
+        Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
+        EDT_diary_title.setText(diaryInfoCursor.getString(2));
+        setDiaryTime(new Date(diaryInfoCursor.getLong(1)));
+        String locationName = diaryInfoCursor.getString(7);
+        if (locationName != null && !"".equals(locationName)) {
+            TV_diary_location.setText(locationName);
+            IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
+        } else {
+            TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
+            IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
+        }
+        setIcon(diaryInfoCursor.getInt(3), diaryInfoCursor.getInt(4));
+        diaryInfoCursor.close();
+        //Get diary detail
+        loadDiaryItemContent(dbManager);
+        dbManager.closeDB();
     }
 
     private void initView(View rootView) {
@@ -186,6 +224,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             IV_diary_delete.setVisibility(View.GONE);
             IV_diary_clear.setOnClickListener(this);
             IV_diary_save.setOnClickListener(this);
+
+            IV_diary_photo.setOnClickListener(this);
         } else {
             IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);
@@ -196,21 +236,22 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             IV_diary_clear.setVisibility(View.GONE);
             IV_diary_save.setVisibility(View.GONE);
 
+            IV_diary_photo.setColorFilter(R.color.button_disable_color);
+            EDT_diary_title.setFocusable(false);
+            EDT_diary_title.setFocusableInTouchMode(false);
             EDT_diary_title.setClickable(false);
-            EDT_diary_title.setKeyListener(null);
-//            EDT_diary_content.setClickable(false);
-//            EDT_diary_content.setKeyListener(null);
+            EDT_diary_title.setEnabled(false);
         }
     }
 
 
     private void initMoodSpinner() {
-        ImageArrayAdapter moodArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getMoodArray());
+        ImageArrayAdapter moodArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfoHelper.getMoodArray());
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
     private void initWeatherSpinner() {
-        ImageArrayAdapter weatherArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getWeatherArray());
+        ImageArrayAdapter weatherArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfoHelper.getWeatherArray());
         SP_diary_weather.setAdapter(weatherArrayAdapter);
     }
 
@@ -258,8 +299,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             SP_diary_mood.setSelection(mood);
             SP_diary_weather.setSelection(weather);
         } else {
-            IV_diary_mood.setImageResource(DiaryInfo.getMoodResourceId(mood));
-            IV_diary_weather.setImageResource(DiaryInfo.getWeathetrResourceId(weather));
+            IV_diary_mood.setImageResource(DiaryInfoHelper.getMoodResourceId(mood));
+            IV_diary_weather.setImageResource(DiaryInfoHelper.getWeatherResourceId(weather));
         }
     }
 
@@ -283,9 +324,24 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
+    public void onCopyToEditCacheCompiled(int result) {
+        if (result == CopyDiaryToEditCacheTask.RESULT_COPY_SUCCESSFUL) {
+            PB_diary_item_content_hint.setVisibility(View.GONE);
+            initData();
+        } else {
+            Toast.makeText(getActivity(), "讀取異常", Toast.LENGTH_LONG).show();
+            dismiss();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.IV_diary_photo:
+                DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
+                diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+                break;
             case R.id.IV_diary_close_dialog:
                 dismiss();
                 break;

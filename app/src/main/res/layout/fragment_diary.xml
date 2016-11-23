@@ -253,6 +253,13 @@
                         android:textSize="30dp"
                         android:visibility="gone" />
 
+                    <ProgressBar
+                        android:id="@+id/PB_diary_item_content_hint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:id="@+id/LL_diary_item_content"
                         android:layout_width="match_parent"

@@ -19,10 +19,10 @@ import java.io.File;
 public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
 
     public interface TaskCallBack {
-        void onDiarySaved();
+        void onDiarySaved(int result);
     }
 
-    public final static int RESULT_SUCCESSFUL = 1;
+    public final static int RESULT_INSERT_SUCCESSFUL = 1;
     public final static int RESULT_INSERT_ERROR = 2;
 
 
@@ -34,7 +34,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     private boolean attachment;
     private String locationName;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager tempfileManager, diaryFileManager;
+    private FileManager tempFileManager, diaryFileManager;
     private ProgressDialog progressDialog;
 
     private TaskCallBack callBack;
@@ -58,7 +58,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.attachment = attachment;
         this.locationName = locationName;
         this.diaryItemHelper = diaryItemHelper;
-        this.tempfileManager = fileManager;
+        this.tempFileManager = fileManager;
         this.callBack = callBack;
 
         progressDialog.show();
@@ -67,7 +67,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     @Override
     protected Integer doInBackground(Long... params) {
 
-        int saveResult = RESULT_SUCCESSFUL;
+        int saveResult = RESULT_INSERT_SUCCESSFUL;
         long topicId = params[0];
         dbManager.opeDB();
         //Save info
@@ -100,11 +100,11 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     protected void onPostExecute(Integer integer) {
         super.onPostExecute(integer);
         progressDialog.dismiss();
-        callBack.onDiarySaved();
+        callBack.onDiarySaved(integer);
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(tempfileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
+        FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
                 new File(diaryFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename));
     }
 }

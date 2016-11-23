@@ -38,21 +38,28 @@ public class FileManager {
      * The path is :
      * 1.diary temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/temp
-     * 2.diary saved
+     * 2.diary edit temp
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
+     * 3.diary saved
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
      */
     private File photoFileDir;
     private Context mContext;
     private final static String tempDiaryDirStr = "diary/temp/";
+    private final static String editCashDiaryDirStr = "diary/editCache/";
 
     /**
      * Create trem dir file manager
      *
      * @param context
      */
-    public FileManager(Context context) {
+    public FileManager(Context context, boolean isEdit) {
         this.mContext = context;
-        this.photoFileDir = mContext.getExternalFilesDir(tempDiaryDirStr);
+        if (isEdit) {
+            this.photoFileDir = mContext.getExternalFilesDir(editCashDiaryDirStr);
+        } else {
+            this.photoFileDir = mContext.getExternalFilesDir(tempDiaryDirStr);
+        }
     }
 
     /**
@@ -71,19 +78,13 @@ public class FileManager {
     }
 
     public void clearDiaryDir() {
-        File tempDirFile = mContext.getExternalFilesDir(tempDiaryDirStr);
-        if (tempDirFile.isDirectory()) {
-            String[] children = tempDirFile.list();
+        if (photoFileDir.isDirectory()) {
+            String[] children = photoFileDir.list();
             for (int i = 0; i < children.length; i++) {
-                new File(tempDirFile, children[i]).delete();
+                new File(photoFileDir, children[i]).delete();
             }
         }
     }
-
-    public String getFileRootDir() {
-        return mContext.getExternalFilesDir("").getPath();
-    }
-
 
     public static String getFileNameByUri(Context context, Uri uri) {
         String displayName = "";

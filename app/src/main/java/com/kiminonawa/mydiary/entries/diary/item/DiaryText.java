@@ -65,7 +65,6 @@ public class DiaryText implements IDairyRow {
             EDT_diary_text.setFocusableInTouchMode(false);
             EDT_diary_text.setClickable(false);
             EDT_diary_text.setEnabled(false);
-
         }
     }
 

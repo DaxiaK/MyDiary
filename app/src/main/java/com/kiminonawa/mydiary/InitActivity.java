@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.MainActivity;
@@ -111,7 +111,7 @@ public class InitActivity extends Activity {
             if (topicOnDiarySampleId != -1) {
                 //Insert sample diary
                 long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
-                        DiaryInfo.MOOD_HAPPY, DiaryInfo.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
+                        DiaryInfoHelper.MOOD_HAPPY, DiaryInfoHelper.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
                 dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "HIHI\nQAQ\ndasda\n\n\n\n\nQQQQQQ", diarySampleId);
             }
         }

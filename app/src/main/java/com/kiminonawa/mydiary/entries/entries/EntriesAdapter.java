@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.entries.diary.DiaryInfo;
+import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
 import com.kiminonawa.mydiary.shared.EditMode;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -76,8 +76,8 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         holder.getTVTitle().setText(entriesList.get(position).getTitle());
         holder.getTVSummary().setText(entriesList.get(position).getSummary());
 
-        holder.getIVWeather().setImageResource(DiaryInfo.getWeathetrResourceId(entriesList.get(position).getWeatherId()));
-        holder.getIVMood().setImageResource(DiaryInfo.getMoodResourceId(entriesList.get(position).getMoodId()));
+        holder.getIVWeather().setImageResource(DiaryInfoHelper.getWeatherResourceId(entriesList.get(position).getWeatherId()));
+        holder.getIVMood().setImageResource(DiaryInfoHelper.getMoodResourceId(entriesList.get(position).getMoodId()));
 
         if (entriesList.get(position).hasAttachment()) {
             holder.getIVAttachment().setVisibility(View.VISIBLE);

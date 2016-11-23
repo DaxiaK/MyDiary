@@ -6,7 +6,7 @@ import com.kiminonawa.mydiary.R;
  * Created by daxia on 2016/10/31.
  */
 
-public class DiaryInfo {
+public class DiaryInfoHelper {
 
     public final static int WEATHER_SIZE = 6;
     public final static int WEATHER_SUNNY = 0;
@@ -26,7 +26,7 @@ public class DiaryInfo {
     /**
      * Weather
      */
-    public static int getWeathetrResourceId(int weather) {
+    public static int getWeatherResourceId(int weather) {
         int weatherResourceId;
         switch (weather) {
             default:

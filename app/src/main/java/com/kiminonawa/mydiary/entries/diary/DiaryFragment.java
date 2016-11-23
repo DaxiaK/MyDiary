@@ -129,7 +129,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         locationProvider = LocationManager.NETWORK_PROVIDER;
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
-        fileManager = new FileManager(getActivity());
+        fileManager = new FileManager(getActivity(), false);
     }
 
     @Override
@@ -143,7 +143,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
         LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
-
 
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
@@ -411,12 +410,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void initWeatherSpinner() {
-        ImageArrayAdapter weatherArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getWeatherArray());
+        ImageArrayAdapter weatherArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfoHelper.getWeatherArray());
         SP_diary_weather.setAdapter(weatherArrayAdapter);
     }
 
     private void initMoodSpinner() {
-        ImageArrayAdapter moodArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfo.getMoodArray());
+        ImageArrayAdapter moodArrayAdapter = new ImageArrayAdapter(getActivity(), DiaryInfoHelper.getMoodArray());
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
@@ -525,7 +524,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     @Override
-    public void onDiarySaved() {
+    public void onDiarySaved(int result) {
+        if (result == SaveDiaryTask.RESULT_INSERT_ERROR) {
+            Toast.makeText(getActivity(), "日記存檔不完全", Toast.LENGTH_LONG).show();
+        }
         //Clear
         clearDiaryPage();
         ((DiaryActivity) getActivity()).gotoPage(0);

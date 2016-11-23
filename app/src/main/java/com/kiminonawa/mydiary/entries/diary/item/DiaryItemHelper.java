@@ -55,6 +55,7 @@ public class DiaryItemHelper extends Observable {
         notifyObservers();
     }
 
+    //TODO 鬆綁list and add view , 再最後再實作一個一次新增
     public void createItem(IDairyRow diaryItem) {
         if (diaryItem instanceof DiaryPhoto) {
             nowPhotoCount++;

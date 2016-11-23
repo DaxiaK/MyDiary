@@ -54,7 +54,8 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        fileManager = new FileManager(getActivity());
+        //TODO check it is from adding or editing
+        fileManager = new FileManager(getActivity(),false);
         return dialog;
     }
 
