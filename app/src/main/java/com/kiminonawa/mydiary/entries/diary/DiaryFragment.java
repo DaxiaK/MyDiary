@@ -4,7 +4,6 @@ package com.kiminonawa.mydiary.entries.diary;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
@@ -38,15 +37,14 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.shared.BitmapHelper;
 import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -65,7 +63,8 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.TaskCallBack {
+        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.TaskCallBack,
+        CopyPhotoTask.TaskCallBack {
 
 
     private String TAG = "DiaryFragment";
@@ -189,6 +188,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
+            diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
+            clearDiaryPage();
         }
         isCreatedView = true;
     }
@@ -196,12 +197,16 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isCreatedView && isVisibleToUser) {
-            initLocationIcon();
-            initWeatherSpinner();
-            initMoodSpinner();
-            diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
-            diaryItemHelper.addObserver(this);
+        if (isCreatedView) {
+            if (isVisibleToUser) {
+                initLocationIcon();
+                initWeatherSpinner();
+                initMoodSpinner();
+                diaryItemHelper.addObserver(this);
+            } else {
+                diaryItemHelper.deleteObserver(this);
+
+            }
         }
     }
 
@@ -326,11 +331,15 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         return true;
     }
 
-    private void checkFileIsLicit(Uri uri) {
+
+    private void loadFileFromTemp(String fileName) {
         try {
-            Bitmap resizeBmp = ExifUtil.rotateBitmap(getActivity(), uri, getBitmapFromReturnedImage(uri));
+            String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            Bitmap resizeBmp = ExifUtil.rotateBitmap(tempFileSrc,
+                    BitmapHelper.getBitmapFromTempFileSrc(tempFileSrc,
+                            diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight()));
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
-            diaryPhoto.setPhoto(resizeBmp, fileManager.createRandomFileName());
+            diaryPhoto.setPhoto(resizeBmp, fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
             //Check edittext is focused
             if (tag != null) {
@@ -352,96 +361,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 diaryItemHelper.createItem(diaryText);
             }
         } catch (Exception e) {
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
             Toast.makeText(getActivity(), getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
         } finally {
             diaryItemHelper.resortPosition();
         }
-    }
-
-    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-
-        int inSampleSize = 1;
-        if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
-            inSampleSize = Math.max(heightRatio, widthRatio);
-
-            // This offers some additional logic in case the image has a strange
-            // aspect ratio. For example, a panorama may have a much larger
-            // width than height. In these cases the total pixels might still
-            // end up being too large to fit comfortably in memory, so we should
-            // be more aggressive with sample down the image (=larger inSampleSize).
-            final float totalPixels = width * height;
-
-            // Anything more than 2x the requested pixels we'll sample down further
-            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-
-            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-                inSampleSize++;
-            }
-        }
-        return inSampleSize;
-    }
-
-    private Bitmap getBitmapFromReturnedImage(Uri selectedImage) throws IOException {
-
-        InputStream inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(inputStream, null, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight());
-        options.inPurgeable = true;
-        options.inInputShareable = true;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-
-        // close the input stream
-        inputStream.close();
-
-        // reopen the input stream
-        inputStream = getActivity().getContentResolver().openInputStream(selectedImage);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-        inputStream.close();
-        return bitmap;
-    }
-
-    private Bitmap getBitmapFromFilePath(String filePath) throws IOException {
-
-        InputStream inputStream = new FileInputStream(filePath);
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(inputStream, null, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight());
-        options.inPurgeable = true;
-        options.inInputShareable = true;
-        options.inPreferredConfig = Bitmap.Config.RGB_565;
-
-        // close the input stream
-        inputStream.close();
-
-        // reopen the input stream
-        inputStream = new FileInputStream(filePath);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-        inputStream.close();
-        return bitmap;
     }
 
 
@@ -494,7 +418,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
-    private void clearDiary() {
+    private void clearDiaryPage() {
+        Log.e("test", "clearDiaryPage");
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
         fileManager.clearDiaryDir();
@@ -511,7 +436,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check has attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                getTopicId(), locationName, diaryItemHelper, fileManager, this).execute("");
+                locationName, diaryItemHelper, fileManager, this).execute(getTopicId());
     }
 
     private void openPhotoBottomSheet() {
@@ -563,52 +488,30 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void onProviderDisabled(String provider) {
-
-    }
-
-    @Override
-    public void addPhoto(String fileName) {
-        try {
-            String src = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
-            Bitmap resizeBmp = ExifUtil.rotateBitmap(src, getBitmapFromFilePath(src));
-            DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
-            diaryPhoto.setPhoto(resizeBmp, fileName);
-            DiaryTextTag tag = checkoutOldDiaryContent();
-            //Check edittext is focused
-            if (tag != null) {
-                //Add new edittext
-                DiaryText diaryText = new DiaryText(getActivity());
-                diaryText.setPosition(tag.getPositionTag());
-                diaryText.setContent(tag.getNextEditTextStr());
-                diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
-                //Add photo
-                diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
-                diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
-            } else {
-                //Add photo
-                diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
-                diaryItemHelper.createItem(diaryPhoto);
-                //Add new edittext
-                DiaryText diaryText = new DiaryText(getActivity());
-                diaryText.setPosition(diaryItemHelper.getItemSize());
-                diaryItemHelper.createItem(diaryText);
-            }
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-            Toast.makeText(getActivity(), getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
-        } finally {
-            diaryItemHelper.resortPosition();
-        }
     }
 
     @Override
     public void selectPhoto(Uri uri) {
         if (FileManager.isImage(
                 FileManager.getFileNameByUri(getActivity(), uri))) {
-            checkFileIsLicit(uri);
+            //1.Copy bitmap to temp
+            //2.Then , Load bitmap & resize in call back ;
+            new CopyPhotoTask(getActivity(), uri,
+                    diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight(),
+                    fileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onCopyCompiled(String fileName) {
+        loadFileFromTemp(fileName);
+    }
+
+    @Override
+    public void addPhoto(String fileName) {
+        loadFileFromTemp(fileName);
     }
 
     @Override
@@ -623,9 +526,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onDiarySaved() {
         //Clear
-        clearDiary();
+        clearDiaryPage();
         ((DiaryActivity) getActivity()).gotoPage(0);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -662,11 +566,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     }
                 } else {
                     //Insufficient
-                    Toast.makeText(getActivity(),"Insufficient", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Insufficient", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.IV_diary_clear:
-                clearDiary();
+                clearDiaryPage();
                 break;
             case R.id.IV_diary_save:
                 Log.e("test", "getItemSize =" + diaryItemHelper.getItemSize());
@@ -678,6 +582,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 break;
         }
     }
+
 
     private static class DiaryHandler extends Handler {
 

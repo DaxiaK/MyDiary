@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.kiminonawa.mydiary.db.DBManager;
@@ -20,18 +21,21 @@ import java.io.IOException;
  * Created by daxia on 2016/11/21.
  */
 
-public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
+public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
 
     public interface TaskCallBack {
         void onDiarySaved();
     }
+
+    public final static int RESULT_SUCCESSFUL = 1;
+    public final static int RESULT_FILE_ERROR = 2;
+
 
     private DBManager dbManager;
     private long time;
     private String title;
     private int moodPosition, weatherPosition;
     private boolean attachment;
-    private long topicId;
     private String locationName;
     private DiaryItemHelper diaryItemHelper;
     private FileManager fileManager;
@@ -42,7 +46,7 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
 
     public SaveDiaryTask(Context context, long time, String title,
                          int moodPosition, int weatherPosition,
-                         boolean attachment, long topicId, String locationName,
+                         boolean attachment, String locationName,
                          DiaryItemHelper diaryItemHelper, FileManager fileManager, TaskCallBack callBack) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Loading...");
@@ -55,7 +59,6 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
         this.moodPosition = moodPosition;
         this.weatherPosition = weatherPosition;
         this.attachment = attachment;
-        this.topicId = topicId;
         this.locationName = locationName;
         this.diaryItemHelper = diaryItemHelper;
         this.fileManager = fileManager;
@@ -74,7 +77,8 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(String... params) {
+    protected Integer doInBackground(Long... params) {
+        long topicId = params[0];
         dbManager.opeDB();
         //Save info
         long diaryInfoId = dbManager.insertDiaryInfo(time,
@@ -83,32 +87,30 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
         //Save content
         if (diaryInfoId != -1) {
             for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
+                Log.e("Save data", "test");
                 //Save data
                 dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
                         , diaryItemHelper.get(i).getContent(), diaryInfoId);
                 //Copy photo to sdcard
                 if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
                     DiaryPhoto diaryPhoto = ((DiaryPhoto) diaryItemHelper.get(i));
-                    savePhoto(diaryInfoId, diaryItemHelper.get(i).getContent(), diaryPhoto.getTempBitmap());
+                    savePhoto(topicId, diaryInfoId, diaryItemHelper.get(i).getContent(), diaryPhoto.getTempBitmap());
                     diaryPhoto.getTempBitmap().recycle();
                 }
             }
         }
         dbManager.closeDB();
-        //TODO test app enter background
-        //Clear Temp
-        //fileManager.clearDiaryDir();
-        return null;
+        return RESULT_SUCCESSFUL;
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    protected void onPostExecute(Integer integer) {
+        super.onPostExecute(integer);
         progressDialog.dismiss();
         callBack.onDiarySaved();
     }
 
-    private void savePhoto(long diaryId, String filename, Bitmap bitmap) {
+    private void savePhoto(long topicId, long diaryId, String filename, Bitmap bitmap) {
         FileOutputStream out = null;
         String savePath = fileManager.getFileRootDir() + "/" + String.valueOf(topicId) +
                 "/" + String.valueOf(diaryId);
@@ -118,7 +120,7 @@ public class SaveDiaryTask extends AsyncTask<String, Void, Void> {
         }
         try {
             out = new FileOutputStream(savePath + "/" + filename);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out); // bmp is your Bitmap instance
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

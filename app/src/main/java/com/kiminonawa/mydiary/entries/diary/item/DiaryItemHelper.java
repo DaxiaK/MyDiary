@@ -1,6 +1,5 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ public class DiaryItemHelper extends Observable {
     public DiaryItemHelper(LinearLayout itemContentLayout) {
         this.itemContentLayout = itemContentLayout;
         this.diaryItemList = new ArrayList<>();
-        Log.e("DiaryItemHelper", "height = " + itemContentLayout.getHeight()
-                + " width = " + itemContentLayout.getWidth());
     }
 
     /**
@@ -36,7 +33,6 @@ public class DiaryItemHelper extends Observable {
     public static void setVisibleArea(int weight, int height) {
         visibleHeight = height;
         visibleWidth = weight;
-        Log.e("setVisibleArea", "height = " + visibleHeight + " width = " + visibleWidth);
     }
 
     /**
