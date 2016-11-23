@@ -25,7 +25,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
+public class EntriesFragment extends BaseDiaryFragment implements
+        DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
 
     /**
      * UI

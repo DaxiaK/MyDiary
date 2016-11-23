@@ -27,7 +27,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
 
-    interface PhotoCallBack {
+    public interface PhotoCallBack {
         void addPhoto(String fileName);
 
         void selectPhoto(Uri uri);
@@ -51,11 +51,19 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     private PhotoCallBack callBack;
 
 
+    public static DiaryPhotoDialogFragment newInstance(boolean isEditMode) {
+        Bundle args = new Bundle();
+        DiaryPhotoDialogFragment fragment = new DiaryPhotoDialogFragment();
+        args.putBoolean("isEditMode", isEditMode);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        //TODO check it is from adding or editing
-        fileManager = new FileManager(getActivity(),false);
+        fileManager = new FileManager(getActivity(), getArguments().getBoolean("isEditMode", false));
         return dialog;
     }
 

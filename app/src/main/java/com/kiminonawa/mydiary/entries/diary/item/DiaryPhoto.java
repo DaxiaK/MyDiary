@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
 
@@ -36,10 +35,9 @@ public class DiaryPhoto implements IDairyRow {
         diaryPhotoLayout.setPhotoBitmap(bitmap);
     }
 
-    public ImageView getPhoto() {
-        return diaryPhotoLayout.getPhoto();
+    public void setPhotoFileName(String photoFileName) {
+        this.photoFileName = photoFileName;
     }
-
 
     @Override
     public void setContent(String content) {
@@ -47,8 +45,9 @@ public class DiaryPhoto implements IDairyRow {
         File imgFile = new File(content);
         if (imgFile.exists()) {
             Bitmap bitmap = BitmapFactory.decodeFile(content);
-            diaryPhotoLayout.getPhoto().setImageBitmap(bitmap);
+            diaryPhotoLayout.setPhotoBitmap(bitmap);
         }
+        // else not this file
     }
 
     @Override

@@ -2,11 +2,15 @@ package com.kiminonawa.mydiary.entries.entries;
 
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +27,19 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.entries.diary.CopyPhotoTask;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
 import com.kiminonawa.mydiary.entries.diary.DiaryPhotoDialogFragment;
 import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
+import com.kiminonawa.mydiary.shared.BitmapHelper;
+import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.gui.DeleteDialogFragment;
@@ -39,12 +48,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
+
 /**
  * Created by daxia on 2016/10/27.
  */
 
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
-        DeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.TaskCallBack {
+        DeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
+        DiaryPhotoDialogFragment.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
+        UpdateDiaryTask.UpdateDiaryCallBack {
 
 
     /**
@@ -58,11 +71,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private DiaryViewerCallback callback;
 
+    private static final String TAG = "DiaryViewer";
 
     /**
      * UI
      */
-
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private ProgressBar PB_diary_item_content_hint;
 
@@ -87,7 +100,13 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      * Edit Mode
      */
     private CopyDiaryToEditCacheTask mTask;
+    private Handler delayHandler;
+    private boolean initHandlerOrTaskIsRunnung = false;
 
+    /**
+     * Permission
+     */
+    private boolean firstAllowCameraPermission = false;
 
     //TODO Make this dialog's background has radius.
     @Override
@@ -129,6 +148,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         PB_diary_item_content_hint = (ProgressBar) rootView.findViewById(R.id.PB_diary_item_content_hint);
 
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
+        //For hidden hint
+        EDT_diary_title.setText(" ");
         EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
                 PorterDuff.Mode.SRC_ATOP);
 
@@ -167,13 +188,15 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
                 mTask = new CopyDiaryToEditCacheTask(getActivity(), fileManager, this);
                 //Make ths ProgressBar show 1s+.
-                new Handler().postDelayed(new Runnable() {
+                delayHandler = new Handler();
+                delayHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //Copy the file into editCash
                         mTask.execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
                     }
                 }, 1000);
+                initHandlerOrTaskIsRunnung = true;
             } else {
                 fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 initData();
@@ -182,12 +205,45 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        if (mTask != null) {
-            mTask.cancel(true);
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION) {
+            if (grantResults.length > 0
+                    && PermissionHelper.checkAllPermissionResult(grantResults)) {
+                firstAllowCameraPermission = true;
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setTitle(getString(R.string.diary_location_permission_title))
+                        .setMessage(getString(R.string.diary_photo_permission_content))
+                        .setPositiveButton(getString(R.string.dialog_button_ok), null);
+                builder.show();
+            }
         }
-        dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //For PermissionsResult
+        if (firstAllowCameraPermission) {
+            openPhotoBottomSheet();
+            firstAllowCameraPermission = false;
+        }
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onPause();
+        if (initHandlerOrTaskIsRunnung) {
+            if (delayHandler != null) {
+                delayHandler.removeCallbacksAndMessages(null);
+            }
+            if (mTask != null) {
+                mTask.cancel(true);
+            }
+            dismissAllowingStateLoss();
+        }
     }
 
     private void initData() {
@@ -222,10 +278,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             initWeatherSpinner();
 
             IV_diary_delete.setVisibility(View.GONE);
-            IV_diary_clear.setOnClickListener(this);
-            IV_diary_save.setOnClickListener(this);
-
-            IV_diary_photo.setOnClickListener(this);
         } else {
             IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);
@@ -264,7 +316,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 diaryItem = new DiaryPhoto(getActivity());
                 content = fileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
+                    diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
+                    ((DiaryPhoto) diaryItem).setPhotoFileName(diaryContentCursor.getString(3));
                 } else {
                     diaryItem.setEditMode(false);
                 }
@@ -276,6 +330,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 }
             }
             diaryItem.setContent(content);
+            diaryItem.setPosition(i);
             diaryItemHelper.createItem(diaryItem);
             diaryContentCursor.moveToNext();
         }
@@ -304,6 +359,62 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         }
     }
 
+    private void loadFileFromTemp(String fileName) {
+        try {
+            String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            Bitmap resizeBmp = ExifUtil.rotateBitmap(tempFileSrc,
+                    BitmapHelper.getBitmapFromTempFileSrc(tempFileSrc,
+                            diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight()));
+            DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
+            diaryPhoto.setPhoto(resizeBmp, fileName);
+            DiaryTextTag tag = checkoutOldDiaryContent();
+            //Check edittext is focused
+            if (tag != null) {
+                //Add new edittext
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setPosition(tag.getPositionTag());
+                diaryText.setContent(tag.getNextEditTextStr());
+                diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                diaryText.getView().requestFocus();
+                //Add photo
+                diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
+                diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+            } else {
+                //Add photo
+                diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
+                diaryItemHelper.createItem(diaryPhoto);
+                //Add new edittext
+                DiaryText diaryText = new DiaryText(getActivity());
+                diaryText.setPosition(diaryItemHelper.getItemSize());
+                diaryItemHelper.createItem(diaryText);
+                diaryText.getView().requestFocus();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+            Toast.makeText(getActivity(), getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
+        } finally {
+            diaryItemHelper.resortPosition();
+        }
+    }
+
+    private DiaryTextTag checkoutOldDiaryContent() {
+        View focusView = getDialog().getCurrentFocus();
+        DiaryTextTag tag = null;
+        if (focusView instanceof EditText && focusView.getTag() != null &&
+                focusView.getTag() instanceof DiaryTextTag) {
+            EditText currentEditText = (EditText) focusView;
+            tag = (DiaryTextTag) focusView.getTag();
+            if (currentEditText.getText().toString().length() > 0) {
+                int index = currentEditText.getSelectionStart();
+                String nextEditTextStr = currentEditText.getText().toString()
+                        .substring(index, currentEditText.getText().toString().length());
+                currentEditText.getText().delete(index, currentEditText.getText().toString().length());
+                tag.setNextEditTextStr(nextEditTextStr);
+            }
+        }
+        return tag;
+    }
+
 
     public void setCallBack(DiaryViewerCallback callback) {
         this.callback = callback;
@@ -311,11 +422,48 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
 
     private void updateDiary() {
-//        DBManager dbManager = new DBManager(getActivity());
-//        dbManager.opeDB();
-//        dbManager.updateDiary(diaryId, EDT_diary_title.getText().toString(),"",
-//                SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition());
-//        dbManager.closeDB();
+        new UpdateDiaryTask(getActivity(), EDT_diary_title.getText().toString(),
+                SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
+                //Check  attachment
+                diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
+                diaryItemHelper, fileManager, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
+
+    }
+
+    private void openPhotoBottomSheet() {
+        DiaryPhotoDialogFragment diaryPhotoDialogFragment = DiaryPhotoDialogFragment.newInstance(true);
+        diaryPhotoDialogFragment.setCallBack(this);
+        diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+    }
+
+    @Override
+    public void onDiaryUpdated() {
+        this.dismissAllowingStateLoss();
+        callback.updateDiary();
+    }
+
+    @Override
+    public void onCopyCompiled(String fileName) {
+        loadFileFromTemp(fileName);
+    }
+
+    @Override
+    public void addPhoto(String fileName) {
+        loadFileFromTemp(fileName);
+    }
+
+    @Override
+    public void selectPhoto(Uri uri) {
+        if (FileManager.isImage(
+                FileManager.getFileNameByUri(getActivity(), uri))) {
+            //1.Copy bitmap to temp
+            //2.Then , Load bitmap & resize in call back ;
+            new CopyPhotoTask(getActivity(), uri,
+                    diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight(),
+                    fileManager, this).execute();
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -328,19 +476,42 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         if (result == CopyDiaryToEditCacheTask.RESULT_COPY_SUCCESSFUL) {
             PB_diary_item_content_hint.setVisibility(View.GONE);
             initData();
+            //Open the click listener
+            IV_diary_clear.setOnClickListener(this);
+            IV_diary_save.setOnClickListener(this);
+            IV_diary_photo.setOnClickListener(this);
         } else {
-            Toast.makeText(getActivity(), "讀取異常", Toast.LENGTH_LONG).show();
-            dismiss();
+            dismissAllowingStateLoss();
         }
+        initHandlerOrTaskIsRunnung = false;
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.IV_diary_photo_delete:
+                int position = (int) v.getTag();
+                diaryItemHelper.remove(position);
+                LL_diary_item_content.removeViewAt(position);
+                diaryItemHelper.mergerAdjacentText(position);
+                diaryItemHelper.resortPosition();
+                break;
             case R.id.IV_diary_photo:
-                DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
-                diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+                if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                    if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
+                        if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
+                            openPhotoBottomSheet();
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    String.format(getResources().getString(R.string.toast_max_photo), DiaryItemHelper.MAX_PHOTO_COUNT),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    //Insufficient
+                    Toast.makeText(getActivity(), getString(R.string.toast_space_insufficient), Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.IV_diary_close_dialog:
                 dismiss();
@@ -355,9 +526,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dismiss();
                 break;
             case R.id.IV_diary_save:
-                updateDiary();
-                callback.updateDiary();
-                dismiss();
+                if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
+                    updateDiary();
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }

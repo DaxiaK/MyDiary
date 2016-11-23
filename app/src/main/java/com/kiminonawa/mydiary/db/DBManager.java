@@ -140,22 +140,21 @@ public class DBManager {
                 this.createDiaryContentCV(type, position, content, diaryId));
     }
 
-    //    public long updateDiary(long diaryId, String title, String content,
-//                            int mood, int weather) {
-//        ContentValues values = new ContentValues();
-//        values.put(DiaryEntry.COLUMN_TITLE, title);
-//        values.put(DiaryEntry.COLUMN_CONTENT, content);
-//        values.put(DiaryEntry.COLUMN_MOOD, mood);
-//        values.put(DiaryEntry.COLUMN_WEATHER, weather);
-//
-//        return db.update(
-//                DiaryEntry.TABLE_NAME,
-//                values,
-//                DiaryEntry._ID + " = ?",
-//                new String[]{String.valueOf(diaryId)});
-//    }
-//
-//
+    public long updateDiary(long diaryId, String title,
+                            int mood, int weather, boolean attachment) {
+        ContentValues values = new ContentValues();
+        values.put(DiaryEntry_V2.COLUMN_TITLE, title);
+        values.put(DiaryEntry_V2.COLUMN_MOOD, mood);
+        values.put(DiaryEntry_V2.COLUMN_WEATHER, weather);
+        values.put(DiaryEntry_V2.COLUMN_ATTACHMENT, attachment);
+
+        return db.update(
+                DiaryEntry_V2.TABLE_NAME,
+                values,
+                DiaryEntry_V2._ID + " = ?",
+                new String[]{String.valueOf(diaryId)});
+    }
+
     public long delDiary(long diaryId) {
         return db.delete(
                 DiaryEntry_V2.TABLE_NAME,

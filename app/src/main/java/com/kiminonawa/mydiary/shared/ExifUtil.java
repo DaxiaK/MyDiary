@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -40,7 +39,6 @@ public class ExifUtil {
         }
 
         Matrix matrix = new Matrix();
-        Log.e("test", "orientation=" + orientation);
         switch (orientation) {
             case 2:
                 matrix.setScale(-1, 1);

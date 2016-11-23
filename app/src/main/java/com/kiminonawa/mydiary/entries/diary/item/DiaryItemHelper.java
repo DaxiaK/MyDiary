@@ -15,7 +15,8 @@ public class DiaryItemHelper extends Observable {
     public final static int MAX_PHOTO_COUNT = 7;
 
 
-    private List<IDairyRow> diaryItemList;
+    //For test to Public
+    public List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
     private int nowPhotoCount = 0;
     private static int visibleHeight = -1, visibleWidth = -1;

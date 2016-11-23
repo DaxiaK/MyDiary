@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.entries.entries;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.shared.FileManager;
 
@@ -13,11 +14,11 @@ import java.io.File;
 
 public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
 
-    public interface TaskCallBack {
+    public interface EditTaskCallBack {
         void onCopyToEditCacheCompiled(int result);
     }
 
-    private TaskCallBack callBack;
+    private EditTaskCallBack callBack;
     private FileManager editCacheFileManage;
     private Context mContext;
 
@@ -26,7 +27,7 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
 
 
     public CopyDiaryToEditCacheTask(Context context, FileManager editCacheFileManage,
-                                    TaskCallBack callBack) {
+                                    EditTaskCallBack callBack) {
         this.mContext = context;
         this.editCacheFileManage = editCacheFileManage;
         this.callBack = callBack;
@@ -52,9 +53,12 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
     }
 
     @Override
-    protected void onPostExecute(Integer integer) {
-        super.onPostExecute(integer);
-        callBack.onCopyToEditCacheCompiled(integer);
+    protected void onPostExecute(Integer result) {
+        super.onPostExecute(result);
+        if (result == RESULT_COPY_ERROR) {
+            Toast.makeText(mContext, "讀取異常", Toast.LENGTH_LONG).show();
+        }
+        callBack.onCopyToEditCacheCompiled(result);
     }
 
     private void copyPhoto(String filename, FileManager diaryFileManager) throws Exception {

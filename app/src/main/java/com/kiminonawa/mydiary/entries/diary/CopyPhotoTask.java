@@ -21,13 +21,13 @@ import java.io.IOException;
 
 public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
-    public interface TaskCallBack {
+    public interface CopyPhotoCallBack {
         void onCopyCompiled(String fileName);
     }
 
 
     private ProgressDialog progressDialog;
-    private CopyPhotoTask.TaskCallBack callBack;
+    private CopyPhotoTask.CopyPhotoCallBack callBack;
     private Context mContext;
     private Uri uri;
     private int reqWidth, reqHeight;
@@ -35,7 +35,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
     public CopyPhotoTask(Context context, Uri uri,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, TaskCallBack callBack) {
+                         FileManager fileManager, CopyPhotoCallBack callBack) {
         this.mContext = context;
         this.uri = uri;
         this.reqWidth = reqWidth;

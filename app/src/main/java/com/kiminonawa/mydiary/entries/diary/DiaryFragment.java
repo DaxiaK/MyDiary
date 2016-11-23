@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.entries.diary;
 
 
-import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -15,8 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +37,7 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.shared.BitmapHelper;
 import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
@@ -55,6 +53,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static android.content.Context.LOCATION_SERVICE;
+import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION;
+import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
 
 /**
@@ -63,8 +63,8 @@ import static android.content.Context.LOCATION_SERVICE;
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.TaskCallBack,
-        CopyPhotoTask.TaskCallBack {
+        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
+        CopyPhotoTask.CopyPhotoCallBack {
 
 
     private String TAG = "DiaryFragment";
@@ -98,8 +98,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * Permission
      */
-    private static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 1;
-    private static final int REQUEST_CAMERA_AND_WRITE_ES_PERMISSION = 2;
     private boolean firstAllowLocationPermission = false;
     private boolean firstAllowCameraPermission = false;
 
@@ -252,7 +250,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_ACCESS_FINE_LOCATION_PERMISSION:
+            case PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     firstAllowLocationPermission = true;
@@ -266,9 +264,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     TV_diary_location.setText(noLocation);
                 }
                 break;
-            case REQUEST_CAMERA_AND_WRITE_ES_PERMISSION:
+            case PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION:
                 if (grantResults.length > 0
-                        && checkAllPermissionResult(grantResults)) {
+                        && PermissionHelper.checkAllPermissionResult(grantResults)) {
                     firstAllowCameraPermission = true;
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
@@ -279,55 +277,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
         }
-    }
-
-    private boolean checkAllPermissionResult(int[] grantResults) {
-        for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-    private boolean checkPermission(final int requestCode) {
-        switch (requestCode) {
-            case REQUEST_ACCESS_FINE_LOCATION_PERMISSION:
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                requestCode);
-                        return false;
-                    } else {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                requestCode);
-                        return false;
-                    }
-                }
-                break;
-            case REQUEST_CAMERA_AND_WRITE_ES_PERMISSION:
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                        ContextCompat.checkSelfPermission(getActivity(),
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.CAMERA) || ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                requestCode);
-                        return false;
-                    } else {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                requestCode);
-                        return false;
-                    }
-                }
-                break;
-        }
-        return true;
     }
 
 
@@ -373,7 +322,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private void initDiaryInfo() {
         if (isLocation && locationManager.isProviderEnabled(locationProvider)) {
 
-            if (checkPermission(REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
+            if (PermissionHelper.checkPermission(this, REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
                 if (locationManager.isProviderEnabled(locationProvider)) {
                     locationManager.requestLocationUpdates(locationProvider, 3000, 0, this);
                 }
@@ -434,13 +383,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         new SaveDiaryTask(getActivity(), calendar.getTimeInMillis(),
                 EDT_diary_title.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
-                //Check has attachment
+                //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
                 locationName, diaryItemHelper, fileManager, this).execute(getTopicId());
     }
 
     private void openPhotoBottomSheet() {
-        DiaryPhotoDialogFragment diaryPhotoDialogFragment = new DiaryPhotoDialogFragment();
+        DiaryPhotoDialogFragment diaryPhotoDialogFragment = DiaryPhotoDialogFragment.newInstance(false);
         diaryPhotoDialogFragment.setCallBack(this);
         diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
     }
@@ -524,10 +473,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     @Override
-    public void onDiarySaved(int result) {
-        if (result == SaveDiaryTask.RESULT_INSERT_ERROR) {
-            Toast.makeText(getActivity(), "日記存檔不完全", Toast.LENGTH_LONG).show();
-        }
+    public void onDiarySaved() {
         //Clear
         clearDiaryPage();
         ((DiaryActivity) getActivity()).gotoPage(0);
@@ -561,7 +507,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 break;
             case R.id.IV_diary_photo:
                 if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
-                    if (checkPermission(REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
+                    if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                         if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                             openPhotoBottomSheet();
                         } else {
