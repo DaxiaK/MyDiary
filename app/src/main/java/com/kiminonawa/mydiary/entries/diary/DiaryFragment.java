@@ -419,7 +419,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void clearDiaryPage() {
-        Log.e("test", "clearDiaryPage");
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
         fileManager.clearDiaryDir();

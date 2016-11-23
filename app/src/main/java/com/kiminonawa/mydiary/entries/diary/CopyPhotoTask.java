@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.kiminonawa.mydiary.shared.BitmapHelper;
+import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.FileOutputStream;
@@ -27,7 +28,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
     private ProgressDialog progressDialog;
     private CopyPhotoTask.TaskCallBack callBack;
-    private Context mContxt;
+    private Context mContext;
     private Uri uri;
     private int reqWidth, reqHeight;
     private FileManager fileManager;
@@ -35,7 +36,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     public CopyPhotoTask(Context context, Uri uri,
                          int reqWidth, int reqHeight,
                          FileManager fileManager, TaskCallBack callBack) {
-        this.mContxt = context;
+        this.mContext = context;
         this.uri = uri;
         this.reqWidth = reqWidth;
         this.reqHeight = reqHeight;
@@ -53,7 +54,12 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         String fileName = null;
         try {
-            fileName = savePhotoToTemp(BitmapHelper.getBitmapFromReturnedImage(mContxt, uri, reqWidth, reqHeight));
+            //1.Create bitmap
+            //2.Get uri exif
+            fileName = savePhotoToTemp(
+                    ExifUtil.rotateBitmap(mContext, uri,
+                            BitmapHelper.getBitmapFromReturnedImage(mContext, uri, reqWidth, reqHeight))
+            );
         } catch (Exception e) {
             Log.e("CopyPhotoTask", e.toString());
         }
