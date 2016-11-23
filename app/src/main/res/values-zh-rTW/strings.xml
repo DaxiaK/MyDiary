@@ -43,6 +43,7 @@
     <string name="diary_no_location">無定位</string>
     <string name="diary_location_permission_title">授權</string>
     <string name="diary_location_permission_content">需要授權來取得位置名稱</string>
+    <string name="diary_photo_permission_content">需要授權來取得新增照片</string>
 
     <string name="diary_title_hint">日記標題</string>
     <string name="diary_content_hint">在此寫下你的日記內容</string>
@@ -51,7 +52,8 @@
     <string name="toast_refashioning">位置資訊整理中</string>
     <string name="toast_not_image">該檔案不是圖片</string>
     <string name="toast_photo_error">圖片來源異常</string>
-
+    <string name="toast_max_photo">最多只能加入%1$d張照片</string>
+    <string name="toast_space_insufficient">剩餘空間不足</string>
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>

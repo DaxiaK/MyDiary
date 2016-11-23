@@ -69,7 +69,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private EditText EDT_diary_title;
     private LinearLayout LL_diary_item_content;
     private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_delete, IV_diary_clear, IV_diary_save;
-
     private boolean isEditMode;
 
     /**
@@ -128,7 +127,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
 
         LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
-
 
         IV_diary_close_dialog = (ImageView) rootView.findViewById(R.id.IV_diary_close_dialog);
         IV_diary_close_dialog.setVisibility(View.VISIBLE);
@@ -232,7 +230,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
                 diaryItem = new DiaryText(getActivity());
                 content = diaryContentCursor.getString(3);
-                if(!isEditMode){
+                if (!isEditMode) {
                     diaryItem.setEditMode(false);
                 }
             }

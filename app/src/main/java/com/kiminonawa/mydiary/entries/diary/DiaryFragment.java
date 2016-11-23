@@ -274,7 +274,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                             .setTitle(getString(R.string.diary_location_permission_title))
-                            .setMessage(getString(R.string.diary_location_permission_content))
+                            .setMessage(getString(R.string.diary_photo_permission_content))
                             .setPositiveButton(getString(R.string.dialog_button_ok), null);
                     builder.show();
                 }
@@ -348,6 +348,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 diaryText.setPosition(tag.getPositionTag());
                 diaryText.setContent(tag.getNextEditTextStr());
                 diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                diaryText.getView().requestFocus();
                 //Add photo
                 diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
                 diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
@@ -359,6 +360,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 DiaryText diaryText = new DiaryText(getActivity());
                 diaryText.setPosition(diaryItemHelper.getItemSize());
                 diaryItemHelper.createItem(diaryText);
+                diaryText.getView().requestFocus();
             }
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -540,6 +542,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
+                    diaryText.getView().requestFocus();
                 }
                 break;
             case R.id.IV_diary_photo_delete:
@@ -560,12 +563,14 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                         if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                             openPhotoBottomSheet();
                         } else {
-                            //Avoiding the OOM , set the MAX item.
+                            Toast.makeText(getActivity(),
+                                    String.format(getResources().getString(R.string.toast_max_photo), DiaryItemHelper.MAX_PHOTO_COUNT),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
                     //Insufficient
-                    Toast.makeText(getActivity(), "Insufficient", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.toast_space_insufficient), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.IV_diary_clear:

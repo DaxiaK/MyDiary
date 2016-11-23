@@ -42,6 +42,7 @@
     <string name="diary_no_location">No location</string>
     <string name="diary_location_permission_title">Permission</string>
     <string name="diary_location_permission_content">We need permission to get location name</string>
+    <string name="diary_photo_permission_content">We need permission to add photo</string>
 
     <string name="diary_title_hint">Diary title</string>
     <string name="diary_content_hint">Write your diary here</string>
@@ -50,6 +51,8 @@
     <string name="toast_refashioning">Location is refashioning</string>
     <string name="toast_not_image">The file is not a image</string>
     <string name="toast_photo_error">Photo path has some problem</string>
+    <string name="toast_max_photo">Max selected photo is %1$d</string>
+    <string name="toast_space_insufficient">Free space Insufficient</string>
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>

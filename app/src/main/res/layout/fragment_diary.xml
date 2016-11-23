@@ -77,14 +77,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
                 android:id="@+id/RL_diary_info"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:layout_height="120dp">
 
                 <ImageView
                     android:id="@+id/IV_diary_close_dialog"
