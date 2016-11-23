@@ -2,20 +2,15 @@ package com.kiminonawa.mydiary.entries.diary;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
-import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * Created by daxia on 2016/11/21.
@@ -28,9 +23,10 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     public final static int RESULT_SUCCESSFUL = 1;
-    public final static int RESULT_FILE_ERROR = 2;
+    public final static int RESULT_INSERT_ERROR = 2;
 
 
+    private Context mContext;
     private DBManager dbManager;
     private long time;
     private String title;
@@ -38,7 +34,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     private boolean attachment;
     private String locationName;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager fileManager;
+    private FileManager tempfileManager, diaryFileManager;
     private ProgressDialog progressDialog;
 
     private TaskCallBack callBack;
@@ -53,7 +49,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
 
-        dbManager = new DBManager(context);
+        this.dbManager = new DBManager(context);
+        this.mContext = context;
         this.time = time;
         this.title = title;
         this.moodPosition = moodPosition;
@@ -61,23 +58,16 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.attachment = attachment;
         this.locationName = locationName;
         this.diaryItemHelper = diaryItemHelper;
-        this.fileManager = fileManager;
+        this.tempfileManager = fileManager;
         this.callBack = callBack;
 
-        //Create bitmap
-        for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
-            if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
-                DiaryPhoto diaryPhoto = ((DiaryPhoto) diaryItemHelper.get(i));
-                ImageView imageView = diaryPhoto.getPhoto();
-                imageView.buildDrawingCache();
-                diaryPhoto.setTempBitmap(imageView.getDrawingCache());
-            }
-        }
         progressDialog.show();
     }
 
     @Override
     protected Integer doInBackground(Long... params) {
+
+        int saveResult = RESULT_SUCCESSFUL;
         long topicId = params[0];
         dbManager.opeDB();
         //Save info
@@ -85,22 +75,25 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                 title, moodPosition, weatherPosition,
                 attachment, topicId, locationName);
         //Save content
+        diaryFileManager = new FileManager(mContext, topicId, diaryInfoId);
         if (diaryInfoId != -1) {
             for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
-                Log.e("Save data", "test");
-                //Save data
-                dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
-                        , diaryItemHelper.get(i).getContent(), diaryInfoId);
-                //Copy photo to sdcard
-                if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
-                    DiaryPhoto diaryPhoto = ((DiaryPhoto) diaryItemHelper.get(i));
-                    savePhoto(topicId, diaryInfoId, diaryItemHelper.get(i).getContent(), diaryPhoto.getTempBitmap());
-                    diaryPhoto.getTempBitmap().recycle();
+                try {
+                    //Copy photo from temp to diary dir
+                    if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
+                        savePhoto(diaryItemHelper.get(i).getContent());
+                    }
+                    //Save data
+                    dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
+                            , diaryItemHelper.get(i).getContent(), diaryInfoId);
+                } catch (Exception e) {
+                    Log.e("SaveDiaryTask", "Item:" + i + " insert fail");
+                    saveResult = RESULT_INSERT_ERROR;
                 }
             }
         }
         dbManager.closeDB();
-        return RESULT_SUCCESSFUL;
+        return saveResult;
     }
 
     @Override
@@ -110,27 +103,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         callBack.onDiarySaved();
     }
 
-    private void savePhoto(long topicId, long diaryId, String filename, Bitmap bitmap) {
-        FileOutputStream out = null;
-        String savePath = fileManager.getFileRootDir() + "/" + String.valueOf(topicId) +
-                "/" + String.valueOf(diaryId);
-        File saveFile = new File(savePath);
-        if (!saveFile.exists()) {
-            saveFile.mkdirs();
-        }
-        try {
-            out = new FileOutputStream(savePath + "/" + filename);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    private void savePhoto(String filename) throws Exception {
+        FileManager.copy(new File(tempfileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
+                new File(diaryFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename));
     }
 }

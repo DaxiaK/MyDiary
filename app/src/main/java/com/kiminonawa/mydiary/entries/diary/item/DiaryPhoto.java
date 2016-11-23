@@ -20,9 +20,6 @@ public class DiaryPhoto implements IDairyRow {
     private String photoFileName;
     private int position;
 
-    //For Save
-    private Bitmap tempBitmap;
-
     public DiaryPhoto(Context context) {
         diaryPhotoLayout = new DiaryPhotoLayout(context);
         //Default is editable
@@ -43,14 +40,6 @@ public class DiaryPhoto implements IDairyRow {
         return diaryPhotoLayout.getPhoto();
     }
 
-
-    public Bitmap getTempBitmap() {
-        return tempBitmap;
-    }
-
-    public void setTempBitmap(Bitmap tempBitmap) {
-        this.tempBitmap = tempBitmap;
-    }
 
     @Override
     public void setContent(String content) {
