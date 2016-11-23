@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.os.StatFs;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -24,6 +26,8 @@ import java.util.UUID;
 public class FileManager {
 
     private static final String TAG = "FileManager";
+    //Min free space is 50 MB
+    public static final int MIN_FREE_SPACE = 50;
 
     /**
      * The path is :
@@ -137,12 +141,13 @@ public class FileManager {
      * @param context
      * @param contentUri
      * @return path
+     * @see:http://stackoverflow.com/questions/28452591/android-get-exif-rotation-from-uri
      */
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
                 && DocumentsContract.isDocumentUri(context, contentUri)) {
             return getPathForV19AndUp(context, contentUri);
-        }else{
+        } else {
             return getPathForPreV19(context, contentUri);
         }
     }
@@ -154,7 +159,7 @@ public class FileManager {
      * @param contentUri
      * @return
      */
-    public static String getPathForPreV19(Context context, Uri contentUri) {
+    private static String getPathForPreV19(Context context, Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
@@ -175,7 +180,7 @@ public class FileManager {
      * @return path
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static String getPathForV19AndUp(Context context, Uri contentUri) {
+    private static String getPathForV19AndUp(Context context, Uri contentUri) {
         String wholeID = DocumentsContract.getDocumentId(contentUri);
 
         // Split at colon, use second item in the array
@@ -197,5 +202,23 @@ public class FileManager {
         cursor.close();
         return filePath;
     }
+
+    /**
+     * @return MB
+     */
+    public static long getSDCardFreeSize() {
+        File path = Environment.getExternalStorageDirectory();
+        StatFs sf = new StatFs(path.getPath());
+        long blockSize, freeBlocks;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            blockSize = sf.getBlockSize();
+            freeBlocks = sf.getAvailableBlocks();
+        } else {
+            blockSize = sf.getBlockSizeLong();
+            freeBlocks = sf.getAvailableBlocksLong();
+        }
+        return (freeBlocks * blockSize) / 1024 / 1024;
+    }
+
 
 }

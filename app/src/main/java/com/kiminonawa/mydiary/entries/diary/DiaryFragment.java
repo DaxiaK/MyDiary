@@ -652,12 +652,17 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 initLocationIcon();
                 break;
             case R.id.IV_diary_photo:
-                if (checkPermission(REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
-                    if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
-                        openPhotoBottomSheet();
-                    } else {
-                        //Avoiding the OOM , set the MAX item.
+                if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                    if (checkPermission(REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
+                        if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
+                            openPhotoBottomSheet();
+                        } else {
+                            //Avoiding the OOM , set the MAX item.
+                        }
                     }
+                } else {
+                    //Insufficient
+                    Toast.makeText(getActivity(),"Insufficient", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.IV_diary_clear:
