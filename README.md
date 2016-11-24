@@ -41,28 +41,28 @@ so, maybe I will try to create an iOS version after this app is running.
 * Support JP
 * Create contacts
 * Optimized diary page viewer 
+* Add photo in diary
 
 ## Schedule
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Google account backup & setting page
-2. Allow changing diary time
-3. Add web block in diary
-4. Add photo in diary
-5. page curl effect
-6. Implments search
-7. More theme , More profile
-8. OOBE (Alpha) 
-9. Support Chinese sort
-10. Allow order for topic , memo
-11. Add password (beta)
-12. Tags
-13. UI review & support xxxHpdi \
-14. Add contacts from phone
-15. Add bookmark for diary
-16. Add music in diary
-17. Supprot JP sort
+1. Allow changing diary time
+2. Add web block in diary
+3. page curl effect
+4. Implments search
+5. More theme , More profile
+6. OOBE (Alpha) 
+7. Google account backup & setting page
+8. Support Chinese sort
+9. Allow order for topic , memo
+10. Add password (beta)
+11. Tags
+12. UI review & support xxxHpdi \
+13. Add contacts from phone
+14. Add bookmark for diary
+15. Add music in diary
+16. Supprot JP sort
 
 Coding & Designing:
 
