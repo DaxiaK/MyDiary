@@ -2,8 +2,9 @@
 <resources>
     <!--Default-->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#EFF6F6</color>
-    <color name="colorAccent">#67B5E6</color>
+    <color name="colorPrimaryDark">#666666</color>
+    <color name="colorPrimaryDark_23">#b2b2b2</color>
+    <color name="colorAccent">#b2b2b2</color>
 
     <!--Theme-->
     <color name="themeColor_taki">#67B5E6</color>

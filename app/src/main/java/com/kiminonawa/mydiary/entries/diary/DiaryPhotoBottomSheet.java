@@ -25,7 +25,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by daxia on 2016/11/19.
  */
 
-public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implements View.OnClickListener {
+public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
 
     public interface PhotoCallBack {
         void addPhoto(String fileName);
@@ -51,9 +51,9 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     private PhotoCallBack callBack;
 
 
-    public static DiaryPhotoDialogFragment newInstance(boolean isEditMode) {
+    public static DiaryPhotoBottomSheet newInstance(boolean isEditMode) {
         Bundle args = new Bundle();
-        DiaryPhotoDialogFragment fragment = new DiaryPhotoDialogFragment();
+        DiaryPhotoBottomSheet fragment = new DiaryPhotoBottomSheet();
         args.putBoolean("isEditMode", isEditMode);
         fragment.setArguments(args);
         return fragment;
@@ -72,7 +72,7 @@ public class DiaryPhotoDialogFragment extends BottomSheetDialogFragment implemen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         this.getDialog().setCanceledOnTouchOutside(true);
-        View rootView = inflater.inflate(R.layout.dialog_fragment_diary_photo, container);
+        View rootView = inflater.inflate(R.layout.bottom_sheet_diary_photo, container);
         RL_diary_photo_dialog = (RelativeLayout) rootView.findViewById(R.id.RL_diary_photo_dialog);
         RL_diary_photo_dialog.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 

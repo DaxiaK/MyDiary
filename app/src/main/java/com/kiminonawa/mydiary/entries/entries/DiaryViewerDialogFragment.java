@@ -29,7 +29,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.CopyPhotoTask;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
-import com.kiminonawa.mydiary.entries.diary.DiaryPhotoDialogFragment;
+import com.kiminonawa.mydiary.entries.diary.DiaryPhotoBottomSheet;
 import com.kiminonawa.mydiary.entries.diary.ImageArrayAdapter;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
@@ -56,7 +56,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
         DeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
-        DiaryPhotoDialogFragment.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
+        DiaryPhotoBottomSheet.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
         UpdateDiaryTask.UpdateDiaryCallBack {
 
 
@@ -431,9 +431,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     private void openPhotoBottomSheet() {
-        DiaryPhotoDialogFragment diaryPhotoDialogFragment = DiaryPhotoDialogFragment.newInstance(true);
-        diaryPhotoDialogFragment.setCallBack(this);
-        diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+        DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(true);
+        diaryPhotoBottomSheet.setCallBack(this);
+        diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 
     @Override

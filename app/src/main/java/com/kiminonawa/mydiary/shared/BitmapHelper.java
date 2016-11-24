@@ -92,15 +92,13 @@ public class BitmapHelper {
         int inSampleSize = 1;
         if (height > reqHeight || width > reqWidth) {
 
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
 
             Log.e("BitmapHelper", "w,h=" + options.outWidth + "  , " + options.outHeight);
             Log.e("BitmapHelper", "req w,h=" + reqWidth + "  , " + reqHeight);
 
             // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
+            while ((options.outHeight / inSampleSize) > reqHeight
+                    || (options.outWidth / inSampleSize) > reqWidth) {
                 inSampleSize *= 2;
             }
             // This offers some additional logic in case the image has a strange

@@ -1,25 +1,18 @@
 package com.kiminonawa.mydiary.main;
 
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -28,13 +21,10 @@ import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.shared.SPFManager;
-import com.kiminonawa.mydiary.shared.ScreenHepler;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         CreateTopicDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
@@ -54,12 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
     private ItemTouchHelper.Callback touchCallback;
-    /**
-     * popup
-     */
-    private PopupWindow mPopupWindow;
-    private ImageView IV_main_popup_change_theme, IV_main_popup_add;
-
     /**
      * DB
      */
@@ -101,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initProfile();
         initBottomBar();
-        initPopupWindow();
         initTopicAdapter();
 
         //Release note dialog
@@ -159,25 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.closeDB();
     }
 
-    private void initPopupWindow() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popuoView = inflater.inflate(R.layout.popup_main, null);
-        mPopupWindow = new PopupWindow(MainActivity.this);
-        mPopupWindow.setWidth(ScreenHepler.dpToPixel(getResources(), 80));
-        mPopupWindow.setHeight(ScreenHepler.dpToPixel(getResources(), 100));
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mPopupWindow.setTouchable(true);
-        mPopupWindow.setOutsideTouchable(true);
-
-        mPopupWindow.setContentView(popuoView);
-
-        IV_main_popup_add = (ImageView) popuoView.findViewById(R.id.IV_main_popup_add);
-        IV_main_popup_add.setOnClickListener(this);
-        IV_main_popup_change_theme = (ImageView) popuoView.findViewById(R.id.IV_main_popup_change_theme);
-        IV_main_popup_change_theme.setOnClickListener(this);
-        LinearLayout LL_main_popup = (LinearLayout) popuoView.findViewById(R.id.LL_main_popup);
-        LL_main_popup.setBackgroundResource(themeManager.getPopupBgResource());
-    }
 
     private void initTopicAdapter() {
         //Init topic adapter
@@ -200,25 +164,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 yourNameDialogFragment.show(getSupportFragmentManager(), "yourNameDialogFragment");
                 break;
             case R.id.IV_main_setting:
-                mPopupWindow.showAsDropDown(IV_main_setting, RL_main_bottom_bar.getWidth(), 0);
-                break;
-            case R.id.IV_main_popup_add:
-                CreateTopicDialogFragment createTopicDialogFragment = new CreateTopicDialogFragment();
-                createTopicDialogFragment.setCallBack(this);
-                createTopicDialogFragment.show(getSupportFragmentManager(), "createTopicDialogFragment");
-                mPopupWindow.dismiss();
-                break;
-            case R.id.IV_main_popup_change_theme:
-                mPopupWindow.dismiss();
-                themeManager.toggleTheme(this);
-                //Send Toast
-                Toast.makeText(this, getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
-                //Restart App
-                Intent i = getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
-                finish();
-                startActivity(i);
+                MainSettingDialogFragment mainSettingDialogFragment = new MainSettingDialogFragment();
+                mainSettingDialogFragment.show(getSupportFragmentManager(),"mainSettingDialogFragment");
                 break;
         }
     }

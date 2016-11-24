@@ -63,7 +63,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
  */
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
-        LocationListener, DiaryPhotoDialogFragment.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
+        LocationListener, DiaryPhotoBottomSheet.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
         CopyPhotoTask.CopyPhotoCallBack {
 
 
@@ -389,9 +389,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void openPhotoBottomSheet() {
-        DiaryPhotoDialogFragment diaryPhotoDialogFragment = DiaryPhotoDialogFragment.newInstance(false);
-        diaryPhotoDialogFragment.setCallBack(this);
-        diaryPhotoDialogFragment.show(getFragmentManager(), "diaryPhotoDialogFragment");
+        DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
+        diaryPhotoBottomSheet.setCallBack(this);
+        diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 
     private DiaryTextTag checkoutOldDiaryContent() {
