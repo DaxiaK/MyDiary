@@ -19,10 +19,15 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
-public class DiaryActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener {
+public class DiaryActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener,
+        BackDialogFragment.BackDialogCallback {
 
 
+    /**
+     * Public data
+     */
     private long topicId;
+    private boolean isEditing;
 
     /**
      * UI
@@ -72,6 +77,16 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         TV_diary_topbar_title.setText(diaryTitle);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(isEditing){
+            BackDialogFragment backDialogFragment = new BackDialogFragment();
+            backDialogFragment.setCallBack(this);
+            backDialogFragment.show(getSupportFragmentManager(),"backDialogFragment");
+        }else {
+            super.onBackPressed();
+        }
+    }
 
     private void initViewPager() {
         /**
@@ -85,6 +100,12 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
     }
 
+
+
+    public void setEditing(boolean editing) {
+        isEditing = editing;
+    }
+
     public long getTopicId() {
         return topicId;
     }
@@ -93,10 +114,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.setCurrentItem(postion);
     }
 
-    public void popTopBar() {
-        //TODO make topbar always on Top
-//        LL_diary_topbar_content.bringToFront();
-    }
+
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -130,6 +148,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
             }
         }
     };
+
+    @Override
+    public void onBack() {
+        super.onBackPressed();
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 

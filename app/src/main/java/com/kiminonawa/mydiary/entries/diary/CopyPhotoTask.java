@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.BitmapHelper;
 import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
@@ -44,7 +45,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(context);
 
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
         progressDialog.show();

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
@@ -46,7 +47,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                          boolean attachment, String locationName,
                          DiaryItemHelper diaryItemHelper, FileManager fileManager, SaveDiaryCallBack callBack) {
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
 
@@ -103,9 +104,9 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
         if (result == SaveDiaryTask.RESULT_INSERT_SUCCESSFUL) {
-            Toast.makeText(mContext, "日記存檔成功", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_successful), Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mContext, "日記存檔異常...", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_fail), Toast.LENGTH_LONG).show();
         }
         progressDialog.dismiss();
         callBack.onDiarySaved();

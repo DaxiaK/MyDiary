@@ -21,6 +21,7 @@
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
+    <string name="dialog_button_call">発信</string>
     <string name="dialog_button_cancel">キャンセル</string>
     <string name="dialog_button_delete">削除</string>
 
@@ -28,9 +29,9 @@
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
-    <string name="dialog_button_call">発信</string>
     <string name="segmented_calendar">カレーダー</string>
     <string name="segmented_Diary">にっき</string>
+    <string name="diary_back_message">編集中の日記がありますが、残しておきたいですか？</string>
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
@@ -53,6 +54,10 @@
     <string name="toast_photo_error">画像のパスに問題があります</string>
     <string name="toast_max_photo">選択した画像の最大値は%1$dです</string>
     <string name="toast_space_insufficient">空き容量不足</string>
+    <string name="toast_diary_update_successful">日記の更新が成功しました</string>
+    <string name="toast_diary_update_fail">日記の更新に失敗する</string>
+    <string name="toast_diary_insert_successful">日記が正常に追加されました</string>
+    <string name="toast_diary_insert_fail">日記がうまく追加されなかった...</string>
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>

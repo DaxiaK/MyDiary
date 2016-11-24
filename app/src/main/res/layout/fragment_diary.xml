@@ -189,7 +189,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:hint="@string/diary_title_hint"
-                        android:inputType="textCapCharacters"
                         android:maxLines="1"
                         android:textColor="@android:color/black" />
 

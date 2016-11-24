@@ -31,6 +31,7 @@
     <string name="segmented_entries">Entries</string>
     <string name="segmented_calendar">Calendar</string>
     <string name="segmented_Diary">Diary</string>
+    <string name="diary_back_message">There are a diary in editing ,do you want to leave it?</string>
 
     <!--Entries -->
     <string name="entries_count">%1$d Entries</string>
@@ -53,6 +54,10 @@
     <string name="toast_photo_error">Photo path has some problem</string>
     <string name="toast_max_photo">Max selected photo is %1$d</string>
     <string name="toast_space_insufficient">Free space Insufficient</string>
+    <string name="toast_diary_update_successful">Updating diary is successful</string>
+    <string name="toast_diary_update_fail">Updating diary fail</string>
+    <string name="toast_diary_insert_successful">Diary was inserted successfully</string>
+    <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully...</string>
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>

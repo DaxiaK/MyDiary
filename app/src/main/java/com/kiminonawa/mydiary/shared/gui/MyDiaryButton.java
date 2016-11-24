@@ -45,7 +45,7 @@ public class MyDiaryButton extends Button {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             this.setStateListAnimator(null);
         }
-        this.setMinimumWidth(ScreenHepler.dpToPixel(getContext().getResources(), 110));
+        this.setMinimumWidth(ScreenHepler.dpToPixel(getContext().getResources(), 80));
     }
 
     @Override

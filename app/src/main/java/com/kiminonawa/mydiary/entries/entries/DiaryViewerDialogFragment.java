@@ -42,7 +42,6 @@ import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
-import com.kiminonawa.mydiary.shared.gui.DeleteDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,7 +54,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
  */
 
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
-        DeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
+        DiaryDeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
         DiaryPhotoBottomSheet.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
         UpdateDiaryTask.UpdateDiaryCallBack {
 

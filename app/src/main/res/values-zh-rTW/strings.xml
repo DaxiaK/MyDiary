@@ -32,6 +32,7 @@
     <string name="segmented_entries">項目</string>
     <string name="segmented_calendar">日曆</string>
     <string name="segmented_Diary">日記</string>
+    <string name="diary_back_message">有編輯中的日記，確定要離開嗎?</string>
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
@@ -54,6 +55,10 @@
     <string name="toast_photo_error">圖片來源異常</string>
     <string name="toast_max_photo">最多只能加入%1$d張照片</string>
     <string name="toast_space_insufficient">剩餘空間不足</string>
+    <string name="toast_diary_update_successful">日記更新成功</string>
+    <string name="toast_diary_update_fail">日記更新出錯了...</string>
+    <string name="toast_diary_insert_successful">日記新增成功</string>
+    <string name="toast_diary_insert_fail">日記新增異常...</string>
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
@@ -55,7 +56,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.callBack = callBack;
 
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
         progressDialog.show();
@@ -99,9 +100,9 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         super.onPostExecute(result);
         progressDialog.dismiss();
         if (result == UpdateDiaryTask.RESULT_UPDATE_SUCCESSFUL) {
-            Toast.makeText(mContext, "日記更新成功", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_diary_update_successful), Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mContext, "日記更新出錯了...", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_diary_update_fail), Toast.LENGTH_LONG).show();
         }
         callBack.onDiaryUpdated();
     }
