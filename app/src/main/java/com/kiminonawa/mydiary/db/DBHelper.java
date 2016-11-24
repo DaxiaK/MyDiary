@@ -129,34 +129,37 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (newVersion > oldVersion) {
-            db.beginTransaction();
-            if (oldVersion < 2) {
-                oldVersion++;
-                String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
-                String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
-                db.execSQL(addLocationSql);
-                db.execSQL(addTopicOrderSql);
-                db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+            try {
+                db.beginTransaction();
+                if (oldVersion < 2) {
+                    oldVersion++;
+                    String addLocationSql = "ALTER TABLE  " + DiaryEntry.TABLE_NAME + " ADD COLUMN " + DiaryEntry.COLUMN_LOCATION + " " + TEXT_TYPE;
+                    String addTopicOrderSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_ORDER + " " + INTEGER_TYPE;
+                    db.execSQL(addLocationSql);
+                    db.execSQL(addTopicOrderSql);
+                    db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+                }
+                if (oldVersion < 3) {
+                    //SubTitle for topic only
+                    String addTopicSubtitleSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_SUBTITLE + " " + TEXT_TYPE;
+                    db.execSQL(addTopicSubtitleSql);
+                    db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
+                }
+                if (oldVersion < 4) {
+                    //Create  diary V2 db
+                    db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
+                    db.execSQL(SQL_CREATE_DIARY_ITEM_ENTRIES_V2);
+                    //Move the old diaryContent to DiaryItemEntry_V2
+                    version4MoveData(db);
+                    //Delete  diary v1 db
+                    String deleteV1DiaryTable = "DROP TABLE IF EXISTS " + DiaryEntry.TABLE_NAME;
+                    db.execSQL(deleteV1DiaryTable);
+                }
+                //Check update success
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
             }
-            if (oldVersion < 3) {
-                //SubTitle for topic only
-                String addTopicSubtitleSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_SUBTITLE + " " + TEXT_TYPE;
-                db.execSQL(addTopicSubtitleSql);
-                db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
-            }
-            if (oldVersion < 4) {
-                //Create  diary V2 db
-                db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
-                db.execSQL(SQL_CREATE_DIARY_ITEM_ENTRIES_V2);
-                //Move the old diaryContent to DiaryItemEntry_V2
-                version4MoveData(db);
-                //Delete  diary v1 db
-                String deleteV1DiaryTable = "DROP TABLE IF EXISTS " + DiaryEntry.TABLE_NAME;
-                db.execSQL(deleteV1DiaryTable);
-            }
-            //Check update success
-            db.setTransactionSuccessful();
-            db.endTransaction();
         } else {
             onCreate(db);
         }

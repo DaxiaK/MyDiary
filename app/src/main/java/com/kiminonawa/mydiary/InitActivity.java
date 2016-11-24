@@ -112,7 +112,7 @@ public class InitActivity extends Activity {
                 //Insert sample diary
                 long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
                         DiaryInfoHelper.MOOD_HAPPY, DiaryInfoHelper.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
-                dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "HIHI\nQAQ\ndasda\n\n\n\n\nQQQQQQ", diarySampleId);
+                dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "There are many coffee shop in Tokyo!", diarySampleId);
             }
         }
 

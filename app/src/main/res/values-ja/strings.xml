@@ -3,7 +3,8 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.1.6.161116_01_d_h**\n-バグを修正\n-レイアウトの変更</string>
+    <string name="release_note">**0.1.7.161124_01_d**\n1.日記に写真を追加できます\n2.Fix:gpsがスキャンしているときに日記の情報がなくなった\n3.バグを修正\n4.
+なぜならデータ構造、クラウドのバックアップはAlphaの後にリリースされます</string>
     <string name="release_note_close_remind">又提示しない</string>
 
     <!--Profile-->

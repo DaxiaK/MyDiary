@@ -48,6 +48,18 @@ public class DBManager {
     }
 
 
+    public void beginTransaction() {
+        db.beginTransaction();
+    }
+
+    public void setTransactionSuccessful() {
+        db.setTransactionSuccessful();
+    }
+
+    public void endTransaction() {
+        db.endTransaction();
+    }
+
     /**
      * Topic
      */
@@ -184,7 +196,7 @@ public class DBManager {
 
     public Cursor selectDiaryList(long topicId) {
         Cursor c = db.query(DiaryEntry_V2.TABLE_NAME, null, DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                DiaryEntry_V2.COLUMN_TIME + " DESC", null);
+                DiaryEntry_V2.COLUMN_TIME + " DESC , " + DiaryEntry_V2._ID + " DESC", null);
         if (c != null) {
             c.moveToFirst();
         }

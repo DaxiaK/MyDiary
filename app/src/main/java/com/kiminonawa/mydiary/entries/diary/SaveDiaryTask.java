@@ -71,14 +71,17 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         int saveResult = RESULT_INSERT_SUCCESSFUL;
         long topicId = params[0];
         dbManager.opeDB();
-        //Save info
-        long diaryId = dbManager.insertDiaryInfo(time,
-                title, moodPosition, weatherPosition,
-                attachment, topicId, locationName);
-        //Save content
-        diaryFileManager = new FileManager(mContext, topicId, diaryId);
-        if (diaryId != -1) {
-            try {
+        try {
+            dbManager.beginTransaction();
+            //Save info
+            long diaryId = dbManager.insertDiaryInfo(time,
+                    title, moodPosition, weatherPosition,
+                    attachment, topicId, locationName);
+            //Save content
+            diaryFileManager = new FileManager(mContext, topicId, diaryId);
+            //Check no any garbage in this diary.
+            diaryFileManager.clearDiaryDir();
+            if (diaryId != -1) {
                 for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
                     //Copy photo from temp to diary dir
                     if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
@@ -88,15 +91,16 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                     dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
                             , diaryItemHelper.get(i).getContent(), diaryId);
                 }
-            } catch (Exception e) {
-                //Revert the Data
-                diaryFileManager.clearDiaryDir();
-                dbManager.delAllDiaryItemByDiaryId(diaryId);
-                dbManager.delDiary(diaryId);
+                dbManager.setTransactionSuccessful();
+            } else {
                 saveResult = RESULT_INSERT_ERROR;
             }
-        } else {
+        } catch (Exception e) {
+            //Revert the Data
+            diaryFileManager.clearDiaryDir();
             saveResult = RESULT_INSERT_ERROR;
+        } finally {
+            dbManager.endTransaction();
         }
         dbManager.closeDB();
         return saveResult;

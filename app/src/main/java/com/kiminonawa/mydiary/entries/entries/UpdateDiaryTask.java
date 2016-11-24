@@ -3,7 +3,6 @@ package com.kiminonawa.mydiary.entries.entries;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
@@ -87,7 +86,6 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
                         , diaryItemHelper.get(i).getContent(), diaryId);
             }
         } catch (Exception e) {
-            Log.e("UpdateDiaryTask", e.toString());
             updateResult = RESULT_UPDATE_ERROR;
         } finally {
             dbManager.closeDB();

@@ -179,7 +179,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!isCreatedView) {
-            setCurrentTime();
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
@@ -194,6 +193,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.setUserVisibleHint(isVisibleToUser);
         if (isCreatedView) {
             if (isVisibleToUser) {
+                setCurrentTime();
                 diaryItemHelper.addObserver(this);
             } else {
                 diaryItemHelper.deleteObserver(this);
