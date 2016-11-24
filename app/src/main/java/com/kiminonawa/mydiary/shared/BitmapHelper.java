@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,7 +18,6 @@ import java.io.InputStream;
 public class BitmapHelper {
 
     public static Bitmap getBitmapFromReturnedImage(Context context, Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
-
         InputStream inputStream = context.getContentResolver().openInputStream(selectedImage);
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -24,9 +25,12 @@ public class BitmapHelper {
         BitmapFactory.decodeStream(inputStream, null, options);
 
         // Calculate inSampleSize
+        options.inScaled = true;
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        options.inPurgeable = true;
-        options.inInputShareable = true;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            options.inPurgeable = true;
+            options.inInputShareable = true;
+        }
         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
         // close the input stream
@@ -43,7 +47,6 @@ public class BitmapHelper {
     }
 
     public static Bitmap getBitmapFromTempFileSrc(String tempFileSrc, int reqWidth, int reqHeight) throws IOException {
-
         InputStream inputStream = new FileInputStream(tempFileSrc);
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -51,9 +54,12 @@ public class BitmapHelper {
         BitmapFactory.decodeStream(inputStream, null, options);
 
         // Calculate inSampleSize
+        options.inScaled = true;
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        options.inPurgeable = true;
-        options.inInputShareable = true;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            options.inPurgeable = true;
+            options.inInputShareable = true;
+        }
         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
         // close the input stream
@@ -69,23 +75,34 @@ public class BitmapHelper {
         return bitmap;
     }
 
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    /**
+     * Note: The decoder uses a final value based on powers of 2,
+     * any other value will be rounded down to the nearest power of 2.
+     *
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
+    private static int calculateInSampleSize(BitmapFactory.Options options, final int reqWidth, final int reqHeight) {
         // Raw height and width of image
         final int height = options.outHeight;
         final int width = options.outWidth;
 
         int inSampleSize = 1;
         if (height > reqHeight || width > reqWidth) {
-            // Calculate ratios of height and width to requested height and width
-            final double heightRatio = Math.ceil((double) height / (double) reqHeight);
-            final double widthRatio = Math.ceil((double) width / (double) reqWidth);
 
-//            Log.e("BitmapHelper", "w,h=" + options.outHeight + "  , " + options.outWidth);
-//            Log.e("BitmapHelper", "req w,h=" + reqWidth + "  , " + reqHeight);
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            Log.e("BitmapHelper", "w,h=" + options.outWidth + "  , " + options.outHeight);
+            Log.e("BitmapHelper", "req w,h=" + reqWidth + "  , " + reqHeight);
 
             // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
-            inSampleSize = (int) Math.max(heightRatio, widthRatio);
-
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
             // This offers some additional logic in case the image has a strange
             // aspect ratio. For example, a panorama may have a much larger
             // width than height. In these cases the total pixels might still
@@ -97,10 +114,10 @@ public class BitmapHelper {
             final float totalReqPixelsCap = reqWidth * reqHeight * 2;
 
             while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-                inSampleSize++;
+                inSampleSize *= 2;
             }
         }
-//        Log.e("BitmapHelper", "inSampleSize=" + inSampleSize);
+        Log.e("BitmapHelper", "inSampleSize=" + inSampleSize);
         return inSampleSize;
     }
 }
