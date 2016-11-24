@@ -172,12 +172,33 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void version4MoveData(SQLiteDatabase db) {
         DBManager dbManager = new DBManager(db);
+        //Copy old diary into new diary_v2
+        String copyOldDiaryToV2 = "INSERT INTO " + DiaryEntry_V2.TABLE_NAME + " (" +
+                DiaryEntry_V2._ID + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_TIME + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_TITLE + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_MOOD + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_WEATHER + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_ATTACHMENT + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_REF_TOPIC__ID + COMMA_SEP +
+                DiaryEntry_V2.COLUMN_LOCATION + ")" +
+                " SELECT " +
+                DiaryEntry_V2._ID + COMMA_SEP +
+                DiaryEntry.COLUMN_TIME + INTEGER_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_MOOD + INTEGER_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_WEATHER + INTEGER_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_ATTACHMENT + INTEGER_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                DiaryEntry.COLUMN_LOCATION + TEXT_TYPE +
+                " FROM " + DiaryEntry.TABLE_NAME;
+
+        db.execSQL(copyOldDiaryToV2);
+
+
+        //Old content add into diaryitem_v2
         Cursor oldDiaryCursor = dbManager.selectAllV1Diary();
         for (int i = 0; i < oldDiaryCursor.getCount(); i++) {
-            dbManager.insertDiaryInfo(oldDiaryCursor.getLong(1), oldDiaryCursor.getString(2),
-                    oldDiaryCursor.getInt(4), oldDiaryCursor.getInt(5),
-                    oldDiaryCursor.getInt(6) > 0 ? true : false,
-                    oldDiaryCursor.getLong(7), oldDiaryCursor.getString(8));
             //Old version , it is only diaryText , and only 1 row
             dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0,
                     oldDiaryCursor.getString(3), oldDiaryCursor.getLong(0));
