@@ -28,6 +28,10 @@ public class DBManager {
         this.context = context;
     }
 
+    public DBManager(SQLiteDatabase db) {
+        this.db = db;
+    }
+
     /**
      * DB IO
      */
@@ -35,8 +39,9 @@ public class DBManager {
     public void opeDB() throws SQLiteException {
         mDBHelper = new DBHelper(context);
         // Gets the data repository in write mode
-        db = mDBHelper.getWritableDatabase();
+        this.db = mDBHelper.getWritableDatabase();
     }
+
 
     public void closeDB() {
         mDBHelper.close();
@@ -347,6 +352,18 @@ public class DBManager {
         values.put(ContactsEntry.COLUMN_PHOTO, photo);
         values.put(ContactsEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         return values;
+    }
+
+    /**
+     * For version 4 onUpgrade
+     */
+    public Cursor selectAllV1Diary() {
+        Cursor c = db.query(DBStructure.DiaryEntry.TABLE_NAME, null, null, null,
+                null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
 

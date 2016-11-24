@@ -1,15 +1,18 @@
 package com.kiminonawa.mydiary.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
+
+import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -32,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -142,7 +145,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
             }
             if (oldVersion < 4) {
-                //TODO make it work right!
+                //Create  diary V2 db
+                db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
+                db.execSQL(SQL_CREATE_DIARY_ITEM_ENTRIES_V2);
+                //Move the old diaryContent to DiaryItemEntry_V2
+                version4MoveData(db);
+                //Delete  diary v1 db
+                String deleteV1DiaryTable = "DROP TABLE IF EXISTS " + DiaryEntry.TABLE_NAME;
+                db.execSQL(deleteV1DiaryTable);
             }
             //Check update success
             db.setTransactionSuccessful();
@@ -154,5 +164,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+
+    private void version4MoveData(SQLiteDatabase db) {
+        DBManager dbManager = new DBManager(db);
+        Cursor oldDiaryCursor = dbManager.selectAllV1Diary();
+        for (int i = 0; i < oldDiaryCursor.getCount(); i++) {
+            dbManager.insertDiaryInfo(oldDiaryCursor.getLong(1), oldDiaryCursor.getString(2),
+                    oldDiaryCursor.getInt(4), oldDiaryCursor.getInt(5),
+                    oldDiaryCursor.getInt(6) > 0 ? true : false,
+                    oldDiaryCursor.getLong(7), oldDiaryCursor.getString(8));
+            //Old version , it is only diaryText , and only 1 row
+            dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0,
+                    oldDiaryCursor.getString(3), oldDiaryCursor.getLong(0));
+            oldDiaryCursor.moveToNext();
+        }
+
     }
 }
