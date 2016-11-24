@@ -26,6 +26,7 @@
     <string name="dialog_button_delete">delete</string>
 
     <string name="process_dialog_loading">Loading...</string>
+    <string name="process_dialog_saving">Saving...</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>

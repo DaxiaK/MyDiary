@@ -3,13 +3,13 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.1.6.161116_01_d_h**\n-修復bug\n-畫面調整</string>
+    <string name="release_note">**0.1.7.161124_01_d**\n-修復bug\n-畫面調整</string>
     <string name="release_note_close_remind">不再提醒</string>
 
     <!--Profile-->
     <string name="profile_username_taki">立花 瀧</string>
     <string name="profile_username_mitsuha">宮水 三葉</string>
-    <string name="toast_change_theme">主題切換中...</string>
+    <string name="toast_change_theme">風格切換中...</string>
     <string name="dialog_your_name_is">你的名字是</string>
 
 
@@ -18,7 +18,7 @@
     <string name="topic_dialog_delete_title">刪除</string>
     <string name="topic_dialog_delete_content">確定要刪除 %1$s 嗎?</string>
 
-    <string name="toast_topic_empty">主題是空的!</string>
+    <string name="toast_topic_empty">主題名稱是空的!</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">確定</string>
@@ -27,6 +27,7 @@
     <string name="dialog_button_delete">刪除</string>
 
     <string name="process_dialog_loading">載入中...</string>
+    <string name="process_dialog_saving">存檔中...</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>

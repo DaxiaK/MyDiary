@@ -30,12 +30,10 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
 
     private RelativeLayout RL_main_setting_dialog;
     private ImageView IV_main_setting_change_theme, IV_main_setting_add_topic;
-    private ThemeManager themeManager;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        themeManager = ThemeManager.getInstance();
         return dialog;
     }
 
@@ -48,7 +46,6 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
 
         RL_main_setting_dialog = (RelativeLayout) rootView.findViewById(R.id.RL_main_setting_dialog);
         RL_main_setting_dialog.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
-
         IV_main_setting_change_theme = (ImageView) rootView.findViewById(R.id.IV_main_setting_change_theme);
         IV_main_setting_change_theme.setOnClickListener(this);
         IV_main_setting_add_topic = (ImageView) rootView.findViewById(R.id.IV_main_setting_add_topic);
@@ -63,6 +60,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
                 CreateTopicDialogFragment createTopicDialogFragment = new CreateTopicDialogFragment();
                 createTopicDialogFragment.setCallBack((MainActivity) getActivity());
                 createTopicDialogFragment.show(getFragmentManager(), "createTopicDialogFragment");
+                dismiss();
                 break;
             case R.id.IV_main_setting_change_theme:
                 ThemeManager.getInstance().toggleTheme(getActivity());
@@ -72,6 +70,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
                 Intent i = getActivity().getBaseContext().getPackageManager()
                         .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
+                dismiss();
                 getActivity().finish();
                 startActivity(i);
                 break;

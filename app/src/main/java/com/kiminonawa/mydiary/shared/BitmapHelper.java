@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -92,10 +91,6 @@ public class BitmapHelper {
         int inSampleSize = 1;
         if (height > reqHeight || width > reqWidth) {
 
-
-            Log.e("BitmapHelper", "w,h=" + options.outWidth + "  , " + options.outHeight);
-            Log.e("BitmapHelper", "req w,h=" + reqWidth + "  , " + reqHeight);
-
             // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
             while ((options.outHeight / inSampleSize) > reqHeight
                     || (options.outWidth / inSampleSize) > reqWidth) {
@@ -115,7 +110,6 @@ public class BitmapHelper {
                 inSampleSize *= 2;
             }
         }
-        Log.e("BitmapHelper", "inSampleSize=" + inSampleSize);
         return inSampleSize;
     }
 }

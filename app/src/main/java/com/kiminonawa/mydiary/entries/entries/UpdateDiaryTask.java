@@ -56,7 +56,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.callBack = callBack;
 
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
+        progressDialog.setMessage(context.getString(R.string.process_dialog_saving));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
         progressDialog.show();
@@ -68,9 +68,8 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         int updateResult = RESULT_UPDATE_SUCCESSFUL;
         long topicId = params[0];
         long diaryId = params[1];
-
-        dbManager.opeDB();
         try {
+            dbManager.opeDB();
             //Delete all item first
             dbManager.delAllDiaryItemByDiaryId(diaryId);
             //Delete old photo
@@ -90,8 +89,9 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         } catch (Exception e) {
             Log.e("UpdateDiaryTask", e.toString());
             updateResult = RESULT_UPDATE_ERROR;
+        } finally {
+            dbManager.closeDB();
         }
-        dbManager.closeDB();
         return updateResult;
     }
 

@@ -72,7 +72,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * UI
      */
-    private LinearLayout LL_diary_time_information;
     private LinearLayout LL_diary_item_content;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
@@ -140,8 +139,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
         RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
-        LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
-
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
         TV_diary_day = (TextView) rootView.findViewById(R.id.TV_diary_day);
@@ -182,6 +179,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!isCreatedView) {
+            setCurrentTime();
             initLocationIcon();
             initWeatherSpinner();
             initMoodSpinner();
@@ -196,13 +194,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.setUserVisibleHint(isVisibleToUser);
         if (isCreatedView) {
             if (isVisibleToUser) {
-                initLocationIcon();
-                initWeatherSpinner();
-                initMoodSpinner();
                 diaryItemHelper.addObserver(this);
             } else {
                 diaryItemHelper.deleteObserver(this);
-
             }
         }
     }
@@ -217,7 +211,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onResume();
         //For PermissionsResult
         if (firstAllowLocationPermission) {
-            initDiaryInfo();
+            initDiaryGPS();
             firstAllowLocationPermission = false;
         }
         //For PermissionsResult
@@ -260,7 +254,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                             .setMessage(getString(R.string.diary_location_permission_content))
                             .setPositiveButton(getString(R.string.dialog_button_ok), null);
                     builder.show();
-                    setCurrentTime();
                     TV_diary_location.setText(noLocation);
                 }
                 break;
@@ -319,9 +312,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
 
-    private void initDiaryInfo() {
+    private void initDiaryGPS() {
         if (isLocation && locationManager.isProviderEnabled(locationProvider)) {
-
             if (PermissionHelper.checkPermission(this, REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
                 if (locationManager.isProviderEnabled(locationProvider)) {
                     locationManager.requestLocationUpdates(locationProvider, 3000, 0, this);
@@ -330,7 +322,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 diaryHandler.sendEmptyMessageDelayed(0, 20000);
             }
         } else {
-            setCurrentTime();
             TV_diary_location.setText(noLocation);
         }
     }
@@ -349,11 +340,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private void initLocationIcon() {
         if (isLocation) {
             IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
-            initDiaryInfo();
+            initDiaryGPS();
         } else {
             diaryHandler.removeCallbacksAndMessages(null);
             IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
-            setCurrentTime();
             TV_diary_location.setText(noLocation);
         }
     }
@@ -369,6 +359,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void clearDiaryPage() {
+        SP_diary_mood.setSelection(0);
+        SP_diary_weather.setSelection(0);
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
         fileManager.clearDiaryDir();
@@ -527,7 +519,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 clearDiaryPage();
                 break;
             case R.id.IV_diary_save:
-                Log.e("test", "getItemSize =" + diaryItemHelper.getItemSize());
                 if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
                 } else {
@@ -550,7 +541,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         public void handleMessage(Message msg) {
             DiaryFragment theFrag = mFrag.get();
             if (theFrag != null) {
-                theFrag.setCurrentTime();
                 theFrag.TV_diary_location.setText(getLocationName(theFrag));
             }
         }

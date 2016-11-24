@@ -13,11 +13,11 @@
     <string name="dialog_your_name_is">君の名は</string>
 
     <!--Topic type-->
-    <string name="topic_create_name">タイトル:</string>
+    <string name="topic_create_name">トピック:</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
-    <string name="toast_topic_empty">タイトルは空です!</string>
+    <string name="toast_topic_empty">トピックは空です!</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
@@ -26,6 +26,7 @@
     <string name="dialog_button_delete">削除</string>
 
     <string name="process_dialog_loading">読み込んでいます...</string>
+    <string name="process_dialog_saving">保存中...</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>

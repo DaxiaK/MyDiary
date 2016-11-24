@@ -3,7 +3,6 @@ package com.kiminonawa.mydiary.entries.diary;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
@@ -47,7 +46,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                          boolean attachment, String locationName,
                          DiaryItemHelper diaryItemHelper, FileManager fileManager, SaveDiaryCallBack callBack) {
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
+        progressDialog.setMessage(context.getString(R.string.process_dialog_saving));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
 
@@ -79,8 +78,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         //Save content
         diaryFileManager = new FileManager(mContext, topicId, diaryId);
         if (diaryId != -1) {
-            for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
-                try {
+            try {
+                for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
                     //Copy photo from temp to diary dir
                     if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {
                         savePhoto(diaryItemHelper.get(i).getContent());
@@ -88,10 +87,13 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                     //Save data
                     dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
                             , diaryItemHelper.get(i).getContent(), diaryId);
-                } catch (Exception e) {
-                    Log.e("SaveDiaryTask", "Item:" + i + " insert fail");
-                    saveResult = RESULT_INSERT_ERROR;
                 }
+            } catch (Exception e) {
+                //Revert the Data
+                diaryFileManager.clearDiaryDir();
+                dbManager.delAllDiaryItemByDiaryId(diaryId);
+                dbManager.delDiary(diaryId);
+                saveResult = RESULT_INSERT_ERROR;
             }
         } else {
             saveResult = RESULT_INSERT_ERROR;
