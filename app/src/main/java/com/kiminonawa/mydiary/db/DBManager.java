@@ -8,7 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
-import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
+import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 
@@ -27,6 +28,10 @@ public class DBManager {
         this.context = context;
     }
 
+    public DBManager(SQLiteDatabase db) {
+        this.db = db;
+    }
+
     /**
      * DB IO
      */
@@ -34,8 +39,9 @@ public class DBManager {
     public void opeDB() throws SQLiteException {
         mDBHelper = new DBHelper(context);
         // Gets the data repository in write mode
-        db = mDBHelper.getWritableDatabase();
+        this.db = mDBHelper.getWritableDatabase();
     }
+
 
     public void closeDB() {
         mDBHelper.close();
@@ -63,7 +69,7 @@ public class DBManager {
     }
 
     public int getDiaryCountByTopicId(long topicId) {
-        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry.TABLE_NAME + " WHERE " + DiaryEntry.COLUMN_REF_TOPIC__ID + "=?",
+        Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry_V2.TABLE_NAME + " WHERE " + DiaryEntry_V2.COLUMN_REF_TOPIC__ID + "=?",
                 new String[]{String.valueOf(topicId)});
         int count = 0;
         if (null != cursor) {
@@ -123,75 +129,107 @@ public class DBManager {
     /**
      * Diary
      */
-    public long insertDiary(long time, String title, String content,
-                           int mood, int weather, boolean attachment, long refTopicId, String locationName) {
+    public long insertDiaryInfo(long time, String title,
+                                int mood, int weather, boolean attachment, long refTopicId, String locationName) {
         return db.insert(
-                DiaryEntry.TABLE_NAME,
+                DiaryEntry_V2.TABLE_NAME,
                 null,
-                this.createDiaryCV(time, title, content,
+                this.createDiaryInfoCV(time, title,
                         mood, weather, attachment, refTopicId, locationName));
     }
 
-    public long updateDiary(long diaryId, String title, String content,
-                            int mood, int weather) {
+    public long insertDiaryContent(int type, int position, String content, long diaryId) {
+        return db.insert(
+                DiaryItemEntry_V2.TABLE_NAME,
+                null,
+                this.createDiaryContentCV(type, position, content, diaryId));
+    }
+
+    public long updateDiary(long diaryId, String title,
+                            int mood, int weather, boolean attachment) {
         ContentValues values = new ContentValues();
-        values.put(DiaryEntry.COLUMN_TITLE, title);
-        values.put(DiaryEntry.COLUMN_CONTENT, content);
-        values.put(DiaryEntry.COLUMN_MOOD, mood);
-        values.put(DiaryEntry.COLUMN_WEATHER, weather);
+        values.put(DiaryEntry_V2.COLUMN_TITLE, title);
+        values.put(DiaryEntry_V2.COLUMN_MOOD, mood);
+        values.put(DiaryEntry_V2.COLUMN_WEATHER, weather);
+        values.put(DiaryEntry_V2.COLUMN_ATTACHMENT, attachment);
 
         return db.update(
-                DiaryEntry.TABLE_NAME,
+                DiaryEntry_V2.TABLE_NAME,
                 values,
-                DiaryEntry._ID + " = ?",
+                DiaryEntry_V2._ID + " = ?",
                 new String[]{String.valueOf(diaryId)});
     }
 
-
     public long delDiary(long diaryId) {
         return db.delete(
-                DiaryEntry.TABLE_NAME,
-                DiaryEntry._ID + " = ?"
+                DiaryEntry_V2.TABLE_NAME,
+                DiaryEntry_V2._ID + " = ?"
                 , new String[]{String.valueOf(diaryId)});
     }
 
     public long delAllDiaryInTopic(long topicId) {
         return db.delete(
-                DiaryEntry.TABLE_NAME,
-                DiaryEntry.COLUMN_REF_TOPIC__ID + " = ?"
+                DiaryEntry_V2.TABLE_NAME,
+                DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?"
                 , new String[]{String.valueOf(topicId)});
     }
 
+    public long delAllDiaryItemByDiaryId(long diaryId) {
+        return db.delete(
+                DiaryItemEntry_V2.TABLE_NAME,
+                DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + " = ?"
+                , new String[]{String.valueOf(diaryId)});
+    }
 
-    public Cursor selectDiary(long topicId) {
-        Cursor c = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                DiaryEntry.COLUMN_TIME + " DESC", null);
+
+    public Cursor selectDiaryList(long topicId) {
+        Cursor c = db.query(DiaryEntry_V2.TABLE_NAME, null, DiaryEntry_V2.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                DiaryEntry_V2.COLUMN_TIME + " DESC", null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
     }
 
-    public Cursor selectDiaryByDiaryId(long diaryId) {
-        Cursor c = db.query(DiaryEntry.TABLE_NAME, null, DiaryEntry._ID + " = ?", new String[]{String.valueOf(diaryId)}, null, null, null);
+    public Cursor selectDiaryInfoByDiaryId(long diaryId) {
+        Cursor c = db.query(DiaryEntry_V2.TABLE_NAME, null, DiaryEntry_V2._ID + " = ?", new String[]{String.valueOf(diaryId)},
+                null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
     }
 
-    private ContentValues createDiaryCV(long time, String title, String content,
-                                        int mood, int weather, boolean attachment, long refTopicId,
-                                        String locationName) {
+    public Cursor selectDiaryContentByDiaryId(long diaryId) {
+        Cursor c = db.query(DiaryItemEntry_V2.TABLE_NAME, null, DiaryItemEntry_V2.COLUMN_REF_DIARY__ID + " = ?", new String[]{String.valueOf(diaryId)},
+                null, null, DiaryItemEntry_V2.COLUMN_POSITION + " ASC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+
+    private ContentValues createDiaryInfoCV(long time, String title,
+                                            int mood, int weather, boolean attachment, long refTopicId,
+                                            String locationName) {
         ContentValues values = new ContentValues();
-        values.put(DiaryEntry.COLUMN_TIME, time);
-        values.put(DiaryEntry.COLUMN_TITLE, title);
-        values.put(DiaryEntry.COLUMN_CONTENT, content);
-        values.put(DiaryEntry.COLUMN_MOOD, mood);
-        values.put(DiaryEntry.COLUMN_WEATHER, weather);
-        values.put(DiaryEntry.COLUMN_ATTACHMENT, attachment);
-        values.put(DiaryEntry.COLUMN_REF_TOPIC__ID, refTopicId);
-        values.put(DiaryEntry.COLUMN_LOCATION, locationName);
+        values.put(DiaryEntry_V2.COLUMN_TIME, time);
+        values.put(DiaryEntry_V2.COLUMN_TITLE, title);
+        values.put(DiaryEntry_V2.COLUMN_MOOD, mood);
+        values.put(DiaryEntry_V2.COLUMN_WEATHER, weather);
+        values.put(DiaryEntry_V2.COLUMN_ATTACHMENT, attachment);
+        values.put(DiaryEntry_V2.COLUMN_REF_TOPIC__ID, refTopicId);
+        values.put(DiaryEntry_V2.COLUMN_LOCATION, locationName);
+        return values;
+    }
+
+    private ContentValues createDiaryContentCV(int type, int position, String content, long diaryId) {
+        ContentValues values = new ContentValues();
+        values.put(DiaryItemEntry_V2.COLUMN_TYPE, type);
+        values.put(DiaryItemEntry_V2.COLUMN_POSITION, position);
+        values.put(DiaryItemEntry_V2.COLUMN_CONTENT, content);
+        values.put(DiaryItemEntry_V2.COLUMN_REF_DIARY__ID, diaryId);
         return values;
     }
 
@@ -314,6 +352,18 @@ public class DBManager {
         values.put(ContactsEntry.COLUMN_PHOTO, photo);
         values.put(ContactsEntry.COLUMN_REF_TOPIC__ID, refTopicId);
         return values;
+    }
+
+    /**
+     * For version 4 onUpgrade
+     */
+    public Cursor selectAllV1Diary() {
+        Cursor c = db.query(DBStructure.DiaryEntry.TABLE_NAME, null, null, null,
+                null, null, null, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
     }
 
 

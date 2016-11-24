@@ -19,11 +19,12 @@
 
     <string name="toast_topic_empty">タイトルは空です!</string>
 
-
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
     <string name="dialog_button_cancel">キャンセル</string>
     <string name="dialog_button_delete">削除</string>
+
+    <string name="process_dialog_loading">読み込んでいます...</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
@@ -35,17 +36,23 @@
     <string name="entries_count">%1$d 項目</string>
     <string name="entries_edit_view">以下の項目をクリックすると、編集します</string>
     <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
+    <string name="entries_summary_photo">**フォト**</string>
 
     <!--Diary -->
     <string name="diary_no_location">位置情報が取得できない</string>
     <string name="diary_location_permission_title">許可</string>
     <string name="diary_location_permission_content">位置情報の許可が必要です</string>
+    <string name="diary_photo_permission_content">画像を追加するの許可が必要です</string>
 
     <string name="diary_title_hint">日記のタイトル</string>
     <string name="diary_content_hint">ここに日記の内容を書きます</string>
 
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
+    <string name="toast_not_image">ファイルは画像ではありません。</string>
+    <string name="toast_photo_error">画像のパスに問題があります</string>
+    <string name="toast_max_photo">選択した画像の最大値は%1$dです</string>
+    <string name="toast_space_insufficient">空き容量不足</string>
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>

@@ -25,6 +25,8 @@
     <string name="dialog_button_cancel">cancel</string>
     <string name="dialog_button_delete">delete</string>
 
+    <string name="process_dialog_loading">Loading...</string>
+
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>
     <string name="segmented_calendar">Calendar</string>
@@ -34,17 +36,23 @@
     <string name="entries_count">%1$d Entries</string>
     <string name="entries_edit_view">Click diary for editing</string>
     <string name="entries_edit_dialog_delete_content">Do you really want to delete this diary?</string>
+    <string name="entries_summary_photo">**photo**</string>
 
     <!--Diary -->
     <string name="diary_no_location">No location</string>
     <string name="diary_location_permission_title">Permission</string>
     <string name="diary_location_permission_content">We need permission to get location name</string>
+    <string name="diary_photo_permission_content">We need permission to add photo</string>
 
     <string name="diary_title_hint">Diary title</string>
     <string name="diary_content_hint">Write your diary here</string>
 
     <string name="toast_diary_empty">Diary is empty</string>
     <string name="toast_refashioning">Location is refashioning</string>
+    <string name="toast_not_image">The file is not a image</string>
+    <string name="toast_photo_error">Photo path has some problem</string>
+    <string name="toast_max_photo">Max selected photo is %1$d</string>
+    <string name="toast_space_insufficient">Free space Insufficient</string>
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>

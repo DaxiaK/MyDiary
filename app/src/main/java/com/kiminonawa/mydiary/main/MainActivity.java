@@ -28,8 +28,8 @@ import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ScreenHepler;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,8 +163,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popuoView = inflater.inflate(R.layout.popup_main, null);
         mPopupWindow = new PopupWindow(MainActivity.this);
-        mPopupWindow.setWidth(ViewTools.dpToPixel(getResources(), 80));
-        mPopupWindow.setHeight(ViewTools.dpToPixel(getResources(), 100));
+        mPopupWindow.setWidth(ScreenHepler.dpToPixel(getResources(), 80));
+        mPopupWindow.setHeight(ScreenHepler.dpToPixel(getResources(), 100));
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setTouchable(true);
         mPopupWindow.setOutsideTouchable(true);
