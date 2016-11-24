@@ -17,24 +17,16 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
  * Created by daxia on 2016/10/27.
  */
 
-public abstract class DeleteDialogFragment extends DialogFragment implements View.OnClickListener {
+public abstract class CommonDialogFragment extends DialogFragment implements View.OnClickListener {
 
 
-    /**
-     * Callback
-     */
-    public interface DeleteCallback {
-        void delete();
-    }
-
-    protected DeleteCallback callback;
     /**
      * UI
      */
-    protected MyDiaryButton But_delete_ok, But_delete_cancel;
+    protected MyDiaryButton But_common_ok, But_common_cancel;
 
-    protected RelativeLayout RL_delete_view;
-    protected TextView TV_delete_content;
+    protected RelativeLayout RL_common_view;
+    protected TextView TV_common_content;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -48,26 +40,20 @@ public abstract class DeleteDialogFragment extends DialogFragment implements Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.getDialog().setCanceledOnTouchOutside(false);
-        View rootView = inflater.inflate(R.layout.dialog_fragment_delete, container);
-        RL_delete_view = (RelativeLayout) rootView.findViewById(R.id.RL_delete_view);
+        View rootView = inflater.inflate(R.layout.dialog_fragment_common, container);
+        RL_common_view = (RelativeLayout) rootView.findViewById(R.id.RL_common_view);
 
-        RL_delete_view.setBackgroundColor(
+        RL_common_view.setBackgroundColor(
                 ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
 
-        TV_delete_content = (TextView) rootView.findViewById(R.id.TV_delete_content);
-        But_delete_ok = (MyDiaryButton) rootView.findViewById(R.id.But_delete_ok);
-        But_delete_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_delete_cancel);
+        TV_common_content = (TextView) rootView.findViewById(R.id.TV_common_content);
+        But_common_ok = (MyDiaryButton) rootView.findViewById(R.id.But_common_ok);
+        But_common_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_common_cancel);
 
-        But_delete_ok.setOnClickListener(DeleteDialogFragment.this);
-        But_delete_cancel.setOnClickListener(DeleteDialogFragment.this);
+        But_common_ok.setOnClickListener(this);
+        But_common_cancel.setOnClickListener(this);
         return rootView;
-    }
-
-
-    public void setCallBack(DeleteCallback callback) {
-        this.callback = callback;
     }
 
 
@@ -79,10 +65,10 @@ public abstract class DeleteDialogFragment extends DialogFragment implements Vie
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.But_delete_ok:
+            case R.id.But_common_ok:
                 okButtonEvent();
                 break;
-            case R.id.But_delete_cancel:
+            case R.id.But_common_cancel:
                 cancelButtonEvent();
                 break;
         }

@@ -32,7 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:inputType="textCapCharacters"
                 android:textColor="@android:color/black"
                 android:maxLines="1" />
         </LinearLayout>

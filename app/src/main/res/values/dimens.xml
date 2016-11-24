@@ -15,4 +15,7 @@
     <dimen name="radio_button_conner_radius">5dp</dimen>
     <dimen name="radio_button_stroke_border">1dp</dimen>
 
+    <dimen name="bottom_dialog_height_1_line">70dp</dimen>
+
+
 </resources>

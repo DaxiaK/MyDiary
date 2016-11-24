@@ -2,8 +2,9 @@
 <resources>
     <!--Default-->
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#EFF6F6</color>
-    <color name="colorAccent">#67B5E6</color>
+    <color name="colorPrimaryDark">#666666</color>
+    <color name="colorPrimaryDark_23">#e8e8e8</color>
+    <color name="colorAccent">#b2b2b2</color>
 
     <!--Theme-->
     <color name="themeColor_taki">#67B5E6</color>
@@ -24,6 +25,10 @@
     <!--entries-->
     <color name="theme_dark_color_taki">#70A3B4</color>
     <color name="theme_dark_color_mistuha">#b3371f</color>
+
+
+    <!--diary-->
+    <color name="diary_photo_layout_delete_bg">#003400</color>
 
     <!--radio_button-->
     <color name="radio_button_unselected_color">@android:color/transparent</color>

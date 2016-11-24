@@ -37,7 +37,6 @@
             android:layout_marginRight="5dp"
             android:gravity="center"
             android:hint="@string/contacts_detail_edt_name"
-            android:inputType="textCapCharacters"
             android:maxLines="1"
             android:textColor="@android:color/white"
             android:textColorHint="@color/contacts_edittext_hint"

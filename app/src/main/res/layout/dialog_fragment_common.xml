@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/RL_delete_view"
+            android:id="@+id/RL_common_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="40dp"
@@ -22,7 +22,7 @@
             android:paddingTop="20dp">
 
             <TextView
-                android:id="@+id/TV_delete_content"
+                android:id="@+id/TV_common_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -38,26 +38,26 @@
             android:layout_marginTop="10dp">
 
             <Space
-                android:id="@+id/Space_edlete"
+                android:id="@+id/Space_common"
                 android:layout_width="20dp"
                 android:layout_height="30dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_delete_cancel"
+                android:id="@+id/But_common_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/Space_edlete"
+                android:layout_toLeftOf="@id/Space_common"
                 android:gravity="center"
                 android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_delete_ok"
+                android:id="@+id/But_common_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/Space_edlete"
+                android:layout_toRightOf="@id/Space_common"
                 android:gravity="center"
                 android:text="@string/dialog_button_ok"
                 android:textAllCaps="false" />

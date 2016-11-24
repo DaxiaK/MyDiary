@@ -13,39 +13,52 @@
     <string name="dialog_your_name_is">君の名は</string>
 
     <!--Topic type-->
-    <string name="topic_create_name">タイトル:</string>
+    <string name="topic_create_name">トピック:</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
-    <string name="toast_topic_empty">タイトルは空です!</string>
-
+    <string name="toast_topic_empty">トピックは空です!</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
+    <string name="dialog_button_call">発信</string>
     <string name="dialog_button_cancel">キャンセル</string>
     <string name="dialog_button_delete">削除</string>
 
+    <string name="process_dialog_loading">読み込んでいます...</string>
+    <string name="process_dialog_saving">保存中...</string>
+
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
-    <string name="dialog_button_call">発信</string>
     <string name="segmented_calendar">カレーダー</string>
     <string name="segmented_Diary">にっき</string>
+    <string name="diary_back_message">編集中の日記がありますが、残しておきたいですか？</string>
 
     <!--Entries -->
     <string name="entries_count">%1$d 項目</string>
     <string name="entries_edit_view">以下の項目をクリックすると、編集します</string>
     <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
+    <string name="entries_summary_photo">**フォト**</string>
 
     <!--Diary -->
     <string name="diary_no_location">位置情報が取得できない</string>
     <string name="diary_location_permission_title">許可</string>
     <string name="diary_location_permission_content">位置情報の許可が必要です</string>
+    <string name="diary_photo_permission_content">画像を追加するの許可が必要です</string>
 
     <string name="diary_title_hint">日記のタイトル</string>
     <string name="diary_content_hint">ここに日記の内容を書きます</string>
 
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
+    <string name="toast_not_image">ファイルは画像ではありません。</string>
+    <string name="toast_photo_error">画像のパスに問題があります</string>
+    <string name="toast_max_photo">選択した画像の最大値は%1$dです</string>
+    <string name="toast_space_insufficient">空き容量不足</string>
+    <string name="toast_diary_update_successful">日記の更新が成功しました</string>
+    <string name="toast_diary_update_fail">日記の更新に失敗する</string>
+    <string name="toast_diary_insert_successful">日記が正常に追加されました</string>
+    <string name="toast_diary_insert_fail">日記がうまく追加されなかった...</string>
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>

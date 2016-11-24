@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
@@ -24,7 +25,8 @@ import java.util.Date;
 import java.util.List;
 
 
-public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
+public class EntriesFragment extends BaseDiaryFragment implements
+        DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
 
     /**
      * UI
@@ -32,7 +34,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
     private TextView TV_entries_count;
     private RelativeLayout RL_entries_content, RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
-    private ImageView IV_entries_edit;
+    private ImageView IV_entries_edit, IV_entries_photo;
     private final static int MAX_TEXT_LENGTH = 15;
 
     /**
@@ -59,6 +61,7 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
 
         IV_entries_edit = (ImageView) rootView.findViewById(R.id.IV_entries_edit);
         IV_entries_edit.setOnClickListener(this);
+        IV_entries_photo = (ImageView) rootView.findViewById(R.id.IV_entries_photo);
         TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
         TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
@@ -107,16 +110,32 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
         entriesList.clear();
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        Cursor diaryCursor = dbManager.selectDiary(getTopicId());
+        //Select diary info
+        Cursor diaryCursor = dbManager.selectDiaryList(getTopicId());
         for (int i = 0; i < diaryCursor.getCount(); i++) {
+            //get diary info
             String title = diaryCursor.getString(2);
-            String content = diaryCursor.getString(3);
-            entriesList.add(
-                    new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
-                            title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
-                            content.substring(0, Math.min(MAX_TEXT_LENGTH, content.length())),
-                            diaryCursor.getInt(5), diaryCursor.getInt(4),
-                            diaryCursor.getInt(6) > 0 ? true : false));
+            EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
+                    title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
+                    diaryCursor.getInt(4), diaryCursor.getInt(3),
+                    diaryCursor.getInt(5) > 0 ? true : false);
+
+            //select first diary content
+            Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(entity.getId());
+            if (diaryContentCursor != null && diaryContentCursor.getCount() > 0) {
+                String summary = "";
+                //Check content Type
+                if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
+                    summary = getString(R.string.entries_summary_photo);
+                } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
+                    summary = diaryContentCursor.getString(3)
+                            .substring(0, Math.min(MAX_TEXT_LENGTH, diaryContentCursor.getString(3).length()));
+                }
+                entity.setSummary(summary);
+                diaryContentCursor.close();
+            }
+            //Add entity
+            entriesList.add(entity);
             diaryCursor.moveToNext();
         }
         diaryCursor.close();
@@ -157,10 +176,13 @@ public class EntriesFragment extends BaseDiaryFragment implements DiaryViewerDia
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.IV_entries_edit: {
+            case R.id.IV_entries_edit:
                 setEditModeUI(entriesAdapter.isEditMode());
                 break;
-            }
+            case R.id.IV_entries_photo:
+                //TODO show some thing like album
+                break;
+
         }
     }
 }
