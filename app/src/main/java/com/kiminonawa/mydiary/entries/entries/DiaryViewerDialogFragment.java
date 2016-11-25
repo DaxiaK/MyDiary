@@ -277,6 +277,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             initWeatherSpinner();
 
             IV_diary_delete.setVisibility(View.GONE);
+            IV_diary_clear.setVisibility(View.GONE);
         } else {
             IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);

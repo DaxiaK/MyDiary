@@ -1,0 +1,11 @@
+<resources>
+
+    <style name="TakiDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/theme_dark_color_taki</item>
+    </style>
+
+    <style name="MistuhaDatePickerDialogTheme" parent="android:Theme.Material.Light.Dialog">
+        <item name="android:colorAccent">@color/theme_dark_color_mistuha</item>
+    </style>
+
+</resources>

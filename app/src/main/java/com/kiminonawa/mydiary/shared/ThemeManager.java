@@ -1,6 +1,9 @@
 package com.kiminonawa.mydiary.shared;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Build;
+import android.support.v4.media.RatingCompat;
 
 import com.kiminonawa.mydiary.R;
 
@@ -53,7 +56,7 @@ public class ThemeManager {
         return currentTheme;
     }
 
-    public int getProfileBgResource(){
+    public int getProfileBgResource() {
         int bgResourceId = R.drawable.profile_theme_bg_taki;
         switch (currentTheme) {
             case TAKI:
@@ -66,7 +69,7 @@ public class ThemeManager {
         return bgResourceId;
     }
 
-    public int getTopicItemSelectResource(){
+    public int getTopicItemSelectResource() {
         int bgResourceId = R.drawable.main_topic_item_selector_taki;
         switch (currentTheme) {
             case TAKI:
@@ -79,7 +82,7 @@ public class ThemeManager {
         return bgResourceId;
     }
 
-    public int getEntriesBgResource(){
+    public int getEntriesBgResource() {
         int bgResourceId = R.drawable.theme_bg_taki;
         switch (currentTheme) {
             case TAKI:
@@ -92,18 +95,6 @@ public class ThemeManager {
         return bgResourceId;
     }
 
-    public int getPopupBgResource() {
-        int bgResourceId = R.drawable.popup_shadow_taki;
-        switch (currentTheme) {
-            case TAKI:
-                bgResourceId = R.drawable.popup_shadow_taki;
-                break;
-            case MITSUHA:
-                bgResourceId = R.drawable.popup_shadow_mistuha;
-                break;
-        }
-        return bgResourceId;
-    }
 
     public int getButtonBgResource() {
         int bgResourceId = R.drawable.button_bg_taki;
@@ -171,6 +162,25 @@ public class ThemeManager {
         return userName;
     }
 
+    public
+    @RatingCompat.Style
+    int getDatePickerStyle() {
+        int style;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            style = AlertDialog.THEME_HOLO_LIGHT;
+        } else {
+            style = R.style.TakiDatePickerDialogTheme;
+            switch (currentTheme) {
+                case TAKI:
+                    style = R.style.TakiDatePickerDialogTheme;
+                    break;
+                case MITSUHA:
+                    style = R.style.MistuhaDatePickerDialogTheme;
+                    break;
+            }
+        }
+        return style;
+    }
 
 
 }
