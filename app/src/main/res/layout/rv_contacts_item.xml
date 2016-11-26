@@ -50,6 +50,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
                 android:gravity="left"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="33dp" />
         </LinearLayout>
 
@@ -60,6 +62,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:gravity="right"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/contacts_photo_tint"
             android:textSize="20dp" />
 
