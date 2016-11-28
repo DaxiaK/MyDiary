@@ -130,7 +130,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         locationProvider = LocationManager.NETWORK_PROVIDER;
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
-        fileManager = new FileManager(getActivity(), true);
+        //The file is not editable
+        fileManager = new FileManager(getActivity(), false);
     }
 
     @Override
