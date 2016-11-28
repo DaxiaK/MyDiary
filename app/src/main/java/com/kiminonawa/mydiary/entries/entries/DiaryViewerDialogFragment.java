@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,14 +39,13 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
-import com.kiminonawa.mydiary.shared.BitmapHelper;
-import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -350,6 +350,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
+                    //For get the right file name
                     ((DiaryPhoto) diaryItem).setPhotoFileName(diaryContentCursor.getString(3));
                 } else {
                     diaryItem.setEditMode(false);
@@ -394,32 +395,34 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private void loadFileFromTemp(String fileName) {
         try {
             String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
-            Bitmap resizeBmp = ExifUtil.rotateBitmap(tempFileSrc,
-                    BitmapHelper.getBitmapFromTempFileSrc(tempFileSrc,
-                            DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
-            DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
-            diaryPhoto.setPhoto(resizeBmp, fileName);
-            DiaryTextTag tag = checkoutOldDiaryContent();
-            //Check edittext is focused
-            if (tag != null) {
-                //Add new edittext
-                DiaryText diaryText = new DiaryText(getActivity());
-                diaryText.setPosition(tag.getPositionTag());
-                diaryText.setContent(tag.getNextEditTextStr());
-                diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
-                diaryText.getView().requestFocus();
-                //Add photo
-                diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
-                diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+            Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
+            if (resizeBmp != null) {
+                DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
+                diaryPhoto.setPhoto(resizeBmp, fileName);
+                DiaryTextTag tag = checkoutOldDiaryContent();
+                //Check edittext is focused
+                if (tag != null) {
+                    //Add new edittext
+                    DiaryText diaryText = new DiaryText(getActivity());
+                    diaryText.setPosition(tag.getPositionTag());
+                    diaryText.setContent(tag.getNextEditTextStr());
+                    diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                    diaryText.getView().requestFocus();
+                    //Add photo
+                    diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
+                    diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+                } else {
+                    //Add photo
+                    diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
+                    diaryItemHelper.createItem(diaryPhoto);
+                    //Add new edittext
+                    DiaryText diaryText = new DiaryText(getActivity());
+                    diaryText.setPosition(diaryItemHelper.getItemSize());
+                    diaryItemHelper.createItem(diaryText);
+                    diaryText.getView().requestFocus();
+                }
             } else {
-                //Add photo
-                diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
-                diaryItemHelper.createItem(diaryPhoto);
-                //Add new edittext
-                DiaryText diaryText = new DiaryText(getActivity());
-                diaryText.setPosition(diaryItemHelper.getItemSize());
-                diaryItemHelper.createItem(diaryText);
-                diaryText.getView().requestFocus();
+                throw new FileNotFoundException(tempFileSrc + "not found or bitmap is null");
             }
         } catch (Exception e) {
             Log.e(TAG, e.toString());
@@ -475,21 +478,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void onCopyCompiled(String fileName) {
-        loadFileFromTemp(fileName);
-    }
-
-    @Override
-    public void addPhoto(String fileName) {
-        loadFileFromTemp(fileName);
-    }
-
-    @Override
     public void selectPhoto(Uri uri) {
         if (FileManager.isImage(
                 FileManager.getFileNameByUri(getActivity(), uri))) {
-            //1.Copy bitmap to temp
-            //2.Then , Load bitmap & resize in call back ;
+            //1.Copy bitmap to temp for rotating & resize
+            //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
                     fileManager, this).execute();
@@ -497,6 +490,21 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void addPhoto(String fileName) {
+        //1.get saved file for rotating & resize from temp
+        //2.Then , Load bitmap in call back ;
+        new CopyPhotoTask(getActivity(), fileName,
+                DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
+                fileManager, this).execute();
+    }
+
+    @Override
+    public void onCopyCompiled(String fileName) {
+        loadFileFromTemp(fileName);
+    }
+
 
     @Override
     public void onDiaryDelete() {

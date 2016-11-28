@@ -456,11 +456,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     @Override
-    public void onCopyCompiled(String fileName) {
-        loadFileFromTemp(fileName);
-    }
-
-    @Override
     public void addPhoto(String fileName) {
         //1.get saved file for rotating & resize from temp
         //2.Then , Load bitmap in call back ;
@@ -468,6 +463,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
                 fileManager, this).execute();
     }
+
+    @Override
+    public void onCopyCompiled(String fileName) {
+        loadFileFromTemp(fileName);
+    }
+
 
     @Override
     public void update(Observable observable, Object data) {
@@ -486,7 +487,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         setCurrentTime(true);
         //Clear
         clearDiaryPage();
-        //Set flasg
+        //Set flag
         ((DiaryActivity) getActivity()).setEntriesRefresh(true);
         //Goto entries page
         ((DiaryActivity) getActivity()).gotoPage(0);

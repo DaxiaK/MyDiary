@@ -33,7 +33,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     private int moodPosition, weatherPosition;
     private boolean attachment;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager tempFileManager, diaryFileManager;
+    private FileManager editCrashFileManager, diaryFileManager;
     private ProgressDialog progressDialog;
 
     private UpdateDiaryCallBack callBack;
@@ -51,7 +51,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.weatherPosition = weatherPosition;
         this.attachment = attachment;
         this.diaryItemHelper = diaryItemHelper;
-        this.tempFileManager = fileManager;
+        this.editCrashFileManager = fileManager;
         this.callBack = callBack;
 
         progressDialog = new ProgressDialog(context);
@@ -67,6 +67,8 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         int updateResult = RESULT_UPDATE_SUCCESSFUL;
         long topicId = params[0];
         long diaryId = params[1];
+        //This don't use transaction because the file was deleted ,
+        // so make it insert some update and show toast.
         try {
             dbManager.opeDB();
             //Delete all item first
@@ -89,6 +91,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
             updateResult = RESULT_UPDATE_ERROR;
         } finally {
             dbManager.closeDB();
+            editCrashFileManager.clearDiaryDir();
         }
         return updateResult;
     }
@@ -106,7 +109,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
+        FileManager.copy(new File(editCrashFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
                 new File(diaryFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename));
     }
 }

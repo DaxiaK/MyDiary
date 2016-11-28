@@ -70,8 +70,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
 
         int saveResult = RESULT_INSERT_SUCCESSFUL;
         long topicId = params[0];
-        dbManager.opeDB();
         try {
+            dbManager.opeDB();
             dbManager.beginTransaction();
             //Save info
             long diaryId = dbManager.insertDiaryInfo(time,
@@ -101,8 +101,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
             saveResult = RESULT_INSERT_ERROR;
         } finally {
             dbManager.endTransaction();
+            dbManager.closeDB();
         }
-        dbManager.closeDB();
         return saveResult;
     }
 
