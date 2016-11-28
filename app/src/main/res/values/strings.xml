@@ -3,7 +3,7 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.1.7.161126_01_d_h**\n-Fix input type\n**0.1.7.161124_03_d_h**\n1.It can add photo in diary\n2.Fix diary info is gone when gps is scanning\n3.Fix bug , Add mistake-proofing and modify layout\n4.Because the data structure ,backup in cloud will release later after alpha</string>
+    <string name="release_note">**0.1.8.161128_01_d**\n-To allow changing the diary time\n-fix memory issues for photo\n-fix bug and modify layout</string>
     <string name="release_note_close_remind">Don\'t remind</string>
 
     <!--Profile-->
