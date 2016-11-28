@@ -92,7 +92,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
                 diaryViewerDialog.setCallBack(mDiaryViewerCallback);
                 if (isEditMode) {
                     mFragment.setEditModeUI(isEditMode);
-                    diaryViewerDialog.setCancelable(false);
                 }
                 diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
 

@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
-import com.kiminonawa.mydiary.shared.ScreenHepler;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 /**
@@ -45,7 +45,7 @@ public class MyDiaryButton extends Button {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             this.setStateListAnimator(null);
         }
-        this.setMinimumWidth(ScreenHepler.dpToPixel(getContext().getResources(), 80));
+        this.setMinimumWidth(ScreenHelper.dpToPixel(getContext().getResources(), 80));
     }
 
     @Override

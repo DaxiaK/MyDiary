@@ -467,10 +467,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void update(Observable observable, Object data) {
         if (diaryItemHelper.getItemSize() > 0) {
             TV_diary_item_content_hint.setVisibility(View.GONE);
-            setIsEditing(true);
+            setIsCreating(true);
         } else {
             TV_diary_item_content_hint.setVisibility(View.VISIBLE);
-            setIsEditing(false);
+            setIsCreating(false);
         }
     }
 

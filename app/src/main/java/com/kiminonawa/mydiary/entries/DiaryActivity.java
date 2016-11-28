@@ -27,7 +27,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      * Public data
      */
     private long topicId;
-    private boolean isEditing;
+    private boolean isCreating;
 
     /**
      * UI
@@ -79,11 +79,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
 
     @Override
     public void onBackPressed() {
-        if(isEditing){
+        if (isCreating) {
             BackDialogFragment backDialogFragment = new BackDialogFragment();
             backDialogFragment.setCallBack(this);
-            backDialogFragment.show(getSupportFragmentManager(),"backDialogFragment");
-        }else {
+            backDialogFragment.show(getSupportFragmentManager(), "backDialogFragment");
+        } else {
             super.onBackPressed();
         }
     }
@@ -101,9 +101,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     }
 
 
-
-    public void setEditing(boolean editing) {
-        isEditing = editing;
+    public void setCreating(boolean creating) {
+        isCreating = creating;
     }
 
     public long getTopicId() {
@@ -113,7 +112,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     public void gotoPage(int postion) {
         ViewPager_diary_content.setCurrentItem(postion);
     }
-
 
 
     @Override
