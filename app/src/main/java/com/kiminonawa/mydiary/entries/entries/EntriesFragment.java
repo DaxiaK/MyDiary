@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
@@ -35,7 +36,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
     private RelativeLayout RL_entries_content, RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
     private ImageView IV_entries_edit, IV_entries_photo;
-    private final static int MAX_TEXT_LENGTH = 15;
+    private final static int MAX_TEXT_LENGTH = 10;
 
     /**
      * Lazy load
@@ -90,10 +91,9 @@ public class EntriesFragment extends BaseDiaryFragment implements
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isCreatedView && isVisibleToUser) {
-            loadEntries();
-            initRecyclerView();
-            countEntries();
+        if (isCreatedView && isVisibleToUser && ((DiaryActivity) getActivity()).isEntriesRefresh()) {
+            updateEntriesData();
+            ((DiaryActivity) getActivity()).setEntriesRefresh(false);
         }
     }
 
@@ -115,6 +115,9 @@ public class EntriesFragment extends BaseDiaryFragment implements
         for (int i = 0; i < diaryCursor.getCount(); i++) {
             //get diary info
             String title = diaryCursor.getString(2);
+            if ("".equals(title)) {
+                title = getString(R.string.diary_no_title);
+            }
             EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0), new Date(diaryCursor.getLong(1)),
                     title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
                     diaryCursor.getInt(4), diaryCursor.getInt(3),
@@ -159,18 +162,20 @@ public class EntriesFragment extends BaseDiaryFragment implements
         }
     }
 
-    @Override
-    public void deleteDiary() {
+    public void updateEntriesData() {
         loadEntries();
         entriesAdapter.notifyDataSetChanged();
         countEntries();
     }
 
     @Override
+    public void deleteDiary() {
+        updateEntriesData();
+    }
+
+    @Override
     public void updateDiary() {
-        loadEntries();
-        entriesAdapter.notifyDataSetChanged();
-        countEntries();
+        updateEntriesData();
     }
 
     @Override

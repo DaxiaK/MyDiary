@@ -6,7 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 
-import com.kiminonawa.mydiary.shared.ScreenHepler;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 
 /**
  * Created by daxia on 2016/11/19.
@@ -30,7 +30,7 @@ public class DiaryText implements IDairyRow {
         EDT_diary_text.setBackgroundColor(Color.TRANSPARENT);
         EDT_diary_text.setGravity(Gravity.TOP | Gravity.LEFT);
         //2dp paddding
-        int padding = ScreenHepler.dpToPixel(context.getResources(), 2);
+        int padding = ScreenHelper.dpToPixel(context.getResources(), 2);
         EDT_diary_text.setPadding(padding, padding, padding, padding);
     }
     public void insertText(String text){

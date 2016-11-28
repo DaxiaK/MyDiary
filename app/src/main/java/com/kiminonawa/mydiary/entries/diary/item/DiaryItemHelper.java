@@ -39,11 +39,11 @@ public class DiaryItemHelper extends Observable {
     /**
      * Observable
      */
-    public int getVisibleHeight() {
+    public static int getVisibleHeight() {
         return visibleHeight;
     }
 
-    public int getVisibleWidth() {
+    public static int getVisibleWidth() {
         return visibleWidth;
     }
 

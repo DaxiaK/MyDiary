@@ -50,6 +50,8 @@
     <string name="diary_title_hint">日記標題</string>
     <string name="diary_content_hint">在此寫下你的日記內容</string>
 
+    <string name="diary_no_title">無標題</string>
+
     <string name="toast_diary_empty">日記內容是空的</string>
     <string name="toast_refashioning">位置資訊整理中</string>
     <string name="toast_not_image">該檔案不是圖片</string>

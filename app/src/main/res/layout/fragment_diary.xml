@@ -94,7 +94,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_clear_white_24dp"
+                    android:src="@drawable/ic_clear_white_36dp"
                     android:visibility="gone" />
 
                 <LinearLayout

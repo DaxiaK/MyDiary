@@ -50,6 +50,8 @@
     <string name="diary_title_hint">日記のタイトル</string>
     <string name="diary_content_hint">ここに日記の内容を書きます</string>
 
+    <string name="diary_no_title">タイトルなし</string>
+
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
     <string name="toast_not_image">ファイルは画像ではありません。</string>

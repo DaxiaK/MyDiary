@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.entries;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.entries.BackDialogFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.CopyPhotoTask;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -40,6 +42,7 @@ import com.kiminonawa.mydiary.shared.BitmapHelper;
 import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
@@ -56,7 +59,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
         DiaryDeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
         DiaryPhotoBottomSheet.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
-        UpdateDiaryTask.UpdateDiaryCallBack {
+        UpdateDiaryTask.UpdateDiaryCallBack, BackDialogFragment.BackDialogCallback {
 
 
     /**
@@ -124,7 +127,18 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        Dialog dialog = new Dialog(getActivity(), getTheme()) {
+            @Override
+            public void onBackPressed() {
+                if (isEditMode) {
+                    BackDialogFragment backDialogFragment = new BackDialogFragment();
+                    backDialogFragment.setCallBack(DiaryViewerDialogFragment.this);
+                    backDialogFragment.show(getFragmentManager(), "backDialogFragment");
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        };
         // request a window without the title
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         isEditMode = getArguments().getBoolean("isEditMode", false);
@@ -136,7 +150,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
-
         View rootView = inflater.inflate(R.layout.fragment_diary, container);
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
@@ -230,6 +243,19 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        //Modify dialog size
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            int dialogHeight = ScreenHelper.getScreenHeight(getActivity()) -
+                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 30);
+            int dialogWidth = ScreenHelper.getScreenWidth(getActivity()) -
+                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 15);
+            dialog.getWindow().setLayout(dialogWidth, dialogHeight);
+        }
+    }
 
     @Override
     public void onStop() {
@@ -244,6 +270,12 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             dismissAllowingStateLoss();
         }
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
+
 
     private void initData() {
         DBManager dbManager = new DBManager(getActivity());
@@ -277,6 +309,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             initWeatherSpinner();
 
             IV_diary_delete.setVisibility(View.GONE);
+            IV_diary_clear.setVisibility(View.GONE);
         } else {
             IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);
@@ -363,7 +396,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
             Bitmap resizeBmp = ExifUtil.rotateBitmap(tempFileSrc,
                     BitmapHelper.getBitmapFromTempFileSrc(tempFileSrc,
-                            diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight()));
+                            DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(resizeBmp, fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -458,7 +491,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             //1.Copy bitmap to temp
             //2.Then , Load bitmap & resize in call back ;
             new CopyPhotoTask(getActivity(), uri,
-                    diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight(),
+                    DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
                     fileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
@@ -466,9 +499,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void delete() {
+    public void onDiaryDelete() {
         callback.deleteDiary();
+        dismiss();
     }
+
+    @Override
+    public void onBack() {
+        dismiss();
+    }
+
 
     @Override
     public void onCopyToEditCacheCompiled(int result) {
@@ -519,13 +559,12 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 DiaryDeleteDialogFragment diaryDeleteDialogFragment = DiaryDeleteDialogFragment.newInstance(diaryId);
                 diaryDeleteDialogFragment.setCallBack(this);
                 diaryDeleteDialogFragment.show(getFragmentManager(), "diaryDeleteDialogFragment");
-                dismiss();
                 break;
             case R.id.IV_diary_clear:
                 dismiss();
                 break;
             case R.id.IV_diary_save:
-                if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
+                if (diaryItemHelper.getItemSize() > 0) {
                     updateDiary();
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();

@@ -12,7 +12,7 @@ import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
-import com.kiminonawa.mydiary.shared.ScreenHepler;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 
@@ -47,11 +47,11 @@ public class InitActivity extends Activity {
         }
         loadSampleData();
         //Init Object
-        int imageHeight = ScreenHepler.getScreenHeight(InitActivity.this) -
+        int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
                 //diary activity topbar + diary info + diary botton bar + padding
-                ScreenHepler.dpToPixel(getResources(), 80 + 120 + 40 + (2 * 5));
-        int imageWeight = ScreenHepler.getScreenWidth(InitActivity.this) -
-                ScreenHepler.dpToPixel(getResources(), 2 * 5);
+                ScreenHelper.dpToPixel(getResources(), 80 + 120 + 40 + (2 * 5));
+        int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
+                ScreenHelper.dpToPixel(getResources(), 2 * 5);
         DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
 
     }

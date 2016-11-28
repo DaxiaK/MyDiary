@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -27,7 +26,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      * Public data
      */
     private long topicId;
-    private boolean isEditing;
+    private boolean isCreating;
+    private boolean entriesRefresh;
 
     /**
      * UI
@@ -42,7 +42,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     /**
      * View pager
      */
-    private PagerAdapter mPagerAdapter;
+    private FragmentPagerAdapter mPagerAdapter;
 
 
     @Override
@@ -79,11 +79,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
 
     @Override
     public void onBackPressed() {
-        if(isEditing){
+        if (isCreating) {
             BackDialogFragment backDialogFragment = new BackDialogFragment();
             backDialogFragment.setCallBack(this);
-            backDialogFragment.show(getSupportFragmentManager(),"backDialogFragment");
-        }else {
+            backDialogFragment.show(getSupportFragmentManager(), "backDialogFragment");
+        } else {
             super.onBackPressed();
         }
     }
@@ -102,19 +102,25 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
 
 
 
-    public void setEditing(boolean editing) {
-        isEditing = editing;
+    public void setCreating(boolean creating) {
+        isCreating = creating;
     }
 
     public long getTopicId() {
         return topicId;
     }
 
-    public void gotoPage(int postion) {
-        ViewPager_diary_content.setCurrentItem(postion);
+    public void gotoPage(int position) {
+        ViewPager_diary_content.setCurrentItem(position);
     }
 
+    public boolean isEntriesRefresh() {
+        return entriesRefresh;
+    }
 
+    public void setEntriesRefresh(boolean entriesRefresh) {
+        this.entriesRefresh = entriesRefresh;
+    }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

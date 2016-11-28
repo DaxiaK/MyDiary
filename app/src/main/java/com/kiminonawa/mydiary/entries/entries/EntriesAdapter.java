@@ -90,10 +90,11 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
                 DiaryViewerDialogFragment diaryViewerDialog =
                         DiaryViewerDialogFragment.newInstance(entriesList.get(position).getId(), isEditMode);
                 diaryViewerDialog.setCallBack(mDiaryViewerCallback);
-                diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
                 if (isEditMode) {
                     mFragment.setEditModeUI(isEditMode);
                 }
+                diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
+
             }
         });
     }
