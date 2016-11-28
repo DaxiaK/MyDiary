@@ -2,12 +2,13 @@ package com.kiminonawa.mydiary.entries.diary.item;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 
+import com.kiminonawa.mydiary.shared.BitmapHelper;
+import com.kiminonawa.mydiary.shared.ExifUtil;
 import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
 
-import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by daxia on 2016/11/19.
@@ -41,13 +42,15 @@ public class DiaryPhoto implements IDairyRow {
 
     @Override
     public void setContent(String content) {
-        //This content is path
-        File imgFile = new File(content);
-        if (imgFile.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(content);
+        //For some big size image
+        try {
+            Bitmap bitmap = ExifUtil.rotateBitmap(content,
+                    BitmapHelper.getBitmapFromTempFileSrc(content,
+                            DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
             diaryPhotoLayout.setPhotoBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        // else not this file
     }
 
     @Override

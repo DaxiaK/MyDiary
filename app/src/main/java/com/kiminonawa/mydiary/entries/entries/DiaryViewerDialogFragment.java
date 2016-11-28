@@ -396,7 +396,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
             Bitmap resizeBmp = ExifUtil.rotateBitmap(tempFileSrc,
                     BitmapHelper.getBitmapFromTempFileSrc(tempFileSrc,
-                            diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight()));
+                            DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(resizeBmp, fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -491,7 +491,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             //1.Copy bitmap to temp
             //2.Then , Load bitmap & resize in call back ;
             new CopyPhotoTask(getActivity(), uri,
-                    diaryItemHelper.getVisibleWidth(), diaryItemHelper.getVisibleHeight(),
+                    DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
                     fileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();

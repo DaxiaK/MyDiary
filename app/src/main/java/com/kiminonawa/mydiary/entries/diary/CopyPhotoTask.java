@@ -26,19 +26,44 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
         void onCopyCompiled(String fileName);
     }
 
-
+    private Uri uri;
+    private String srcFileName;
     private ProgressDialog progressDialog;
     private CopyPhotoTask.CopyPhotoCallBack callBack;
     private Context mContext;
-    private Uri uri;
     private int reqWidth, reqHeight;
     private FileManager fileManager;
+    private boolean isAddPicture = false;
 
+
+    /**
+     * From select image
+     */
     public CopyPhotoTask(Context context, Uri uri,
                          int reqWidth, int reqHeight,
                          FileManager fileManager, CopyPhotoCallBack callBack) {
-        this.mContext = context;
         this.uri = uri;
+        isAddPicture = false;
+        initTask(context, reqWidth, reqHeight, fileManager, callBack);
+
+    }
+
+
+    /**
+     * From take a picture
+     */
+    public CopyPhotoTask(Context context, String srcFileName,
+                         int reqWidth, int reqHeight,
+                         FileManager fileManager, CopyPhotoCallBack callBack) {
+        this.srcFileName = fileManager.getDiaryDir().getAbsolutePath()+ "/" + srcFileName;
+        isAddPicture = true;
+        initTask(context, reqWidth, reqHeight, fileManager, callBack);
+    }
+
+    public void initTask(Context context,
+                         int reqWidth, int reqHeight,
+                         FileManager fileManager, CopyPhotoCallBack callBack) {
+        this.mContext = context;
         this.reqWidth = reqWidth;
         this.reqHeight = reqHeight;
         this.fileManager = fileManager;
@@ -53,18 +78,23 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params) {
-        String fileName = null;
+        String returnFileName = null;
         try {
             //1.Create bitmap
             //2.Get uri exif
-            fileName = savePhotoToTemp(
-                    ExifUtil.rotateBitmap(mContext, uri,
-                            BitmapHelper.getBitmapFromReturnedImage(mContext, uri, reqWidth, reqHeight))
-            );
+            if (isAddPicture) {
+                returnFileName = savePhotoToTemp(
+                        ExifUtil.rotateBitmap(srcFileName,
+                                BitmapHelper.getBitmapFromTempFileSrc(srcFileName, reqWidth, reqHeight)));
+            } else {
+                returnFileName = savePhotoToTemp(
+                        ExifUtil.rotateBitmap(mContext, uri,
+                                BitmapHelper.getBitmapFromReturnedImage(mContext, uri, reqWidth, reqHeight)));
+            }
         } catch (Exception e) {
             Log.e("CopyPhotoTask", e.toString());
         }
-        return fileName;
+        return returnFileName;
     }
 
     @Override
