@@ -29,6 +29,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
 
     private Context mContext;
     private DBManager dbManager;
+    private long time;
     private String title;
     private int moodPosition, weatherPosition;
     private boolean attachment;
@@ -39,13 +40,14 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     private UpdateDiaryCallBack callBack;
 
 
-    public UpdateDiaryTask(Context context, String title,
+    public UpdateDiaryTask(Context context, long time, String title,
                            int moodPosition, int weatherPosition,
                            boolean attachment, DiaryItemHelper diaryItemHelper,
                            FileManager fileManager, UpdateDiaryCallBack callBack) {
 
         this.dbManager = new DBManager(context);
         this.mContext = context;
+        this.time = time;
         this.title = title;
         this.moodPosition = moodPosition;
         this.weatherPosition = weatherPosition;
@@ -77,7 +79,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
             diaryFileManager = new FileManager(mContext, topicId, diaryId);
             diaryFileManager.clearDiaryDir();
             //Update Diary
-            dbManager.updateDiary(diaryId, title, moodPosition, weatherPosition, attachment);
+            dbManager.updateDiary(diaryId, time, title, moodPosition, weatherPosition, attachment);
             for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
                 //Copy photo from temp to diary dir
                 if (diaryItemHelper.get(i).getType() == IDairyRow.TYPE_PHOTO) {

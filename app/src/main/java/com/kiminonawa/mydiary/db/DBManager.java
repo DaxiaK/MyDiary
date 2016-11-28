@@ -157,9 +157,10 @@ public class DBManager {
                 this.createDiaryContentCV(type, position, content, diaryId));
     }
 
-    public long updateDiary(long diaryId, String title,
+    public long updateDiary(long diaryId, long time, String title,
                             int mood, int weather, boolean attachment) {
         ContentValues values = new ContentValues();
+        values.put(DiaryEntry_V2.COLUMN_TIME, time);
         values.put(DiaryEntry_V2.COLUMN_TITLE, title);
         values.put(DiaryEntry_V2.COLUMN_MOOD, mood);
         values.put(DiaryEntry_V2.COLUMN_WEATHER, weather);

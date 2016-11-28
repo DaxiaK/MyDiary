@@ -86,16 +86,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp">
 
-                <ImageView
-                    android:id="@+id/IV_diary_close_dialog"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_clear_white_36dp"
-                    android:visibility="gone" />
 
                 <LinearLayout
                     android:id="@+id/LL_diary_time_information"
@@ -163,6 +153,18 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/IV_diary_close_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_clear_white_36dp"
+                    android:visibility="gone" />
+
             </RelativeLayout>
 
 

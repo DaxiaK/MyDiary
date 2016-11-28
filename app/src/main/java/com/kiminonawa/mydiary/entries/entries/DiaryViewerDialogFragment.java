@@ -1,6 +1,8 @@
 package com.kiminonawa.mydiary.entries.entries;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -17,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
@@ -39,6 +43,8 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
+import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
+import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
@@ -48,7 +54,6 @@ import com.kiminonawa.mydiary.shared.TimeTools;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
@@ -59,8 +64,8 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
         DiaryDeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
         DiaryPhotoBottomSheet.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
-        UpdateDiaryTask.UpdateDiaryCallBack, BackDialogFragment.BackDialogCallback {
-
+        UpdateDiaryTask.UpdateDiaryCallBack, BackDialogFragment.BackDialogCallback,
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /**
      * Callback
@@ -80,6 +85,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private ProgressBar PB_diary_item_content_hint;
+    private LinearLayout LL_diary_time_information;
 
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
     private ImageView IV_diary_weather, IV_diary_mood;
@@ -104,6 +110,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private CopyDiaryToEditCacheTask mTask;
     private Handler delayHandler;
     private boolean initHandlerOrTaskIsRunnung = false;
+
+    private Calendar calendar;
+    private TimeTools timeTools;
+    private SimpleDateFormat sdf;
 
     /**
      * Permission
@@ -282,7 +292,17 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         dbManager.opeDB();
         Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
         EDT_diary_title.setText(diaryInfoCursor.getString(2));
-        setDiaryTime(new Date(diaryInfoCursor.getLong(1)));
+        //load Time
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(diaryInfoCursor.getLong(1));
+        timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
+        sdf = new SimpleDateFormat("HH:mm");
+        setDiaryTime();
+        if (isEditMode) {
+            //Allow to edit diary
+            LL_diary_time_information.setOnClickListener(this);
+        }
+        //load location
         String locationName = diaryInfoCursor.getString(7);
         if (locationName != null && !"".equals(locationName)) {
             TV_diary_location.setText(locationName);
@@ -300,6 +320,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void initView(View rootView) {
         if (isEditMode) {
+
+            LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
             SP_diary_mood = (Spinner) rootView.findViewById(R.id.SP_diary_mood);
             SP_diary_mood.setVisibility(View.VISIBLE);
             SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
@@ -371,11 +393,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
 
-    private void setDiaryTime(Date diaryDate) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(diaryDate);
-        TimeTools timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    private void setDiaryTime() {
         TV_diary_month.setText(timeTools.getMonthsFullName()[calendar.get(Calendar.MONTH)]);
         TV_diary_date.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         TV_diary_day.setText(timeTools.getDaysFullName()[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
@@ -457,7 +475,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
 
     private void updateDiary() {
-        new UpdateDiaryTask(getActivity(), EDT_diary_title.getText().toString(),
+        new UpdateDiaryTask(getActivity(), calendar.getTimeInMillis(), EDT_diary_title.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
@@ -517,6 +535,28 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         dismiss();
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        //Since JellyBean, the onDateSet() method of the DatePicker class is called twice
+        if (view.isShown()) {
+            calendar.set(year, monthOfYear, dayOfMonth);
+            setDiaryTime();
+            TimePickerFragment timePickerFragment = TimePickerFragment.newInstance(calendar.getTimeInMillis());
+            timePickerFragment.setOnTimeSetListener(this);
+            timePickerFragment.show(getFragmentManager(), "timePickerFragment");
+        }
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        //Since JellyBean, the onTimeSet() method of the TimePicker class is called twice
+        if (view.isShown()) {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            setDiaryTime();
+        }
+    }
+
 
     @Override
     public void onCopyToEditCacheCompiled(int result) {
@@ -537,6 +577,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.LL_diary_time_information:
+                DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
+                datePickerFragment.setOnDateSetListener(this);
+                datePickerFragment.show(getFragmentManager(), "datePickerFragment");
+                break;
             case R.id.IV_diary_photo_delete:
                 int position = (int) v.getTag();
                 diaryItemHelper.remove(position);
