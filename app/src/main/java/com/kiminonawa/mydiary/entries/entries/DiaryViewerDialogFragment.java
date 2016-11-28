@@ -499,8 +499,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void delete() {
+    public void onDiaryDelete() {
         callback.deleteDiary();
+        dismiss();
     }
 
     @Override
@@ -563,7 +564,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dismiss();
                 break;
             case R.id.IV_diary_save:
-                if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
+                if (diaryItemHelper.getItemSize() > 0) {
                     updateDiary();
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();

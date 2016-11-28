@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -28,6 +27,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      */
     private long topicId;
     private boolean isCreating;
+    private boolean entriesRefresh;
 
     /**
      * UI
@@ -42,7 +42,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     /**
      * View pager
      */
-    private PagerAdapter mPagerAdapter;
+    private FragmentPagerAdapter mPagerAdapter;
 
 
     @Override
@@ -101,6 +101,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     }
 
 
+
     public void setCreating(boolean creating) {
         isCreating = creating;
     }
@@ -109,10 +110,17 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         return topicId;
     }
 
-    public void gotoPage(int postion) {
-        ViewPager_diary_content.setCurrentItem(postion);
+    public void gotoPage(int position) {
+        ViewPager_diary_content.setCurrentItem(position);
     }
 
+    public boolean isEntriesRefresh() {
+        return entriesRefresh;
+    }
+
+    public void setEntriesRefresh(boolean entriesRefresh) {
+        this.entriesRefresh = entriesRefresh;
+    }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

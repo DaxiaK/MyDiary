@@ -480,13 +480,15 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         setCurrentTime(true);
         //Clear
         clearDiaryPage();
+        //Set flasg
+        ((DiaryActivity) getActivity()).setEntriesRefresh(true);
+        //Goto entries page
         ((DiaryActivity) getActivity()).gotoPage(0);
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         //Since JellyBean, the onDateSet() method of the DatePicker class is called twice
-        Log.e("test", "onDateSet");
         if (view.isShown()) {
             calendar.set(year, monthOfYear, dayOfMonth);
             setCurrentTime(false);
@@ -518,7 +520,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             case R.id.LL_diary_item_content:
                 if (diaryItemHelper.getItemSize() == 0) {
                     diaryItemHelper.initDiary();
-                    //Add default edittest item
+                    //Add default edittext item
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
@@ -557,7 +559,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 clearDiaryPage();
                 break;
             case R.id.IV_diary_save:
-                if (EDT_diary_title.length() > 0 && diaryItemHelper.getItemSize() > 0) {
+                if (diaryItemHelper.getItemSize() > 0) {
                     saveDiary();
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();

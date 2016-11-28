@@ -20,7 +20,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
      * Callback
      */
     public interface DeleteCallback {
-        void delete();
+        void onDiaryDelete();
     }
 
     private long diaryId;
@@ -57,7 +57,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
     protected void okButtonEvent() {
         if (diaryId != -1) {
             deleteDiary();
-            this.callback.delete();
+            this.callback.onDiaryDelete();
         }
         dismiss();
     }
