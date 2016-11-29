@@ -108,10 +108,14 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             previousCalendar.setTime(entriesList.get(position - 1).getCreateDate());
             Calendar currentCalendar = new GregorianCalendar();
             currentCalendar.setTime(entriesList.get(position).getCreateDate());
-            if (previousCalendar.get(Calendar.MONTH) != currentCalendar.get(Calendar.MONTH)) {
+            if (previousCalendar.get(Calendar.YEAR) != currentCalendar.get(Calendar.YEAR)) {
                 return true;
             } else {
-                return false;
+                if (previousCalendar.get(Calendar.MONTH) != currentCalendar.get(Calendar.MONTH)) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
