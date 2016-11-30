@@ -14,8 +14,11 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="radio_button_conner_radius">5dp</dimen>
     <dimen name="radio_button_stroke_border">1dp</dimen>
-
     <dimen name="bottom_dialog_height_1_line">70dp</dimen>
+
+    <!-- Settings -->
+    <dimen name="setting_content_margin_top">10dp</dimen>
+    <dimen name="setting_group_margin_top">20dp</dimen>
 
 
 </resources>

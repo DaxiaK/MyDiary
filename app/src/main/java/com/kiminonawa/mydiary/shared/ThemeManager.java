@@ -36,16 +36,8 @@ public class ThemeManager {
         return instance;
     }
 
-    public void toggleTheme(Context context) {
-        switch (currentTheme) {
-            case TAKI:
-                currentTheme = MITSUHA;
-                break;
-            case MITSUHA:
-                currentTheme = TAKI;
-                break;
-        }
-        SPFManager.setTheme(context, currentTheme);
+    public void saveTheme(Context context, int themeId) {
+        SPFManager.setTheme(context, themeId);
     }
 
     public void setCurrentTheme(int themeBySPF) {
@@ -53,6 +45,7 @@ public class ThemeManager {
     }
 
     public int getCurrentTheme() {
+
         return currentTheme;
     }
 
@@ -122,31 +115,41 @@ public class ThemeManager {
         return bgResourceId;
     }
 
+    /**
+     * This color also is secondary color.
+     * @param context
+     * @return
+     */
     public int getThemeDarkColor(Context context) {
-        int darkColor = R.color.theme_dark_color_taki;
+        int darkColor;
         switch (currentTheme) {
             case TAKI:
-                darkColor = R.color.theme_dark_color_taki;
+                darkColor = ColorTools.getColor(context, R.color.theme_dark_color_taki);
                 break;
             case MITSUHA:
-                darkColor = R.color.theme_dark_color_mistuha;
+                darkColor = ColorTools.getColor(context, R.color.theme_dark_color_mistuha);
+                break;
+            default:
+                darkColor = SPFManager.getSecondaryColor(context);
                 break;
         }
-        return ColorTools.getColor(context, darkColor);
+        return darkColor;
     }
 
     public int getThemeMainColor(Context context) {
-        int mainColor = R.color.themeColor_taki;
+        int mainColor;
         switch (currentTheme) {
             case TAKI:
-                mainColor = R.color.themeColor_taki;
+                mainColor = ColorTools.getColor(context, R.color.themeColor_taki);
                 break;
             case MITSUHA:
-                mainColor = R.color.themeColor_mistuha;
+                mainColor = ColorTools.getColor(context, R.color.themeColor_mistuha);
+                break;
+            default:
+                mainColor = SPFManager.getMainColor(context);
                 break;
         }
-
-        return ColorTools.getColor(context, mainColor);
+        return mainColor;
     }
 
     public String getThemeUserName(Context context) {

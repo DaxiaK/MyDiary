@@ -42,6 +42,16 @@
         <item>Memo</item>
     </array>
 
+    <array name="theme_list">
+        <item>Taki</item>
+        <item>Mitsuha</item>
+        <item>Custom</item>
+    </array>
 
+    <array name="language_list">
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+    </array>
 
 </resources>

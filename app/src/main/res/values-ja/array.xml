@@ -42,6 +42,11 @@
         <item>メモ</item>
     </array>
 
+    <array name="theme_list">
+        <item>立花 瀧</item>
+        <item>宮水 三葉</item>
+        <item>カスタム</item>
+    </array>
 
 
 </resources>

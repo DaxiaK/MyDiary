@@ -35,4 +35,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //Lib
     compile 'info.hoang8f:android-segmented:1.0.6'
+    compile 'com.larswerkman:HoloColorPicker:1.5'
 }

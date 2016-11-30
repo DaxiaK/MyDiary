@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.kiminonawa.mydiary.BuildConfig;
+import com.kiminonawa.mydiary.R;
 
 
 /**
@@ -14,17 +15,26 @@ public class SPFManager {
     /**
      * config
      */
-    private static final String SPF_CONFIG_NEME = "CONFIG";
+    private static final String SPF_CONFIG = "CONFIG";
     //Location
     private static final String CONFIG_OPEN_DIARY_LOCATION = "OPEN_DIARY_LOCATION";
-    //Theme
-    private static final String CONFIG_THEME = "CONFIG_THEME";
-
+    //Local language
+    private static final String CONFIG_LOCAL_LANGUAGE = "CONFIG_LOCAL_LANGUAGE";
     /**
      * profile
      */
     private static final String SPF_PROFILE = "PROFILE";
     private static final String PROFILE_YOUR_NAME_IS = "YOUR_NAME_IS";
+
+    /**
+     * Theme
+     */
+    //Support old version: CONFIG - CONFIG_THEME
+    private static final String CONFIG_THEME = "CONFIG_THEME";
+    //Theme SFP setting
+    private static final String SPF_THEMEE = "THEME";
+    private static final String THEME_MAIN_COLOR = "THEME_MAIN_COLOR";
+    private static final String THEME_SEC_COLOR = "THEME_SEC_COLOR";
 
     /**
      * System
@@ -40,28 +50,28 @@ public class SPFManager {
      * Config method
      */
     public static boolean getDiaryLocation(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
         //default is close
         return settings.getBoolean(CONFIG_OPEN_DIARY_LOCATION, false);
     }
 
     public static void setDiaryLocation(Context context, boolean open) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putBoolean(CONFIG_OPEN_DIARY_LOCATION, open);
         PE.commit();
     }
 
-    public static int getTheme(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+    public static int getLocalLanguageCode(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
         //default is close
-        return settings.getInt(CONFIG_THEME, ThemeManager.TAKI);
+        return settings.getInt(CONFIG_LOCAL_LANGUAGE, -1);
     }
 
-    public static void setTheme(Context context, int theme) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG_NEME, 0);
+    public static void setLocalLanguageCode(Context context, int languageCode) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
         SharedPreferences.Editor PE = settings.edit();
-        PE.putInt(CONFIG_THEME, theme);
+        PE.putInt(CONFIG_LOCAL_LANGUAGE, languageCode);
         PE.commit();
     }
 
@@ -79,6 +89,51 @@ public class SPFManager {
         SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putString(PROFILE_YOUR_NAME_IS, yourNameIs);
+        PE.commit();
+    }
+
+    /**
+     * Theme method
+     */
+
+    public static int getTheme(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
+        //default is close
+        return settings.getInt(CONFIG_THEME, ThemeManager.TAKI);
+    }
+
+    public static void setTheme(Context context, int theme) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putInt(CONFIG_THEME, theme);
+        PE.commit();
+    }
+
+    public static int getMainColor(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        //default is space
+        return settings.getInt(THEME_MAIN_COLOR,
+                ColorTools.getColor(context, R.color.themeColor_custom_default));
+    }
+
+    public static void setMainColor(Context context, int colorCode) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putInt(THEME_MAIN_COLOR, colorCode);
+        PE.commit();
+    }
+
+    public static int getSecondaryColor(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        //default is space
+        return settings.getInt(THEME_SEC_COLOR,
+                ColorTools.getColor(context, R.color.theme_dark_color_custom_default));
+    }
+
+    public static void setSecondaryColor(Context context, int colorCode) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putInt(THEME_SEC_COLOR, colorCode);
         PE.commit();
     }
 

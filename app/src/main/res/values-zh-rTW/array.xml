@@ -42,6 +42,10 @@
         <item>備忘錄</item>
     </array>
 
-
+    <array name="theme_list">
+        <item>立花 瀧</item>
+        <item>宮水 三葉</item>
+        <item>自定義</item>
+    </array>
 
 </resources>

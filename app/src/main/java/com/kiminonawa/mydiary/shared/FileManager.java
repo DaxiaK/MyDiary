@@ -42,11 +42,14 @@ public class FileManager {
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
+     * 4.Setting photo
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      */
     private File photoFileDir;
     private Context mContext;
-    private final static String tempDiaryDirStr = "diary/temp/";
-    private final static String editCashDiaryDirStr = "diary/editCache/";
+    private final static String TEMP_DIARY_DIR_STR = "diary/temp/";
+    private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
+    private final static String SETTING_DIR_STR = "setting/";
 
     /**
      * Create trem dir file manager
@@ -56,20 +59,26 @@ public class FileManager {
     public FileManager(Context context, boolean isEdit) {
         this.mContext = context;
         if (isEdit) {
-            this.photoFileDir = mContext.getExternalFilesDir(editCashDiaryDirStr);
+            this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
         } else {
-            this.photoFileDir = mContext.getExternalFilesDir(tempDiaryDirStr);
+            this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIARY_DIR_STR);
         }
     }
 
     /**
      * Create diary  dir file manager
-     *
-     * @return
      */
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
         this.photoFileDir = mContext.getExternalFilesDir(topicId + "/" + diaryId + "/");
+    }
+
+    /**
+     * Setting file dir
+     */
+    public FileManager(Context context) {
+        this.mContext = context;
+        this.photoFileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
     }
 
 
