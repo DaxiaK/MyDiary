@@ -42,20 +42,22 @@ so, maybe I will try to create an iOS version after this app is running.
 * Create contacts
 * Optimized diary page viewer 
 * Add photo in diary
+* Allow changing diary time
+
 
 ## Schedule
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Allow changing diary time
-2. Add web block in diary
-3. page curl effect
-4. Implments search
-5. More theme , More profile
-6. OOBE (Alpha) 
-7. Google account backup & setting page
-8. Support Chinese sort
-9. Allow order for topic , memo
+1. Main Setting page
+2. More theme , More profile
+3. Add web block in diary
+4. Allow order for topic , memo
+5. OOBE (Alpha) 
+6. Google account backup & setting page
+7. page curl effect
+8. Implments search
+9. Support Chinese sort
 10. Add password (beta)
 11. Tags
 12. UI review & support xxxHpdi \
