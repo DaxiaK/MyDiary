@@ -76,5 +76,7 @@
 
     <string name="toast_contacts_empty">連絡先が空です!</string>
 
+    <!--About-->
+    <string name="about_title">情報</string>
 
 </resources>

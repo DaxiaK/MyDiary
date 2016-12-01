@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -39,7 +40,7 @@ public class InitActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setLocale();
+        setLocaleLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
         ThemeManager themeManager = ThemeManager.getInstance();
@@ -80,22 +81,25 @@ public class InitActivity extends Activity {
         initHandler.removeCallbacksAndMessages(null);
     }
 
-    public void setLocale() {
+    public void setLocaleLanguage() {
         Locale locale;
         switch (SPFManager.getLocalLanguageCode(this)) {
-            case 0:
+            case 1:
                 locale = Locale.ENGLISH;
                 break;
-            case 1:
+            case 2:
                 locale = Locale.JAPANESE;
                 break;
-            case 2:
+            case 3:
                 locale = Locale.TRADITIONAL_CHINESE;
                 break;
+            // 0 = default = language of system
             default:
                 locale = Locale.getDefault();
                 break;
         }
+        Log.e("test", "id=" + SPFManager.getLocalLanguageCode(this) +
+                " lan=" + locale.getDisplayLanguage());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         overwriteConfigurationLocale(config, locale);

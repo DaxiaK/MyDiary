@@ -77,5 +77,7 @@
 
     <string name="toast_contacts_empty">Contacts is empty!</string>
 
+    <!--About-->
+    <string name="about_title">About</string>
 
 </resources>

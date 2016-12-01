@@ -32,7 +32,7 @@ public class SPFManager {
     //Support old version: CONFIG - CONFIG_THEME
     private static final String CONFIG_THEME = "CONFIG_THEME";
     //Theme SFP setting
-    private static final String SPF_THEMEE = "THEME";
+    private static final String SPF_THEME = "THEME";
     private static final String THEME_MAIN_COLOR = "THEME_MAIN_COLOR";
     private static final String THEME_SEC_COLOR = "THEME_SEC_COLOR";
 
@@ -64,8 +64,8 @@ public class SPFManager {
 
     public static int getLocalLanguageCode(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
-        //default is close
-        return settings.getInt(CONFIG_LOCAL_LANGUAGE, -1);
+        //default is 0 , follow the system
+        return settings.getInt(CONFIG_LOCAL_LANGUAGE, 0);
     }
 
     public static void setLocalLanguageCode(Context context, int languageCode) {
@@ -110,28 +110,28 @@ public class SPFManager {
     }
 
     public static int getMainColor(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEME, 0);
         //default is space
         return settings.getInt(THEME_MAIN_COLOR,
                 ColorTools.getColor(context, R.color.themeColor_custom_default));
     }
 
     public static void setMainColor(Context context, int colorCode) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEME, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putInt(THEME_MAIN_COLOR, colorCode);
         PE.commit();
     }
 
     public static int getSecondaryColor(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEME, 0);
         //default is space
         return settings.getInt(THEME_SEC_COLOR,
                 ColorTools.getColor(context, R.color.theme_dark_color_custom_default));
     }
 
     public static void setSecondaryColor(Context context, int colorCode) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_THEMEE, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_THEME, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putInt(THEME_SEC_COLOR, colorCode);
         PE.commit();

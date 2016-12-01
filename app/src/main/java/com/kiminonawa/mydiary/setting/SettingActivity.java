@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -108,17 +107,23 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         ArrayAdapter languageAdapter = new ArrayAdapter(this, R.layout.spinner_simple_text,
                 getResources().getStringArray(R.array.language_list));
         SP_setting_language.setAdapter(languageAdapter);
-        SP_setting_language.setSelection(0);
+        SP_setting_language.setSelection(SPFManager.getLocalLanguageCode(this));
         SP_setting_language.setOnItemSelectedListener(this);
     }
 
-    private void applySetting() {
+    private void applySetting(boolean killProcess) {
         //Restart App
         Intent i = this.getBaseContext().getPackageManager()
                 .getLaunchIntentForPackage(this.getBaseContext().getPackageName());
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
-        this.finish();
         startActivity(i);
+
+        if (killProcess) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+        } else {
+            this.finish();
+        }
     }
 
     @Override
@@ -143,14 +148,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         R.color.theme_dark_color_custom_default));
                 break;
             case R.id.But_setting_theme_apply:
-                SPFManager.setMainColor(this,
-                        ((ColorDrawable) IV_setting_theme_main_color.getBackground()).getColor());
-                SPFManager.setSecondaryColor(this,
-                        ((ColorDrawable) IV_setting_theme_dark_color.getBackground()).getColor());
+                if (themeManager.getCurrentTheme() == ThemeManager.CUSTOM) {
+                    SPFManager.setMainColor(this,
+                            ((ColorDrawable) IV_setting_theme_main_color.getBackground()).getColor());
+                    SPFManager.setSecondaryColor(this,
+                            ((ColorDrawable) IV_setting_theme_dark_color.getBackground()).getColor());
+                }
                 themeManager.saveTheme(SettingActivity.this, SP_setting_theme.getSelectedItemPosition());
                 //Send Toast
                 Toast.makeText(this, getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
-                applySetting();
+                applySetting(false);
                 break;
             case R.id.IV_setting_theme_main_color:
                 ColorPickerFragment mainColorPickerFragment
@@ -183,11 +190,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case R.id.SP_setting_language:
-                Log.e("test", "test2");
                 if (!isLanguageFirstRun) {
-                    Log.e("test", "test1");
                     SPFManager.setLocalLanguageCode(this, position);
-                    applySetting();
+                    applySetting(true);
                 } else {
                     isLanguageFirstRun = false;
                 }

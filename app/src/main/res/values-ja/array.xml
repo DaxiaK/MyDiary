@@ -48,5 +48,12 @@
         <item>カスタム</item>
     </array>
 
+    <array name="language_list">
+        <item>システム</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+    </array>
+
 
 </resources>

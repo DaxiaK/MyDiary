@@ -77,5 +77,7 @@
 
     <string name="toast_contacts_empty">聯絡資料是空的!</string>
 
+    <!--About-->
+    <string name="about_title">關於</string>
 
 </resources>
