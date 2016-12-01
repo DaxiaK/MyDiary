@@ -55,7 +55,8 @@
     <string name="toast_diary_empty">Diary is empty</string>
     <string name="toast_refashioning">Location is refashioning</string>
     <string name="toast_not_image">The file is not a image</string>
-    <string name="toast_photo_error">Photo path has some problem</string>
+    <string name="toast_photo_path_error">Photo path has some problem</string>
+    <string name="toast_photo_intent_error">To get image resource of device fail</string>
     <string name="toast_max_photo">Max selected photo is %1$d</string>
     <string name="toast_space_insufficient">Free space Insufficient</string>
     <string name="toast_diary_update_successful">Updating diary is successful</string>
