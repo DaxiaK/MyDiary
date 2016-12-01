@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/setting_group_margin_top"
-                android:text="風格"
+                android:text="@string/setting_theme_title"
                 android:textColor="@android:color/black"
                 android:textSize="28dp" />
 
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
-                android:text="選擇你想使用的風格"
+                android:text="@string/setting_theme_hint"
                 android:textColor="@color/setting_hint_text_color"
                 android:textSize="16dp" />
 
@@ -41,58 +41,90 @@
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:background="@drawable/spinner_bg" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/setting_content_margin_top">
+
+
+                <ImageView
+                    android:id="@+id/IV_setting_profile_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="left|center_vertical"
+                    android:shadowColor="@color/textview_shadow"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="3"
+                    android:text="Profile Background"
+                    android:textColor="@android:color/white" />
+
+            </RelativeLayout>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_height="130dp"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="3"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:padding="2dp">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
                             android:layout_gravity="center"
-                            android:text="風格副色" />
+                            android:layout_weight="1"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/setting_theme_sec_color"
+                            android:textColor="@android:color/black" />
 
-                        <ImageView
-                            android:id="@+id/IV_setting_theme_dark_color"
-                            android:layout_width="70dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="25dp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:gravity="left|center_vertical"
+                            android:text="@string/setting_theme_main_color"
+                            android:textColor="@android:color/black" />
 
                     </LinearLayout>
 
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:padding="2dp">
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="風格主色" />
+                        <ImageView
+                            android:id="@+id/IV_setting_theme_dark_color"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1" />
 
                         <ImageView
                             android:id="@+id/IV_setting_theme_main_color"
-                            android:layout_width="70dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="25dp" />
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -100,27 +132,38 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:orientation="vertical">
 
                     <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                        android:id="@+id/But_setting_theme_default"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/But_setting_theme_default_bg"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
-                        android:layout_margin="2dp"
-                        android:text="預設顏色" />
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/setting_theme_default_profile_bg" />
 
                     <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                        android:id="@+id/But_setting_theme_apply"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/But_setting_theme_default"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_gravity="center"
-                        android:layout_margin="2dp"
-                        android:text="應用" />
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/setting_theme_default_color" />
+
 
                 </LinearLayout>
             </LinearLayout>
+
+            <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                android:id="@+id/But_setting_theme_apply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/setting_content_margin_top"
+                android:text="@string/setting_theme_apply" />
 
 
             <View
@@ -136,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/setting_group_margin_top"
-                android:text="語言"
+                android:text="@string/setting_language_title"
                 android:textColor="@android:color/black"
                 android:textSize="28dp" />
 
@@ -144,7 +187,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
-                android:text="選擇語言"
+                android:text="@string/setting_language_hint"
                 android:textColor="@color/setting_hint_text_color"
                 android:textSize="16dp" />
 
@@ -152,6 +195,7 @@
                 android:id="@+id/SP_setting_language"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="@dimen/setting_group_margin_top"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:background="@drawable/spinner_bg" />
 

@@ -17,7 +17,7 @@ import com.larswerkman.holocolorpicker.SVBar;
  * Created by daxia on 2016/11/25.
  */
 
-public class ColorPickerFragment extends DialogFragment {
+public class ColorPickerFragment extends DialogFragment implements View.OnClickListener {
 
 
     public interface colorPickerCallback {
@@ -29,7 +29,7 @@ public class ColorPickerFragment extends DialogFragment {
 
     private ColorPicker picker;
     private SVBar svBar;
-    private Button But_setting_change_color;
+    private Button But_setting_change_color, But_setting_cancel;
 
     private colorPickerCallback callback;
 
@@ -59,17 +59,13 @@ public class ColorPickerFragment extends DialogFragment {
         picker = (ColorPicker) rootView.findViewById(R.id.picker);
         svBar = (SVBar) rootView.findViewById(R.id.svbar);
         But_setting_change_color = (Button) rootView.findViewById(R.id.But_setting_change_color);
+        But_setting_cancel = (Button) rootView.findViewById(R.id.But_setting_cancel);
 
         picker.addSVBar(svBar);
         picker.setOldCenterColor(oldColor);
 
-        But_setting_change_color.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callback.onColorChange(picker.getColor(), viewId);
-                dismiss();
-            }
-        });
+        But_setting_change_color.setOnClickListener(this);
+        But_setting_cancel.setOnClickListener(this);
         return rootView;
     }
 
@@ -78,5 +74,20 @@ public class ColorPickerFragment extends DialogFragment {
         this.viewId = viewId;
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.But_setting_change_color:
+                callback.onColorChange(picker.getColor(), viewId);
+                dismiss();
+                break;
+            case R.id.But_setting_cancel:
+                dismiss();
+                break;
+        }
+
+
+    }
 
 }

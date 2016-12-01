@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -55,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ThemeManager themeManager;
     private LinearLayout LL_main_profile;
     private TextView TV_main_profile_username;
-    private RelativeLayout RL_main_bottom_bar;
     private EditText EDT_main_topic_search;
     private ImageView IV_main_setting;
 
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LL_main_profile.setOnClickListener(this);
 
         TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
-        RL_main_bottom_bar = (RelativeLayout) findViewById(R.id.RL_main_bottom_bar);
 
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
         IV_main_setting = (ImageView) findViewById(R.id.IV_main_setting);
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Release note dialog
         if (getIntent().getBooleanExtra("showReleaseNote", false)) {
             ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
-            releaseNoteDialogFragment.show(getSupportFragmentManager(),"releaseNoteDialogFragment");
+            releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
         }
     }
 
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             YourNameIs = themeManager.getThemeUserName(MainActivity.this);
         }
         TV_main_profile_username.setText(YourNameIs);
-        LL_main_profile.setBackgroundResource(themeManager.getProfileBgResource());
+        LL_main_profile.setBackground(themeManager.getProfileBgDrawable(this));
     }
 
     private void initBottomBar() {
@@ -165,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.IV_main_setting:
                 MainSettingDialogFragment mainSettingDialogFragment = new MainSettingDialogFragment();
-                mainSettingDialogFragment.show(getSupportFragmentManager(),"mainSettingDialogFragment");
+                mainSettingDialogFragment.show(getSupportFragmentManager(), "mainSettingDialogFragment");
                 break;
         }
     }

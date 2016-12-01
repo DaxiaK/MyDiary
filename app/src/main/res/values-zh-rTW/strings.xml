@@ -80,4 +80,17 @@
     <!--About-->
     <string name="about_title">關於</string>
 
+    <!--Setting-->
+    <string name="setting_theme_title">風格</string>
+    <string name="setting_theme_hint">選擇你想使用的風格</string>
+    <string name="setting_theme_main_color">主要顏色</string>
+    <string name="setting_theme_sec_color">次要顏色</string>
+    <string name="setting_theme_default_profile_bg">預設背景</string>
+    <string name="setting_theme_default_color">預設顏色</string>
+    <string name="setting_theme_apply">應用</string>
+
+    <string name="setting_language_title">語言</string>
+    <string name="setting_language_hint">選擇語言</string>
+
+
 </resources>

@@ -23,13 +23,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+            android:id="@+id/But_setting_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/dialog_button_cancel" />
 
         <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_setting_change_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Change Color" />
+            android:layout_marginLeft="20dp"
+            android:text="@string/dialog_button_ok" />
     </LinearLayout>
 </LinearLayout>

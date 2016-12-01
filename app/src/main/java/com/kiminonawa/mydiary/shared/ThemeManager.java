@@ -2,6 +2,8 @@ package com.kiminonawa.mydiary.shared;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.media.RatingCompat;
 
@@ -49,17 +51,25 @@ public class ThemeManager {
         return currentTheme;
     }
 
-    public int getProfileBgResource() {
-        int bgResourceId = R.drawable.profile_theme_bg_taki;
+    public Drawable getProfileBgDrawable(Context context) {
+        Drawable bgDrawable;
+
         switch (currentTheme) {
             case TAKI:
-                bgResourceId = R.drawable.profile_theme_bg_taki;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_taki);
                 break;
             case MITSUHA:
-                bgResourceId = R.drawable.profile_theme_bg_mitsuha;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_mitsuha);
+                break;
+            default:
+                String bgFileName = SPFManager.getProfileBg(context);
+                bgDrawable = Drawable.createFromPath(new FileManager(context).getDiaryDir().getPath() + "/" + bgFileName);
+                if (bgDrawable == null) {
+                    bgDrawable= new ColorDrawable(getThemeMainColor(context));
+                }
                 break;
         }
-        return bgResourceId;
+        return bgDrawable;
     }
 
     public int getTopicItemSelectResource() {
@@ -117,6 +127,7 @@ public class ThemeManager {
 
     /**
      * This color also is secondary color.
+     *
      * @param context
      * @return
      */

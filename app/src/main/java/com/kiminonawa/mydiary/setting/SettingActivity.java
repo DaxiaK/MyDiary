@@ -1,9 +1,12 @@
 package com.kiminonawa.mydiary.setting;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,8 +17,14 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -34,11 +43,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private boolean isLanguageFirstRun = true;
 
     /**
+     * Profile
+     */
+    private String profileBgFileName = "";
+    private boolean isAddNewProfileBg = false;
+    /**
+     * File
+     */
+    private FileManager tempFileManager;
+    private final static int SELECT_PROFILE_BG = 0;
+
+    /**
      * UI
      */
     private Spinner SP_setting_theme, SP_setting_language;
-    private ImageView IV_setting_theme_main_color, IV_setting_theme_dark_color;
-    private Button But_setting_theme_default, But_setting_theme_apply;
+    private ImageView IV_setting_profile_bg, IV_setting_theme_main_color, IV_setting_theme_dark_color;
+    private Button But_setting_theme_default_bg, But_setting_theme_default, But_setting_theme_apply;
 
 
     @Override
@@ -47,10 +67,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_setting);
 
         themeManager = ThemeManager.getInstance();
+        //Create fileManager for get temp folder
+        tempFileManager = new FileManager(this, false);
 
         SP_setting_theme = (Spinner) findViewById(R.id.SP_setting_theme);
+        IV_setting_profile_bg = (ImageView) findViewById(R.id.IV_setting_profile_bg);
         IV_setting_theme_main_color = (ImageView) findViewById(R.id.IV_setting_theme_main_color);
         IV_setting_theme_dark_color = (ImageView) findViewById(R.id.IV_setting_theme_dark_color);
+        But_setting_theme_default_bg = (Button) findViewById(R.id.But_setting_theme_default_bg);
         But_setting_theme_default = (Button) findViewById(R.id.But_setting_theme_default);
         But_setting_theme_apply = (Button) findViewById(R.id.But_setting_theme_apply);
         But_setting_theme_apply.setOnClickListener(this);
@@ -59,6 +83,30 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         initSpinner();
         initTheme(themeManager.getCurrentTheme());
         initLanguage();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SELECT_PROFILE_BG) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                //Compute the bg size
+                int bgWidth = ScreenHelper.getScreenWidth(this);
+                int bgHeight = ScreenHelper.dpToPixel(getResources(), 80);
+                UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                        .withAspectRatio(bgWidth, bgHeight)
+                        .start(this);
+            }
+        } else if (requestCode == UCrop.REQUEST_CROP) {
+            if (resultCode == RESULT_OK) {
+                final Uri resultUri = UCrop.getOutput(data);
+                Log.e("test", resultUri.toString());
+                IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
+                profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
+                isAddNewProfileBg = true;
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+            }
+        }
     }
 
     @Override
@@ -77,16 +125,27 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initTheme(int themeId) {
         if (themeId == ThemeManager.CUSTOM) {
+            IV_setting_profile_bg.setOnClickListener(this);
             IV_setting_theme_main_color.setOnClickListener(this);
             IV_setting_theme_dark_color.setOnClickListener(this);
+
+            But_setting_theme_default_bg.setOnClickListener(this);
+            But_setting_theme_default_bg.setEnabled(true);
             But_setting_theme_default.setOnClickListener(this);
             But_setting_theme_default.setEnabled(true);
+
+            IV_setting_profile_bg.setImageBitmap(null);
         } else {
+            IV_setting_profile_bg.setOnClickListener(null);
             IV_setting_theme_main_color.setOnClickListener(null);
             IV_setting_theme_dark_color.setOnClickListener(null);
+
+            But_setting_theme_default_bg.setOnClickListener(null);
+            But_setting_theme_default_bg.setEnabled(false);
             But_setting_theme_default.setOnClickListener(null);
             But_setting_theme_default.setEnabled(false);
         }
+        IV_setting_profile_bg.setImageDrawable(themeManager.getProfileBgDrawable(this));
         setThemeColor();
     }
 
@@ -141,6 +200,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.But_setting_theme_default_bg:
+                IV_setting_profile_bg.setImageDrawable(new ColorDrawable(ColorTools.getColor(this,
+                        R.color.themeColor_custom_default)));
+                profileBgFileName = "";
+                isAddNewProfileBg = true;
+                break;
+            case R.id.IV_setting_profile_bg:
+                FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+                break;
             case R.id.But_setting_theme_default:
                 IV_setting_theme_main_color.setBackgroundColor(ColorTools.getColor(this,
                         R.color.themeColor_custom_default));
@@ -149,6 +217,19 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.But_setting_theme_apply:
                 if (themeManager.getCurrentTheme() == ThemeManager.CUSTOM) {
+                    if (isAddNewProfileBg) {
+                        if (!"".equals(profileBgFileName)) {
+                            try {
+                                FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName),
+                                        new File(new FileManager(this).getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(this, "存背景失敗", Toast.LENGTH_SHORT).show();
+                                break;
+                            }
+                        }
+                        SPFManager.setProfileBg(this, profileBgFileName);
+                    }
                     SPFManager.setMainColor(this,
                             ((ColorDrawable) IV_setting_theme_main_color.getBackground()).getColor());
                     SPFManager.setSecondaryColor(this,

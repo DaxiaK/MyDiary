@@ -79,4 +79,16 @@
     <!--About-->
     <string name="about_title">情報</string>
 
+    <!--Setting-->
+    <string name="setting_theme_title">テーマ</string>
+    <string name="setting_theme_hint">テーマを選択</string>
+    <string name="setting_theme_main_color">主な色</string>
+    <string name="setting_theme_sec_color">二次色</string>
+    <string name="setting_theme_default_profile_bg">デフォルト\nの背景</string>
+    <string name="setting_theme_default_color">デフォルト色</string>
+    <string name="setting_theme_apply">アプライ</string>
+
+    <string name="setting_language_title">言語</string>
+    <string name="setting_language_hint">言語を選択</string>
+
 </resources>

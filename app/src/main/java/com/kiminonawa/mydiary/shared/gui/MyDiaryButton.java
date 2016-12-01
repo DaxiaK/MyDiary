@@ -40,6 +40,7 @@ public class MyDiaryButton extends Button {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        this.setAllCaps(false);
         this.setBackgroundResource(ThemeManager.getInstance().getButtonBgResource());
         this.setTextColor(ColorTools.getColorStateList(getContext(), R.color.button_default_text_color));
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
