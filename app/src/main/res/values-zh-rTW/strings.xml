@@ -55,7 +55,8 @@
     <string name="toast_diary_empty">日記內容是空的</string>
     <string name="toast_refashioning">位置資訊整理中</string>
     <string name="toast_not_image">該檔案不是圖片</string>
-    <string name="toast_photo_error">圖片來源異常</string>
+    <string name="toast_photo_path_error">圖片來源異常</string>
+    <string name="toast_photo_intent_error">無法取得裝置的圖片資源</string>
     <string name="toast_max_photo">最多只能加入%1$d張照片</string>
     <string name="toast_space_insufficient">剩餘空間不足</string>
     <string name="toast_diary_update_successful">日記更新成功</string>

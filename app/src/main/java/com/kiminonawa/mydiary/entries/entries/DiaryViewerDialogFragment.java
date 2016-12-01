@@ -444,7 +444,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             }
         } catch (Exception e) {
             Log.e(TAG, e.toString());
-            Toast.makeText(getActivity(), getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_photo_path_error), Toast.LENGTH_LONG).show();
         } finally {
             diaryItemHelper.resortPosition();
         }
