@@ -218,19 +218,21 @@ public class ThemeManager {
 
     public
     @RatingCompat.Style
-    int getDatePickerStyle() {
+    int getPickerStyle() {
         int style;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             style = AlertDialog.THEME_HOLO_LIGHT;
         } else {
-            style = R.style.TakiDatePickerDialogTheme;
             switch (currentTheme) {
                 case TAKI:
-                    style = R.style.TakiDatePickerDialogTheme;
+                    style = R.style.TakiPickerDialogTheme;
                     break;
                 case MITSUHA:
-                    style = R.style.MistuhaDatePickerDialogTheme;
+                    style = R.style.MistuhaPickerDialogTheme;
                     break;
+                default:
+                    //Use the system color
+                    style = R.style.CustomPickerDialogTheme;
             }
         }
         return style;
