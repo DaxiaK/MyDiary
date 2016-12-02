@@ -5,8 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_WRITE_ES_PERMISSION;
 
 /**
  * Created by daxia on 2016/11/30.
@@ -39,9 +41,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
      * Theme
      */
     private ThemeManager themeManager;
+    //For spinner first run
     private boolean isThemeFirstRun = true;
     private boolean isLanguageFirstRun = true;
-
+    //Because the default profile bg is color ,
+    //so we should keep main color for replace when main color was changed.
+    private int tempMainColorCode;
     /**
      * Profile
      */
@@ -67,8 +72,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_setting);
 
         themeManager = ThemeManager.getInstance();
+        tempMainColorCode = themeManager.getThemeMainColor(this);
         //Create fileManager for get temp folder
         tempFileManager = new FileManager(this, false);
+        tempFileManager.clearDiaryDir();
 
         SP_setting_theme = (Spinner) findViewById(R.id.SP_setting_theme);
         IV_setting_profile_bg = (ImageView) findViewById(R.id.IV_setting_profile_bg);
@@ -95,16 +102,36 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                         .withAspectRatio(bgWidth, bgHeight)
                         .start(this);
+            } else {
+                Toast.makeText(this, getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == UCrop.REQUEST_CROP) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 final Uri resultUri = UCrop.getOutput(data);
-                Log.e("test", resultUri.toString());
                 IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
                 profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
                 isAddNewProfileBg = true;
-            } else if (resultCode == UCrop.RESULT_ERROR) {
-                final Throwable cropError = UCrop.getError(data);
+            } else {
+                Toast.makeText(this, getString(R.string.toast_crop_profile_banner_fail), Toast.LENGTH_LONG).show();
+                //sample error
+                // final Throwable cropError = UCrop.getError(data);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
+            if (grantResults.length > 0
+                    && PermissionHelper.checkAllPermissionResult(grantResults)) {
+                FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.diary_location_permission_title))
+                        .setMessage(getString(R.string.diary_photo_permission_content))
+                        .setPositiveButton(getString(R.string.dialog_button_ok), null);
+                builder.show();
             }
         }
     }
@@ -189,7 +216,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onColorChange(int colorCode, int viewId) {
         switch (viewId) {
             case R.id.IV_setting_theme_main_color:
-                IV_setting_theme_main_color.setBackgroundColor(colorCode);
+                tempMainColorCode = colorCode;
+                IV_setting_theme_main_color.setBackgroundColor(tempMainColorCode);
+                if (IV_setting_profile_bg.getDrawable() instanceof ColorDrawable) {
+                    IV_setting_profile_bg.setImageDrawable(
+                            new ColorDrawable(tempMainColorCode));
+                }
                 break;
             case R.id.IV_setting_theme_dark_color:
                 IV_setting_theme_dark_color.setBackgroundColor(colorCode);
@@ -201,40 +233,51 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.But_setting_theme_default_bg:
-                IV_setting_profile_bg.setImageDrawable(new ColorDrawable(ColorTools.getColor(this,
-                        R.color.themeColor_custom_default)));
+                IV_setting_profile_bg.setImageDrawable(new ColorDrawable(tempMainColorCode));
                 profileBgFileName = "";
                 isAddNewProfileBg = true;
                 break;
             case R.id.IV_setting_profile_bg:
-                FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+                if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
+                    FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+                }
                 break;
             case R.id.But_setting_theme_default:
                 IV_setting_theme_main_color.setBackgroundColor(ColorTools.getColor(this,
                         R.color.themeColor_custom_default));
                 IV_setting_theme_dark_color.setBackgroundColor(ColorTools.getColor(this,
                         R.color.theme_dark_color_custom_default));
+                //Also revert the tempMainColor & profile bg
+                tempMainColorCode = ColorTools.getColor(this, R.color.themeColor_custom_default);
+                IV_setting_profile_bg.setImageDrawable(new ColorDrawable(tempMainColorCode));
                 break;
             case R.id.But_setting_theme_apply:
+                //Save custom theme value
                 if (themeManager.getCurrentTheme() == ThemeManager.CUSTOM) {
+                    //Check is add new profile
                     if (isAddNewProfileBg) {
+                        //For checking new profile bg is image or color.
+                        boolean hasCustomProfileBannerBg = false;
                         if (!"".equals(profileBgFileName)) {
                             try {
                                 FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName),
-                                        new File(new FileManager(this).getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName));
+                                        new File(new FileManager(this).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
+                                hasCustomProfileBannerBg = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                Toast.makeText(this, "存背景失敗", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, getString(R.string.toast_save_profile_banner_fail), Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
-                        SPFManager.setProfileBg(this, profileBgFileName);
+                        SPFManager.setCustomProfileBannerBg(this, hasCustomProfileBannerBg);
                     }
+                    //Save new color
                     SPFManager.setMainColor(this,
                             ((ColorDrawable) IV_setting_theme_main_color.getBackground()).getColor());
                     SPFManager.setSecondaryColor(this,
                             ((ColorDrawable) IV_setting_theme_dark_color.getBackground()).getColor());
                 }
+                //Save new theme style
                 themeManager.saveTheme(SettingActivity.this, SP_setting_theme.getSelectedItemPosition());
                 //Send Toast
                 Toast.makeText(this, getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
@@ -267,6 +310,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     themeManager.setCurrentTheme(position);
                     initTheme(position);
                 } else {
+                    //First time do nothing
                     isThemeFirstRun = false;
                 }
                 break;
@@ -275,6 +319,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     SPFManager.setLocalLanguageCode(this, position);
                     applySetting(true);
                 } else {
+                    //First time do nothing
                     isLanguageFirstRun = false;
                 }
                 break;
@@ -285,6 +330,5 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         //Do nothing
-
     }
 }

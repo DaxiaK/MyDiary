@@ -92,5 +92,9 @@
     <string name="setting_language_title">語言</string>
     <string name="setting_language_hint">選擇語言</string>
 
+    <string name="toast_save_profile_banner_fail">個人橫幅背景存檔失敗...</string>
+    <string name="toast_crop_profile_banner_fail">個人橫幅裁切失敗...</string>
+
+
 
 </resources>

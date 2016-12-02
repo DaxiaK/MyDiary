@@ -25,7 +25,7 @@ public class SPFManager {
      */
     private static final String SPF_PROFILE = "PROFILE";
     private static final String PROFILE_YOUR_NAME_IS = "YOUR_NAME_IS";
-    private static final String PROFILE_MAIN_PAGE_TOP_BG = "PROFILE_MAIN_PAGE_TOP_BG";
+    private static final String PROFILE_MAIN_PAGE_BANNER_BG = "PROFILE_MAIN_PAGE_BANNER_BG";
 
     /**
      * Theme
@@ -93,16 +93,16 @@ public class SPFManager {
         PE.commit();
     }
 
-    public static String getProfileBg(Context context) {
+    public static boolean hasCustomProfileBannerBg(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
         //default is space
-        return settings.getString(PROFILE_MAIN_PAGE_TOP_BG, "");
+        return settings.getBoolean(PROFILE_MAIN_PAGE_BANNER_BG, false);
     }
 
-    public static void setProfileBg(Context context, String fileName) {
+    public static void setCustomProfileBannerBg(Context context, boolean customProfileBg) {
         SharedPreferences settings = context.getSharedPreferences(SPF_PROFILE, 0);
         SharedPreferences.Editor PE = settings.edit();
-        PE.putString(PROFILE_MAIN_PAGE_TOP_BG, fileName);
+        PE.putBoolean(PROFILE_MAIN_PAGE_BANNER_BG, customProfileBg);
         PE.commit();
     }
 

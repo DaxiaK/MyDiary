@@ -92,4 +92,8 @@
     <string name="setting_language_title">Language</string>
     <string name="setting_language_hint">Choose your language</string>
 
+    <string name="toast_save_profile_banner_fail">To save banner of profile fail...</string>
+    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail...</string>
+
+
 </resources>

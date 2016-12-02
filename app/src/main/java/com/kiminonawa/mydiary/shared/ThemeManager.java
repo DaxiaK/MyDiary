@@ -19,6 +19,8 @@ public class ThemeManager {
     public final static int MITSUHA = 1;
     public final static int CUSTOM = 2;
 
+    public final static String CUSTOM_PROFILE_BANNER_BG_FILENAME = "custom_profile_banner_bg";
+
     //Default color is TAKI
     public int currentTheme = TAKI;
 
@@ -53,7 +55,6 @@ public class ThemeManager {
 
     public Drawable getProfileBgDrawable(Context context) {
         Drawable bgDrawable;
-
         switch (currentTheme) {
             case TAKI:
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_taki);
@@ -62,10 +63,9 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_mitsuha);
                 break;
             default:
-                String bgFileName = SPFManager.getProfileBg(context);
-                bgDrawable = Drawable.createFromPath(new FileManager(context).getDiaryDir().getPath() + "/" + bgFileName);
+                bgDrawable = Drawable.createFromPath(new FileManager(context).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (bgDrawable == null) {
-                    bgDrawable= new ColorDrawable(getThemeMainColor(context));
+                    bgDrawable = new ColorDrawable(getThemeMainColor(context));
                 }
                 break;
         }

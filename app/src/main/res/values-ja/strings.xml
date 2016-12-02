@@ -91,4 +91,7 @@
     <string name="setting_language_title">言語</string>
     <string name="setting_language_hint">言語を選択</string>
 
+    <string name="toast_save_profile_banner_fail">プロファイルのバナーを保存するには失敗する</string>
+    <string name="toast_crop_profile_banner_fail">プロファイルのバナーを切り取るには失敗する</string>
+
 </resources>

@@ -1,7 +1,10 @@
 package com.kiminonawa.mydiary.shared;
 
 import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +21,7 @@ public class PermissionHelper {
      */
     public static final int REQUEST_ACCESS_FINE_LOCATION_PERMISSION = 1;
     public static final int REQUEST_CAMERA_AND_WRITE_ES_PERMISSION = 2;
+    public static final int REQUEST_WRITE_ES_PERMISSION = 3;
 
     public static boolean checkPermission(Fragment fragment, final int requestCode) {
         switch (requestCode) {
@@ -57,6 +61,29 @@ public class PermissionHelper {
         }
         return true;
     }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static boolean checkPermission(Activity activity, final int requestCode) {
+        switch (requestCode) {
+            case REQUEST_WRITE_ES_PERMISSION:
+                if (ContextCompat.checkSelfPermission(activity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                requestCode);
+                        return false;
+                    } else {
+                        activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                requestCode);
+                        return false;
+                    }
+                }
+                break;
+        }
+        return true;
+    }
+
 
     public static boolean checkAllPermissionResult(int[] grantResults) {
         for (int result : grantResults) {

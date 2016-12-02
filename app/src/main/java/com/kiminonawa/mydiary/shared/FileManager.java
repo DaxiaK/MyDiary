@@ -42,6 +42,7 @@ public class FileManager {
      * 2.diary edit temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
+     * //TODO replace file into /diary/typeId/diaryId/ for cloud backup
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
      * 4.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/

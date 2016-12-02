@@ -32,6 +32,9 @@ public class AboutActivity extends AppCompatActivity {
         lincense.append(
                 new LicenseObj("HoloColorPicker", "Lars Werkman", "2012", LicenseObj.APACHE)
                         .getLincense());
+        lincense.append(
+                new LicenseObj("uCrop", "Yalantis", "2016", LicenseObj.APACHE)
+                        .getLincense());
         ((TextView) findViewById(R.id.TV_about_text)).setText(lincense.toString());
     }
 
