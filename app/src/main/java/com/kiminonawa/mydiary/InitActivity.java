@@ -150,13 +150,17 @@ public class InitActivity extends Activity {
 
         //Contacts function work in version 10
         if (SPFManager.getVersionCode(InitActivity.this) < 10) {
-            //Insert sample cntacts
+            //Insert sample contacts
             long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS);
 
-            //Insert sample memo
+            //Insert sample contacts
             if (sampleContactsId != -1) {
                 dbManager.insertContacts(getString(R.string.profile_username_mitsuha), "090000000", "", sampleContactsId);
             }
+        }
+
+        //TODO Modify diary photo into new path.
+        if (SPFManager.getVersionCode(this) < 17) {
         }
 
         dbManager.closeDB();

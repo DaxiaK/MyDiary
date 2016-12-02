@@ -67,7 +67,8 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_mitsuha);
                 break;
             default:
-                bgDrawable = Drawable.createFromPath(new FileManager(context).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
+                bgDrawable = Drawable.createFromPath(
+                        new FileManager(context,FileManager.SETTING_DIR).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (bgDrawable == null) {
                     bgDrawable = new ColorDrawable(getThemeMainColor(context));
                 }

@@ -35,6 +35,11 @@ public class FileManager {
     //Min free space is 50 MB
     public static final int MIN_FREE_SPACE = 50;
 
+    public final static int ROOT_DIR = 0;
+    public final static int TEMP_DIR = 1;
+    public final static int DIARY_EDIT_CACHE_DIR = 2;
+    public final static int SETTING_DIR = 3;
+
     /**
      * The path is :
      * 1.diary & setting temp
@@ -58,12 +63,21 @@ public class FileManager {
      *
      * @param context
      */
-    public FileManager(Context context, boolean isEdit) {
+    public FileManager(Context context, int dir) {
         this.mContext = context;
-        if (isEdit) {
-            this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
-        } else {
-            this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIARY_DIR_STR);
+        switch (dir) {
+            case ROOT_DIR:
+                this.photoFileDir = mContext.getExternalFilesDir("");
+                break;
+            case TEMP_DIR:
+                this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIARY_DIR_STR);
+                break;
+            case DIARY_EDIT_CACHE_DIR:
+                this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
+                break;
+            case SETTING_DIR:
+                this.photoFileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
+                break;
         }
     }
 
@@ -73,14 +87,6 @@ public class FileManager {
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
         this.photoFileDir = mContext.getExternalFilesDir(topicId + "/" + diaryId + "/");
-    }
-
-    /**
-     * Setting file dir
-     */
-    public FileManager(Context context) {
-        this.mContext = context;
-        this.photoFileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
     }
 
 

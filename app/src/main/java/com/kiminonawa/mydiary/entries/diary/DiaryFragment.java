@@ -133,7 +133,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
         //The file is not editable
-        tempFileManager = new FileManager(getActivity(), false);
+        tempFileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
     }
 
     @Override

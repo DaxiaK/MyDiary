@@ -74,7 +74,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         themeManager = ThemeManager.getInstance();
         tempMainColorCode = themeManager.getThemeMainColor(this);
         //Create fileManager for get temp folder
-        tempFileManager = new FileManager(this, false);
+        tempFileManager = new FileManager(this, FileManager.TEMP_DIR);
         tempFileManager.clearDiaryDir();
 
         SP_setting_theme = (Spinner) findViewById(R.id.SP_setting_theme);
@@ -269,8 +269,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         boolean hasCustomProfileBannerBg = false;
                         if (!"".equals(profileBgFileName)) {
                             try {
+                                //Copy the profile into setting dir
                                 FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName),
-                                        new File(new FileManager(this).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
+                                        new File(new FileManager(this, FileManager.SETTING_DIR).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
                                 hasCustomProfileBannerBg = true;
                             } catch (IOException e) {
                                 e.printStackTrace();

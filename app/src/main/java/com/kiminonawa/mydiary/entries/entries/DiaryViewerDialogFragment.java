@@ -205,7 +205,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         diaryId = getArguments().getLong("diaryId", -1L);
         if (diaryId != -1) {
             if (isEditMode) {
-                fileManager = new FileManager(getActivity(), true);
+                fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
                 fileManager.clearDiaryDir();
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
                 mTask = new CopyDiaryToEditCacheTask(getActivity(), fileManager, this);

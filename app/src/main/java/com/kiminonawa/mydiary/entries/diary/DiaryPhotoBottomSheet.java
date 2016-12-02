@@ -64,7 +64,11 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        fileManager = new FileManager(getActivity(), getArguments().getBoolean("isEditMode", false));
+        if (getArguments().getBoolean("isEditMode", false)) {
+            fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
+        } else {
+            fileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
+        }
         return dialog;
     }
 
