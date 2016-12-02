@@ -10,7 +10,7 @@
     <string name="profile_username_taki">立花　瀧</string>
     <string name="profile_username_mitsuha">宮水　三葉</string>
     <string name="toast_change_theme">テーマを切り替えている...</string>
-    <string name="dialog_your_name_is">君の名は</string>
+    <string name="your_name_is">君の名は</string>
 
     <!--Topic type-->
     <string name="topic_create_name">トピック:</string>

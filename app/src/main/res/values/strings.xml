@@ -10,7 +10,7 @@
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>
     <string name="toast_change_theme">Theme is changing...</string>
-    <string name="dialog_your_name_is">Your name is</string>
+    <string name="your_name_is">Your name is</string>
 
     <!--Topic type-->
     <string name="topic_create_name">Topic name:</string>

@@ -2,8 +2,12 @@ package com.kiminonawa.mydiary.shared;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.support.v4.media.RatingCompat;
 
@@ -72,57 +76,90 @@ public class ThemeManager {
         return bgDrawable;
     }
 
-    public int getTopicItemSelectResource() {
-        int bgResourceId = R.drawable.main_topic_item_selector_taki;
-        switch (currentTheme) {
-            case TAKI:
-                bgResourceId = R.drawable.main_topic_item_selector_taki;
-                break;
-            case MITSUHA:
-                bgResourceId = R.drawable.main_topic_item_selector_mitsuha;
-                break;
-        }
-        return bgResourceId;
+    public Drawable getTopicItemSelectDrawable(Context context) {
+        return createTopicItemSelectBg(context);
     }
 
-    public int getEntriesBgResource() {
-        int bgResourceId = R.drawable.theme_bg_taki;
+    private Drawable createTopicItemSelectBg(Context context) {
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed},
+                new ColorDrawable(getThemeMainColor(context)));
+        stateListDrawable.addState(new int[]{},
+                new ColorDrawable(Color.WHITE));
+        return stateListDrawable;
+    }
+
+    public Drawable getEntriesBgDrawable(Context context) {
+        Drawable bgDrawable;
         switch (currentTheme) {
             case TAKI:
-                bgResourceId = R.drawable.theme_bg_taki;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
                 break;
             case MITSUHA:
-                bgResourceId = R.drawable.theme_bg_mitsuha;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
+                break;
+            //TODO make default bg for custom
+            default:
+                bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
                 break;
         }
-        return bgResourceId;
+        return bgDrawable;
     }
 
 
-    public int getButtonBgResource() {
-        int bgResourceId = R.drawable.button_bg_taki;
-        switch (currentTheme) {
-            case TAKI:
-                bgResourceId = R.drawable.button_bg_taki;
-                break;
-            case MITSUHA:
-                bgResourceId = R.drawable.button_bg_mitsuha;
-                break;
-        }
-        return bgResourceId;
+    public Drawable getButtonBgDrawable(Context context) {
+        return createButtonCustomBg(context);
     }
 
-    public int getContactsBgResource() {
-        int bgResourceId = R.drawable.contacts_bg_taki;
+    /**
+     * Create the custom button programmatically
+     *
+     * @param context
+     * @return
+     */
+    private Drawable createButtonCustomBg(Context context) {
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, createCustomDrawable(context));
+        stateListDrawable.addState(new int[]{-android.R.attr.state_enabled},
+                ViewTools.getDrawable(context, R.drawable.button_bg_disable));
+        stateListDrawable.addState(new int[]{},
+                ViewTools.getDrawable(context, R.drawable.button_bg_n));
+        return stateListDrawable;
+    }
+
+    /**
+     * The Custom button press drawable
+     *
+     * @param context
+     * @return
+     */
+    private Drawable createCustomDrawable(Context context) {
+        int padding = ScreenHelper.dpToPixel(context.getResources(), 5);
+        int mainColorCode = ThemeManager.getInstance().getThemeMainColor(context);
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.getPadding(new Rect(padding, padding, padding, padding));
+        gradientDrawable.setCornerRadius(ScreenHelper.dpToPixel(context.getResources(), 3));
+        gradientDrawable.setStroke(ScreenHelper.dpToPixel(context.getResources(), 1), mainColorCode);
+        gradientDrawable.setColor(mainColorCode);
+        return gradientDrawable;
+    }
+
+
+    public Drawable getContactsBgDrawable(Context context) {
+        Drawable bgDrawable;
         switch (currentTheme) {
             case TAKI:
-                bgResourceId = R.drawable.contacts_bg_taki;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
                 break;
             case MITSUHA:
-                bgResourceId = R.drawable.contacts_bg_mitsuha;
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
+                break;
+            //TODO make default bg for custom
+            default:
+                bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
                 break;
         }
-        return bgResourceId;
+        return bgDrawable;
     }
 
     /**
@@ -164,13 +201,16 @@ public class ThemeManager {
     }
 
     public String getThemeUserName(Context context) {
-        String userName = context.getString(R.string.profile_username_taki);
+        String userName;
         switch (currentTheme) {
             case TAKI:
                 userName = context.getString(R.string.profile_username_taki);
                 break;
             case MITSUHA:
                 userName = context.getString(R.string.profile_username_mitsuha);
+                break;
+            default:
+                userName = context.getString(R.string.your_name_is);
                 break;
         }
         return userName;

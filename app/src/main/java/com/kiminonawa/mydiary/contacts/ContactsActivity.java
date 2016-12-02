@@ -73,7 +73,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
          * init UI
          */
         RL_contacts_content = (RelativeLayout) findViewById(R.id.RL_contacts_content);
-        RL_contacts_content.setBackgroundResource(themeManager.getContactsBgResource());
+        RL_contacts_content.setBackground(themeManager.getContactsBgDrawable(this));
 
         TV_contact_short_sort = (TextView) findViewById(R.id.TV_contact_short_sort);
         TV_contact_short_sort.setBackgroundColor(themeManager.getThemeDarkColor(ContactsActivity.this));

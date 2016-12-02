@@ -41,7 +41,7 @@ public class MyDiaryButton extends Button {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         this.setAllCaps(false);
-        this.setBackgroundResource(ThemeManager.getInstance().getButtonBgResource());
+        this.setBackground(ThemeManager.getInstance().getButtonBgDrawable(getContext()));
         this.setTextColor(ColorTools.getColorStateList(getContext(), R.color.button_default_text_color));
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             this.setStateListAnimator(null);
@@ -53,4 +53,5 @@ public class MyDiaryButton extends Button {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
     }
+
 }

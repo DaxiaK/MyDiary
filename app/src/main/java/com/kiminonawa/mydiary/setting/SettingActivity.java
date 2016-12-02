@@ -100,10 +100,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 int bgWidth = ScreenHelper.getScreenWidth(this);
                 int bgHeight = ScreenHelper.dpToPixel(getResources(), 80);
                 UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                        .withMaxResultSize(bgWidth, bgHeight)
                         .withAspectRatio(bgWidth, bgHeight)
                         .start(this);
-            } else {
-                Toast.makeText(this, getString(R.string.toast_photo_error), Toast.LENGTH_LONG).show();
             }
         } else if (requestCode == UCrop.REQUEST_CROP) {
             if (resultCode == RESULT_OK && data != null) {
@@ -111,10 +110,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
                 profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
                 isAddNewProfileBg = true;
-            } else {
-                Toast.makeText(this, getString(R.string.toast_crop_profile_banner_fail), Toast.LENGTH_LONG).show();
-                //sample error
-                // final Throwable cropError = UCrop.getError(data);
             }
         }
     }
@@ -177,8 +172,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setThemeColor() {
-        IV_setting_theme_main_color.setBackgroundColor(themeManager.getThemeMainColor(this));
-        IV_setting_theme_dark_color.setBackgroundColor(themeManager.getThemeDarkColor(this));
+        IV_setting_theme_main_color.setImageDrawable(
+                new ColorDrawable(themeManager.getThemeMainColor(this)));
+        IV_setting_theme_dark_color.setImageDrawable(
+                new ColorDrawable(themeManager.getThemeDarkColor(this)));
     }
 
     private void initSpinner() {
@@ -217,14 +214,14 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         switch (viewId) {
             case R.id.IV_setting_theme_main_color:
                 tempMainColorCode = colorCode;
-                IV_setting_theme_main_color.setBackgroundColor(tempMainColorCode);
+                IV_setting_theme_main_color.setImageDrawable(new ColorDrawable(tempMainColorCode));
                 if (IV_setting_profile_bg.getDrawable() instanceof ColorDrawable) {
                     IV_setting_profile_bg.setImageDrawable(
                             new ColorDrawable(tempMainColorCode));
                 }
                 break;
             case R.id.IV_setting_theme_dark_color:
-                IV_setting_theme_dark_color.setBackgroundColor(colorCode);
+                IV_setting_theme_dark_color.setImageDrawable(new ColorDrawable(colorCode));
                 break;
         }
     }
@@ -243,13 +240,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 break;
             case R.id.But_setting_theme_default:
-                IV_setting_theme_main_color.setBackgroundColor(ColorTools.getColor(this,
-                        R.color.themeColor_custom_default));
-                IV_setting_theme_dark_color.setBackgroundColor(ColorTools.getColor(this,
-                        R.color.theme_dark_color_custom_default));
+                IV_setting_theme_main_color.setImageDrawable(new ColorDrawable(ColorTools.getColor(this,
+                        R.color.themeColor_custom_default)));
+                IV_setting_theme_dark_color.setImageDrawable(new ColorDrawable(ColorTools.getColor(this,
+                        R.color.theme_dark_color_custom_default)));
                 //Also revert the tempMainColor & profile bg
                 tempMainColorCode = ColorTools.getColor(this, R.color.themeColor_custom_default);
-                IV_setting_profile_bg.setImageDrawable(new ColorDrawable(tempMainColorCode));
+                if (IV_setting_profile_bg.getDrawable() instanceof ColorDrawable) {
+                    IV_setting_profile_bg.setImageDrawable(new ColorDrawable(tempMainColorCode));
+                }
                 break;
             case R.id.But_setting_theme_apply:
                 //Save custom theme value
@@ -273,9 +272,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                     //Save new color
                     SPFManager.setMainColor(this,
-                            ((ColorDrawable) IV_setting_theme_main_color.getBackground()).getColor());
+                            ((ColorDrawable) IV_setting_theme_main_color.getDrawable()).getColor());
                     SPFManager.setSecondaryColor(this,
-                            ((ColorDrawable) IV_setting_theme_dark_color.getBackground()).getColor());
+                            ((ColorDrawable) IV_setting_theme_dark_color.getDrawable()).getColor());
                 }
                 //Save new theme style
                 themeManager.saveTheme(SettingActivity.this, SP_setting_theme.getSelectedItemPosition());

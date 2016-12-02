@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -98,8 +97,6 @@ public class InitActivity extends Activity {
                 locale = Locale.getDefault();
                 break;
         }
-        Log.e("test", "id=" + SPFManager.getLocalLanguageCode(this) +
-                " lan=" + locale.getDisplayLanguage());
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();
         overwriteConfigurationLocale(config, locale);
