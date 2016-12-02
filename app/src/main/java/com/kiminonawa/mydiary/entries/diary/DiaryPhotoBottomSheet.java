@@ -91,15 +91,15 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
                 callBack.addPhoto(tempFileName);
-            } else {
-                Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
             }
             dismiss();
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                callBack.selectPhoto(data.getData());
-            } else {
-                Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
+            if (resultCode == RESULT_OK) {
+                if (data != null && data.getData() != null) {
+                    callBack.selectPhoto(data.getData());
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
+                }
             }
             dismiss();
         }

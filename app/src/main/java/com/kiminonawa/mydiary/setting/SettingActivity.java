@@ -95,21 +95,31 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_PROFILE_BG) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                //Compute the bg size
-                int bgWidth = ScreenHelper.getScreenWidth(this);
-                int bgHeight = ScreenHelper.dpToPixel(getResources(), 80);
-                UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
-                        .withMaxResultSize(bgWidth, bgHeight)
-                        .withAspectRatio(bgWidth, bgHeight)
-                        .start(this);
+            if (resultCode == RESULT_OK) {
+                if (data != null && data.getData() != null) {
+                    //Compute the bg size
+                    int bgWidth = ScreenHelper.getScreenWidth(this);
+                    int bgHeight = ScreenHelper.dpToPixel(getResources(), 80);
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                            .withMaxResultSize(bgWidth, bgHeight)
+                            .withAspectRatio(bgWidth, bgHeight)
+                            .start(this);
+                } else {
+                    Toast.makeText(this, getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
+                }
             }
         } else if (requestCode == UCrop.REQUEST_CROP) {
-            if (resultCode == RESULT_OK && data != null) {
-                final Uri resultUri = UCrop.getOutput(data);
-                IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
-                profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
-                isAddNewProfileBg = true;
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
+                    profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
+                    isAddNewProfileBg = true;
+                } else {
+                    Toast.makeText(this, getString(R.string.toast_crop_profile_banner_fail), Toast.LENGTH_LONG).show();
+                    //sample error
+                    // final Throwable cropError = UCrop.getError(data);
+                }
             }
         }
     }

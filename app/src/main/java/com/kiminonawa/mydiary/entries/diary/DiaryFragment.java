@@ -121,7 +121,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * File
      */
-    private FileManager fileManager;
+    private FileManager tempFileManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -133,7 +133,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         isLocation = SPFManager.getDiaryLocation(getActivity());
         noLocation = getActivity().getString(R.string.diary_no_location);
         //The file is not editable
-        fileManager = new FileManager(getActivity(), false);
+        tempFileManager = new FileManager(getActivity(), false);
     }
 
     @Override
@@ -284,7 +284,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = tempFileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
             Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
             if (resizeBmp != null) {
                 DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
@@ -375,7 +375,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_weather.setSelection(0);
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
-        fileManager.clearDiaryDir();
+        tempFileManager.clearDiaryDir();
     }
 
     private void saveDiary() {
@@ -389,7 +389,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                locationName, diaryItemHelper, fileManager, this).execute(getTopicId());
+                locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
     }
 
     private void openPhotoBottomSheet() {
@@ -451,7 +451,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
-                    fileManager, this).execute();
+                    tempFileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
@@ -463,7 +463,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
-                fileManager, this).execute();
+                tempFileManager, this).execute();
     }
 
     @Override

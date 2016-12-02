@@ -227,7 +227,14 @@ public class FileManager {
         String wholeID = DocumentsContract.getDocumentId(contentUri);
 
         // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
+        //Fix split id fail
+        String[] wholeIDSpilt = wholeID.split(":");
+        String id;
+        if (wholeIDSpilt.length > 1) {
+            id = wholeID.split(":")[1];
+        } else {
+            id = wholeID;
+        }
         String[] column = {MediaStore.Images.Media.DATA};
 
         // where id is equal to
