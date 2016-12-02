@@ -10,7 +10,7 @@
     <string name="profile_username_taki">立花　瀧</string>
     <string name="profile_username_mitsuha">宮水　三葉</string>
     <string name="toast_change_theme">テーマを切り替えている...</string>
-    <string name="dialog_your_name_is">君の名は</string>
+    <string name="your_name_is">君の名は</string>
 
     <!--Topic type-->
     <string name="topic_create_name">トピック:</string>
@@ -77,5 +77,22 @@
 
     <string name="toast_contacts_empty">連絡先が空です!</string>
 
+    <!--About-->
+    <string name="about_title">情報</string>
+
+    <!--Setting-->
+    <string name="setting_theme_title">テーマ</string>
+    <string name="setting_theme_hint">テーマを選択</string>
+    <string name="setting_theme_main_color">主な色</string>
+    <string name="setting_theme_sec_color">二次色</string>
+    <string name="setting_theme_default_profile_bg">デフォルト\nの背景</string>
+    <string name="setting_theme_default_color">デフォルト色</string>
+    <string name="setting_theme_apply">アプライ</string>
+
+    <string name="setting_language_title">言語</string>
+    <string name="setting_language_hint">言語を選択</string>
+
+    <string name="toast_save_profile_banner_fail">プロファイルのバナーを保存するには失敗する</string>
+    <string name="toast_crop_profile_banner_fail">プロファイルのバナーを切り取るには失敗する</string>
 
 </resources>

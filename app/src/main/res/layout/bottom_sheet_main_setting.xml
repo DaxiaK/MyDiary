@@ -15,13 +15,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/IV_main_setting_change_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/ic_style_white_36dp" />
 
             <ImageView
                 android:id="@+id/IV_main_setting_add_topic"
@@ -29,6 +22,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_add_white_36dp" />
+
+            <ImageView
+                android:id="@+id/IV_main_setting_setting_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_settings_white_36dp" />
+
+            <ImageView
+                android:id="@+id/IV_main_setting_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_perm_device_information_white_36dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

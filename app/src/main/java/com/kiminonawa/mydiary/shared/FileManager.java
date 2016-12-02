@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.shared;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,17 +37,21 @@ public class FileManager {
 
     /**
      * The path is :
-     * 1.diary temp
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/temp
+     * 1.diary & setting temp
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/temp
      * 2.diary edit temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
+     * //TODO replace file into /diary/typeId/diaryId/ for cloud backup
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
+     * 4.Setting path
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      */
     private File photoFileDir;
     private Context mContext;
-    private final static String tempDiaryDirStr = "diary/temp/";
-    private final static String editCashDiaryDirStr = "diary/editCache/";
+    private final static String TEMP_DIARY_DIR_STR = "temp/";
+    private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
+    private final static String SETTING_DIR_STR = "setting/";
 
     /**
      * Create trem dir file manager
@@ -56,20 +61,26 @@ public class FileManager {
     public FileManager(Context context, boolean isEdit) {
         this.mContext = context;
         if (isEdit) {
-            this.photoFileDir = mContext.getExternalFilesDir(editCashDiaryDirStr);
+            this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
         } else {
-            this.photoFileDir = mContext.getExternalFilesDir(tempDiaryDirStr);
+            this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIARY_DIR_STR);
         }
     }
 
     /**
      * Create diary  dir file manager
-     *
-     * @return
      */
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
         this.photoFileDir = mContext.getExternalFilesDir(topicId + "/" + diaryId + "/");
+    }
+
+    /**
+     * Setting file dir
+     */
+    public FileManager(Context context) {
+        this.mContext = context;
+        this.photoFileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
     }
 
 
@@ -127,6 +138,17 @@ public class FileManager {
             intentImage.setType("image/*");
             intentImage.setAction(Intent.ACTION_GET_CONTENT);
             fragment.startActivityForResult(Intent.createChooser(intentImage, "Select Picture"), requestCode);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Log.e(TAG, ex.toString());
+        }
+    }
+
+    public static void startBrowseImageFile(Activity activity, int requestCode) {
+        try {
+            Intent intentImage = new Intent();
+            intentImage.setType("image/*");
+            intentImage.setAction(Intent.ACTION_GET_CONTENT);
+            activity.startActivityForResult(Intent.createChooser(intentImage, "Select Picture"), requestCode);
         } catch (android.content.ActivityNotFoundException ex) {
             Log.e(TAG, ex.toString());
         }

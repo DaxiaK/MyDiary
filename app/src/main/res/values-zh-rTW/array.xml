@@ -42,6 +42,17 @@
         <item>備忘錄</item>
     </array>
 
+    <array name="theme_list">
+        <item>立花 瀧</item>
+        <item>宮水 三葉</item>
+        <item>自定義</item>
+    </array>
 
+    <array name="language_list">
+        <item>系統</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+    </array>
 
 </resources>

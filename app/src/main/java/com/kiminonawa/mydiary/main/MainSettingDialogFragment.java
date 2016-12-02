@@ -10,12 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.setting.SettingActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * Created by daxia on 2016/11/24.
@@ -29,7 +28,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
      */
 
     private RelativeLayout RL_main_setting_dialog;
-    private ImageView IV_main_setting_change_theme, IV_main_setting_add_topic;
+    private ImageView IV_main_setting_setting_page, IV_main_setting_add_topic, IV_main_setting_about;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -46,10 +45,12 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
 
         RL_main_setting_dialog = (RelativeLayout) rootView.findViewById(R.id.RL_main_setting_dialog);
         RL_main_setting_dialog.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
-        IV_main_setting_change_theme = (ImageView) rootView.findViewById(R.id.IV_main_setting_change_theme);
-        IV_main_setting_change_theme.setOnClickListener(this);
+        IV_main_setting_setting_page = (ImageView) rootView.findViewById(R.id.IV_main_setting_setting_page);
+        IV_main_setting_setting_page.setOnClickListener(this);
         IV_main_setting_add_topic = (ImageView) rootView.findViewById(R.id.IV_main_setting_add_topic);
         IV_main_setting_add_topic.setOnClickListener(this);
+        IV_main_setting_about = (ImageView) rootView.findViewById(R.id.IV_main_setting_about);
+        IV_main_setting_about.setOnClickListener(this);
         return rootView;
     }
 
@@ -62,17 +63,15 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
                 createTopicDialogFragment.show(getFragmentManager(), "createTopicDialogFragment");
                 dismiss();
                 break;
-            case R.id.IV_main_setting_change_theme:
-                ThemeManager.getInstance().toggleTheme(getActivity());
-                //Send Toast
-                Toast.makeText(getActivity(), getString(R.string.toast_change_theme), Toast.LENGTH_SHORT).show();
-                //Restart App
-                Intent i = getActivity().getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
+            case R.id.IV_main_setting_setting_page:
+                Intent settingPageIntent = new Intent(getActivity(), SettingActivity.class);
+                getActivity().startActivity(settingPageIntent);
                 dismiss();
-                getActivity().finish();
-                startActivity(i);
+                break;
+            case R.id.IV_main_setting_about:
+                Intent aboutPageIntent = new Intent(getActivity(), AboutActivity.class);
+                getActivity().startActivity(aboutPageIntent);
+                dismiss();
                 break;
         }
     }

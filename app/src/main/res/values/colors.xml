@@ -8,8 +8,13 @@
 
     <!--Theme-->
     <color name="themeColor_taki">#67B5E6</color>
-    <color name="themeColor_mistuha">#EF7265</color>
+    <color name="theme_dark_color_taki">#70A3B4</color>
 
+    <color name="themeColor_mistuha">#EF7265</color>
+    <color name="theme_dark_color_mistuha">#b3371f</color>
+
+    <color name="themeColor_custom_default">#8BC34A</color>
+    <color name="theme_dark_color_custom_default">#388E3C</color>
 
     <!--Button-->
     <color name="button_board_color">#b2b2b2</color>
@@ -23,9 +28,6 @@
     <color name="memo_icon_tint">#718698</color>
 
     <!--entries-->
-    <color name="theme_dark_color_taki">#70A3B4</color>
-    <color name="theme_dark_color_mistuha">#b3371f</color>
-
 
     <!--diary-->
     <color name="diary_photo_layout_delete_bg">#003400</color>
@@ -35,6 +37,10 @@
 
     <!--Button-->
     <color name="button_disable_color">#9D9FA2</color>
+
+    <!--My diary custom button-->
+    <color name="custom_button_disable_bg_color">#E1E2E3</color>
+
 
     <!--Edittext-->
     <color name="edit_stroke">#CACACA</color>
@@ -47,5 +53,7 @@
     <color name="contacts_photo_tint">#AFABAE</color>
     <color name="contacts_edittext_hint">#d4d2d4</color>
 
+    <!--Setting-->
+    <color name="setting_hint_text_color">#828282</color>
 
 </resources>

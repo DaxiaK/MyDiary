@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/dialog_your_name_is"
+                android:text="@string/your_name_is"
                 android:textColor="@android:color/black"
                 android:textSize="20dp" />
 

@@ -41,12 +41,10 @@ public class TimePickerFragment extends DialogFragment {
         }
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
-
-
         //Note:
         //Error/TimePickerDelegate: Unable to find keycodes for AM and PM.
         //The bug was triggered only on Chinese.
-        return new TimePickerDialog(getActivity(), ThemeManager.getInstance().getDatePickerStyle(),
+        return new TimePickerDialog(getActivity(), ThemeManager.getInstance().getPickerStyle(),
                 onTimeSetListener, hour, minute, true);
     }
 }

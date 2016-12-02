@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -14,6 +15,8 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+
+import java.util.Locale;
 
 
 /**
@@ -36,6 +39,7 @@ public class InitActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setLocaleLanguage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_init);
         ThemeManager themeManager = ThemeManager.getInstance();
@@ -74,6 +78,34 @@ public class InitActivity extends Activity {
     protected void onPause() {
         super.onPause();
         initHandler.removeCallbacksAndMessages(null);
+    }
+
+    public void setLocaleLanguage() {
+        Locale locale;
+        switch (SPFManager.getLocalLanguageCode(this)) {
+            case 1:
+                locale = Locale.ENGLISH;
+                break;
+            case 2:
+                locale = Locale.JAPANESE;
+                break;
+            case 3:
+                locale = Locale.TRADITIONAL_CHINESE;
+                break;
+            // 0 = default = language of system
+            default:
+                locale = Locale.getDefault();
+                break;
+        }
+        Locale.setDefault(locale);
+        Configuration config = getBaseContext().getResources().getConfiguration();
+        overwriteConfigurationLocale(config, locale);
+    }
+
+    private void overwriteConfigurationLocale(Configuration config, Locale locale) {
+        config.locale = locale;
+        getBaseContext().getResources()
+                .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
 

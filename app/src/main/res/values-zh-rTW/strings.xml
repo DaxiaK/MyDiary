@@ -10,7 +10,7 @@
     <string name="profile_username_taki">立花 瀧</string>
     <string name="profile_username_mitsuha">宮水 三葉</string>
     <string name="toast_change_theme">風格切換中...</string>
-    <string name="dialog_your_name_is">你的名字是</string>
+    <string name="your_name_is">你的名字是</string>
 
 
     <!--Topic type-->
@@ -77,6 +77,25 @@
     <string name="contacts_detail_edt_phone_number">電話號碼</string>
 
     <string name="toast_contacts_empty">聯絡資料是空的!</string>
+
+    <!--About-->
+    <string name="about_title">關於</string>
+
+    <!--Setting-->
+    <string name="setting_theme_title">風格</string>
+    <string name="setting_theme_hint">選擇你想使用的風格</string>
+    <string name="setting_theme_main_color">主要顏色</string>
+    <string name="setting_theme_sec_color">次要顏色</string>
+    <string name="setting_theme_default_profile_bg">預設背景</string>
+    <string name="setting_theme_default_color">預設顏色</string>
+    <string name="setting_theme_apply">應用</string>
+
+    <string name="setting_language_title">語言</string>
+    <string name="setting_language_hint">選擇語言</string>
+
+    <string name="toast_save_profile_banner_fail">個人橫幅背景存檔失敗...</string>
+    <string name="toast_crop_profile_banner_fail">個人橫幅裁切失敗...</string>
+
 
 
 </resources>

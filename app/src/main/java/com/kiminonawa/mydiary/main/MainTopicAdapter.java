@@ -53,7 +53,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getRootView().setBackgroundResource(ThemeManager.getInstance().getTopicItemSelectResource());
+        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(mContext));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getTitleView().setText(topicList.get(position).getTitle());
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));

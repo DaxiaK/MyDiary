@@ -10,7 +10,7 @@
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>
     <string name="toast_change_theme">Theme is changing...</string>
-    <string name="dialog_your_name_is">Your name is</string>
+    <string name="your_name_is">Your name is</string>
 
     <!--Topic type-->
     <string name="topic_create_name">Topic name:</string>
@@ -77,6 +77,24 @@
     <string name="contacts_detail_edt_phone_number">Phone</string>
 
     <string name="toast_contacts_empty">Contacts is empty!</string>
+
+    <!--About-->
+    <string name="about_title">About</string>
+
+    <!--Setting-->
+    <string name="setting_theme_title">Theme</string>
+    <string name="setting_theme_hint">Choose your theme</string>
+    <string name="setting_theme_main_color">Main color</string>
+    <string name="setting_theme_sec_color">Sec. color</string>
+    <string name="setting_theme_default_profile_bg">default\n background</string>
+    <string name="setting_theme_default_color">default color</string>
+    <string name="setting_theme_apply">apply</string>
+
+    <string name="setting_language_title">Language</string>
+    <string name="setting_language_hint">Choose your language</string>
+
+    <string name="toast_save_profile_banner_fail">To save banner of profile fail...</string>
+    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail...</string>
 
 
 </resources>

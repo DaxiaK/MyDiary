@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:state_pressed="true" android:drawable="@color/themeColor_taki" />
-    <item android:state_focused="true" android:drawable="@color/themeColor_taki" />
-
-    <item android:drawable="@android:color/white" />
-
-</selector>

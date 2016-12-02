@@ -69,7 +69,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);
         RL_entries_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_content);
-        RL_entries_content.setBackgroundResource(ThemeManager.getInstance().getEntriesBgResource());
+        RL_entries_content.setBackground(ThemeManager.getInstance().getEntriesBgDrawable(getActivity()));
 
         RL_entries_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_entries_edit_bar);
         RL_entries_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));

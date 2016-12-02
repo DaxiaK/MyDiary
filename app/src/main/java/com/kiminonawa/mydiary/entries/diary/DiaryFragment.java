@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.entries.diary;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -531,7 +533,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
+                    //set Focus
                     diaryText.getView().requestFocus();
+                    //Show keyboard automatically
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(diaryText.getView(), InputMethodManager.SHOW_IMPLICIT);
                 }
                 break;
             case R.id.IV_diary_photo_delete:
