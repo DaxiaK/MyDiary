@@ -12,7 +12,7 @@
     <!--Profile-->
     <string name="profile_username_taki">立花 瀧</string>
     <string name="profile_username_mitsuha">宮水 三葉</string>
-    <string name="toast_change_theme">風格切換中...</string>
+    <string name="toast_change_theme">風格切換中&#8230;</string>
     <string name="your_name_is">你的名字是</string>
 
 
@@ -29,8 +29,8 @@
     <string name="dialog_button_cancel">取消</string>
     <string name="dialog_button_delete">刪除</string>
 
-    <string name="process_dialog_loading">載入中...</string>
-    <string name="process_dialog_saving">存檔中...</string>
+    <string name="process_dialog_loading">載入中&#8230;</string>
+    <string name="process_dialog_saving">存檔中&#8230;</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
@@ -63,9 +63,12 @@
     <string name="toast_max_photo">最多只能加入%1$d張照片</string>
     <string name="toast_space_insufficient">剩餘空間不足</string>
     <string name="toast_diary_update_successful">日記更新成功</string>
-    <string name="toast_diary_update_fail">日記更新出錯了...</string>
+    <string name="toast_diary_update_fail">日記更新出錯了&#8230;</string>
     <string name="toast_diary_insert_successful">日記新增成功</string>
-    <string name="toast_diary_insert_fail">日記新增異常...</string>
+    <string name="toast_diary_insert_fail">日記新增異常&#8230;</string>
+
+    <!--Diary Viewer edit-->
+    <string name="toast_diary_copy_to_edit_fail">讀取圖片資料異常&#8230;</string>
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>
@@ -92,12 +95,13 @@
     <string name="setting_theme_default_profile_bg">預設背景</string>
     <string name="setting_theme_default_color">預設顏色</string>
     <string name="setting_theme_apply">應用</string>
+    <string name="setting_theme_profile_bg">個人檔案背景</string>
 
     <string name="setting_language_title">語言</string>
     <string name="setting_language_hint">選擇語言</string>
 
-    <string name="toast_save_profile_banner_fail">個人橫幅背景存檔失敗...</string>
-    <string name="toast_crop_profile_banner_fail">個人橫幅裁切失敗...</string>
+    <string name="toast_save_profile_banner_fail">個人橫幅背景存檔失敗&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">個人橫幅裁切失敗&#8230;</string>
 
 
 

@@ -89,7 +89,7 @@ public class BitmapHelper {
         final int width = options.outWidth;
 
         int inSampleSize = 1;
-        if (height > reqHeight || width > reqWidth) {
+        if ((height > reqHeight || width > reqWidth) && options.outHeight > 0 && options.outWidth > 0) {
 
             // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
             while ((options.outHeight / inSampleSize) > reqHeight

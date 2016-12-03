@@ -12,7 +12,7 @@
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>
-    <string name="toast_change_theme">Theme is changing...</string>
+    <string name="toast_change_theme">Theme is changing&#8230;</string>
     <string name="your_name_is">Your name is</string>
 
     <!--Topic type-->
@@ -28,8 +28,8 @@
     <string name="dialog_button_cancel">cancel</string>
     <string name="dialog_button_delete">delete</string>
 
-    <string name="process_dialog_loading">Loading...</string>
-    <string name="process_dialog_saving">Saving...</string>
+    <string name="process_dialog_loading">Loading&#8230;</string>
+    <string name="process_dialog_saving">Saving&#8230;</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">Entries</string>
@@ -65,7 +65,10 @@
     <string name="toast_diary_update_successful">Updating diary is successful</string>
     <string name="toast_diary_update_fail">Updating diary fail</string>
     <string name="toast_diary_insert_successful">Diary was inserted successfully</string>
-    <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully...</string>
+    <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully&#8230;</string>
+
+    <!--Diary Viewer edit-->
+    <string name="toast_diary_copy_to_edit_fail">Reading photo data fail&#8230;</string>
 
     <!--Memo-->
     <string name="memo_item_add">Add</string>
@@ -92,12 +95,13 @@
     <string name="setting_theme_default_profile_bg">default\n background</string>
     <string name="setting_theme_default_color">default color</string>
     <string name="setting_theme_apply">apply</string>
+    <string name="setting_theme_profile_bg">Profile Background</string>
 
     <string name="setting_language_title">Language</string>
     <string name="setting_language_hint">Choose your language</string>
 
-    <string name="toast_save_profile_banner_fail">To save banner of profile fail...</string>
-    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail...</string>
+    <string name="toast_save_profile_banner_fail">To save banner of profile fail&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail&#8230;</string>
 
 
 </resources>

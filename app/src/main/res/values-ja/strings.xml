@@ -3,7 +3,7 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.1.8.161128_01_d**\n-日記時間を変更できるようにする\n-画像のメモリの問題を修正する\n-バグ修正とレイアウト変更</string>
+    <string name="release_note">**0.1.8.161128_01_d**\n-日記時間を変更できるようにする\n-写真のメモリの問題を修正する\n-バグ修正とレイアウト変更</string>
     <string name="release_note_close_remind">又提示しない</string>
 
     <!--init-->
@@ -12,7 +12,7 @@
     <!--Profile-->
     <string name="profile_username_taki">立花　瀧</string>
     <string name="profile_username_mitsuha">宮水　三葉</string>
-    <string name="toast_change_theme">テーマを切り替えている...</string>
+    <string name="toast_change_theme">テーマを切り替えている&#8230;</string>
     <string name="your_name_is">君の名は</string>
 
     <!--Topic type-->
@@ -28,8 +28,8 @@
     <string name="dialog_button_cancel">キャンセル</string>
     <string name="dialog_button_delete">削除</string>
 
-    <string name="process_dialog_loading">読み込んでいます...</string>
-    <string name="process_dialog_saving">保存中...</string>
+    <string name="process_dialog_loading">読み込んでいます&#8230;</string>
+    <string name="process_dialog_saving">保存中&#8230;</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
@@ -47,7 +47,7 @@
     <string name="diary_no_location">位置情報が取得できない</string>
     <string name="diary_location_permission_title">許可</string>
     <string name="diary_location_permission_content">位置情報の許可が必要です</string>
-    <string name="diary_photo_permission_content">画像を追加するの許可が必要です</string>
+    <string name="diary_photo_permission_content">写真を追加するの許可が必要です</string>
 
     <string name="diary_title_hint">日記のタイトル</string>
     <string name="diary_content_hint">ここに日記の内容を書きます</string>
@@ -56,15 +56,18 @@
 
     <string name="toast_diary_empty">日記の内容はありません</string>
     <string name="toast_refashioning">位置情報が取得します</string>
-    <string name="toast_not_image">ファイルは画像ではありません。</string>
-    <string name="toast_photo_path_error">画像のパスに問題があります</string>
-    <string name="toast_photo_intent_error">装置の画像リソースを取得するために失敗します</string>
-    <string name="toast_max_photo">選択した画像の最大値は%1$dです</string>
+    <string name="toast_not_image">ファイルは写真ではありません。</string>
+    <string name="toast_photo_path_error">写真のパスに問題があります</string>
+    <string name="toast_photo_intent_error">装置の写真リソースを取得するために失敗します</string>
+    <string name="toast_max_photo">選択した写真の最大値は%1$dです</string>
     <string name="toast_space_insufficient">空き容量不足</string>
     <string name="toast_diary_update_successful">日記の更新が成功しました</string>
     <string name="toast_diary_update_fail">日記の更新に失敗する</string>
     <string name="toast_diary_insert_successful">日記が正常に追加されました</string>
-    <string name="toast_diary_insert_fail">日記がうまく追加されなかった...</string>
+    <string name="toast_diary_insert_fail">日記がうまく追加されなかった&#8230;</string>
+
+    <!--Diary Viewer edit-->
+    <string name="toast_diary_copy_to_edit_fail">読書写真データは失敗します&#8230;</string>
 
     <!--Memo-->
     <string name="memo_item_add">項目を追加します</string>
@@ -91,6 +94,8 @@
     <string name="setting_theme_default_profile_bg">デフォルト\nの背景</string>
     <string name="setting_theme_default_color">デフォルト色</string>
     <string name="setting_theme_apply">アプライ</string>
+    <string name="setting_theme_profile_bg">プロフィールの背景</string>
+
 
     <string name="setting_language_title">言語</string>
     <string name="setting_language_hint">言語を選択</string>

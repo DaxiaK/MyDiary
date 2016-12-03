@@ -97,7 +97,7 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
                 break;
             case MITSUHA:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
                 break;
             //TODO make default bg for custom
             default:
@@ -153,7 +153,7 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
                 break;
             case MITSUHA:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
+                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
                 break;
             //TODO make default bg for custom
             default:
