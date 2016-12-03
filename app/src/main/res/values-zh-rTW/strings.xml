@@ -6,6 +6,9 @@
     <string name="release_note">**0.1.8.161128_01_d**\n-支援修改日期\n-修復圖片的記憶體問題\n-修復bug與調整畫面</string>
     <string name="release_note_close_remind">不再提醒</string>
 
+    <!--init-->
+    <string name="init_message">正在設定資料，請勿關閉MyDiary以免資料遺失</string>
+
     <!--Profile-->
     <string name="profile_username_taki">立花 瀧</string>
     <string name="profile_username_mitsuha">宮水 三葉</string>

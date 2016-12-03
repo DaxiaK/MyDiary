@@ -102,14 +102,14 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
     private long diaryId;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager fileManager;
+    private FileManager diaryFileManager;
 
     /**
      * Edit Mode
      */
     private CopyDiaryToEditCacheTask mTask;
     private Handler delayHandler;
-    private boolean initHandlerOrTaskIsRunnung = false;
+    private boolean initHandlerOrTaskIsRunning = false;
 
     private Calendar calendar;
     private TimeTools timeTools;
@@ -205,10 +205,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         diaryId = getArguments().getLong("diaryId", -1L);
         if (diaryId != -1) {
             if (isEditMode) {
-                fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
-                fileManager.clearDiaryDir();
+                diaryFileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
+                diaryFileManager.clearDiaryDir();
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
-                mTask = new CopyDiaryToEditCacheTask(getActivity(), fileManager, this);
+                mTask = new CopyDiaryToEditCacheTask(getActivity(), diaryFileManager, this);
                 //Make ths ProgressBar show 1s+.
                 delayHandler = new Handler();
                 delayHandler.postDelayed(new Runnable() {
@@ -218,9 +218,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                         mTask.execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
                     }
                 }, 1000);
-                initHandlerOrTaskIsRunnung = true;
+                initHandlerOrTaskIsRunning = true;
             } else {
-                fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
+                diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 initData();
             }
         }
@@ -269,8 +269,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     @Override
     public void onStop() {
-        super.onPause();
-        if (initHandlerOrTaskIsRunnung) {
+        super.onStop();
+        if (initHandlerOrTaskIsRunning) {
             if (delayHandler != null) {
                 delayHandler.removeCallbacksAndMessages(null);
             }
@@ -368,7 +368,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String content = "";
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = fileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
+                content = diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
@@ -412,7 +412,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
             Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
             if (resizeBmp != null) {
                 DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
@@ -479,7 +479,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                diaryItemHelper, fileManager, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
+                diaryItemHelper, diaryFileManager, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
 
     }
 
@@ -503,7 +503,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
-                    fileManager, this).execute();
+                    diaryFileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
@@ -515,7 +515,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
-                fileManager, this).execute();
+                diaryFileManager, this).execute();
     }
 
     @Override
@@ -570,7 +570,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         } else {
             dismissAllowingStateLoss();
         }
-        initHandlerOrTaskIsRunnung = false;
+        initHandlerOrTaskIsRunning = false;
     }
 
     @Override
@@ -609,7 +609,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 dismiss();
                 break;
             case R.id.IV_diary_delete:
-                DiaryDeleteDialogFragment diaryDeleteDialogFragment = DiaryDeleteDialogFragment.newInstance(diaryId);
+                DiaryDeleteDialogFragment diaryDeleteDialogFragment =
+                        DiaryDeleteDialogFragment.newInstance(((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 diaryDeleteDialogFragment.setCallBack(this);
                 diaryDeleteDialogFragment.show(getFragmentManager(), "diaryDeleteDialogFragment");
                 break;

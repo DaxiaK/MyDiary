@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
@@ -20,6 +21,8 @@ import java.util.Locale;
 
 public class InitActivity extends Activity implements InitTask.InitCallBack {
 
+    private TextView TV_init_message;
+
     private int initTime = 3000; // 3S
     private Handler initHandler;
 
@@ -31,9 +34,12 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         ThemeManager themeManager = ThemeManager.getInstance();
         themeManager.setCurrentTheme(SPFManager.getTheme(InitActivity.this));
         initHandler = new Handler();
+        //init UI
+        TV_init_message = (TextView) findViewById(R.id.TV_init_message);
+
         //Init Object
         int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                //diary activity top bar + diary info + diary botton bar + padding
+                //diary activity top bar + diary info + diary button bar + padding
                 ScreenHelper.dpToPixel(getResources(), 80 + 120 + 40 + (2 * 5));
         int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
                 ScreenHelper.dpToPixel(getResources(), 2 * 5);
@@ -46,7 +52,7 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         super.onResume();
         //This apk is first install or was updated
         if (SPFManager.getVersionCode(InitActivity.this) < BuildConfig.VERSION_CODE) {
-            Toast.makeText(InitActivity.this, "正在更新資料，請勿關閉MyDiary以免資料遺失", Toast.LENGTH_LONG).show();
+            TV_init_message.setVisibility(View.VISIBLE);
         }
         initHandler.postDelayed(new Runnable() {
             @Override

@@ -2,7 +2,6 @@ package com.kiminonawa.mydiary.init;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
@@ -132,9 +131,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     private void Version17MoveTheDiaryIntoNewDir() throws Exception {
         FileManager rootFileManager = new FileManager(mContext, FileManager.ROOT_DIR);
         File[] dataFiles = rootFileManager.getDiaryDir().listFiles();
-//        File newDiaryDir = new File(new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath() + "/");
         for (int i = 0; i < dataFiles.length; i++) {
-            Log.e("test", "Name = " + dataFiles[i].getName() + " ,is Number =" + FileManager.isNumeric(dataFiles[i].getName()));
             if (FileManager.isNumeric(dataFiles[i].getName())) {
                 FileUtils.moveDirectoryToDirectory(dataFiles[i], new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDir(), true);
             }

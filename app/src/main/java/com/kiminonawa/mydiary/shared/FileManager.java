@@ -90,7 +90,7 @@ public class FileManager {
      */
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
-        this.photoFileDir = mContext.getExternalFilesDir(topicId + "/" + diaryId + "/");
+        this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
     }
 
 

@@ -6,7 +6,12 @@ import android.view.View;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.gui.CommonDialogFragment;
+
+import java.io.IOException;
+
+import static org.apache.commons.io.FileUtils.deleteDirectory;
 
 /**
  * Created by daxia on 2016/11/14.
@@ -24,21 +29,31 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
     }
 
     private long diaryId;
+    private long topicId;
 
-    public static DiaryDeleteDialogFragment newInstance(long diaryId) {
+    public static DiaryDeleteDialogFragment newInstance(long topicId, long diaryId) {
         Bundle args = new Bundle();
         DiaryDeleteDialogFragment fragment = new DiaryDeleteDialogFragment();
+        args.putLong("topicId", topicId);
         args.putLong("diaryId", diaryId);
         fragment.setArguments(args);
         return fragment;
     }
 
-    //TODO Add delete folder also
     private void deleteDiary() {
+        //Delete the db
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
         dbManager.delDiary(diaryId);
         dbManager.closeDB();
+        //Delete photo data
+        try {
+            deleteDirectory(new FileManager(getActivity(), topicId, diaryId).getDiaryDir());
+        } catch (IOException e) {
+            //just do nothing
+            e.printStackTrace();
+        }
+
     }
 
     public void setCallBack(DeleteCallback callback) {
@@ -49,6 +64,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         super.onViewCreated(view, savedInstanceState);
+        topicId = getArguments().getLong("topicId", -1L);
         diaryId = getArguments().getLong("diaryId", -1L);
         this.TV_common_content.setText(getString(R.string.entries_edit_dialog_delete_content));
     }

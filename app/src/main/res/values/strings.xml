@@ -6,6 +6,9 @@
     <string name="release_note">**0.1.8.161128_01_d**\n-To allow changing the diary time\n-fix memory issues for photo\n-fix bug and modify layout</string>
     <string name="release_note_close_remind">Don\'t remind</string>
 
+    <!--init-->
+    <string name="init_message">For data updated successfully ,please don\'t close MyDairy</string>
+
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>

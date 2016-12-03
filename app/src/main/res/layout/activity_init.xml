@@ -5,11 +5,23 @@
     android:background="@color/themeColor_taki">
 
     <ImageView
-        android:src="@drawable/iv_init_logo"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView" />
+        android:layout_centerVertical="true"
+        android:src="@drawable/iv_init_logo" />
+
+    <TextView
+        android:id="@+id/TV_init_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="@string/init_message"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
 
 </RelativeLayout>
