@@ -37,8 +37,9 @@ public class FileManager {
 
     public final static int ROOT_DIR = 0;
     public final static int TEMP_DIR = 1;
-    public final static int DIARY_EDIT_CACHE_DIR = 2;
-    public final static int SETTING_DIR = 3;
+    public final static int DIARY_ROOT_DIR = 2;
+    public final static int DIARY_EDIT_CACHE_DIR = 3;
+    public final static int SETTING_DIR = 4;
 
     /**
      * The path is :
@@ -47,14 +48,14 @@ public class FileManager {
      * 2.diary edit temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
-     * //TODO replace file into /diary/typeId/diaryId/ for cloud backup
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/typeId/diaryId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/typeId/diaryId/
      * 4.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      */
     private File photoFileDir;
     private Context mContext;
-    private final static String TEMP_DIARY_DIR_STR = "temp/";
+    private final static String TEMP_DIR_STR = "temp/";
+    private final static String DIARY_ROOT_DIR_STR = "diary/";
     private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
     private final static String SETTING_DIR_STR = "setting/";
 
@@ -70,7 +71,10 @@ public class FileManager {
                 this.photoFileDir = mContext.getExternalFilesDir("");
                 break;
             case TEMP_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIARY_DIR_STR);
+                this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIR_STR);
+                break;
+            case DIARY_ROOT_DIR:
+                this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR);
                 break;
             case DIARY_EDIT_CACHE_DIR:
                 this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
@@ -92,6 +96,10 @@ public class FileManager {
 
     public File getDiaryDir() {
         return photoFileDir;
+    }
+
+    public String getDiaryDirAbsolutePath() {
+        return photoFileDir.getAbsolutePath();
     }
 
     public void clearDiaryDir() {
@@ -181,6 +189,11 @@ public class FileManager {
         }
         in.close();
         out.close();
+    }
+
+
+    public static boolean isNumeric(String str) {
+        return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
     }
 
 

@@ -33,7 +33,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
         return fragment;
     }
 
-
+    //TODO Add delete folder also
     private void deleteDiary() {
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();

@@ -181,12 +181,12 @@ public class SPFManager {
         return settings.getInt(SYSTEM_VERSIONCODE, DEFAULT_VERSIONCODE);
     }
 
-    public static boolean getDescriptionClose(Context context) {
+    public static boolean getReleaseNoteClose(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         return settings.getBoolean(DESCRIPTION_CLOSE, false);
     }
 
-    public static void setDescriptionClose(Context context, boolean close) {
+    public static void setReleaseNoteClose(Context context, boolean close) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putBoolean(DESCRIPTION_CLOSE, close);
