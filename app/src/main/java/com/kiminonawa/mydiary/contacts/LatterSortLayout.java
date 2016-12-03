@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.contacts;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -9,6 +8,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.ColorTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,8 @@ public class LatterSortLayout extends LinearLayout {
         sortTextView.setClickable(true);
         sortTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         sortTextView.setText(character);
-        sortTextView.setTextColor(Color.WHITE);
+        sortTextView.setTextColor(ColorTools.getColor(getContext(), R.color.contacts_latter_text));
+        sortTextView.setShadowLayer(1, 1, 1, R.color.contacts_latter_text_shadow);
         return sortTextView;
     }
 

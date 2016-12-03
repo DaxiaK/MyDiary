@@ -99,7 +99,6 @@ public class ThemeManager {
             case MITSUHA:
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
                 break;
-            //TODO make default bg for custom
             default:
                 bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
                 break;
@@ -155,7 +154,6 @@ public class ThemeManager {
             case MITSUHA:
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
                 break;
-            //TODO make default bg for custom
             default:
                 bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
                 break;
