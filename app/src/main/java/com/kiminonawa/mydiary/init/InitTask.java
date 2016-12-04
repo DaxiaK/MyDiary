@@ -136,5 +136,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
                 FileUtils.moveDirectoryToDirectory(dataFiles[i], new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDir(), true);
             }
         }
+        //Remove the diary/temp/
+        FileUtils.deleteDirectory(new File(new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath() + "/temp"));
     }
 }

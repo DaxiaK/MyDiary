@@ -93,6 +93,14 @@ public class FileManager {
         this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
     }
 
+    /**
+     * Create topic dir file manager for delete
+     */
+    public FileManager(Context context, long topicId) {
+        this.mContext = context;
+        this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/");
+    }
+
 
     public File getDiaryDir() {
         return photoFileDir;

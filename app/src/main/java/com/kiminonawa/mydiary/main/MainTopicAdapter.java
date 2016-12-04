@@ -18,8 +18,12 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -107,7 +111,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                                 break;
                             case ITopic.TYPE_DIARY:
                                 //Because FOREIGN key is not work in this version,
-                                //so delete diaryitem first , then delete diary
+                                //so delete diary item first , then delete diary
                                 Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
                                 for (int i = 0; i < diaryCursor.getCount(); i++) {
                                     dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
@@ -115,6 +119,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                                 }
                                 diaryCursor.close();
                                 dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                                //delete photo dir
+                                try {
+                                    FileUtils.deleteDirectory(new FileManager(mContext, topicList.get(position).getId()).getDiaryDir());
+                                } catch (IOException e) {
+                                    //Do nothing if delete fail
+                                    e.printStackTrace();
+                                }
                                 break;
                             case ITopic.TYPE_MEMO:
                                 dbManager.delAllMemoInTopic(topicList.get(position).getId());

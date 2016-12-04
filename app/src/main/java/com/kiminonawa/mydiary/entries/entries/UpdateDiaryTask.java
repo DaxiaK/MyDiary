@@ -11,6 +11,8 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.FileManager;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 
 /**
@@ -88,6 +90,10 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
                 //Save new data item
                 dbManager.insertDiaryContent(diaryItemHelper.get(i).getType(), i
                         , diaryItemHelper.get(i).getContent(), diaryId);
+            }
+            //Delete all dir if it is no file.
+            if (diaryFileManager.getDiaryDir().listFiles().length == 0) {
+                FileUtils.deleteDirectory(diaryFileManager.getDiaryDir());
             }
         } catch (Exception e) {
             updateResult = RESULT_UPDATE_ERROR;
