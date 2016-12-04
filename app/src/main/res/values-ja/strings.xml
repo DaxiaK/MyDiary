@@ -3,7 +3,7 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.1.8.161128_01_d**\n-日記時間を変更できるようにする\n-写真のメモリの問題を修正する\n-バグ修正とレイアウト変更</string>
+    <string name="release_note">**0.1.9.161204_01_d**\n-Add setting page and allow change theme color(Modify background will be released in next version)\n-Avoid crash in some HTC devices ,I will fix it after I get device\n-Fix bug and modify layout</string>
     <string name="release_note_close_remind">又提示しない</string>
 
     <!--init-->

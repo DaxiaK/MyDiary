@@ -3,7 +3,7 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.1.8.161128_01_d**\n-To allow changing the diary time\n-fix memory issues for photo\n-fix bug and modify layout</string>
+    <string name="release_note">**0.1.9.161204_01_d**\n-Add setting page and allow change theme color(Modify background will be released in next version)\n-Avoid crash in some HTC devices ,I will fix it after I get device\n-Fix bug and modify layout</string>
     <string name="release_note_close_remind">Don\'t remind</string>
 
     <!--init-->

@@ -72,7 +72,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_setting);
 
         themeManager = ThemeManager.getInstance();
-        tempMainColorCode = themeManager.getThemeMainColor(this);
         //Create fileManager for get temp folder
         tempFileManager = new FileManager(this, FileManager.TEMP_DIR);
         tempFileManager.clearDiaryDir();
@@ -177,6 +176,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             But_setting_theme_default.setOnClickListener(null);
             But_setting_theme_default.setEnabled(false);
         }
+        //Save the temp Main Color Code
+        tempMainColorCode = themeManager.getThemeMainColor(this);
         IV_setting_profile_bg.setImageDrawable(themeManager.getProfileBgDrawable(this));
         setThemeColor();
     }
