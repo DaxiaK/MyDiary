@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.main;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -61,6 +62,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     private boolean isEditMode;
     private int position;
     private String title;
+    private long topicId;
     private int topicType;
     private int topicColorCode;
     private boolean addNewBg = false;
@@ -74,18 +76,20 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
      */
     private LinearLayout LL_topic_dialog_content;
     private EditText EDT_topic_create_title;
-    private ImageView IV_topic_color;
-    private MyDiaryButton But_topic_detail_change_bg, But_topic_detail_default_bg;
+    private ImageView IV_topic_color, IV_topic_detail_topic_bg;
+    private MyDiaryButton But_topic_detail_default_bg;
     private Spinner SP_topic_create_type;
     private MyDiaryButton But_topic_create_ok, But_topic_create_cancel, But_topic_create_delete;
 
 
-    public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, String title, int topicType, int topicColorCode) {
+    public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, long topicId,
+                                                        String title, int topicType, int topicColorCode) {
         Bundle args = new Bundle();
         TopicDetailDialogFragment fragment = new TopicDetailDialogFragment();
         args.putBoolean("isEditMode", isEditMode);
         args.putInt("position", position);
         args.putString("title", title);
+        args.putLong("topicId", topicId);
         args.putInt("topicType", topicType);
         args.putInt("topicColorCode", topicColorCode);
         fragment.setArguments(args);
@@ -100,6 +104,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         isEditMode = getArguments().getBoolean("isEditMode", false);
         position = getArguments().getInt("position", -1);
         title = getArguments().getString("title", "");
+        topicId = getArguments().getLong("topicId", -1);
         topicType = getArguments().getInt("topicType", -1);
         topicColorCode = getArguments().getInt("topicColorCode", Color.BLACK);
         return dialog;
@@ -110,7 +115,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         //This position is wrong.
-        if (isEditMode && (position == -1 || topicType == -1)) {
+        if (isEditMode && (position == -1 || topicId == -1 || topicType == -1)) {
             dismiss();
         }
 
@@ -122,7 +127,9 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         EDT_topic_create_title = (EditText) rootView.findViewById(R.id.EDT_topic_create_title);
         IV_topic_color = (ImageView) rootView.findViewById(R.id.IV_topic_color);
         IV_topic_color.setOnClickListener(this);
-        But_topic_detail_change_bg = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_change_bg);
+
+        IV_topic_detail_topic_bg = (ImageView) rootView.findViewById(R.id.IV_topic_detail_topic_bg);
+
         But_topic_detail_default_bg = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_default_bg);
         SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
 
@@ -131,10 +138,11 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         But_topic_create_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_cancel);
         But_topic_create_cancel.setOnClickListener(this);
         if (isEditMode) {
+            //TODO Fix drawable show a little part.
+            IV_topic_detail_topic_bg.setImageDrawable(ThemeManager.getInstance().getTopicBgDrawable(getActivity(), topicId, topicType));
+            IV_topic_detail_topic_bg.setOnClickListener(this);
 
-            But_topic_detail_change_bg.setVisibility(View.VISIBLE);
             But_topic_detail_default_bg.setVisibility(View.VISIBLE);
-            But_topic_detail_change_bg.setOnClickListener(this);
             But_topic_detail_default_bg.setOnClickListener(this);
 
             EDT_topic_create_title.setText(title);
@@ -192,6 +200,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     final Uri resultUri = UCrop.getOutput(data);
+                    IV_topic_detail_topic_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
                     newTopicBgFileName = FileManager.getFileNameByUri(getActivity(), resultUri);
                     addNewBg = true;
                 } else {
@@ -250,7 +259,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                 secColorPickerFragment.show(getFragmentManager(), "topicTextColorPickerFragment");
                 break;
 
-            case R.id.But_topic_detail_change_bg:
+            case R.id.IV_topic_detail_topic_bg:
                 if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
                     FileManager.startBrowseImageFile(this, SELECT_TOPIC_BG);
                 }

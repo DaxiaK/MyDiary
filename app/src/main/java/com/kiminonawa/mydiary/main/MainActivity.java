@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged();
         if (addNewBg) {
-            File outputFile = themeManager.getTopicBgSaveFile(
+            File outputFile = themeManager.getTopicBgSavePathFile(
                     this, topicList.get(position).getId(), topicList.get(position).getType());
             //Copy file into topic dir
             try {
