@@ -50,8 +50,12 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
+        holder.getIconView().setColorFilter(topicList.get(position).getColor());
         holder.getTitleView().setText(topicList.get(position).getTitle());
+        holder.getTitleView().setTextColor(topicList.get(position).getColor());
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
+        holder.getTVCount().setTextColor(topicList.get(position).getColor());
+        holder.getArrow().setColorFilter(topicList.get(position).getColor());
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +85,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             @Override
             public boolean onLongClick(View v) {
                 CreateTopicDialogFragment createTopicDialogFragment =
-                        CreateTopicDialogFragment.newInstance(true, position, topicList.get(position).getTextColor());
+                        CreateTopicDialogFragment.newInstance(true, position,
+                                topicList.get(position).getTitle(), topicList.get(position).getColor());
                 createTopicDialogFragment.setCallBack(activity);
                 createTopicDialogFragment.show(activity.getSupportFragmentManager(),
                         "createTopicDialogFragment");
@@ -96,6 +101,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
+        private ImageView IV_topic_arrow_right;
         private View rootView;
 
         protected TopicViewHolder(View view) {
@@ -104,6 +110,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
+            this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
         }
 
         protected ImageView getIconView() {
@@ -114,8 +121,12 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return TV_topic_title;
         }
 
-        public TextView getTVCount() {
+        protected TextView getTVCount() {
             return TV_topic_count;
+        }
+
+        protected ImageView getArrow() {
+            return IV_topic_arrow_right;
         }
 
         protected View getRootView() {

@@ -64,11 +64,22 @@ public class DBManager {
      * Topic
      */
 
-    public long insertTopic(String name, int type, int textColor) {
+    public long insertTopic(String name, int type, int color) {
         return db.insert(
                 TopicEntry.TABLE_NAME,
                 null,
-                this.createTopicCV(name, type, textColor));
+                this.createTopicCV(name, type, color));
+    }
+
+    public long updateTopic(long topicId, String name, int color) {
+        ContentValues values = new ContentValues();
+        values.put(TopicEntry.COLUMN_NAME, name);
+        values.put(TopicEntry.COLUMN_COLOR, color);
+        return db.update(
+                TopicEntry.TABLE_NAME,
+                values,
+                TopicEntry._ID + " = ?",
+                new String[]{String.valueOf(topicId)});
     }
 
     public Cursor selectTopic() {
@@ -130,11 +141,11 @@ public class DBManager {
                 , new String[]{String.valueOf(topicId)});
     }
 
-    private ContentValues createTopicCV(String name, int type, int textColor) {
+    private ContentValues createTopicCV(String name, int type, int color) {
         ContentValues values = new ContentValues();
         values.put(TopicEntry.COLUMN_NAME, name);
         values.put(TopicEntry.COLUMN_TYPE, type);
-        values.put(TopicEntry.COLUMN_TEXT_COLOR, textColor);
+        values.put(TopicEntry.COLUMN_COLOR, color);
         return values;
     }
 

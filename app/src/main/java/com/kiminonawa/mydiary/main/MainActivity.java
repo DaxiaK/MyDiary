@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.opeDB();
         Cursor topicCursor = dbManager.selectTopic();
         for (int i = 0; i < topicCursor.getCount(); i++) {
-            Log.e("test", "no value is " + topicCursor.getInt(5));
             switch (topicCursor.getInt(2)) {
                 case ITopic.TYPE_CONTACTS:
                     topicList.add(
@@ -232,8 +231,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void TopicUpdated() {
-
+    public void TopicUpdated(int position, String name, int color) {
+        DBManager dbManager = new DBManager(this);
+        dbManager.opeDB();
+        dbManager.updateTopic(topicList.get(position).getId(), name, color);
+        dbManager.closeDB();
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged();
     }
 
     @Override

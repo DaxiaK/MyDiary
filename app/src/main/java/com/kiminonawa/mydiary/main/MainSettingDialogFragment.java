@@ -60,7 +60,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
         switch (v.getId()) {
             case R.id.IV_main_setting_add_topic:
                 CreateTopicDialogFragment createTopicDialogFragment =
-                        CreateTopicDialogFragment.newInstance(false, -1, Color.BLACK);
+                        CreateTopicDialogFragment.newInstance(false, -1, "", Color.BLACK);
                 createTopicDialogFragment.setCallBack((MainActivity) getActivity());
                 createTopicDialogFragment.show(getFragmentManager(), "createTopicDialogFragment");
                 dismiss();

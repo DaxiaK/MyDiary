@@ -32,6 +32,6 @@ public interface ITopic {
 
     int getCount();
 
-    int getTextColor();
+    int getColor();
 
 }

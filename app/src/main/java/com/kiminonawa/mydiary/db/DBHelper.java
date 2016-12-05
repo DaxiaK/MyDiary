@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Version 5 by Daxia
-     * Add theme message in topic
+     * Add color message in topic
      * (Topic bg name is fixed in its dir)
      * --------------
      * Version 4 by Daxia:
@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -58,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     TopicEntry.COLUMN_TYPE + INTEGER_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE + COMMA_SEP +
-                    TopicEntry.COLUMN_TEXT_COLOR + INTEGER_TYPE +
+                    TopicEntry.COLUMN_COLOR + INTEGER_TYPE +
                     " )";
 
     /**
@@ -167,7 +167,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
                 if (oldVersion < 5) {
                     //Add textcolor COLUMN
-                    String addTopicTextColorSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_TEXT_COLOR + " " + INTEGER_TYPE;
+                    String addTopicTextColorSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_COLOR + " " + INTEGER_TYPE;
                     db.execSQL(addTopicTextColorSql);
                     //set textcolor default black color
                     version5AddTextColor(db);
@@ -189,7 +189,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void version5AddTextColor(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
-        values.put(TopicEntry.COLUMN_TEXT_COLOR, Color.BLACK);
+        values.put(TopicEntry.COLUMN_COLOR, Color.BLACK);
         db.update(TopicEntry.TABLE_NAME, values, null, null);
     }
 
