@@ -1,8 +1,6 @@
 package com.kiminonawa.mydiary.contacts;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -96,9 +94,6 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
         EDT_contacts_detail_name = (EditText) rootView.findViewById(R.id.EDT_contacts_detail_name);
         EDT_contacts_detail_phone_number = (EditText) rootView.findViewById(R.id.EDT_contacts_detail_phone_number);
 
-        //Set tint
-        EDT_contacts_detail_name.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        EDT_contacts_detail_phone_number.getBackground().mutate().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
 
         But_contacts_detail_delete = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_detail_delete);
         But_contacts_detail_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_contacts_detail_cancel);

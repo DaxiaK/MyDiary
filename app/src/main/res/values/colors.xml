@@ -42,6 +42,10 @@
     <color name="custom_button_disable_bg_color">#E1E2E3</color>
 
 
+    <!--dialog-->
+    <color name="edittext_hint">#d4d2d4</color>
+
+
     <!--Edittext-->
     <color name="edit_stroke">#CACACA</color>
     <color name="edit_content_background">#ffffff</color>
@@ -51,7 +55,6 @@
 
     <!--Contacts-->
     <color name="contacts_photo_tint">#AFABAE</color>
-    <color name="contacts_edittext_hint">#d4d2d4</color>
     <color name="contacts_latter_text">#f9f9f9</color>
     <color name="contacts_latter_text_shadow">#949494</color>
 

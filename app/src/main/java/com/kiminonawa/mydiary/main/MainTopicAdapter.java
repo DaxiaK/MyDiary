@@ -84,8 +84,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                CreateTopicDialogFragment createTopicDialogFragment =
-                        CreateTopicDialogFragment.newInstance(true, position,
+                TopicDetailDialogFragment createTopicDialogFragment =
+                        TopicDetailDialogFragment.newInstance(true, position,
                                 topicList.get(position).getTitle(), topicList.get(position).getColor());
                 createTopicDialogFragment.setCallBack(activity);
                 createTopicDialogFragment.show(activity.getSupportFragmentManager(),

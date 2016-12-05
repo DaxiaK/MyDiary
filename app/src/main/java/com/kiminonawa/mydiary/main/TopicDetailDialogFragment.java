@@ -12,20 +12,22 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.setting.ColorPickerFragment;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 
 
 /**
  * Created by daxia on 2016/8/27.
  */
-public class CreateTopicDialogFragment extends DialogFragment implements View.OnClickListener,
-        ColorPickerFragment.colorPickerCallback {
+public class TopicDetailDialogFragment extends DialogFragment implements View.OnClickListener,
+        ColorPickerFragment.colorPickerCallback, TopicDeleteDialogFragment.DeleteCallback {
 
 
     public interface TopicCreatedCallback {
@@ -51,15 +53,16 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     /**
      * UI
      */
-    private EditText EDT_topic_create_name;
-    private ImageView IV_topic_textcolor;
+    private LinearLayout LL_topic_dialog_content;
+    private EditText EDT_topic_create_title;
+    private ImageView IV_topic_color;
     private MyDiaryButton But_topic_create_ok, But_topic_create_cancel, But_topic_create_delete;
     private Spinner SP_topic_create_type;
 
 
-    public static CreateTopicDialogFragment newInstance(boolean isEditMode, int position, String title, int topicColorCode) {
+    public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, String title, int topicColorCode) {
         Bundle args = new Bundle();
-        CreateTopicDialogFragment fragment = new CreateTopicDialogFragment();
+        TopicDetailDialogFragment fragment = new TopicDetailDialogFragment();
         args.putBoolean("isEditMode", isEditMode);
         args.putInt("position", position);
         args.putString("title", title);
@@ -89,10 +92,14 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
             dismiss();
         }
 
-        View rootView = inflater.inflate(R.layout.dialog_fragment_create_topic, container);
-        EDT_topic_create_name = (EditText) rootView.findViewById(R.id.EDT_topic_create_name);
-        IV_topic_textcolor = (ImageView) rootView.findViewById(R.id.IV_topic_textcolor);
-        IV_topic_textcolor.setOnClickListener(this);
+        View rootView = inflater.inflate(R.layout.dialog_fragment_topic_detail, container);
+        LL_topic_dialog_content = (LinearLayout) rootView.findViewById(R.id.LL_topic_dialog_content);
+        LL_topic_dialog_content.setBackgroundColor(
+                ThemeManager.getInstance().getThemeMainColor(getContext()));
+
+        EDT_topic_create_title = (EditText) rootView.findViewById(R.id.EDT_topic_create_title);
+        IV_topic_color = (ImageView) rootView.findViewById(R.id.IV_topic_color);
+        IV_topic_color.setOnClickListener(this);
         SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
 
         But_topic_create_ok = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_ok);
@@ -100,7 +107,7 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
         But_topic_create_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_cancel);
         But_topic_create_cancel.setOnClickListener(this);
         if (isEditMode) {
-            EDT_topic_create_name.setText(title);
+            EDT_topic_create_title.setText(title);
             SP_topic_create_type.setVisibility(View.GONE);
             But_topic_create_delete = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_delete);
             But_topic_create_delete.setVisibility(View.VISIBLE);
@@ -113,7 +120,7 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     }
 
     private void setTextColor(int colorCode) {
-        IV_topic_textcolor.setImageDrawable(new ColorDrawable(colorCode));
+        IV_topic_color.setImageDrawable(new ColorDrawable(colorCode));
     }
 
     private void initTopicTypeSpinner() {
@@ -130,7 +137,7 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     private void createTopic() {
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.insertTopic(EDT_topic_create_name.getText().toString(),
+        dbManager.insertTopic(EDT_topic_create_title.getText().toString(),
                 SP_topic_create_type.getSelectedItemPosition(), topicColorCode);
         dbManager.closeDB();
     }
@@ -143,28 +150,36 @@ public class CreateTopicDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
+    public void onTopicDelete() {
+        callback.TopicDeleted(position);
+        dismiss();
+    }
+
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.IV_topic_textcolor:
+            case R.id.IV_topic_color:
                 ColorPickerFragment secColorPickerFragment =
                         ColorPickerFragment.newInstance(topicColorCode);
-                secColorPickerFragment.setCallBack(this, R.id.IV_topic_textcolor);
+                secColorPickerFragment.setCallBack(this, R.id.IV_topic_color);
                 secColorPickerFragment.show(getFragmentManager(), "topicTextColorPickerFragment");
                 break;
             case R.id.But_topic_create_delete:
-                callback.TopicDeleted(position);
-                dismiss();
+                TopicDeleteDialogFragment topicDeleteDialogFragment = TopicDeleteDialogFragment.newInstance(title);
+                topicDeleteDialogFragment.setCallBack(this);
+                topicDeleteDialogFragment.show(getFragmentManager(), "topicDeleteDialogFragment");
                 break;
             case R.id.But_topic_create_ok:
                 if (isEditMode) {
-                    if (EDT_topic_create_name.getText().toString().length() > 0) {
-                        callback.TopicUpdated(position, EDT_topic_create_name.getText().toString(), topicColorCode);
+                    if (EDT_topic_create_title.getText().toString().length() > 0) {
+                        callback.TopicUpdated(position, EDT_topic_create_title.getText().toString(), topicColorCode);
                         dismiss();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.toast_topic_empty), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    if (EDT_topic_create_name.getText().toString().length() > 0) {
+                    if (EDT_topic_create_title.getText().toString().length() > 0) {
                         createTopic();
                         callback.TopicCreated();
                         dismiss();

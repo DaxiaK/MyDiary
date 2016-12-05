@@ -46,7 +46,7 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
                 //diary activity top bar
                 ScreenHelper.dpToPixel(getResources(), 80);
-        ThemeManager.setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
+        ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
 
         //Diary photo size
         int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this) -

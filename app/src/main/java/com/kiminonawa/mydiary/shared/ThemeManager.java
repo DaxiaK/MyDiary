@@ -48,21 +48,21 @@ public class ThemeManager {
         return instance;
     }
 
-    public static void setBgSize(int width, int height, int withoutEditBarHeight) {
+    public void setBgSize(int width, int height, int withoutEditBarHeight) {
         topicBgWidth = width;
         topicBgHeight = height;
         topicBgWithoutEditBarHeight = withoutEditBarHeight;
     }
 
-    public static int getTopicBgWidth() {
+    public int getTopicBgWidth() {
         return topicBgWidth;
     }
 
-    public static int getTopicBgHeight() {
+    public int getTopicBgHeight() {
         return topicBgHeight;
     }
 
-    public static int getTopicBgWithoutEditBarHeight() {
+    public int getTopicBgWithoutEditBarHeight() {
         return topicBgWithoutEditBarHeight;
     }
 

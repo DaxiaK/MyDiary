@@ -1,15 +1,12 @@
 package com.kiminonawa.mydiary.main;
 
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        CreateTopicDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
+        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
 
 
     /**
@@ -184,50 +181,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void TopicDeleted(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setTitle(getString(R.string.topic_dialog_delete_title))
-                .setMessage(String.format(getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
-                .setNegativeButton(getString(R.string.dialog_button_cancel), null)
-                .setPositiveButton(getString(R.string.dialog_button_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DBManager dbManager = new DBManager(MainActivity.this);
-                        dbManager.opeDB();
-                        switch (topicList.get(position).getType()) {
-                            case ITopic.TYPE_CONTACTS:
-                                dbManager.delAllContactsInTopic(topicList.get(position).getId());
-                                break;
-                            case ITopic.TYPE_DIARY:
-                                //Because FOREIGN key is not work in this version,
-                                //so delete diary item first , then delete diary
-                                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
-                                for (int i = 0; i < diaryCursor.getCount(); i++) {
-                                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
-                                    diaryCursor.moveToNext();
-                                }
-                                diaryCursor.close();
-                                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                                //delete photo dir
-                                try {
-                                    FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getId()).getDiaryDir());
-                                } catch (IOException e) {
-                                    //Do nothing if delete fail
-                                    e.printStackTrace();
-                                }
-                                break;
-                            case ITopic.TYPE_MEMO:
-                                dbManager.delAllMemoInTopic(topicList.get(position).getId());
-                                break;
-                        }
-                        dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.closeDB();
-                        topicList.remove(position);
-                        mainTopicAdapter.notifyItemRemoved(position);
-                        mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
-                    }
-                });
-        builder.show();
+        DBManager dbManager = new DBManager(MainActivity.this);
+        dbManager.opeDB();
+        switch (topicList.get(position).getType()) {
+            case ITopic.TYPE_CONTACTS:
+                dbManager.delAllContactsInTopic(topicList.get(position).getId());
+                break;
+            case ITopic.TYPE_DIARY:
+                //Because FOREIGN key is not work in this version,
+                //so delete diary item first , then delete diary
+                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
+                for (int i = 0; i < diaryCursor.getCount(); i++) {
+                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
+                    diaryCursor.moveToNext();
+                }
+                diaryCursor.close();
+                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                //delete photo dir
+                try {
+                    FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getId()).getDiaryDir());
+                } catch (IOException e) {
+                    //Do nothing if delete fail
+                    e.printStackTrace();
+                }
+                break;
+            case ITopic.TYPE_MEMO:
+                dbManager.delAllMemoInTopic(topicList.get(position).getId());
+                break;
+        }
+        dbManager.delTopic(topicList.get(position).getId());
+        dbManager.closeDB();
+        topicList.remove(position);
+        mainTopicAdapter.notifyItemRemoved(position);
+        mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
     }
 
     @Override
