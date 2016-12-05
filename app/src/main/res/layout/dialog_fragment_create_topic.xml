@@ -20,7 +20,6 @@
             android:layout_marginRight="5dp">
 
             <TextView
-                android:id="@+id/TV_topic_create_name"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -32,9 +31,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:textColor="@android:color/black"
                 android:inputType="text"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textColor="@android:color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/TV_topic_create_name"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/topic_create_text_color"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/IV_topic_textcolor"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="5dp" />
         </LinearLayout>
 
         <Spinner
@@ -43,6 +64,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/spinner_bg" />
 
 
@@ -51,29 +73,37 @@
             android:layout_height="50dp"
             android:layout_marginTop="10dp">
 
-            <Space
-                android:id="@+id/Space_topic_create"
-                android:layout_width="20dp"
-                android:layout_height="30dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_create_cancel"
+                android:id="@+id/But_topic_create_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/Space_topic_create"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
                 android:gravity="center"
-                android:text="@string/dialog_button_cancel"
-                android:textAllCaps="false" />
+                android:text="@string/dialog_button_delete"
+                android:textAllCaps="false"
+                android:visibility="gone" />
+
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
                 android:id="@+id/But_topic_create_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/Space_topic_create"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
                 android:text="@string/dialog_button_ok"
+                android:textAllCaps="false" />
+
+            <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                android:id="@+id/But_topic_create_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/But_topic_create_ok"
+                android:gravity="center"
+                android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />
         </RelativeLayout>
     </LinearLayout>

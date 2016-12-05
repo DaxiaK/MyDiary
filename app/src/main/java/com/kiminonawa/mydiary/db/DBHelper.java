@@ -1,9 +1,11 @@
 package com.kiminonawa.mydiary.db;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 
@@ -20,6 +22,10 @@ import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 5 by Daxia
+     * Add theme message in topic
+     * (Topic bg name is fixed in its dir)
+     * --------------
      * Version 4 by Daxia:
      * design db DiaryEntry  -> DiaryEntry_v2
      * --------------
@@ -51,9 +57,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     TopicEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_TYPE + INTEGER_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
-                    TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE +
+                    TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE + COMMA_SEP +
+                    TopicEntry.COLUMN_TEXT_COLOR + INTEGER_TYPE +
                     " )";
 
+    /**
+     * Discarded DIARY DB
+     */
     private static final String SQL_CREATE_DIARY_ENTRIES =
             "CREATE TABLE " + DiaryEntry.TABLE_NAME + " (" +
                     DiaryEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
@@ -155,6 +165,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     String deleteV1DiaryTable = "DROP TABLE IF EXISTS " + DiaryEntry.TABLE_NAME;
                     db.execSQL(deleteV1DiaryTable);
                 }
+                if (oldVersion < 5) {
+                    //Add textcolor COLUMN
+                    String addTopicTextColorSql = "ALTER TABLE  " + TopicEntry.TABLE_NAME + " ADD COLUMN " + TopicEntry.COLUMN_TEXT_COLOR + " " + INTEGER_TYPE;
+                    db.execSQL(addTopicTextColorSql);
+                    //set textcolor default black color
+                    version5AddTextColor(db);
+                }
                 //Check update success
                 db.setTransactionSuccessful();
             } finally {
@@ -167,6 +184,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+
+    private void version5AddTextColor(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put(TopicEntry.COLUMN_TEXT_COLOR, Color.BLACK);
+        db.update(TopicEntry.TABLE_NAME, values, null, null);
     }
 
 

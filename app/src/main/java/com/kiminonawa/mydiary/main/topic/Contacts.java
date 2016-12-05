@@ -11,11 +11,13 @@ public class Contacts implements ITopic {
     private String title;
     private long id;
     private int count;
+    private int textColor;
 
-    public Contacts(long id, String title, int count) {
+    public Contacts(long id, String title, int count, int textColor) {
         this.id = id;
         this.title = title;
         this.count = count;
+        this.textColor = textColor;
     }
 
     @Override
@@ -41,5 +43,11 @@ public class Contacts implements ITopic {
     @Override
     public int getCount() {
         return count;
+    }
+
+
+    @Override
+    public int getTextColor() {
+        return textColor;
     }
 }

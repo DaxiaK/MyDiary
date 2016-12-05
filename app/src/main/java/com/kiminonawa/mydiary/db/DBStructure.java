@@ -51,6 +51,7 @@ public class DBStructure {
         public static final String COLUMN_NAME = "topic_name";
         public static final String COLUMN_TYPE = "topic_type";
         public static final String COLUMN_SUBTITLE = "topic_subtitle";
+        public static final String COLUMN_TEXT_COLOR = "topic_text_color";
     }
 
     public static abstract class MemoEntry implements BaseColumns {

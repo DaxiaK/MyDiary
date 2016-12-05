@@ -25,6 +25,10 @@ public class ThemeManager {
 
     public final static String CUSTOM_PROFILE_BANNER_BG_FILENAME = "custom_profile_banner_bg";
 
+
+    private static int topicBgWidth = -1, topicBgHeight = -1, topicBgWithoutEditBarHeight = -1;
+
+
     //Default color is TAKI
     public int currentTheme = TAKI;
 
@@ -42,6 +46,24 @@ public class ThemeManager {
             }
         }
         return instance;
+    }
+
+    public static void setBgSize(int width, int height, int withoutEditBarHeight) {
+        topicBgWidth = width;
+        topicBgHeight = height;
+        topicBgWithoutEditBarHeight = withoutEditBarHeight;
+    }
+
+    public static int getTopicBgWidth() {
+        return topicBgWidth;
+    }
+
+    public static int getTopicBgHeight() {
+        return topicBgHeight;
+    }
+
+    public static int getTopicBgWithoutEditBarHeight() {
+        return topicBgWithoutEditBarHeight;
     }
 
     public void saveTheme(Context context, int themeId) {
@@ -68,7 +90,7 @@ public class ThemeManager {
                 break;
             default:
                 bgDrawable = Drawable.createFromPath(
-                        new FileManager(context,FileManager.SETTING_DIR).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
+                        new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (bgDrawable == null) {
                     bgDrawable = new ColorDrawable(getThemeMainColor(context));
                 }

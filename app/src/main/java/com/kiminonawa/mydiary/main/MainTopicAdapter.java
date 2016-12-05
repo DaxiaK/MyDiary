@@ -1,10 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,30 +10,25 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by daxia on 2016/10/17.
  */
 
-public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements MainActivity.ItemTouchHelperAdapter {
+public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> {
 
 
     private List<ITopic> topicList;
-    private Context mContext;
+    private MainActivity activity;
 
-    public MainTopicAdapter(Context context, List<ITopic> topicList) {
-        this.mContext = context;
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
+        this.activity = activity;
         this.topicList = topicList;
     }
 
@@ -57,7 +48,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(mContext));
+        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getTitleView().setText(topicList.get(position).getTitle());
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
@@ -66,79 +57,37 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             public void onClick(View v) {
                 switch (topicList.get(position).getType()) {
                     case ITopic.TYPE_CONTACTS:
-                        Intent goContactsPageIntent = new Intent(mContext, ContactsActivity.class);
+                        Intent goContactsPageIntent = new Intent(activity, ContactsActivity.class);
                         goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goContactsPageIntent);
+                        activity.startActivity(goContactsPageIntent);
                         break;
                     case ITopic.TYPE_DIARY:
-                        Intent goEntriesPageIntent = new Intent(mContext, DiaryActivity.class);
+                        Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
                         goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goEntriesPageIntent);
+                        activity.startActivity(goEntriesPageIntent);
                         break;
                     case ITopic.TYPE_MEMO:
-                        Intent goMemoPageIntent = new Intent(mContext, MemoActivity.class);
+                        Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);
                         goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
                         goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goMemoPageIntent);
+                        activity.startActivity(goMemoPageIntent);
                         break;
                 }
             }
         });
-    }
-
-    @Override
-    public void onItemDismiss(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setCancelable(false)
-                .setTitle(mContext.getString(R.string.topic_dialog_delete_title))
-                .setMessage(String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
-                .setNegativeButton(mContext.getString(R.string.dialog_button_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        notifyDataSetChanged();
-                    }
-                })
-                .setPositiveButton(mContext.getString(R.string.dialog_button_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DBManager dbManager = new DBManager(mContext);
-                        dbManager.opeDB();
-                        switch (topicList.get(position).getType()) {
-                            case ITopic.TYPE_CONTACTS:
-                                dbManager.delAllContactsInTopic(topicList.get(position).getId());
-                                break;
-                            case ITopic.TYPE_DIARY:
-                                //Because FOREIGN key is not work in this version,
-                                //so delete diary item first , then delete diary
-                                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
-                                for (int i = 0; i < diaryCursor.getCount(); i++) {
-                                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
-                                    diaryCursor.moveToNext();
-                                }
-                                diaryCursor.close();
-                                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                                //delete photo dir
-                                try {
-                                    FileUtils.deleteDirectory(new FileManager(mContext, topicList.get(position).getId()).getDiaryDir());
-                                } catch (IOException e) {
-                                    //Do nothing if delete fail
-                                    e.printStackTrace();
-                                }
-                                break;
-                            case ITopic.TYPE_MEMO:
-                                dbManager.delAllMemoInTopic(topicList.get(position).getId());
-                                break;
-                        }
-                        dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.closeDB();
-                        topicList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
-                    }
-                });
-        builder.show();
+        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                CreateTopicDialogFragment createTopicDialogFragment =
+                        CreateTopicDialogFragment.newInstance(true, position, topicList.get(position).getTextColor());
+                createTopicDialogFragment.setCallBack(activity);
+                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
+                        "createTopicDialogFragment");
+                return true;
+            }
+        });
     }
 
 

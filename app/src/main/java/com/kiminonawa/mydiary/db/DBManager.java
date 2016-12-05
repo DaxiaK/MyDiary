@@ -64,11 +64,11 @@ public class DBManager {
      * Topic
      */
 
-    public long insertTopic(String name, int type) {
+    public long insertTopic(String name, int type, int textColor) {
         return db.insert(
                 TopicEntry.TABLE_NAME,
                 null,
-                this.createTopicCV(name, type));
+                this.createTopicCV(name, type, textColor));
     }
 
     public Cursor selectTopic() {
@@ -130,10 +130,11 @@ public class DBManager {
                 , new String[]{String.valueOf(topicId)});
     }
 
-    private ContentValues createTopicCV(String name, int type) {
+    private ContentValues createTopicCV(String name, int type, int textColor) {
         ContentValues values = new ContentValues();
         values.put(TopicEntry.COLUMN_NAME, name);
         values.put(TopicEntry.COLUMN_TYPE, type);
+        values.put(TopicEntry.COLUMN_TEXT_COLOR, textColor);
         return values;
     }
 
