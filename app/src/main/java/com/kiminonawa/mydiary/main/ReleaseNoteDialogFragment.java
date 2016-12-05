@@ -76,7 +76,7 @@ public class ReleaseNoteDialogFragment extends DialogFragment implements View.On
                 CTV_release_note_knew.toggle();
                 break;
             case R.id.But_release_note_ok:
-                SPFManager.setReleaseNoteClose(getActivity(),CTV_release_note_knew.isChecked());
+                SPFManager.setReleaseNoteClose(getActivity(),!CTV_release_note_knew.isChecked());
                 dismiss();
                 break;
         }
