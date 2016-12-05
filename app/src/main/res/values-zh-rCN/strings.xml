@@ -1,0 +1,108 @@
+<resources>
+    <string name="app_name">MyDiary</string>
+
+    <!--Release Note-->
+    <string name="release_note_title">更新日志</string>
+    <string name="release_note_close_remind">不再提醒</string>
+
+    <!--init-->
+    <string name="init_message">正在更新数据，请勿关闭MyDiary以免数据丢失</string>
+
+    <!--Profile-->
+    <string name="profile_username_taki">立花 泷</string>
+    <string name="profile_username_mitsuha">宫水 三叶</string>
+    <string name="toast_change_theme">风格切换中&#8230;</string>
+    <string name="your_name_is">你的名字是</string>
+
+
+    <!--Topic type-->
+    <string name="topic_create_name">主题名称</string>
+    <string name="topic_create_text_color">文字颜色</string>
+    <string name="topic_dialog_delete_title">删除</string>
+    <string name="topic_dialog_delete_content">确定要删除 %1$s 吗？</string>
+
+    <string name="toast_topic_empty">主题名称为空！</string>
+
+    <!--Dialog -->
+    <string name="dialog_button_ok">确定</string>
+    <string name="dialog_button_call">拨打</string>
+    <string name="dialog_button_cancel">取消</string>
+    <string name="dialog_button_delete">删除</string>
+
+    <string name="process_dialog_loading">载入中&#8230;</string>
+    <string name="process_dialog_saving">保存中&#8230;</string>
+
+    <!--Diary Activity-->
+    <string name="segmented_entries">项目</string>
+    <string name="segmented_calendar">日历</string>
+    <string name="segmented_Diary">日记</string>
+    <string name="diary_back_message">有编辑中的日记，确定要离开吗？</string>
+
+    <!--Entries -->
+    <string name="entries_count">%1$d 项目</string>
+    <string name="entries_edit_view">点击选择要编辑的日记</string>
+    <string name="entries_edit_dialog_delete_content">确定要删除日记吗？</string>
+    <string name="entries_summary_photo">**图片**</string>
+
+    <!--Diary -->
+    <string name="diary_no_location">无位置</string>
+    <string name="diary_location_permission_title">授权</string>
+    <string name="diary_location_permission_content">需要授予获取位置信息的权限</string>
+    <string name="diary_photo_permission_content">需要授予拍照的权限</string>
+
+    <string name="diary_title_hint">日记标题</string>
+    <string name="diary_content_hint">在此写下你的日记内容</string>
+
+    <string name="diary_no_title">无标题</string>
+
+    <string name="toast_diary_empty">日记内容是空的</string>
+    <string name="toast_refashioning">正在获得位置信息</string>
+    <string name="toast_not_image">该文件不是图片</string>
+    <string name="toast_photo_path_error">图片路径有问题</string>
+    <string name="toast_photo_intent_error">获取图片资源失败</string>
+    <string name="toast_max_photo">最多只能加入%1$d张照片</string>
+    <string name="toast_space_insufficient">剩余空间不足</string>
+    <string name="toast_diary_update_successful">更新日记成功</string>
+    <string name="toast_diary_update_fail">更新日记失败&#8230;</string>
+    <string name="toast_diary_insert_successful">新增日记成功</string>
+    <string name="toast_diary_insert_fail">新增日记失败&#8230;</string>
+
+    <!--Diary Viewer edit-->
+    <string name="toast_diary_copy_to_edit_fail">读取图片数据失败&#8230;</string>
+
+    <!--Memo-->
+    <string name="memo_item_add">新增项目</string>
+    <string name="toast_memo_empty">备忘录为空！</string>
+
+    <!--Contacts-->
+    <string name="contacts_call_phone_permission_title">授权</string>
+    <string name="contacts_call_phone_permission_content">需要授予拨打电话的权限</string>
+    <string name="contacts_call_phone_no_call_function">你的设备无法拨打电话</string>
+
+    <string name="contacts_detail_edt_name">联系人姓名</string>
+    <string name="contacts_detail_edt_phone_number">电话号码</string>
+
+    <string name="toast_contacts_empty">联系人是空的！</string>
+
+    <!--About-->
+    <string name="about_title">关于</string>
+
+    <!--Setting-->
+    <string name="setting_theme_title">风格</string>
+    <string name="setting_theme_hint">选择你想使用的风格</string>
+    <string name="setting_theme_main_color">主要颜色</string>
+    <string name="setting_theme_sec_color">次要颜色</string>
+    <string name="setting_theme_default_profile_bg">预设背景</string>
+    <string name="setting_theme_default_color">预设颜色</string>
+    <string name="setting_theme_apply">应用</string>
+    <string name="setting_theme_profile_bg">个人资料背景</string>
+
+    <string name="setting_language_title">语言</string>
+    <string name="setting_language_hint">选择语言</string>
+
+    <string name="toast_save_profile_banner_fail">个人横幅背景保存失败&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">个人横幅裁剪失败&#8230;</string>
+
+
+
+</resources>
