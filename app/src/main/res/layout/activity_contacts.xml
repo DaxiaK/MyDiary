@@ -75,6 +75,7 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/STL_contacts"
             android:paddingLeft="10dp"
+            android:alpha="0.95"
             android:paddingRight="10dp"
             android:paddingTop="10dp" />
 

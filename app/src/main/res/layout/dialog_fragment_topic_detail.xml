@@ -66,20 +66,38 @@
             </LinearLayout>
 
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                    android:id="@+id/But_topic_detail_change_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="更改背景"
+                    android:visibility="gone" />
+
+                <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                    android:id="@+id/But_topic_detail_default_bg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="預設背景"
+                    android:visibility="gone" />
+
 
                 <Spinner
                     android:id="@+id/SP_topic_create_type"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/spinner_bg" />
-            </RelativeLayout>
+                    android:background="@drawable/spinner_bg"
+                    android:visibility="gone" />
+            </LinearLayout>
 
         </LinearLayout>
 

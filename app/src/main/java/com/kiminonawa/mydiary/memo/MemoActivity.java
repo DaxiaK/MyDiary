@@ -40,6 +40,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     /**
      * RecyclerView
      */
+    private RelativeLayout RL_memo_content_bg;
     private RecyclerView RecyclerView_memo;
     private MemoAdapter memoAdapter;
     private List<MemoEntity> memoList;
@@ -60,13 +61,16 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
-            //TODO close this activity and show toast
+            finish();
         }
         /**
          * init UI
          */
         RL_memo_topbar_content = (RelativeLayout) findViewById(R.id.RL_memo_topbar_content);
         RL_memo_topbar_content.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(this));
+
+        RL_memo_content_bg = (RelativeLayout) findViewById(R.id.RL_memo_content_bg);
+        RL_memo_content_bg.setBackground(ThemeManager.getInstance().getMemoBgDrawable(this, topicId));
 
         TV_memo_topbar_title = (TextView) findViewById(R.id.TV_memo_topbar_title);
         IV_memo_edit = (ImageView) findViewById(R.id.IV_memo_edit);

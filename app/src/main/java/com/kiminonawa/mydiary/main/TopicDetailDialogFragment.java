@@ -1,10 +1,13 @@
 package com.kiminonawa.mydiary.main;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,18 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.setting.ColorPickerFragment;
+import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+
+import static android.app.Activity.RESULT_OK;
+import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_WRITE_ES_PERMISSION;
 
 
 /**
@@ -35,7 +47,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
 
         void TopicDeleted(int position);
 
-        void TopicUpdated(int position, String name, int color);
+        void TopicUpdated(int position, String newTopicTitle, int color, boolean addNewBg, String newBgFileName);
     }
 
 
@@ -49,23 +61,32 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     private boolean isEditMode;
     private int position;
     private String title;
+    private int topicType;
     private int topicColorCode;
+    private boolean addNewBg = false;
+    private String newTopicBgFileName = "";
+    /**
+     * File
+     */
+    private final static int SELECT_TOPIC_BG = 0;
     /**
      * UI
      */
     private LinearLayout LL_topic_dialog_content;
     private EditText EDT_topic_create_title;
     private ImageView IV_topic_color;
-    private MyDiaryButton But_topic_create_ok, But_topic_create_cancel, But_topic_create_delete;
+    private MyDiaryButton But_topic_detail_change_bg, But_topic_detail_default_bg;
     private Spinner SP_topic_create_type;
+    private MyDiaryButton But_topic_create_ok, But_topic_create_cancel, But_topic_create_delete;
 
 
-    public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, String title, int topicColorCode) {
+    public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, String title, int topicType, int topicColorCode) {
         Bundle args = new Bundle();
         TopicDetailDialogFragment fragment = new TopicDetailDialogFragment();
         args.putBoolean("isEditMode", isEditMode);
         args.putInt("position", position);
         args.putString("title", title);
+        args.putInt("topicType", topicType);
         args.putInt("topicColorCode", topicColorCode);
         fragment.setArguments(args);
         return fragment;
@@ -79,6 +100,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         isEditMode = getArguments().getBoolean("isEditMode", false);
         position = getArguments().getInt("position", -1);
         title = getArguments().getString("title", "");
+        topicType = getArguments().getInt("topicType", -1);
         topicColorCode = getArguments().getInt("topicColorCode", Color.BLACK);
         return dialog;
     }
@@ -88,7 +110,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         //This position is wrong.
-        if (isEditMode && position == -1) {
+        if (isEditMode && (position == -1 || topicType == -1)) {
             dismiss();
         }
 
@@ -100,6 +122,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         EDT_topic_create_title = (EditText) rootView.findViewById(R.id.EDT_topic_create_title);
         IV_topic_color = (ImageView) rootView.findViewById(R.id.IV_topic_color);
         IV_topic_color.setOnClickListener(this);
+        But_topic_detail_change_bg = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_change_bg);
+        But_topic_detail_default_bg = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_default_bg);
         SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
 
         But_topic_create_ok = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_ok);
@@ -107,16 +131,76 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         But_topic_create_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_cancel);
         But_topic_create_cancel.setOnClickListener(this);
         if (isEditMode) {
+
+            But_topic_detail_change_bg.setVisibility(View.VISIBLE);
+            But_topic_detail_default_bg.setVisibility(View.VISIBLE);
+            But_topic_detail_change_bg.setOnClickListener(this);
+            But_topic_detail_default_bg.setOnClickListener(this);
+
             EDT_topic_create_title.setText(title);
-            SP_topic_create_type.setVisibility(View.GONE);
             But_topic_create_delete = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_delete);
             But_topic_create_delete.setVisibility(View.VISIBLE);
             But_topic_create_delete.setOnClickListener(this);
         } else {
+            SP_topic_create_type.setVisibility(View.VISIBLE);
             initTopicTypeSpinner();
         }
         setTextColor(topicColorCode);
         return rootView;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
+            if (grantResults.length > 0
+                    && PermissionHelper.checkAllPermissionResult(grantResults)) {
+                FileManager.startBrowseImageFile(this, SELECT_TOPIC_BG);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                        .setTitle(getString(R.string.diary_location_permission_title))
+                        .setMessage(getString(R.string.diary_photo_permission_content))
+                        .setPositiveButton(getString(R.string.dialog_button_ok), null);
+                builder.show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SELECT_TOPIC_BG) {
+            if (resultCode == RESULT_OK) {
+                if (data != null && data.getData() != null) {
+                    int topicBgWidth = ThemeManager.getInstance().getTopicBgWidth();
+                    int topicBgHeight;
+
+                    if (topicType == ITopic.TYPE_DIARY) {
+                        topicBgHeight = ThemeManager.getInstance().getTopicBgHeight();
+                    } else {
+                        topicBgHeight = ThemeManager.getInstance().getTopicBgWithoutEditBarHeight();
+                    }
+                    FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                            .withMaxResultSize(topicBgWidth, topicBgHeight)
+                            .withAspectRatio(topicBgWidth, topicBgHeight)
+                            .start(getActivity(), this);
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
+                }
+            }
+        } else if (requestCode == UCrop.REQUEST_CROP) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    final Uri resultUri = UCrop.getOutput(data);
+                    newTopicBgFileName = FileManager.getFileNameByUri(getActivity(), resultUri);
+                    addNewBg = true;
+                } else {
+                    Toast.makeText(getActivity(), getString(R.string.toast_crop_profile_banner_fail), Toast.LENGTH_LONG).show();
+                    //sample error
+                    // final Throwable cropError = UCrop.getError(data);
+                }
+            }
+        }
     }
 
     private void setTextColor(int colorCode) {
@@ -165,6 +249,16 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                 secColorPickerFragment.setCallBack(this, R.id.IV_topic_color);
                 secColorPickerFragment.show(getFragmentManager(), "topicTextColorPickerFragment");
                 break;
+
+            case R.id.But_topic_detail_change_bg:
+                if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
+                    FileManager.startBrowseImageFile(this, SELECT_TOPIC_BG);
+                }
+                break;
+            case R.id.But_topic_detail_default_bg:
+                addNewBg = false;
+                newTopicBgFileName = "";
+                break;
             case R.id.But_topic_create_delete:
                 TopicDeleteDialogFragment topicDeleteDialogFragment = TopicDeleteDialogFragment.newInstance(title);
                 topicDeleteDialogFragment.setCallBack(this);
@@ -173,7 +267,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
             case R.id.But_topic_create_ok:
                 if (isEditMode) {
                     if (EDT_topic_create_title.getText().toString().length() > 0) {
-                        callback.TopicUpdated(position, EDT_topic_create_title.getText().toString(), topicColorCode);
+                        callback.TopicUpdated(position, EDT_topic_create_title.getText().toString(),
+                                topicColorCode, addNewBg, newTopicBgFileName);
                         dismiss();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.toast_topic_empty), Toast.LENGTH_SHORT).show();

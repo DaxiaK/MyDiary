@@ -37,9 +37,11 @@ public class FileManager {
 
     public final static int ROOT_DIR = 0;
     public final static int TEMP_DIR = 1;
-    public final static int DIARY_ROOT_DIR = 2;
-    public final static int DIARY_EDIT_CACHE_DIR = 3;
-    public final static int SETTING_DIR = 4;
+    public final static int DIARY_EDIT_CACHE_DIR = 2;
+    public final static int DIARY_ROOT_DIR = 3;
+    public final static int MEMO_ROOT_DIR = 4;
+    public final static int CONTACTS_ROOT_DIR = 5;
+    public final static int SETTING_DIR = 6;
 
     /**
      * The path is :
@@ -49,13 +51,19 @@ public class FileManager {
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/typeId/diaryId/
-     * 4.Setting path
+     * 4.memo path
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/memo/typeId/
+     * 5.contacts path
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/typeId/
+     * 6.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      */
-    private File photoFileDir;
+    private File fileDir;
     private Context mContext;
     private final static String TEMP_DIR_STR = "temp/";
     private final static String DIARY_ROOT_DIR_STR = "diary/";
+    private final static String MEMO_ROOT_DIR_STR = "memo/";
+    private final static String CONTACTS_ROOT_DIR_STR = "contacts/";
     private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
     private final static String SETTING_DIR_STR = "setting/";
 
@@ -68,19 +76,25 @@ public class FileManager {
         this.mContext = context;
         switch (dir) {
             case ROOT_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir("");
+                this.fileDir = mContext.getExternalFilesDir("");
                 break;
             case TEMP_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir(TEMP_DIR_STR);
+                this.fileDir = mContext.getExternalFilesDir(TEMP_DIR_STR);
                 break;
             case DIARY_ROOT_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR);
+                this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR);
+                break;
+            case MEMO_ROOT_DIR:
+                this.fileDir = mContext.getExternalFilesDir(MEMO_ROOT_DIR_STR);
+                break;
+            case CONTACTS_ROOT_DIR:
+                this.fileDir = mContext.getExternalFilesDir(CONTACTS_ROOT_DIR_STR);
                 break;
             case DIARY_EDIT_CACHE_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
+                this.fileDir = mContext.getExternalFilesDir(EDIT_CACHE_DIARY_DIR_STR);
                 break;
             case SETTING_DIR:
-                this.photoFileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
+                this.fileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
                 break;
         }
     }
@@ -90,7 +104,7 @@ public class FileManager {
      */
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
-        this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
+        this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
     }
 
     /**
@@ -98,23 +112,23 @@ public class FileManager {
      */
     public FileManager(Context context, long topicId) {
         this.mContext = context;
-        this.photoFileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/");
+        this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/");
     }
 
 
     public File getDiaryDir() {
-        return photoFileDir;
+        return fileDir;
     }
 
     public String getDiaryDirAbsolutePath() {
-        return photoFileDir.getAbsolutePath();
+        return fileDir.getAbsolutePath();
     }
 
     public void clearDiaryDir() {
-        if (photoFileDir.isDirectory()) {
-            String[] children = photoFileDir.list();
+        if (fileDir.isDirectory()) {
+            String[] children = fileDir.list();
             for (int i = 0; i < children.length; i++) {
-                new File(photoFileDir, children[i]).delete();
+                new File(fileDir, children[i]).delete();
             }
         }
     }

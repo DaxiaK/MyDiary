@@ -12,6 +12,9 @@ import android.os.Build;
 import android.support.v4.media.RatingCompat;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.main.topic.ITopic;
+
+import java.io.File;
 
 /**
  * Created by daxia on 2016/11/4.
@@ -24,6 +27,7 @@ public class ThemeManager {
     public final static int CUSTOM = 2;
 
     public final static String CUSTOM_PROFILE_BANNER_BG_FILENAME = "custom_profile_banner_bg";
+    public final static String CUSTOM_TOPIC_BG_FILENAME = "custom_topic_bg";
 
 
     private static int topicBgWidth = -1, topicBgHeight = -1, topicBgWithoutEditBarHeight = -1;
@@ -112,7 +116,7 @@ public class ThemeManager {
         return stateListDrawable;
     }
 
-    public Drawable getEntriesBgDrawable(Context context) {
+    public Drawable getEntriesBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
         switch (currentTheme) {
             case TAKI:
@@ -122,7 +126,39 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
                 break;
             default:
-                bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                File memoBg = new File(
+                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
+                if (memoBg.exists()) {
+                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+                } else {
+                    bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                }
+                break;
+        }
+        return bgDrawable;
+    }
+
+    public Drawable getMemoBgDrawable(Context context, long topicId) {
+        Drawable bgDrawable;
+        switch (currentTheme) {
+            case TAKI:
+                bgDrawable = new ColorDrawable(Color.WHITE);
+                break;
+            case MITSUHA:
+                bgDrawable = new ColorDrawable(Color.WHITE);
+                break;
+            default:
+                File memoBg = new File(
+                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
+                if (memoBg.exists()) {
+                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+                } else {
+                    bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                }
                 break;
         }
         return bgDrawable;
@@ -167,7 +203,7 @@ public class ThemeManager {
     }
 
 
-    public Drawable getContactsBgDrawable(Context context) {
+    public Drawable getContactsBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
         switch (currentTheme) {
             case TAKI:
@@ -177,7 +213,15 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
                 break;
             default:
-                bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                File memoBg = new File(
+                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
+                if (memoBg.exists()) {
+                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+                } else {
+                    bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                }
                 break;
         }
         return bgDrawable;
@@ -236,6 +280,33 @@ public class ThemeManager {
         }
         return userName;
     }
+
+    public File getTopicBgSaveFile(Context context, long topicId, int topicType) {
+        File outputFile;
+        switch (topicType) {
+            case ITopic.TYPE_MEMO:
+                outputFile = new File(
+                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
+                break;
+            case ITopic.TYPE_CONTACTS:
+                outputFile = new File(
+                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
+                break;
+            //TYPE_DIARY
+            default:
+                outputFile = new File(
+                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
+                                + "/" + topicId
+                                + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
+                break;
+        }
+        return outputFile;
+    }
+
 
     public
     @RatingCompat.Style

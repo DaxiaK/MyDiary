@@ -38,16 +38,23 @@
     </RelativeLayout>
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/RecyclerView_memo"
+    <RelativeLayout
+        android:id="@+id/RL_memo_content_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/RL_memo_topbar_content"
-        android:paddingBottom="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="10dp" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RL_memo_topbar_content">
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/RecyclerView_memo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.95"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp" />
+
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"

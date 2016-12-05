@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -25,6 +25,7 @@ import com.kiminonawa.mydiary.shared.ThemeManager;
 
 import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +33,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
 
-
-    /**
-     * Touch interface
-     */
-    public interface ItemTouchHelperAdapter {
-        void onItemDismiss(int position);
-    }
 
     /**
      * RecyclerView
@@ -217,13 +211,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void TopicUpdated(int position, String name, int color) {
+    public void TopicUpdated(int position, String newTopicTitle, int color, boolean addNewBg, String newTopicBgFileName) {
         DBManager dbManager = new DBManager(this);
         dbManager.opeDB();
-        dbManager.updateTopic(topicList.get(position).getId(), name, color);
+        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
         dbManager.closeDB();
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged();
+        if (addNewBg) {
+            File outputFile = themeManager.getTopicBgSaveFile(
+                    this, topicList.get(position).getId(), topicList.get(position).getType());
+            //Copy file into topic dir
+            try {
+                if (outputFile.exists()) {
+                    outputFile.delete();
+                }
+                FileUtils.moveFile(new File(new FileManager(this, FileManager.TEMP_DIR).getDiaryDirAbsolutePath() + "/" + newTopicBgFileName),
+                        outputFile);
+                //Enter the topic
+                mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
+            } catch (IOException e) {
+                Toast.makeText(this, "存檔失敗", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -231,45 +242,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initProfile();
     }
 
-
-    /**
-     * Swipe to remove the topic.
-     */
-    public class itemTouchHelperCallback extends ItemTouchHelper.Callback {
-
-        //TODO Add undo
-        private final ItemTouchHelperAdapter mAdapter;
-
-        public itemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
-            mAdapter = adapter;
-        }
-
-        @Override
-        public boolean isLongPressDragEnabled() {
-            return false;
-        }
-
-        @Override
-        public boolean isItemViewSwipeEnabled() {
-            return true;
-        }
-
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags, swipeFlags);
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-        }
-    }
 }

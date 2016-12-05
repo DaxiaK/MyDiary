@@ -59,26 +59,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (topicList.get(position).getType()) {
-                    case ITopic.TYPE_CONTACTS:
-                        Intent goContactsPageIntent = new Intent(activity, ContactsActivity.class);
-                        goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        activity.startActivity(goContactsPageIntent);
-                        break;
-                    case ITopic.TYPE_DIARY:
-                        Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
-                        goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        activity.startActivity(goEntriesPageIntent);
-                        break;
-                    case ITopic.TYPE_MEMO:
-                        Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);
-                        goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        activity.startActivity(goMemoPageIntent);
-                        break;
-                }
+                gotoTopic(topicList.get(position).getType(), position);
             }
         });
         holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
@@ -86,13 +67,36 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             public boolean onLongClick(View v) {
                 TopicDetailDialogFragment createTopicDialogFragment =
                         TopicDetailDialogFragment.newInstance(true, position,
-                                topicList.get(position).getTitle(), topicList.get(position).getColor());
+                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
                 createTopicDialogFragment.setCallBack(activity);
                 createTopicDialogFragment.show(activity.getSupportFragmentManager(),
                         "createTopicDialogFragment");
                 return true;
             }
         });
+    }
+
+    public void gotoTopic(final int type, final int position) {
+        switch (type) {
+            case ITopic.TYPE_CONTACTS:
+                Intent goContactsPageIntent = new Intent(activity, ContactsActivity.class);
+                goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goContactsPageIntent);
+                break;
+            case ITopic.TYPE_DIARY:
+                Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
+                goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goEntriesPageIntent);
+                break;
+            case ITopic.TYPE_MEMO:
+                Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);
+                goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goMemoPageIntent);
+                break;
+        }
     }
 
 
