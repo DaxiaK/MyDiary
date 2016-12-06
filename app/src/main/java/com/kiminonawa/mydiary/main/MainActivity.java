@@ -213,6 +213,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case ITopic.TYPE_CONTACTS:
                 dbManager.delAllContactsInTopic(topicList.get(position).getId());
                 break;
+            case ITopic.TYPE_MEMO:
+                dbManager.delAllMemoInTopic(topicList.get(position).getId());
+                break;
             case ITopic.TYPE_DIARY:
                 //Because FOREIGN key is not work in this version,
                 //so delete diary item first , then delete diary
@@ -223,17 +226,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 diaryCursor.close();
                 dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                //delete photo dir
-                try {
-                    FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getId()).getDiaryDir());
-                } catch (IOException e) {
-                    //Do nothing if delete fail
-                    e.printStackTrace();
-                }
                 break;
-            case ITopic.TYPE_MEMO:
-                dbManager.delAllMemoInTopic(topicList.get(position).getId());
-                break;
+        }
+        //Delete the dir if it exist.
+        try {
+            FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getType(),
+                    topicList.get(position).getId()).getDiaryDir());
+        } catch (IOException e) {
+            //Do nothing if delete fail
+            e.printStackTrace();
         }
         dbManager.delTopic(topicList.get(position).getId());
         dbManager.closeDB();

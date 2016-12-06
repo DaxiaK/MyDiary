@@ -15,6 +15,8 @@ import android.provider.OpenableColumns;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.kiminonawa.mydiary.main.topic.ITopic;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -110,9 +112,22 @@ public class FileManager {
     /**
      * Create topic dir file manager for delete
      */
-    public FileManager(Context context, long topicId) {
+    public FileManager(Context context, int topicType, long topicId) {
         this.mContext = context;
-        this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/");
+        switch (topicType) {
+            case ITopic.TYPE_MEMO:
+                this.fileDir = mContext.getExternalFilesDir(MEMO_ROOT_DIR_STR + "/" + topicId + "/");
+
+                break;
+            case ITopic.TYPE_CONTACTS:
+                this.fileDir = mContext.getExternalFilesDir(CONTACTS_ROOT_DIR_STR + "/" + topicId + "/");
+
+                break;
+            case ITopic.TYPE_DIARY:
+                this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/");
+
+                break;
+        }
     }
 
 
