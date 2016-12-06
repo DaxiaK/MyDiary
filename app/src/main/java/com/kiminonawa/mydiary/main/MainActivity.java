@@ -152,6 +152,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView_topic.setAdapter(mainTopicAdapter);
     }
 
+    private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
+        switch (topicBgStatus) {
+            case TopicDetailDialogFragment.TOPIC_BG_ADD_PHOTO:
+                File outputFile = themeManager.getTopicBgSavePathFile(
+                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                //Copy file into topic dir
+                try {
+                    if (outputFile.exists()) {
+                        outputFile.delete();
+                    }
+                    FileUtils.moveFile(new File(
+                                    new FileManager(this, FileManager.TEMP_DIR).getDiaryDirAbsolutePath()
+                                            + "/" + newTopicBgFileName),
+                            outputFile);
+                    //Enter the topic
+                    mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
+                } catch (IOException e) {
+                    Toast.makeText(this, "存檔失敗", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                break;
+            case TopicDetailDialogFragment.TOPIC_BG_REVERT_DEFAULT:
+                File topicBgFile = themeManager.getTopicBgSavePathFile(
+                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                //Just delete the file  , the topic's activity will check file for changing the bg
+                if (topicBgFile.exists()) {
+                    topicBgFile.delete();
+                }
+                break;
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -211,30 +243,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void TopicUpdated(int position, String newTopicTitle, int color, boolean addNewBg, String newTopicBgFileName) {
+    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
         DBManager dbManager = new DBManager(this);
         dbManager.opeDB();
         dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
         dbManager.closeDB();
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged();
-        if (addNewBg) {
-            File outputFile = themeManager.getTopicBgSavePathFile(
-                    this, topicList.get(position).getId(), topicList.get(position).getType());
-            //Copy file into topic dir
-            try {
-                if (outputFile.exists()) {
-                    outputFile.delete();
-                }
-                FileUtils.moveFile(new File(new FileManager(this, FileManager.TEMP_DIR).getDiaryDirAbsolutePath() + "/" + newTopicBgFileName),
-                        outputFile);
-                //Enter the topic
-                mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
-            } catch (IOException e) {
-                Toast.makeText(this, "存檔失敗", Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }
+        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
     }
 
     @Override

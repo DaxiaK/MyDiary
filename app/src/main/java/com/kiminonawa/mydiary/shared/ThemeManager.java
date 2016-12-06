@@ -116,94 +116,165 @@ public class ThemeManager {
         return stateListDrawable;
     }
 
+    /**
+     * Any theme using the same topic bg , if it exist.
+     * @param context
+     * @param topicId
+     * @param topicType
+     * @return
+     */
     public Drawable getTopicBgDrawable(Context context, long topicId, int topicType) {
-        Drawable returnDrawanle;
+        Drawable returnDrawable;
         switch (topicType) {
             case ITopic.TYPE_MEMO:
-                returnDrawanle = getMemoBgDrawable(context, topicId);
+                returnDrawable = getMemoBgDrawable(context, topicId);
                 break;
             case ITopic.TYPE_CONTACTS:
-                returnDrawanle = getContactsBgDrawable(context, topicId);
+                returnDrawable = getContactsBgDrawable(context, topicId);
                 break;
             //ITopic.TYPE_DIARY
             default:
-                returnDrawanle = getEntriesBgDrawable(context, topicId);
+                returnDrawable = getEntriesBgDrawable(context, topicId);
                 break;
         }
-        return returnDrawanle;
+        return returnDrawable;
     }
-
 
     public Drawable getEntriesBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
-        switch (currentTheme) {
-            case TAKI:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
-                break;
-            case MITSUHA:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
-                break;
-            default:
-                File memoBg = new File(
-                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
-                                + "/" + topicId
-                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
-                if (memoBg.exists()) {
-                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
-                } else {
+        File memoBg = new File(
+                new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
+                        + "/" + topicId
+                        + "/" + CUSTOM_TOPIC_BG_FILENAME);
+        if (memoBg.exists()) {
+            bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+        } else {
+            switch (currentTheme) {
+                case TAKI:
+                    bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
+                    break;
+                case MITSUHA:
+                    bgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
+                    break;
+                default:
                     bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
-                }
-                break;
+                    break;
+            }
         }
         return bgDrawable;
     }
 
     public Drawable getMemoBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
-        switch (currentTheme) {
-            case TAKI:
-                bgDrawable = new ColorDrawable(Color.WHITE);
-                break;
-            case MITSUHA:
-                bgDrawable = new ColorDrawable(Color.WHITE);
-                break;
-            default:
-                File memoBg = new File(
-                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
-                                + "/" + topicId
-                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
-                if (memoBg.exists()) {
-                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
-                } else {
-                    bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
-                }
-                break;
+        File memoBg = new File(
+                new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
+                        + "/" + topicId
+                        + "/" + CUSTOM_TOPIC_BG_FILENAME);
+        if (memoBg.exists()) {
+            bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+        } else {
+            switch (currentTheme) {
+                case TAKI:
+                    bgDrawable = new ColorDrawable(Color.WHITE);
+                    break;
+                case MITSUHA:
+                    bgDrawable = new ColorDrawable(Color.WHITE);
+                    break;
+                default:
+                    bgDrawable = new ColorDrawable(Color.WHITE);
+                    break;
+            }
         }
         return bgDrawable;
     }
 
     public Drawable getContactsBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
-        switch (currentTheme) {
-            case TAKI:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
-                break;
-            case MITSUHA:
-                bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
-                break;
-            default:
-                File memoBg = new File(
-                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
-                                + "/" + topicId
-                                + "/" + CUSTOM_TOPIC_BG_FILENAME);
-                if (memoBg.exists()) {
-                    bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
-                } else {
+        File memoBg = new File(
+                new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
+                        + "/" + topicId
+                        + "/" + CUSTOM_TOPIC_BG_FILENAME);
+        if (memoBg.exists()) {
+            bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+        } else {
+            switch (currentTheme) {
+                case TAKI:
+                    bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
+                    break;
+                case MITSUHA:
+                    bgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
+                    break;
+                default:
                     bgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
-                }
-                break;
+                    break;
+            }
         }
         return bgDrawable;
+    }
+
+    public Drawable getTopicBgDefaultDrawable(Context context, int topicType) {
+        Drawable returnDefaultDrawable;
+        switch (topicType) {
+            case ITopic.TYPE_MEMO:
+                returnDefaultDrawable = getMemoBgDefaultDrawable();
+                break;
+            case ITopic.TYPE_CONTACTS:
+                returnDefaultDrawable = getContactsDefaultBgDrawable(context);
+                break;
+            //ITopic.TYPE_DIARY
+            default:
+                returnDefaultDrawable = getEntriesBgDefaultDrawable(context);
+                break;
+        }
+        return returnDefaultDrawable;
+    }
+
+    private Drawable getEntriesBgDefaultDrawable(Context context) {
+        Drawable defaultBgDrawable;
+        switch (currentTheme) {
+            case TAKI:
+                defaultBgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_taki);
+                break;
+            case MITSUHA:
+                defaultBgDrawable = ViewTools.getDrawable(context, R.drawable.theme_bg_mitsuha);
+                break;
+            default:
+                defaultBgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                break;
+        }
+        return defaultBgDrawable;
+    }
+
+    public Drawable getMemoBgDefaultDrawable() {
+        Drawable defaultBgDrawable;
+        switch (currentTheme) {
+            case TAKI:
+                defaultBgDrawable = new ColorDrawable(Color.WHITE);
+                break;
+            case MITSUHA:
+                defaultBgDrawable = new ColorDrawable(Color.WHITE);
+                break;
+            default:
+                defaultBgDrawable = new ColorDrawable(Color.WHITE);
+                break;
+        }
+        return defaultBgDrawable;
+    }
+
+    public Drawable getContactsDefaultBgDrawable(Context context) {
+        Drawable defaultBgDrawable;
+        switch (currentTheme) {
+            case TAKI:
+                defaultBgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_taki);
+                break;
+            case MITSUHA:
+                defaultBgDrawable = ViewTools.getDrawable(context, R.drawable.contacts_bg_mitsuha);
+                break;
+            default:
+                defaultBgDrawable = new ColorDrawable(SPFManager.getMainColor(context));
+                break;
+        }
+        return defaultBgDrawable;
     }
 
 
