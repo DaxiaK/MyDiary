@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/LL_topic_dialog_content"
+            android:id="@+id/LL_topic_detail_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -33,7 +33,7 @@
                     android:textColor="@android:color/white" />
 
                 <EditText
-                    android:id="@+id/EDT_topic_create_title"
+                    android:id="@+id/EDT_topic_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -104,7 +104,7 @@
 
 
                 <Spinner
-                    android:id="@+id/SP_topic_create_type"
+                    android:id="@+id/SP_topic_detail_type"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/spinner_bg"
@@ -140,7 +140,7 @@
 
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_create_delete"
+                android:id="@+id/But_topic_detail_delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -152,7 +152,7 @@
 
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_create_ok"
+                android:id="@+id/But_topic_detail_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -162,11 +162,11 @@
                 android:textAllCaps="false" />
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_create_cancel"
+                android:id="@+id/But_topic_detail_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@id/But_topic_create_ok"
+                android:layout_toLeftOf="@id/But_topic_detail_ok"
                 android:gravity="center"
                 android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />

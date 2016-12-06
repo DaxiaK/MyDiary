@@ -80,14 +80,14 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     /**
      * UI
      */
-    private LinearLayout LL_topic_dialog_content;
-    private EditText EDT_topic_create_title;
+    private LinearLayout LL_topic_detail_content;
+    private EditText EDT_topic_detail_title;
     private LinearLayout LL_topic_detail_default_bg;
     private RelativeLayout RL_topic_detail_topic_bg;
     private ImageView IV_topic_color, IV_topic_detail_topic_bg;
     private MyDiaryButton But_topic_detail_default_bg;
-    private Spinner SP_topic_create_type;
-    private MyDiaryButton But_topic_create_ok, But_topic_create_cancel, But_topic_create_delete;
+    private Spinner SP_topic_detail_type;
+    private MyDiaryButton But_topic_detail_ok, But_topic_detail_cancel, But_topic_detail_delete;
 
 
     public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, long topicId,
@@ -128,19 +128,19 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         }
 
         View rootView = inflater.inflate(R.layout.dialog_fragment_topic_detail, container);
-        LL_topic_dialog_content = (LinearLayout) rootView.findViewById(R.id.LL_topic_dialog_content);
-        LL_topic_dialog_content.setBackgroundColor(
+        LL_topic_detail_content = (LinearLayout) rootView.findViewById(R.id.LL_topic_detail_content);
+        LL_topic_detail_content.setBackgroundColor(
                 ThemeManager.getInstance().getThemeMainColor(getContext()));
 
-        EDT_topic_create_title = (EditText) rootView.findViewById(R.id.EDT_topic_create_title);
+        EDT_topic_detail_title = (EditText) rootView.findViewById(R.id.EDT_topic_detail_title);
         IV_topic_color = (ImageView) rootView.findViewById(R.id.IV_topic_color);
         IV_topic_color.setOnClickListener(this);
         setTextColor(topicColorCode);
 
-        But_topic_create_ok = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_ok);
-        But_topic_create_ok.setOnClickListener(this);
-        But_topic_create_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_cancel);
-        But_topic_create_cancel.setOnClickListener(this);
+        But_topic_detail_ok = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_ok);
+        But_topic_detail_ok.setOnClickListener(this);
+        But_topic_detail_cancel = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_cancel);
+        But_topic_detail_cancel.setOnClickListener(this);
 
         if (isEditMode) {
             RL_topic_detail_topic_bg = (RelativeLayout) rootView.findViewById(R.id.RL_topic_detail_topic_bg);
@@ -159,13 +159,13 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
             //Check current topic bg is default or not.
             But_topic_detail_default_bg.setEnabled(isTopicHaveCustomBg() ? true : false);
 
-            EDT_topic_create_title.setText(title);
-            But_topic_create_delete = (MyDiaryButton) rootView.findViewById(R.id.But_topic_create_delete);
-            But_topic_create_delete.setVisibility(View.VISIBLE);
-            But_topic_create_delete.setOnClickListener(this);
+            EDT_topic_detail_title.setText(title);
+            But_topic_detail_delete = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_delete);
+            But_topic_detail_delete.setVisibility(View.VISIBLE);
+            But_topic_detail_delete.setOnClickListener(this);
         } else {
-            SP_topic_create_type = (Spinner) rootView.findViewById(R.id.SP_topic_create_type);
-            SP_topic_create_type.setVisibility(View.VISIBLE);
+            SP_topic_detail_type = (Spinner) rootView.findViewById(R.id.SP_topic_detail_type);
+            SP_topic_detail_type.setVisibility(View.VISIBLE);
             initTopicTypeSpinner();
         }
         return rootView;
@@ -202,7 +202,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                         topicBgHeight = ThemeManager.getInstance().getTopicBgWithoutEditBarHeight();
                     }
                     FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
-                    //Clear the old photo file    
+                    //Clear the old photo file
                     tempFileManager.clearDiaryDir();
                     UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(topicBgWidth, topicBgHeight)
@@ -245,8 +245,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     private void initTopicTypeSpinner() {
         ArrayAdapter topicTypeAdapter = new ArrayAdapter(getActivity(), R.layout.spinner_simple_text,
                 getResources().getStringArray(R.array.topic_type));
-        SP_topic_create_type.setAdapter(topicTypeAdapter);
-        SP_topic_create_type.setSelection(1);
+        SP_topic_detail_type.setAdapter(topicTypeAdapter);
+        SP_topic_detail_type.setSelection(1);
     }
 
     public void setCallBack(TopicCreatedCallback callback) {
@@ -256,8 +256,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     private void createTopic() {
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
-        dbManager.insertTopic(EDT_topic_create_title.getText().toString(),
-                SP_topic_create_type.getSelectedItemPosition(), topicColorCode);
+        dbManager.insertTopic(EDT_topic_detail_title.getText().toString(),
+                SP_topic_detail_type.getSelectedItemPosition(), topicColorCode);
         dbManager.closeDB();
     }
 
@@ -297,22 +297,22 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                         ThemeManager.getInstance().getTopicBgDefaultDrawable(getActivity(), topicType));
                 But_topic_detail_default_bg.setEnabled(false);
                 break;
-            case R.id.But_topic_create_delete:
+            case R.id.But_topic_detail_delete:
                 TopicDeleteDialogFragment topicDeleteDialogFragment = TopicDeleteDialogFragment.newInstance(title);
                 topicDeleteDialogFragment.setCallBack(this);
                 topicDeleteDialogFragment.show(getFragmentManager(), "topicDeleteDialogFragment");
                 break;
-            case R.id.But_topic_create_ok:
+            case R.id.But_topic_detail_ok:
                 if (isEditMode) {
-                    if (EDT_topic_create_title.getText().toString().length() > 0) {
-                        callback.TopicUpdated(position, EDT_topic_create_title.getText().toString(),
+                    if (EDT_topic_detail_title.getText().toString().length() > 0) {
+                        callback.TopicUpdated(position, EDT_topic_detail_title.getText().toString(),
                                 topicColorCode, topicBgStatus, newTopicBgFileName);
                         dismiss();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.toast_topic_empty), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    if (EDT_topic_create_title.getText().toString().length() > 0) {
+                    if (EDT_topic_detail_title.getText().toString().length() > 0) {
                         createTopic();
                         callback.TopicCreated();
                         dismiss();
@@ -321,7 +321,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                     }
                 }
                 break;
-            case R.id.But_topic_create_cancel:
+            case R.id.But_topic_detail_cancel:
                 dismiss();
                 break;
         }
