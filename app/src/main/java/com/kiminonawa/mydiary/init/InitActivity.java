@@ -91,6 +91,9 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
             case 3:
                 locale = Locale.TRADITIONAL_CHINESE;
                 break;
+            case 4:
+                locale = Locale.SIMPLIFIED_CHINESE;
+                break;
             // 0 = default = language of system
             default:
                 locale = Locale.getDefault();

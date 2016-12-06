@@ -82,7 +82,7 @@
                     android:layout_height="match_parent"
                     android:visibility="gone">
 
-                    <ImageView
+                    <com.kiminonawa.mydiary.shared.gui.BoardImageView
                         android:id="@+id/IV_topic_detail_topic_bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

@@ -118,6 +118,7 @@ public class ThemeManager {
 
     /**
      * Any theme using the same topic bg , if it exist.
+     *
      * @param context
      * @param topicId
      * @param topicType
@@ -290,7 +291,7 @@ public class ThemeManager {
      */
     private Drawable createButtonCustomBg(Context context) {
         StateListDrawable stateListDrawable = new StateListDrawable();
-        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, createCustomDrawable(context));
+        stateListDrawable.addState(new int[]{android.R.attr.state_pressed}, createCustomPressedDrawable(context));
         stateListDrawable.addState(new int[]{-android.R.attr.state_enabled},
                 ViewTools.getDrawable(context, R.drawable.button_bg_disable));
         stateListDrawable.addState(new int[]{},
@@ -304,13 +305,14 @@ public class ThemeManager {
      * @param context
      * @return
      */
-    private Drawable createCustomDrawable(Context context) {
+    private Drawable createCustomPressedDrawable(Context context) {
         int padding = ScreenHelper.dpToPixel(context.getResources(), 5);
         int mainColorCode = ThemeManager.getInstance().getThemeMainColor(context);
+        int boardColor = ColorTools.getColor(context, R.color.button_board_color);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.getPadding(new Rect(padding, padding, padding, padding));
         gradientDrawable.setCornerRadius(ScreenHelper.dpToPixel(context.getResources(), 3));
-        gradientDrawable.setStroke(ScreenHelper.dpToPixel(context.getResources(), 1), mainColorCode);
+        gradientDrawable.setStroke(ScreenHelper.dpToPixel(context.getResources(), 1), boardColor);
         gradientDrawable.setColor(mainColorCode);
         return gradientDrawable;
     }

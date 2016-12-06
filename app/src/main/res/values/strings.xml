@@ -7,7 +7,7 @@
     <string name="release_note_close_remind">Don\'t remind</string>
 
     <!--init-->
-    <string name="init_message">For data updated successfully ,please don\'t close MyDairy</string>
+    <string name="init_message">Data is updating now ,please don\'t close MyDairy</string>
 
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>

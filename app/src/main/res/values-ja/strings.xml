@@ -7,7 +7,7 @@
     <string name="release_note_close_remind">又提示しない</string>
 
     <!--init-->
-    <string name="init_message">データが正常に更新された場合は、\nMyDairyを終了しないでください</string>
+    <string name="init_message">データは今更新中ですので、MyDairyを閉じないでください</string>
 
     <!--Profile-->
     <string name="profile_username_taki">立花　瀧</string>

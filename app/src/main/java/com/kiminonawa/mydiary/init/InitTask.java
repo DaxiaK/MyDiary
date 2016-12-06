@@ -52,9 +52,9 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     protected Boolean doInBackground(Long... params) {
         try {
             loadSampleData();
-//            if (SPFManager.getVersionCode(mContext) < 17) {
-            Version17MoveTheDiaryIntoNewDir();
-//            }
+            if (SPFManager.getVersionCode(mContext) < 17) {
+                Version17MoveTheDiaryIntoNewDir();
+            }
             saveCurrentVersionCode();
         } catch (Exception e) {
             e.printStackTrace();

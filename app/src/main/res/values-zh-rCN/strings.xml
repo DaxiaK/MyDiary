@@ -102,7 +102,9 @@
 
     <string name="toast_save_profile_banner_fail">个人横幅背景保存失败&#8230;</string>
     <string name="toast_crop_profile_banner_fail">个人横幅裁剪失败&#8230;</string>
-
+    <string name="topic_detail_current_bg">主题背景</string>
+    <string name="topic_detail_default_bg">预设背景</string>
+    <string name="topic_topic_bg_fail">更换主题背景失败&#8230;</string>
 
 
 </resources>
