@@ -3,6 +3,7 @@
     android:id="@+id/RL_memo_item_root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
     android:background="@android:color/white"
     android:minHeight="40dp">
 

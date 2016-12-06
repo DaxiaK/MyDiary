@@ -15,13 +15,13 @@
     <string name="your_name_is">你的名字是</string>
 
 
-    <!--Topic type-->
-    <string name="topic_create_name">主题名称</string>
-    <string name="topic_create_text_color">文字颜色</string>
+    <!--Topic detail-->
+    <string name="topic_detail_name">主题名称</string>
+    <string name="topic_detail_text_color">文字颜色</string>
     <string name="topic_dialog_delete_title">删除</string>
     <string name="topic_dialog_delete_content">确定要删除 %1$s 吗？</string>
 
-    <string name="toast_topic_empty">主题名称为空！</string>
+    <string name="toast_topic_empty">主题名称为空</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">确定</string>

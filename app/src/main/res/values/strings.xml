@@ -15,13 +15,17 @@
     <string name="toast_change_theme">Theme is changing&#8230;</string>
     <string name="your_name_is">Your name is</string>
 
-    <!--Topic type-->
-    <string name="topic_create_name">Topic name</string>
-    <string name="topic_create_text_color">Text color</string>
+    <!--Topic detail-->
+    <string name="topic_detail_name">Topic name</string>
+    <string name="topic_detail_text_color">Text color</string>
     <string name="topic_dialog_delete_title">Delete</string>
     <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
 
-    <string name="toast_topic_empty">Topic is empty!</string>
+    <string name="toast_topic_empty">Topic name is empty</string>
+    <string name="topic_topic_bg_fail">To change background of topic fail&#8230;</string>
+
+    <string name="topic_detail_current_bg">Topic background</string>
+    <string name="topic_detail_default_bg">default background</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>

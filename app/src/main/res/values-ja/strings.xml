@@ -15,13 +15,17 @@
     <string name="toast_change_theme">テーマを切り替えている&#8230;</string>
     <string name="your_name_is">君の名は</string>
 
-    <!--Topic type-->
-    <string name="topic_create_name">トピック</string>
-    <string name="topic_create_text_color">テキストの色</string>
+    <!--Topic detail-->
+    <string name="topic_detail_name">トピック</string>
+    <string name="topic_detail_text_color">テキストの色</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
-    <string name="toast_topic_empty">トピックは空です!</string>
+    <string name="toast_topic_empty">トピックは空です</string>
+    <string name="topic_topic_bg_fail">トピックの背景を変更するには&#8230;</string>
+
+    <string name="topic_detail_current_bg">トピックの背景</string>
+    <string name="topic_detail_default_bg">デフォルトの背景</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>

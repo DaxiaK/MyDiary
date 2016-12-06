@@ -29,7 +29,7 @@
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/topic_create_name"
+                    android:text="@string/topic_detail_name"
                     android:textColor="@android:color/white" />
 
                 <EditText
@@ -55,7 +55,7 @@
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/topic_create_text_color"
+                    android:text="@string/topic_detail_text_color"
                     android:textColor="@android:color/white" />
 
                 <ImageView
@@ -98,7 +98,7 @@
                         android:shadowDx="2"
                         android:shadowDy="2"
                         android:shadowRadius="3"
-                        android:text="目前背景"
+                        android:text="@string/topic_detail_current_bg"
                         android:textColor="@android:color/white" />
                 </RelativeLayout>
 
@@ -126,7 +126,7 @@
                     android:id="@+id/But_topic_detail_default_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="預設背景"
+                    android:text="@string/topic_detail_default_bg"
                     android:visibility="visible" />
             </LinearLayout>
 

@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Enter the topic
                     mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
                 } catch (IOException e) {
-                    Toast.makeText(this, "存檔失敗", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, getString(R.string.topic_topic_bg_fail), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
                 break;
