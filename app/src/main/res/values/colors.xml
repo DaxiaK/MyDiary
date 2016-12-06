@@ -20,6 +20,8 @@
     <color name="button_board_color">#b2b2b2</color>
     <color name="button_text_color">#b2b2b2</color>
     <color name="button_text_color_p">#ffffff</color>
+    <color name="button_disable_color">#9D9FA2</color>
+
 
     <!--Main-->
     <color name="topic_divider">#CACACA</color>
@@ -35,12 +37,12 @@
     <!--radio_button-->
     <color name="radio_button_unselected_color">@android:color/transparent</color>
 
-    <!--Button-->
-    <color name="button_disable_color">#9D9FA2</color>
 
     <!--My diary custom button-->
     <color name="custom_button_disable_bg_color">#E1E2E3</color>
 
+    <!--dialog-->
+    <color name="edittext_hint">#d4d2d4</color>
 
     <!--Edittext-->
     <color name="edit_stroke">#CACACA</color>
@@ -51,7 +53,6 @@
 
     <!--Contacts-->
     <color name="contacts_photo_tint">#AFABAE</color>
-    <color name="contacts_edittext_hint">#d4d2d4</color>
     <color name="contacts_latter_text">#f9f9f9</color>
     <color name="contacts_latter_text_shadow">#949494</color>
 

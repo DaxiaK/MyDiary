@@ -58,6 +58,21 @@ public class PermissionHelper {
                     }
                 }
                 break;
+            case REQUEST_WRITE_ES_PERMISSION:
+                if (ContextCompat.checkSelfPermission(fragment.getActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(fragment.getActivity(),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                requestCode);
+                        return false;
+                    } else {
+                        fragment.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                requestCode);
+                        return false;
+                    }
+                }
+                break;
         }
         return true;
     }

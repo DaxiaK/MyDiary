@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.init;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 
 import com.kiminonawa.mydiary.BuildConfig;
@@ -75,8 +76,8 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(mContext) < 6) {
             //Insert sample topic
-            long mitsuhaMemoId = dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO);
-            long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO);
+            long mitsuhaMemoId = dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO, Color.BLACK);
+            long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO, Color.BLACK);
             //Insert sample memo
             if (mitsuhaMemoId != -1) {
                 dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId);
@@ -97,7 +98,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
 
         if (SPFManager.getVersionCode(mContext) < 10) {
             //Insert sample topic
-            long topicOnDiarySampleId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY);
+            long topicOnDiarySampleId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY, Color.BLACK);
             if (topicOnDiarySampleId != -1) {
                 //Insert sample diary
                 long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
@@ -109,7 +110,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         //Contacts function work in version 10
         if (SPFManager.getVersionCode(mContext) < 10) {
             //Insert sample contacts
-            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS);
+            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS, Color.BLACK);
 
             //Insert sample contacts
             if (sampleContactsId != -1) {

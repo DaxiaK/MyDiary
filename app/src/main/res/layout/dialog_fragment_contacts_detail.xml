@@ -35,12 +35,13 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:backgroundTint="@android:color/white"
             android:gravity="center"
             android:hint="@string/contacts_detail_edt_name"
-            android:maxLines="1"
             android:inputType="text"
+            android:maxLines="1"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/contacts_edittext_hint"
+            android:textColorHint="@color/edittext_hint"
             android:textSize="24dp" />
 
         <EditText
@@ -50,13 +51,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:backgroundTint="@android:color/white"
             android:gravity="center"
             android:hint="@string/contacts_detail_edt_phone_number"
             android:inputType="phone"
             android:maxLines="1"
             android:paddingTop="0dp"
             android:textColor="@android:color/white"
-            android:textColorHint="@color/contacts_edittext_hint"
+            android:textColorHint="@color/edittext_hint"
             android:textSize="18dp" />
 
     </LinearLayout>

@@ -16,7 +16,8 @@
     <string name="your_name_is">君の名は</string>
 
     <!--Topic type-->
-    <string name="topic_create_name">トピック:</string>
+    <string name="topic_create_name">トピック</string>
+    <string name="topic_create_text_color">テキストの色</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 

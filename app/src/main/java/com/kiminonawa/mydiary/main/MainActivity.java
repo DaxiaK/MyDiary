@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -19,22 +19,20 @@ import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        CreateTopicDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
+        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
 
-
-    /**
-     * Touch interface
-     */
-    public interface ItemTouchHelperAdapter {
-        void onItemDismiss(int position);
-    }
 
     /**
      * RecyclerView
@@ -42,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView RecyclerView_topic;
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
-    private ItemTouchHelper.Callback touchCallback;
     /**
      * DB
      */
@@ -122,15 +119,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (topicCursor.getInt(2)) {
                 case ITopic.TYPE_CONTACTS:
                     topicList.add(
-                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getContactsCountByTopicId(topicCursor.getLong(0))));
+                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1),
+                                    dbManager.getContactsCountByTopicId(topicCursor.getLong(0)),
+                                    topicCursor.getInt(5)));
                     break;
                 case ITopic.TYPE_DIARY:
                     topicList.add(
-                            new Diary(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getDiaryCountByTopicId(topicCursor.getLong(0))));
+                            new Diary(topicCursor.getLong(0), topicCursor.getString(1),
+                                    dbManager.getDiaryCountByTopicId(topicCursor.getLong(0)),
+                                    topicCursor.getInt(5)));
                     break;
                 case ITopic.TYPE_MEMO:
                     topicList.add(
-                            new Memo(topicCursor.getLong(0), topicCursor.getString(1), dbManager.getMemoCountByTopicId(topicCursor.getLong(0))));
+                            new Memo(topicCursor.getLong(0), topicCursor.getString(1),
+                                    dbManager.getMemoCountByTopicId(topicCursor.getLong(0)),
+                                    topicCursor.getInt(5)));
                     break;
             }
             topicCursor.moveToNext();
@@ -147,9 +150,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView_topic.setHasFixedSize(true);
         mainTopicAdapter = new MainTopicAdapter(this, topicList);
         RecyclerView_topic.setAdapter(mainTopicAdapter);
-        touchCallback = new itemTouchHelperCallback(mainTopicAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(touchCallback);
-        touchHelper.attachToRecyclerView(RecyclerView_topic);
+    }
+
+    private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
+        switch (topicBgStatus) {
+            case TopicDetailDialogFragment.TOPIC_BG_ADD_PHOTO:
+                File outputFile = themeManager.getTopicBgSavePathFile(
+                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                //Copy file into topic dir
+                try {
+                    if (outputFile.exists()) {
+                        outputFile.delete();
+                    }
+                    FileUtils.moveFile(new File(
+                                    new FileManager(this, FileManager.TEMP_DIR).getDiaryDirAbsolutePath()
+                                            + "/" + newTopicBgFileName),
+                            outputFile);
+                    //Enter the topic
+                    mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
+                } catch (IOException e) {
+                    Toast.makeText(this, "存檔失敗", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+                break;
+            case TopicDetailDialogFragment.TOPIC_BG_REVERT_DEFAULT:
+                File topicBgFile = themeManager.getTopicBgSavePathFile(
+                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                //Just delete the file  , the topic's activity will check file for changing the bg
+                if (topicBgFile.exists()) {
+                    topicBgFile.delete();
+                }
+                break;
+        }
     }
 
     @Override
@@ -174,49 +206,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void updateName() {
-        initProfile();
+    public void TopicDeleted(final int position) {
+        DBManager dbManager = new DBManager(MainActivity.this);
+        dbManager.opeDB();
+        switch (topicList.get(position).getType()) {
+            case ITopic.TYPE_CONTACTS:
+                dbManager.delAllContactsInTopic(topicList.get(position).getId());
+                break;
+            case ITopic.TYPE_MEMO:
+                dbManager.delAllMemoInTopic(topicList.get(position).getId());
+                break;
+            case ITopic.TYPE_DIARY:
+                //Because FOREIGN key is not work in this version,
+                //so delete diary item first , then delete diary
+                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
+                for (int i = 0; i < diaryCursor.getCount(); i++) {
+                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
+                    diaryCursor.moveToNext();
+                }
+                diaryCursor.close();
+                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
+                break;
+        }
+        //Delete the dir if it exist.
+        try {
+            FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getType(),
+                    topicList.get(position).getId()).getDiaryDir());
+        } catch (IOException e) {
+            //Do nothing if delete fail
+            e.printStackTrace();
+        }
+        dbManager.delTopic(topicList.get(position).getId());
+        dbManager.closeDB();
+        topicList.remove(position);
+        mainTopicAdapter.notifyItemRemoved(position);
+        mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
     }
 
+    @Override
+    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
+        DBManager dbManager = new DBManager(this);
+        dbManager.opeDB();
+        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
+        dbManager.closeDB();
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged();
+        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
+    }
 
-    /**
-     * Swipe to remove the topic.
-     */
-    public class itemTouchHelperCallback extends ItemTouchHelper.Callback {
-
-        //TODO Add undo
-        private final ItemTouchHelperAdapter mAdapter;
-
-        public itemTouchHelperCallback(ItemTouchHelperAdapter adapter) {
-            mAdapter = adapter;
-        }
-
-        @Override
-        public boolean isLongPressDragEnabled() {
-            return false;
-        }
-
-        @Override
-        public boolean isItemViewSwipeEnabled() {
-            return true;
-        }
-
-        @Override
-        public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags, swipeFlags);
-        }
-
-        @Override
-        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-
-        @Override
-        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-            mAdapter.onItemDismiss(viewHolder.getAdapterPosition());
-        }
+    @Override
+    public void updateName() {
+        initProfile();
     }
 }
