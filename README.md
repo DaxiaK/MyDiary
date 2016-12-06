@@ -43,32 +43,37 @@ so, maybe I will try to create an iOS version after this app is running.
 * Optimized diary page viewer 
 * Add photo in diary
 * Allow changing diary time
-
+* Main Setting page
+* More theme , More profile
 
 ## Schedule
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Main Setting page
-2. More theme , More profile
-3. Add web block in diary
-4. Allow order for topic , memo
-5. OOBE (Alpha) 
-6. Google account backup & setting page
-7. page curl effect
-8. Implments search
-9. Support Chinese sort
-10. Add password (beta)
-11. Tags
-12. UI review & support xxxHpdi \
-13. Add contacts from phone
-14. Add bookmark for diary
-15. Add music in diary
-16. Supprot JP sort
+1. Add Avatar
+2. Add web block in diary
+3. Allow order for topic , memo
+4. OOBE (Alpha) 
+5. Google account backup & setting page
+6. page curl effect
+7. Implments search
+8. Support Chinese sort
+9. Add password (beta)
+10. Tags
+11. UI review & support xxxHpdi \
+12. Add contacts from phone
+13. Add bookmark for diary
+14. Add music in diary
+15. Supprot JP sort
 
 Coding & Designing:
 
 1. Add mistake-proofing
+
+## known issue
+
+* Some problem for selecting image file on Xiaomi
+
 
 ## Use case
 
