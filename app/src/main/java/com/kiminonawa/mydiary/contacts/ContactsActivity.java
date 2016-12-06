@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,8 +15,11 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.LetterComparator;
+
+import net.sourceforge.pinyin4j.PinyinHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,6 +136,13 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private void sortContacts() {
         for (ContactsEntity contactsEntity : contactsNamesList) {
             String sortString = contactsEntity.getName().substring(0, 1).toUpperCase();
+            if ( sortString.matches("[\\u4E00-\\u9FA5]") && (!checkLanguage().endsWith("ja")) ) {
+                String[] arr = PinyinHelper.toHanyuPinyinStringArray(sortString.trim().charAt(0));
+                sortString = arr[0].substring(0, 1).toUpperCase();
+            }
+            if ( sortString.matches("[\\u0800-\\u4E00]") && checkLanguage().endsWith("ja") ) {
+                //sort Japanese
+            }
             if (sortString.matches("[A-Z]")) {
                 contactsEntity.setSortLetters(sortString.toUpperCase());
             } else {
@@ -187,5 +198,34 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         if (position != -1) {
             RecyclerView_contacts.getLayoutManager().scrollToPosition(position);
         }
+    }
+
+    private String checkLanguage() {
+        String language = "en";
+        switch (SPFManager.getLocalLanguageCode(this)) {
+            case 0:
+                language = getResources().getConfiguration().locale.getLanguage();
+                break;
+            case 1:
+                // ENGLISH;
+                language = "en";
+                break;
+            case 2:
+                // JAPANESE;
+                language = "ja";
+                break;
+            case 3:
+                //TRADITIONAL_CHINESE;
+                language = "zh";
+                break;
+            case 4:
+                // SIMPLIFIED_CHINESE;
+                language = "zh";
+                break;
+            default:
+                // language = English
+                break;
+        }
+        return language;
     }
 }
