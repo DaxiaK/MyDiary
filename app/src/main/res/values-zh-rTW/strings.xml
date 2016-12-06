@@ -3,7 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.1.9.161204_01_d**\n-增加設定，允許修改部份風格(修改背景會於下一版加入)\n-避免部份HTC裝置選擇圖片後當機，等待取得實機後會修正\n-修復bug與調整畫面</string>
+    <string name="release_note">**0.2.0.161206_01_d**\n
+        -允許主題設定顏色和背景\n
+        -支援簡體中文(來自aviraxp)\n
+        -修復bug
+    </string>
     <string name="release_note_close_remind">不再提醒</string>
 
     <!--init-->

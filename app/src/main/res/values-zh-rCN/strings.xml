@@ -3,6 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
+     <string name="release_note">**0.2.0.161206_01_d**\n
+        -允許主題設定顏色和背景\n
+        -支援簡體中文(來自aviraxp)\n
+        -修復bug
+    </string>
     <string name="release_note_close_remind">不再提醒</string>
 
     <!--init-->
@@ -48,7 +53,7 @@
     <string name="diary_no_location">无位置</string>
     <string name="diary_location_permission_title">授权</string>
     <string name="diary_location_permission_content">需要授予获取位置信息的权限</string>
-    <string name="diary_photo_permission_content">需要授予拍照的权限</string>
+    <string name="diary_photo_permission_content">需要授予新增照片的权限</string>
 
     <string name="diary_title_hint">日记标题</string>
     <string name="diary_content_hint">在此写下你的日记内容</string>
