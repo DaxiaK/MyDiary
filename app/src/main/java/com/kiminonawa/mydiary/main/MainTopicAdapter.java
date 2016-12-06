@@ -1,10 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,30 +10,25 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by daxia on 2016/10/17.
  */
 
-public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements MainActivity.ItemTouchHelperAdapter {
+public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> {
 
 
     private List<ITopic> topicList;
-    private Context mContext;
+    private MainActivity activity;
 
-    public MainTopicAdapter(Context context, List<ITopic> topicList) {
-        this.mContext = context;
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
+        this.activity = activity;
         this.topicList = topicList;
     }
 
@@ -57,88 +48,55 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(mContext));
+        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
+        holder.getIconView().setColorFilter(topicList.get(position).getColor());
         holder.getTitleView().setText(topicList.get(position).getTitle());
+        holder.getTitleView().setTextColor(topicList.get(position).getColor());
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
+        holder.getTVCount().setTextColor(topicList.get(position).getColor());
+        holder.getArrow().setColorFilter(topicList.get(position).getColor());
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (topicList.get(position).getType()) {
-                    case ITopic.TYPE_CONTACTS:
-                        Intent goContactsPageIntent = new Intent(mContext, ContactsActivity.class);
-                        goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goContactsPageIntent);
-                        break;
-                    case ITopic.TYPE_DIARY:
-                        Intent goEntriesPageIntent = new Intent(mContext, DiaryActivity.class);
-                        goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goEntriesPageIntent);
-                        break;
-                    case ITopic.TYPE_MEMO:
-                        Intent goMemoPageIntent = new Intent(mContext, MemoActivity.class);
-                        goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
-                        goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                        mContext.startActivity(goMemoPageIntent);
-                        break;
-                }
+                gotoTopic(topicList.get(position).getType(), position);
+            }
+        });
+        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                TopicDetailDialogFragment createTopicDialogFragment =
+                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
+                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
+                createTopicDialogFragment.setCallBack(activity);
+                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
+                        "createTopicDialogFragment");
+                return true;
             }
         });
     }
 
-    @Override
-    public void onItemDismiss(final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setCancelable(false)
-                .setTitle(mContext.getString(R.string.topic_dialog_delete_title))
-                .setMessage(String.format(mContext.getResources().getString(R.string.topic_dialog_delete_content), topicList.get(position).getTitle()))
-                .setNegativeButton(mContext.getString(R.string.dialog_button_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        notifyDataSetChanged();
-                    }
-                })
-                .setPositiveButton(mContext.getString(R.string.dialog_button_ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        DBManager dbManager = new DBManager(mContext);
-                        dbManager.opeDB();
-                        switch (topicList.get(position).getType()) {
-                            case ITopic.TYPE_CONTACTS:
-                                dbManager.delAllContactsInTopic(topicList.get(position).getId());
-                                break;
-                            case ITopic.TYPE_DIARY:
-                                //Because FOREIGN key is not work in this version,
-                                //so delete diary item first , then delete diary
-                                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
-                                for (int i = 0; i < diaryCursor.getCount(); i++) {
-                                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
-                                    diaryCursor.moveToNext();
-                                }
-                                diaryCursor.close();
-                                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                                //delete photo dir
-                                try {
-                                    FileUtils.deleteDirectory(new FileManager(mContext, topicList.get(position).getId()).getDiaryDir());
-                                } catch (IOException e) {
-                                    //Do nothing if delete fail
-                                    e.printStackTrace();
-                                }
-                                break;
-                            case ITopic.TYPE_MEMO:
-                                dbManager.delAllMemoInTopic(topicList.get(position).getId());
-                                break;
-                        }
-                        dbManager.delTopic(topicList.get(position).getId());
-                        dbManager.closeDB();
-                        topicList.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, getItemCount());
-                    }
-                });
-        builder.show();
+    public void gotoTopic(final int type, final int position) {
+        switch (type) {
+            case ITopic.TYPE_CONTACTS:
+                Intent goContactsPageIntent = new Intent(activity, ContactsActivity.class);
+                goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goContactsPageIntent);
+                break;
+            case ITopic.TYPE_DIARY:
+                Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
+                goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goEntriesPageIntent);
+                break;
+            case ITopic.TYPE_MEMO:
+                Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);
+                goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
+                goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                activity.startActivity(goMemoPageIntent);
+                break;
+        }
     }
 
 
@@ -147,6 +105,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
+        private ImageView IV_topic_arrow_right;
         private View rootView;
 
         protected TopicViewHolder(View view) {
@@ -155,6 +114,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
+            this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
         }
 
         protected ImageView getIconView() {
@@ -165,8 +125,12 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return TV_topic_title;
         }
 
-        public TextView getTVCount() {
+        protected TextView getTVCount() {
             return TV_topic_count;
+        }
+
+        protected ImageView getArrow() {
+            return IV_topic_arrow_right;
         }
 
         protected View getRootView() {

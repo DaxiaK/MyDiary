@@ -67,13 +67,13 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
-            //TODO close this activity and show toast
+            finish();
         }
         /**
          * init UI
          */
         RL_contacts_content = (RelativeLayout) findViewById(R.id.RL_contacts_content);
-        RL_contacts_content.setBackground(themeManager.getContactsBgDrawable(this));
+        RL_contacts_content.setBackground(themeManager.getContactsBgDrawable(this, topicId));
 
         TV_contact_short_sort = (TextView) findViewById(R.id.TV_contact_short_sort);
         TV_contact_short_sort.setBackgroundColor(themeManager.getThemeDarkColor(ContactsActivity.this));

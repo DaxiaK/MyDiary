@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.main;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
@@ -58,7 +59,8 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.IV_main_setting_add_topic:
-                CreateTopicDialogFragment createTopicDialogFragment = new CreateTopicDialogFragment();
+                TopicDetailDialogFragment createTopicDialogFragment =
+                        TopicDetailDialogFragment.newInstance(false, -1, -1, "", -1, Color.BLACK);
                 createTopicDialogFragment.setCallBack((MainActivity) getActivity());
                 createTopicDialogFragment.show(getFragmentManager(), "createTopicDialogFragment");
                 dismiss();

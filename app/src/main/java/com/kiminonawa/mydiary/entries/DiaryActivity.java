@@ -52,7 +52,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
-            //TODO close this activity and show toast
+            finish();
         }
         initViewPager();
         /**
@@ -99,7 +99,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.setAdapter(mPagerAdapter);
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
     }
-
 
 
     public void setCreating(boolean creating) {

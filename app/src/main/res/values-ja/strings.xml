@@ -3,11 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.1.9.161204_01_d**\n-Add setting page and allow change theme color(Modify background will be released in next version)\n-Avoid crash in some HTC devices ,I will fix it after I get device\n-Fix bug and modify layout</string>
+    <string name="release_note">**0.2.0.161206_01_d**\n-Allowing topic color and background\n-support zh-rCN(By aviraxp)\n-Fix bug</string>
     <string name="release_note_close_remind">又提示しない</string>
 
     <!--init-->
-    <string name="init_message">データが正常に更新された場合は、\nMyDairyを終了しないでください</string>
+    <string name="init_message">データは今更新中ですので、MyDairyを閉じないでください</string>
 
     <!--Profile-->
     <string name="profile_username_taki">立花　瀧</string>
@@ -15,12 +15,17 @@
     <string name="toast_change_theme">テーマを切り替えている&#8230;</string>
     <string name="your_name_is">君の名は</string>
 
-    <!--Topic type-->
-    <string name="topic_create_name">トピック:</string>
+    <!--Topic detail-->
+    <string name="topic_detail_name">トピック</string>
+    <string name="topic_detail_text_color">テキストの色</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
-    <string name="toast_topic_empty">トピックは空です!</string>
+    <string name="toast_topic_empty">トピックは空です</string>
+    <string name="topic_topic_bg_fail">トピックの背景を変更するには&#8230;</string>
+
+    <string name="topic_detail_current_bg">トピックの背景</string>
+    <string name="topic_detail_default_bg">デフォルトの背景</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>

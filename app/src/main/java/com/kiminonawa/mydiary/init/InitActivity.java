@@ -37,7 +37,18 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         //init UI
         TV_init_message = (TextView) findViewById(R.id.TV_init_message);
 
-        //Init Object
+        //Init photo value
+        //topic bg
+        int bgWeight = ScreenHelper.getScreenWidth(InitActivity.this);
+        int bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
+                //diary activity top bar  + edit bottom bar
+                ScreenHelper.dpToPixel(getResources(), 80 + 40);
+        int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
+                //diary activity top bar
+                ScreenHelper.dpToPixel(getResources(), 80);
+        ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
+
+        //Diary photo size
         int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
                 //diary activity top bar + diary info + diary button bar + padding
                 ScreenHelper.dpToPixel(getResources(), 80 + 120 + 40 + (2 * 5));
@@ -79,6 +90,9 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
                 break;
             case 3:
                 locale = Locale.TRADITIONAL_CHINESE;
+                break;
+            case 4:
+                locale = Locale.SIMPLIFIED_CHINESE;
                 break;
             // 0 = default = language of system
             default:

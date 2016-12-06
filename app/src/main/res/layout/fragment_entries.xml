@@ -61,6 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/RL_entries_edit_bar"
+        android:alpha="0.95"
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />

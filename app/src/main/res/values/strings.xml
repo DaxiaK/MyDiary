@@ -3,11 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.1.9.161204_01_d**\n-Add setting page and allow change theme color(Modify background will be released in next version)\n-Avoid crash in some HTC devices ,I will fix it after I get device\n-Fix bug and modify layout</string>
+    <string name="release_note">**0.2.0.161206_01_d**\n-Allowing topic color and background\n-support zh-rCN(By aviraxp)\n-Fix bug</string>
     <string name="release_note_close_remind">Don\'t remind</string>
 
     <!--init-->
-    <string name="init_message">For data updated successfully ,please don\'t close MyDairy</string>
+    <string name="init_message">Data is updating now ,please don\'t close MyDairy</string>
 
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
@@ -15,12 +15,17 @@
     <string name="toast_change_theme">Theme is changing&#8230;</string>
     <string name="your_name_is">Your name is</string>
 
-    <!--Topic type-->
-    <string name="topic_create_name">Topic name:</string>
+    <!--Topic detail-->
+    <string name="topic_detail_name">Topic name</string>
+    <string name="topic_detail_text_color">Text color</string>
     <string name="topic_dialog_delete_title">Delete</string>
     <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
 
-    <string name="toast_topic_empty">Topic is empty!</string>
+    <string name="toast_topic_empty">Topic name is empty</string>
+    <string name="topic_topic_bg_fail">To change background of topic fail&#8230;</string>
+
+    <string name="topic_detail_current_bg">Topic background</string>
+    <string name="topic_detail_default_bg">default background</string>
 
     <!--Dialog -->
     <string name="dialog_button_ok">ok</string>
