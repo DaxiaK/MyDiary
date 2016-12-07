@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * UI
      */
     private ThemeManager themeManager;
+    private ImageView IV_main_profile_picture;
+
     private LinearLayout LL_main_profile;
     private TextView TV_main_profile_username;
     private EditText EDT_main_topic_search;
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LL_main_profile = (LinearLayout) findViewById(R.id.LL_main_profile);
         LL_main_profile.setOnClickListener(this);
 
+        IV_main_profile_picture = (ImageView) findViewById(R.id.IV_main_profile_picture);
         TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
 
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
@@ -83,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initProfile();
         initBottomBar();
         initTopicAdapter();
+        loadProfilePicture();
 
         //Release note dialog
         if (getIntent().getBooleanExtra("showReleaseNote", true)) {
@@ -143,6 +147,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         topicCursor.close();
         dbManager.closeDB();
+    }
+
+    private void loadProfilePicture() {
+        IV_main_profile_picture.setImageDrawable(themeManager.getProfilePictureDrawable(this));
     }
 
 
@@ -260,5 +268,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void updateName() {
         initProfile();
+        loadProfilePicture();
     }
 }

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 public class BoardImageView extends ImageView {
 
     private Rect rect;
-    private Paint paint = new Paint();
+    private Paint paint ;
 
     public BoardImageView(Context context) {
         super(context);

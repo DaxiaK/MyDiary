@@ -106,5 +106,7 @@
 
     <string name="toast_save_profile_banner_fail">プロフィールバナーの保存に失敗しました</string>
     <string name="toast_crop_profile_banner_fail">プロフィールバナーの切り取りに失敗しました</string>
+    <string name="toast_save_profile_picture_fail">プロフィール写真の保存に失敗しました</string>
+    <string name="toast_crop_profile_picture_fail">プロフィール写真の切り取りに失敗しました</string>
 
 </resources>
