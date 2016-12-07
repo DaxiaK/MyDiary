@@ -35,6 +35,9 @@ public class AboutActivity extends AppCompatActivity {
         lincense.append(
                 new LicenseObj("uCrop", "Yalantis", "2016", LicenseObj.APACHE)
                         .getLincense());
+        lincense.append(
+                new LicenseObj("pinyin4j", "Li Min", "2006", LicenseObj.GPLv2)
+                        .getLincense());
         ((TextView) findViewById(R.id.TV_about_text)).setText(lincense.toString());
     }
 
@@ -42,6 +45,7 @@ public class AboutActivity extends AppCompatActivity {
 
         public final static int MIT = 0;
         public final static int APACHE = 1;
+        public final static int GPLv2 = 2;
 
         private String softwareName;
         private String author;
@@ -93,6 +97,23 @@ public class AboutActivity extends AppCompatActivity {
                             "WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n" +
                             "See the License for the specific language governing permissions and\n" +
                             "limitations under the License." +
+                            "\n\n=====\n";
+                case GPLv2:
+                    return "\n==" + softwareName + "==\n\n" +
+                            "copyright " + year + ", " + author + "\n\n" +
+                            "This program is free software; you can redistribute it and/or\n" +
+                            "modify it under the terms of the GNU General Public License\n" +
+                            "as published by the Free Software Foundation; either version 2\n" +
+                            "of the License, or (at your option) any later version.\n" +
+                            "\n" +
+                            "This program is distributed in the hope that it will be useful,\n" +
+                            "but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+                            "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
+                            "GNU General Public License for more details.\n" +
+                            "\n" +
+                            "You should have received a copy of the GNU General Public License\n" +
+                            "along with this program; if not, write to the Free Software\n" +
+                            "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n" +
                             "\n\n=====\n";
                 default:
                     return "";

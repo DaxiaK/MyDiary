@@ -136,12 +136,13 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private void sortContacts() {
         for (ContactsEntity contactsEntity : contactsNamesList) {
             String sortString = contactsEntity.getName().substring(0, 1).toUpperCase();
-            if ( sortString.matches("[\\u4E00-\\u9FA5]") && (!checkLanguage().endsWith("ja")) ) {
+            if ( sortString.matches("[\\u4E00-\\u9FA5]") && (checkLanguage().endsWith("zh") || checkLanguage().endsWith("en")) ) {
+                //if language == (zh || en) sort Chinese
                 String[] arr = PinyinHelper.toHanyuPinyinStringArray(sortString.trim().charAt(0));
                 sortString = arr[0].substring(0, 1).toUpperCase();
             }
             if ( sortString.matches("[\\u0800-\\u4E00]") && checkLanguage().endsWith("ja") ) {
-                //sort Japanese
+                //if language == ja  sort Japanese
             }
             if (sortString.matches("[A-Z]")) {
                 contactsEntity.setSortLetters(sortString.toUpperCase());
