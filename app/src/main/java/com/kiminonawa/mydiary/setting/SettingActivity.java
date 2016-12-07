@@ -22,6 +22,7 @@ import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -70,6 +71,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBarLightMode(this, true);
 
         themeManager = ThemeManager.getInstance();
         //Create fileManager for get temp folder

@@ -93,6 +93,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
                                 BitmapHelper.getBitmapFromReturnedImage(mContext, uri, reqWidth, reqHeight)));
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Log.e("CopyPhotoTask", e.toString());
         }
         return returnFileName;

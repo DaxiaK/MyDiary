@@ -16,6 +16,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.LetterComparator;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,6 +63,8 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBarLightMode(this, true);
 
         themeManager = ThemeManager.getInstance();
 

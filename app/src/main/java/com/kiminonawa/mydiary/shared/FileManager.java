@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.shared;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +31,31 @@ import java.util.UUID;
 /**
  * Created by daxia on 2016/11/18.
  */
+
+//
+//                       _oo0oo_
+//                      o8888888o
+//                      88" . "88
+//                      (| -_- |)
+//                      0\  =  /0
+//                    ___/`---'\___
+//                  .' \\|     |// '.
+//                 / \\|||  :  |||// \
+//                / _||||| -:- |||||- \
+//               |   | \\\  -  /// |   |
+//               | \_|  ''\---/''  |_/ |
+//               \  .-\__  '-'  ___/-. /
+//             ___'. .'  /--.--\  `. .'___
+//          ."" '<  `.___\_<|>_/___.' >' "".
+//         | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+//         \  \ `_.   \_ __\ /__ _/   .-` /  /
+//     =====`-.____`.___ \_____/___.-`___.-'=====
+//                       `=---='
+//
+//
+//     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+//               佛祖保佑         永無Bug
 
 public class FileManager {
 
@@ -159,6 +185,9 @@ public class FileManager {
                             cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                     cursor.close();
                 }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+                e.printStackTrace();
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -173,6 +202,7 @@ public class FileManager {
                 }
             } catch (URISyntaxException e) {
                 Log.e(TAG, e.toString());
+                e.printStackTrace();
             }
         } else {
             File file = new File(uri.getPath());
@@ -238,76 +268,103 @@ public class FileManager {
      * Gets the real path from file
      *
      * @param context
-     * @param contentUri
+     * @param uri
      * @return path
-     * @see:http://stackoverflow.com/questions/28452591/android-get-exif-rotation-from-uri
+     * REF:http://stackoverflow.com/questions/26195731/android-get-real-path-from-uri
      */
-    public static String getRealPathFromURI(Context context, Uri contentUri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && DocumentsContract.isDocumentUri(context, contentUri)) {
-            return getPathForV19AndUp(context, contentUri);
-        } else {
-            return getPathForPreV19(context, contentUri);
+    @TargetApi(19)
+    public static String getRealPathFromURI(Context context, Uri uri) {
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
         }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
     }
 
-    /**
-     * Handles pre V19 uri's
-     *
-     * @param context
-     * @param contentUri
-     * @return
-     */
-    private static String getPathForPreV19(Context context, Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
 
-        return res;
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
     }
 
-    /**
-     * Handles V19 and up uri's
-     *
-     * @param context
-     * @param contentUri
-     * @return path
-     */
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static String getPathForV19AndUp(Context context, Uri contentUri) {
-        String wholeID = DocumentsContract.getDocumentId(contentUri);
-
-        // Split at colon, use second item in the array
-        //Fix split id fail
-        String[] wholeIDSpilt = wholeID.split(":");
-        String id;
-        if (wholeIDSpilt.length > 1) {
-            id = wholeID.split(":")[1];
-        } else {
-            id = wholeID;
-        }
-        String[] column = {MediaStore.Images.Media.DATA};
-
-        // where id is equal to
-        String sel = MediaStore.Images.Media._ID + "=?";
-        Cursor cursor = context.getContentResolver().
-                query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        column, sel, new String[]{id}, null);
-
-        String filePath = "";
-        int columnIndex = cursor.getColumnIndex(column[0]);
-        if (cursor.moveToFirst()) {
-            filePath = cursor.getString(columnIndex);
-        }
-
-        cursor.close();
-        return filePath;
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
 
     /**
      * @return MB

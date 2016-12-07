@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 /**
  * Created by daxia on 2016/12/1.
@@ -12,30 +13,36 @@ import com.kiminonawa.mydiary.R;
 
 public class AboutActivity extends AppCompatActivity {
 
-    private StringBuilder lincense;
+    private StringBuilder license;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+
         setContentView(R.layout.activity_about);
-        lincense = new StringBuilder();
-        lincense.append("This open source project is coding by Daxia , see more information:\n\n" +
+        license = new StringBuilder();
+        license.append("This open source project is coding by Daxia , see more information:\n\n" +
                 "https://github.com/erttyy8821/MyDiary\n\n");
-        lincense.append("This project release by MIT License:\n");
-        lincense.append(
+        license.append("This project release by MIT License:\n");
+        license.append(
                 new LicenseObj("MyDiary", "Daxia", "2016", LicenseObj.MIT)
-                        .getLincense());
-        lincense.append("\nI use some lib from:\n");
-        lincense.append(
+                        .getLicense());
+        license.append("\nI use some lib from:\n");
+        license.append(
                 new LicenseObj("android-segmented-control", "Le Van Hoang", "2014", LicenseObj.MIT)
-                        .getLincense());
-        lincense.append(
+                        .getLicense());
+        license.append(
                 new LicenseObj("HoloColorPicker", "Lars Werkman", "2012", LicenseObj.APACHE)
-                        .getLincense());
-        lincense.append(
+                        .getLicense());
+        license.append(
                 new LicenseObj("uCrop", "Yalantis", "2016", LicenseObj.APACHE)
-                        .getLincense());
-        ((TextView) findViewById(R.id.TV_about_text)).setText(lincense.toString());
+                        .getLicense());
+        license.append(
+                new LicenseObj("CircleImageView", "Henning Dodenhof", "2014 - 2016", LicenseObj.APACHE)
+                        .getLicense());
+        ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
 
     public class LicenseObj {
@@ -55,7 +62,7 @@ public class AboutActivity extends AppCompatActivity {
             this.license = license;
         }
 
-        public String getLincense() {
+        public String getLicense() {
             switch (license) {
                 case MIT:
                     return "\n==" + softwareName + "==\n\n" +

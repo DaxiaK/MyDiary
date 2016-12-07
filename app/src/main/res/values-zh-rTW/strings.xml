@@ -111,6 +111,8 @@
 
     <string name="toast_save_profile_banner_fail">個人橫幅背景存檔失敗&#8230;</string>
     <string name="toast_crop_profile_banner_fail">個人橫幅裁切失敗&#8230;</string>
+    <string name="toast_save_profile_picture_fail">大頭貼存檔失敗&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">大頭貼裁切失敗&#8230;</string>
 
 
 

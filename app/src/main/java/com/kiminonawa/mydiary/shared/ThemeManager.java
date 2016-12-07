@@ -27,6 +27,7 @@ public class ThemeManager {
     public final static int CUSTOM = 2;
 
     public final static String CUSTOM_PROFILE_BANNER_BG_FILENAME = "custom_profile_banner_bg";
+    public final static String CUSTOM_PROFILE_PICTURE_FILENAME = "custom_profile_picture_bg";
     public final static String CUSTOM_TOPIC_BG_FILENAME = "custom_topic_bg";
 
 
@@ -102,6 +103,17 @@ public class ThemeManager {
         }
         return bgDrawable;
     }
+
+    public Drawable getProfilePictureDrawable(Context context) {
+        Drawable pictureDrawable;
+        pictureDrawable = Drawable.createFromPath(
+                new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getPath() + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
+        if (pictureDrawable == null) {
+            pictureDrawable = ViewTools.getDrawable(context, R.drawable.ic_profile_image);
+        }
+        return pictureDrawable;
+    }
+
 
     public Drawable getTopicItemSelectDrawable(Context context) {
         return createTopicItemSelectBg(context);

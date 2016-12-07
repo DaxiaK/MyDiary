@@ -14,6 +14,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBarLightMode(this, true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {

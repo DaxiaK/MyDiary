@@ -30,6 +30,9 @@ public class ExifUtil {
 
     public static Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap) {
         String path = FileManager.getRealPathFromURI(context, uri);
+        if (path == null) {
+            return bitmap;
+        }
         return rotateBitmap(path, bitmap);
     }
 
