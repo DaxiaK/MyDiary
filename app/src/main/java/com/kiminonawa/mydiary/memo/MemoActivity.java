@@ -14,7 +14,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
-import com.kiminonawa.mydiary.shared.gui.statusbar.ChinaPhoneHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.ArrayList;
 import java.util.List;

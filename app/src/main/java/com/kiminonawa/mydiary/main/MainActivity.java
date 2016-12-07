@@ -22,7 +22,7 @@ import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.gui.statusbar.ChinaPhoneHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import org.apache.commons.io.FileUtils;
 

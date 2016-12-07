@@ -22,7 +22,7 @@ import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.gui.statusbar.ChinaPhoneHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;

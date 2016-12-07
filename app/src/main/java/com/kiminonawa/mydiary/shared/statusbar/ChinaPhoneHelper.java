@@ -1,4 +1,4 @@
-package com.kiminonawa.mydiary.shared.gui.statusbar;
+package com.kiminonawa.mydiary.shared.statusbar;
 
 import android.app.Activity;
 import android.os.Build;
@@ -33,13 +33,13 @@ public class ChinaPhoneHelper {
 
     /**
      * Make status icon is dark，
-     * Run on Android 5.0+ , for MIUI,FLYME,ANDROID_M
+     * Run on Android 6.0+ , for MIUI,FLYME,ANDROID_M
      *
      * @return 1:MIUI 2:Flyme 3:android6.0
      */
     public static int setStatusBarLightMode(Activity activity, boolean lightMode) {
         @SystemType int result = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (new MIUIHelper().setStatusBarLightMode(activity, lightMode)) {
                 result = MIUI;
             } else if (new FlymeHelper().setStatusBarLightMode(activity, lightMode)) {

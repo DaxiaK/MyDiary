@@ -1,4 +1,4 @@
-package com.kiminonawa.mydiary.shared.gui.statusbar;
+package com.kiminonawa.mydiary.shared.statusbar;
 
 import android.app.Activity;
 
