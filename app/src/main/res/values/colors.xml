@@ -3,7 +3,7 @@
     <!--Default-->
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#666666</color>
-    <color name="colorPrimaryDark_23">#e8e8e8</color>
+    <color name="colorPrimaryDark_20">#e8e8e8</color>
     <color name="colorAccent">#b2b2b2</color>
 
     <!--Theme-->

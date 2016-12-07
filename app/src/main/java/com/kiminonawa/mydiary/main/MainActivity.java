@@ -22,6 +22,7 @@ import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.statusbar.ChinaPhoneHelper;
 
 import org.apache.commons.io.FileUtils;
 
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         //Set layout
         setContentView(R.layout.activity_main);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBarLightMode(this, true);
 
         themeManager = ThemeManager.getInstance();
 
