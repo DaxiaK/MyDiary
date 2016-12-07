@@ -160,6 +160,9 @@ public class FileManager {
                             cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                     cursor.close();
                 }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+                e.printStackTrace();
             } finally {
                 if (cursor != null) {
                     cursor.close();
@@ -174,6 +177,7 @@ public class FileManager {
                 }
             } catch (URISyntaxException e) {
                 Log.e(TAG, e.toString());
+                e.printStackTrace();
             }
         } else {
             File file = new File(uri.getPath());
