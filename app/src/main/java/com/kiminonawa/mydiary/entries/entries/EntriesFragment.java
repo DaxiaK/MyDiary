@@ -1,9 +1,11 @@
 package com.kiminonawa.mydiary.entries.entries;
 
 
+import android.animation.LayoutTransition;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
     private RelativeLayout RL_entries_content, RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
     private ImageView IV_entries_edit, IV_entries_photo;
+    private CardView CV_entries_empty_dialog;
     private final static int MAX_TEXT_LENGTH = 10;
 
     /**
@@ -66,6 +69,9 @@ public class EntriesFragment extends BaseDiaryFragment implements
         TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
         TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
+        CV_entries_empty_dialog = (CardView) rootView.findViewById(R.id.CV_entries_empty_dialog);
+        CV_entries_empty_dialog.setVisibility(View.GONE);
+
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);
         RL_entries_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_content);
@@ -75,6 +81,11 @@ public class EntriesFragment extends BaseDiaryFragment implements
         RL_entries_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_entries_edit_bar);
         RL_entries_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
         entriesList = new ArrayList<>();
+
+        //设置子view增删动画
+        LayoutTransition transition = new LayoutTransition();
+        RL_entries_content.setLayoutTransition(transition);
+
         return rootView;
     }
 
@@ -82,9 +93,10 @@ public class EntriesFragment extends BaseDiaryFragment implements
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!isCreatedView) {
-            loadEntries();
+            //loadEntries();
             initRecyclerView();
             countEntries();
+            updateEntriesData();
         }
         isCreatedView = true;
     }
@@ -165,6 +177,11 @@ public class EntriesFragment extends BaseDiaryFragment implements
 
     public void updateEntriesData() {
         loadEntries();
+        if (entriesList.isEmpty()){
+            CV_entries_empty_dialog.setVisibility(View.VISIBLE);
+        } else {
+            CV_entries_empty_dialog.setVisibility(View.GONE);
+        }
         entriesAdapter.notifyDataSetChanged();
         countEntries();
     }

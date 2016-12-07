@@ -17,6 +17,8 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.LetterComparator;
 
+import net.sourceforge.pinyin4j.PinyinHelper;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -132,6 +134,10 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private void sortContacts() {
         for (ContactsEntity contactsEntity : contactsNamesList) {
             String sortString = contactsEntity.getName().substring(0, 1).toUpperCase();
+            if (sortString.matches("[\\u4E00-\\u9FA5]")) {
+                String[] arr = PinyinHelper.toHanyuPinyinStringArray(sortString.trim().charAt(0));
+                sortString = arr[0].substring(0, 1).toUpperCase();
+            }
             if (sortString.matches("[A-Z]")) {
                 contactsEntity.setSortLetters(sortString.toUpperCase());
             } else {
