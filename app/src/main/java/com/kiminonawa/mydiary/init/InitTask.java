@@ -83,11 +83,11 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
                 dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId);
                 dbManager.insertMemo("男子に触るな！", false, mitsuhaMemoId);
                 dbManager.insertMemo("脚をひらくな！", true, mitsuhaMemoId);
-                dbManager.insertMemo("体は見ない/触らない！！", false, mitsuhaMemoId);
+                dbManager.insertMemo("体は見ない！/触らない！！", false, mitsuhaMemoId);
                 dbManager.insertMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId);
             }
             if (takiMemoId != -1) {
-                dbManager.insertMemo("司とベタベタする.....", true, takiMemoId);
+                dbManager.insertMemo("司とベタベタするな.....", true, takiMemoId);
                 dbManager.insertMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId);
                 dbManager.insertMemo("女言葉NG！", false, takiMemoId);
                 dbManager.insertMemo("遅刻するな！", true, takiMemoId);
