@@ -3,9 +3,10 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
-     <string name="release_note">**0.2.0.161206_01_d**\n
-        -允許主題設定顏色和背景\n
-        -支援簡體中文(來自aviraxp)\n
+    <string name="release_note">**0.2.1.161207_01_d**\n
+        -嘗試修復小米、魅族和舊版本手機上UI和選擇圖片問題(請幫忙回報)\n
+        -支援大頭貼\n
+        -修部份機翻日文(感謝puhitaku)\n
         -修復bug
     </string>
     <string name="release_note_close_remind">不再提醒</string>

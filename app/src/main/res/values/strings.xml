@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.2.0.161206_01_d**\n-Allowing topic color and background\n-support zh-rCN(By aviraxp)\n-Fix bug</string>
+    <string name="release_note">**0.2.1.161207_01_d**\n
+        -Try to fix UI and select photo issues on Miui,Flyme and old android version(help me to check it)\n
+        -Support profile picture\n
+        -Fix some wrong translation(Thanks for puhitaku)\n
+        -Fix bug
+    </string>
     <string name="release_note_close_remind">Don\'t remind</string>
 
     <!--init-->
