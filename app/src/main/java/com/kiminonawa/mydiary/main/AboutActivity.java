@@ -28,17 +28,20 @@ public class AboutActivity extends AppCompatActivity {
         license.append("This project release by MIT License:\n");
         license.append(
                 new LicenseObj("MyDiary", "Daxia", "2016", LicenseObj.MIT)
-                        .getlicense());
+                        .getLicense());
         license.append("\nI use some lib from:\n");
         license.append(
                 new LicenseObj("android-segmented-control", "Le Van Hoang", "2014", LicenseObj.MIT)
-                        .getlicense());
+                        .getLicense());
         license.append(
                 new LicenseObj("HoloColorPicker", "Lars Werkman", "2012", LicenseObj.APACHE)
-                        .getlicense());
+                        .getLicense());
         license.append(
                 new LicenseObj("uCrop", "Yalantis", "2016", LicenseObj.APACHE)
-                        .getlicense());
+                        .getLicense());
+        license.append(
+                new LicenseObj("CircleImageView", "Henning Dodenhof", "2014 - 2016", LicenseObj.APACHE)
+                        .getLicense());
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
 
@@ -59,7 +62,7 @@ public class AboutActivity extends AppCompatActivity {
             this.license = license;
         }
 
-        public String getlicense() {
+        public String getLicense() {
             switch (license) {
                 case MIT:
                     return "\n==" + softwareName + "==\n\n" +
