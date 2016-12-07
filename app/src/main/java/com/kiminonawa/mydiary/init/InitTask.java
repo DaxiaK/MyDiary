@@ -110,7 +110,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         //Contacts function work in version 10
         if (SPFManager.getVersionCode(mContext) < 10) {
             //Insert sample contacts
-            long sampleContactsId = dbManager.insertTopic("緊急狀況以外不要聯絡", ITopic.TYPE_CONTACTS, Color.BLACK);
+            long sampleContactsId = dbManager.insertTopic("緊急時以外かけちゃダメ！", ITopic.TYPE_CONTACTS, Color.BLACK);
 
             //Insert sample contacts
             if (sampleContactsId != -1) {
