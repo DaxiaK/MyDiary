@@ -9,7 +9,7 @@
         -Fix some wrong translation(Thanks for puhitaku)\n
         -Fix bug
     </string>
-    <string name="release_note_close_remind">Don\'t remind</string>
+    <string name="release_note_close_remind">Don\'t ask again</string>
 
     <!--init-->
     <string name="init_message">Data is updating now ,please don\'t close MyDairy</string>
