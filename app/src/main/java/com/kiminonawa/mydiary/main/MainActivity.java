@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Set layout
         setContentView(R.layout.activity_main);
         //For set status bar
-        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+        ChinaPhoneHelper.setStatusBar(this,true);
 
         themeManager = ThemeManager.getInstance();
 

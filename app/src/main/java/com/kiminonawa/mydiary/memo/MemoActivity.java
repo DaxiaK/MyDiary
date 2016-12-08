@@ -60,7 +60,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
         //For set status bar
-        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+        ChinaPhoneHelper.setStatusBar(this,true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {

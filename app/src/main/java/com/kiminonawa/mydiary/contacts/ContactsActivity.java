@@ -75,7 +75,8 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         //For set status bar
-        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+        ChinaPhoneHelper.setStatusBar(this,true);
+
 
         themeManager = ThemeManager.getInstance();
         initLanguageStr();

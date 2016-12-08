@@ -3,11 +3,15 @@ package com.kiminonawa.mydiary.shared;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+
+import com.kiminonawa.mydiary.R;
 
 /**
  * Created by daxia on 2016/11/23.
@@ -108,4 +112,13 @@ public class PermissionHelper {
         }
         return true;
     }
+
+    public static void showAddPhotoDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.diary_location_permission_title))
+                .setMessage(context.getString(R.string.diary_photo_permission_content))
+                .setPositiveButton(context.getString(R.string.dialog_button_ok), null);
+        builder.show();
+    }
+
 }

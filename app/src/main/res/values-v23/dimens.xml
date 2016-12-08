@@ -1,0 +1,5 @@
+<resources>
+
+    <!--For windowTranslucentStatus-->
+    <dimen name="top_bar_height">105dp</dimen>
+</resources>

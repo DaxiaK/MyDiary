@@ -15,6 +15,7 @@ import com.kiminonawa.mydiary.entries.calendar.CalendarFragment;
 import com.kiminonawa.mydiary.entries.diary.DiaryFragment;
 import com.kiminonawa.mydiary.entries.entries.EntriesFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
@@ -49,6 +50,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
+        //For set status bar
+        ChinaPhoneHelper.setStatusBar(this,true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
