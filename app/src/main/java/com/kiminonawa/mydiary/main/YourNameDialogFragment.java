@@ -106,6 +106,19 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
+            if (grantResults.length > 0
+                    && PermissionHelper.checkAllPermissionResult(grantResults)) {
+                FileManager.startBrowseImageFile(this, SELECT_PROFILE_PICTURE_BG);
+            } else {
+                PermissionHelper.showAddPhotoDialog(getActivity());
+            }
+        }
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SELECT_PROFILE_PICTURE_BG) {
             if (resultCode == RESULT_OK) {

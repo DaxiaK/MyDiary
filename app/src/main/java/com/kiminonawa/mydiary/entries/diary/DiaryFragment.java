@@ -271,11 +271,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                         && PermissionHelper.checkAllPermissionResult(grantResults)) {
                     firstAllowCameraPermission = true;
                 } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                            .setTitle(getString(R.string.diary_location_permission_title))
-                            .setMessage(getString(R.string.diary_photo_permission_content))
-                            .setPositiveButton(getString(R.string.dialog_button_ok), null);
-                    builder.show();
+                    PermissionHelper.showAddPhotoDialog(getActivity());
                 }
                 break;
         }

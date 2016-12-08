@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -135,11 +134,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     && PermissionHelper.checkAllPermissionResult(grantResults)) {
                 FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
             } else {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.diary_location_permission_title))
-                        .setMessage(getString(R.string.diary_photo_permission_content))
-                        .setPositiveButton(getString(R.string.dialog_button_ok), null);
-                builder.show();
+                PermissionHelper.showAddPhotoDialog(this);
             }
         }
     }
