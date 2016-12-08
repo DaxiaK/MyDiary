@@ -56,12 +56,12 @@ This list is what functionality I will implement , the number is the sequence fo
 3. OOBE (Alpha) 
 4. Google account backup & setting page
 5. page curl effect
-6. Implments search
-7. Support Chinese sort
-8. Modify contacts detail
-9. Add password (beta)
-10. Tags
-11. UI review & support xxxHpdi \
+6. UI review & support xxxHpdi \
+7. Implments search
+8. Support Chinese sort
+9. Modify contacts detail
+10. Add password (beta)
+11. Tags
 12. Add contacts from phone
 13. Add bookmark for diary
 14. Add music in diary
@@ -73,7 +73,7 @@ Coding & Designing:
 
 ## known issue
 
-* Some problem for selecting image file on Xiaomi
+~~* Some problem for selecting image file on Xiaomi~~
 
 
 ## Use case
