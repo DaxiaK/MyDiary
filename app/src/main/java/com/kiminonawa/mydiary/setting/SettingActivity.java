@@ -71,7 +71,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
 
         themeManager = ThemeManager.getInstance();
@@ -101,7 +101,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (data != null && data.getData() != null) {
                     //Compute the bg size
                     int bgWidth = ScreenHelper.getScreenWidth(this);
-                    int bgHeight = ScreenHelper.dpToPixel(getResources(), 80);
+                    int bgHeight = getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
                     UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(bgWidth, bgHeight)
                             .withAspectRatio(bgWidth, bgHeight)

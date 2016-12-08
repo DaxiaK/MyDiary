@@ -95,7 +95,7 @@ public class ThemeManager {
                 break;
             default:
                 File profileBgFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getPath()
-                        + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
+                        + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (profileBgFile.exists()) {
                     bgDrawable = Drawable.createFromPath(profileBgFile.getAbsolutePath());
                 } else {
