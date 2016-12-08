@@ -24,6 +24,7 @@ import net.sourceforge.pinyin4j.PinyinHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class ContactsActivity extends FragmentActivity implements View.OnClickListener,
         ContactsDetailDialogFragment.ContactsDetailCallback, LatterSortLayout.OnTouchingLetterChangedListener {
@@ -35,17 +36,24 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private long topicId;
 
     /**
+     * Sort
+     */
+
+    private String EN;
+    private String JA;
+    private String ZH_TW;
+    private String ZH_CN;
+
+    /**
      * UI
      */
     private ThemeManager themeManager;
-
     private RelativeLayout RL_contacts_content;
     private TextView IV_contacts_title;
     private EditText EDT_main_topic_search;
     private LatterSortLayout STL_contacts;
     private ImageView IV_contacts_add;
     private TextView TV_contact_short_sort;
-
 
     /**
      * DB
@@ -70,6 +78,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         ChinaPhoneHelper.setStatusBarLightMode(this, true);
 
         themeManager = ThemeManager.getInstance();
+        initLanguageStr();
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
@@ -113,6 +122,15 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         initTopicAdapter();
     }
 
+    private void initLanguageStr() {
+        EN = Locale.ENGLISH.getLanguage();
+        JA = Locale.JAPANESE.getLanguage();
+        ZH_TW = Locale.TAIWAN.getLanguage()
+                + "-" + Locale.TAIWAN.getCountry();
+        ZH_CN = Locale.CHINA.getLanguage()
+                + "-" + Locale.CHINA.getCountry();
+    }
+
     private void initTopbar() {
         EDT_main_topic_search.getBackground().setColorFilter(themeManager.getThemeMainColor(this),
                 PorterDuff.Mode.SRC_ATOP);
@@ -138,21 +156,34 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private void sortContacts() {
         for (ContactsEntity contactsEntity : contactsNamesList) {
             String sortString = contactsEntity.getName().substring(0, 1).toUpperCase();
-            if ( sortString.matches("[\\u4E00-\\u9FA5]") && (checkLanguage().endsWith("zh") || checkLanguage().endsWith("en")) ) {
-                //if language == (zh || en) sort Chinese
-                String[] arr = PinyinHelper.toHanyuPinyinStringArray(sortString.trim().charAt(0));
-                sortString = arr[0].substring(0, 1).toUpperCase();
-            }
-            if ( sortString.matches("[\\u0800-\\u4E00]") && checkLanguage().endsWith("ja") ) {
-                //if language == ja  sort Japanese
-            }
-            if (sortString.matches("[A-Z]")) {
-                contactsEntity.setSortLetters(sortString.toUpperCase());
+            if (checkLanguage().equals(ZH_CN)) {
+                sortContactsCN(contactsEntity, sortString);
             } else {
-                contactsEntity.setSortLetters("#");
+                sortContactsEN(contactsEntity, sortString);
             }
         }
         Collections.sort(contactsNamesList, new LetterComparator());
+    }
+
+    private String sortContactsCN(ContactsEntity contactsEntity, String sortString) {
+        if (sortString.matches("[\\u4E00-\\u9FA5]")) {
+            String[] arr = PinyinHelper.toHanyuPinyinStringArray(sortString.trim().charAt(0));
+            sortString = arr[0].substring(0, 1).toUpperCase();
+        }
+        if (sortString.matches("[A-Z]")) {
+            contactsEntity.setSortLetters(sortString.toUpperCase());
+        } else {
+            contactsEntity.setSortLetters("#");
+        }
+        return sortString;
+    }
+
+    private void sortContactsEN(ContactsEntity contactsEntity, String sortString) {
+        if (sortString.matches("[A-Z]")) {
+            contactsEntity.setSortLetters(sortString.toUpperCase());
+        } else {
+            contactsEntity.setSortLetters("#");
+        }
     }
 
     private void initTopicAdapter() {
@@ -203,30 +234,38 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         }
     }
 
+
+    /**
+     * This code is from array
+     * System = 0
+     * English = 1
+     * 日本語 = 2
+     * 繁體中文 = 3
+     * 简体中文= 4
+     */
+
     private String checkLanguage() {
-        String language = "en";
+        String language;
         switch (SPFManager.getLocalLanguageCode(this)) {
-            case 0:
-                language = getResources().getConfiguration().locale.getLanguage();
+            //default = 0 = system
+            default:
+                language = getResources().getConfiguration().locale.getLanguage() +
+                        "-" + getResources().getConfiguration().locale.getCountry();
                 break;
             case 1:
-                // ENGLISH;
-                language = "en";
+                language = EN;
                 break;
             case 2:
                 // JAPANESE;
-                language = "ja";
+                language = JA;
                 break;
             case 3:
                 //TRADITIONAL_CHINESE;
-                language = "zh";
+                language = ZH_TW;
                 break;
             case 4:
                 // SIMPLIFIED_CHINESE;
-                language = "zh";
-                break;
-            default:
-                // language = English
+                language = ZH_CN;
                 break;
         }
         return language;
