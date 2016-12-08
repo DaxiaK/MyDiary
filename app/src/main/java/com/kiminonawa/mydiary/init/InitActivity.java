@@ -38,22 +38,22 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         TV_init_message = (TextView) findViewById(R.id.TV_init_message);
 
         //Init photo value
-        //topbar heigjt
-        int topbarHeight = (int) getResources().getDimension(R.dimen.top_bar_height);
+        //topbar height
+        int topbarHeight = getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
         //topic bg
         int bgWeight = ScreenHelper.getScreenWidth(InitActivity.this);
         int bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
                 //diary activity top bar  + edit bottom bar
-                ScreenHelper.dpToPixel(getResources(), topbarHeight + 40);
+                ScreenHelper.dpToPixel(getResources(), 40) - topbarHeight;
         int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
                 //diary activity top bar
-                ScreenHelper.dpToPixel(getResources(), topbarHeight);
+                topbarHeight;
         ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
 
         //Diary photo size
-        int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                //diary activity top bar + diary info + diary button bar + padding
-                ScreenHelper.dpToPixel(getResources(), topbarHeight + 120 + 40 + (2 * 5));
+        int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
+                //diary activity top bar  -( diary info + diary button bar + padding)
+                - topbarHeight - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
         int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
                 ScreenHelper.dpToPixel(getResources(), 2 * 5);
         DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
