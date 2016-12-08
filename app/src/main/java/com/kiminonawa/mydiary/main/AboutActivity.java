@@ -19,7 +19,7 @@ public class AboutActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //For set status bar
-        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+        ChinaPhoneHelper.setStatusBar(this,true);
 
         setContentView(R.layout.activity_about);
         license = new StringBuilder();

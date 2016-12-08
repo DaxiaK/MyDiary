@@ -8,6 +8,7 @@
         android:id="@+id/RL_memo_topbar_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
+        android:fitsSystemWindows="true"
         android:alpha="0.8"
         android:background="@android:color/white"
         android:orientation="vertical">

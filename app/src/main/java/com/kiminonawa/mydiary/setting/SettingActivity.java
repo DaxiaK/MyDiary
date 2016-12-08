@@ -72,7 +72,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         //For set status bar
-        ChinaPhoneHelper.setStatusBarLightMode(this, true);
+        ChinaPhoneHelper.setStatusBar(this,true);
+
 
         themeManager = ThemeManager.getInstance();
         //Create fileManager for get temp folder

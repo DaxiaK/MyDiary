@@ -9,6 +9,7 @@
         android:id="@+id/LL_main_profile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
+        android:fitsSystemWindows="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
 

@@ -37,9 +37,9 @@ public class ChinaPhoneHelper {
      *
      * @return 1:MIUI 2:Flyme 3:android6.0
      */
-    public static int setStatusBarLightMode(Activity activity, boolean lightMode) {
+    public static int setStatusBar(Activity activity, boolean lightMode) {
         @SystemType int result = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (new MIUIHelper().setStatusBarLightMode(activity, lightMode)) {
                 result = MIUI;
             } else if (new FlymeHelper().setStatusBarLightMode(activity, lightMode)) {
@@ -50,5 +50,5 @@ public class ChinaPhoneHelper {
         }
         return result;
     }
-
 }
+

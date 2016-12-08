@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
         android:alpha="0.8"
+        android:fitsSystemWindows="true"
         android:background="@android:color/white"
         android:focusable="true"
         android:focusableInTouchMode="true"

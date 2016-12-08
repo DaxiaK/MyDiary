@@ -8,8 +8,8 @@
         android:id="@+id/LL_diary_topbar_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/top_bar_height"
-        android:alpha="0.8"
         android:background="@android:color/white"
+        android:fitsSystemWindows="true"
         android:gravity="center"
         android:orientation="vertical">
 
