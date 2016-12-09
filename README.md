@@ -74,7 +74,7 @@ Coding & Designing:
 ## known issue
 
 ~~* Some problem for selecting image file on Xiaomi~~
-
+*  requesting permissions dialog fail on HTC D820t [API 23], HUAWEI honor 7i [API 22]   
 
 ## Use case
 
