@@ -62,7 +62,7 @@ This list is what functionality I will implement , the number is the sequence fo
 9. Modify contacts detail
 10. Add password (beta)
 11. Tags
-12. Add contacts from phone
+12. load contacts from phone
 13. Add bookmark for diary
 14. Add music in diary
 15. Supprot JP sort
@@ -74,7 +74,18 @@ Coding & Designing:
 ## known issue
 
 ~~* Some problem for selecting image file on Xiaomi~~
-*  requesting permissions dialog fail on HTC D820t [API 23], HUAWEI honor 7i [API 22]   
+* requesting permissions dialog fail on HTC D820t [API 23], HUAWEI honor 7i [API 22]   
+
+## Plan
+
+Some function will be implemented later ,but some user is asking about them.
+If you want to help this project , you can select them first and let me know:
+
+1. order for topic , memo (use  MemoEntry.COLUMN_ORDER & TopicEntry.COLUMN_ORDER)
+2. page curl effect in calendar(ref: [1](https://github.com/harism/android_page_curl) [2](http://blog.csdn.net/aigestudio/article/details/42678541) )
+3. Implments search in MainActivity , ContactsActivity
+4. load contacts from phone
+5. Add password (4 number , save it in sharedpreference after decoding)
 
 ## Use case
 
