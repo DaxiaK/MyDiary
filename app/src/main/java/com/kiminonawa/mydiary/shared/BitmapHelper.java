@@ -89,26 +89,31 @@ public class BitmapHelper {
         final int width = options.outWidth;
 
         int inSampleSize = 1;
-        if ((height > reqHeight || width > reqWidth) && options.outHeight > 0 && options.outWidth > 0) {
+        try {
+            if ((height > reqHeight || width > reqWidth) && options.outHeight > 0 && options.outWidth > 0) {
+                // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
+                while ((options.outHeight / inSampleSize) > reqHeight
+                        || (options.outWidth / inSampleSize) > reqWidth) {
+                    inSampleSize *= 2;
+                }
+                // This offers some additional logic in case the image has a strange
+                // aspect ratio. For example, a panorama may have a much larger
+                // width than height. In these cases the total pixels might still
+                // end up being too large to fit comfortably in memory, so we should
+                // be more aggressive with sample down the image (=larger inSampleSize).
+                final float totalPixels = width * height;
 
-            // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
-            while ((options.outHeight / inSampleSize) > reqHeight
-                    || (options.outWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
+                // Anything more than 2x the requested pixels we'll sample down further
+                final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+                while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                    inSampleSize *= 2;
+                }
             }
-            // This offers some additional logic in case the image has a strange
-            // aspect ratio. For example, a panorama may have a much larger
-            // width than height. In these cases the total pixels might still
-            // end up being too large to fit comfortably in memory, so we should
-            // be more aggressive with sample down the image (=larger inSampleSize).
-            final float totalPixels = width * height;
-
-            // Anything more than 2x the requested pixels we'll sample down further
-            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
-
-            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-                inSampleSize *= 2;
-            }
+        }catch (Exception e){
+            //For avoid crash
+            e.printStackTrace();
+            inSampleSize = 1;
         }
         return inSampleSize;
     }

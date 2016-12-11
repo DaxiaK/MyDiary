@@ -49,6 +49,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     private FileManager fileManager;
     private String tempFileName;
 
+    //TODO this call back should not communication with DiaryFragment & DiaryViewerDialogFragment without activity
     private PhotoCallBack callBack;
 
 

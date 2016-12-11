@@ -52,7 +52,9 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     protected Boolean doInBackground(Long... params) {
         try {
             loadSampleData();
-            if (SPFManager.getVersionCode(mContext) < 17) {
+            //The new diary dir was update in version 17
+            //But , some device have a problem , so I work it again...
+            if (SPFManager.getVersionCode(mContext) < 21) {
                 Version17MoveTheDiaryIntoNewDir();
             }
             saveCurrentVersionCode();
