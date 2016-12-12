@@ -10,6 +10,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 
 /**
@@ -47,11 +48,9 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     protected Boolean doInBackground(Long... params) {
         try {
             loadSampleData();
-            //The new diary dir was update in version 17
-            //But , some device have a problem , so I work it again...
-//            if (SPFManager.getVersionCode(mContext) < 21) {
-//                OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
-//            }
+            if (SPFManager.getVersionCode(mContext) < 17) {
+                OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
+            }
             saveCurrentVersionCode();
         } catch (Exception e) {
             e.printStackTrace();

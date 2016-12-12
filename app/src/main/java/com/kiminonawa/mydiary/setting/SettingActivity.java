@@ -312,20 +312,30 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 secColorPickerFragment.show(getSupportFragmentManager(), "secColorPickerFragment");
                 break;
             case R.id.But_setting_fix_photo_17_dir:
+                //The new diary dir was updated in version 17
+                //But , some device have a problem , so I add this setting.
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            OldVersionHelper.Version17MoveTheDiaryIntoNewDir(SettingActivity.this);
-                            SettingActivity.this.runOnUiThread(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(SettingActivity.this, "successful", Toast.LENGTH_LONG).show();
-                                }
-                            });
+                            if (OldVersionHelper.Version17MoveTheDiaryIntoNewDir(SettingActivity.this)) {
+                                SettingActivity.this.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(SettingActivity.this, "successful", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            } else {
+                                SettingActivity.this.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(SettingActivity.this, "You don't want to fix any thing", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
                         } catch (Exception e) {
+                            e.printStackTrace();
                             SettingActivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(SettingActivity.this, "fail", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SettingActivity.this, "Fix fail", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }
