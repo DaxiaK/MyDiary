@@ -390,7 +390,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
-        diaryPhotoBottomSheet.setCallBack(this);
+        diaryPhotoBottomSheet.setTargetFragment(this,0);
         diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 

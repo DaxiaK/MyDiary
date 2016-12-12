@@ -119,4 +119,12 @@
     <string name="toast_save_profile_picture_fail">プロフィール写真の保存に失敗しました</string>
     <string name="toast_crop_profile_picture_fail">プロフィール写真の切り取りに失敗しました</string>
 
+    <string name="setting_system_title">システム</string>
+    <string name="setting_system_fix_dir_hint">更新後に写真が消えたら、それをクリックして修正してください</string>
+    <string name="setting_system_fix_dir_button">写真を修正する</string>
+
+    <string name="toast_setting_successful">成功した</string>
+    <string name="toast_setting_wont_fix">何も修正する必要はありません</string>
+    <string name="toast_setting_fail">失敗します</string>
+
 </resources>

@@ -485,7 +485,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(true);
-        diaryPhotoBottomSheet.setCallBack(this);
+        diaryPhotoBottomSheet.setTargetFragment(this,0);
         diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 

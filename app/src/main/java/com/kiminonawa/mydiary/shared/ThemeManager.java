@@ -113,7 +113,7 @@ public class ThemeManager {
         if (pictureFile.exists()) {
             pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());
         } else {
-            pictureDrawable = ViewTools.getDrawable(context, R.drawable.ic_profile_image);
+            pictureDrawable = ViewTools.getDrawable(context, R.drawable.ic_person_picture_default);
         }
         return pictureDrawable;
     }

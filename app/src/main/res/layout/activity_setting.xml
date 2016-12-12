@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:fitsSystemWindows="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -196,10 +196,53 @@
                 android:id="@+id/SP_setting_language"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="@dimen/setting_group_margin_top"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:background="@drawable/spinner_bg" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/setting_content_margin_top"
+                android:background="@drawable/dash_line"
+                android:layerType="software" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/setting_group_margin_top"
+                android:text="@string/setting_system_title"
+                android:textColor="@android:color/black"
+                android:textSize="28dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/setting_group_margin_top"
+                android:layout_marginTop="@dimen/setting_content_margin_top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_system_fix_dir_hint"
+                    android:textColor="@color/setting_hint_text_color"
+                    android:textSize="16dp" />
+
+                <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                    android:id="@+id/But_setting_fix_photo_17_dir"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="@string/setting_system_fix_dir_button" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

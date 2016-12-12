@@ -199,7 +199,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 isAddNewProfilePicture = true;
                 profilePictureFileName = "";
                 IV_your_name_profile_picture.setImageDrawable(
-                        ViewTools.getDrawable(getActivity(), R.drawable.ic_profile_image));
+                        ViewTools.getDrawable(getActivity(), R.drawable.ic_person_picture_default));
                 break;
             case R.id.But_your_name_ok:
                 saveYourName();

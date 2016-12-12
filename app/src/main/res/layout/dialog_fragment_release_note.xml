@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/RL_release_note"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:minHeight="40dp"
         android:orientation="vertical"
         android:paddingBottom="10dp"
@@ -26,15 +26,20 @@
             android:textColor="@android:color/white"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/TV_release_note_text"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@id/TV_release_note_title"
-            android:layout_marginTop="10dp"
-            android:gravity="left"
-            android:textColor="@android:color/white"
-            android:textSize="14dp" />
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/TV_release_note_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left"
+                android:textColor="@android:color/white"
+                android:textSize="14dp" />
+        </ScrollView>
 
     </RelativeLayout>
 

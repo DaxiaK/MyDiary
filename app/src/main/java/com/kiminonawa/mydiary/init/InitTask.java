@@ -10,12 +10,8 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
 
 /**
  * Version History
@@ -53,7 +49,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         try {
             loadSampleData();
             if (SPFManager.getVersionCode(mContext) < 17) {
-                Version17MoveTheDiaryIntoNewDir();
+                OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
             }
             saveCurrentVersionCode();
         } catch (Exception e) {
@@ -127,17 +123,5 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             showReleaseNote = true;
             SPFManager.setVersionCode(mContext);
         }
-    }
-
-    private void Version17MoveTheDiaryIntoNewDir() throws Exception {
-        FileManager rootFileManager = new FileManager(mContext, FileManager.ROOT_DIR);
-        File[] dataFiles = rootFileManager.getDiaryDir().listFiles();
-        for (int i = 0; i < dataFiles.length; i++) {
-            if (FileManager.isNumeric(dataFiles[i].getName())) {
-                FileUtils.moveDirectoryToDirectory(dataFiles[i], new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDir(), true);
-            }
-        }
-        //Remove the diary/temp/
-        FileUtils.deleteDirectory(new File(new FileManager(mContext, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath() + "/temp"));
     }
 }
