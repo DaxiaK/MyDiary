@@ -120,4 +120,9 @@
     <string name="toast_save_profile_picture_fail">To save profile picture fail&#8230;</string>
     <string name="toast_crop_profile_picture_fail">To crop profile picture fail&#8230;</string>
 
+    <string name="setting_system_title">System</string>
+    <string name="setting_system_fix_dir_hint">If your photo is gone after updating, click it to fix</string>
+    <string name="setting_system_fix_dir_button">fix photo</string>
+
+
 </resources>

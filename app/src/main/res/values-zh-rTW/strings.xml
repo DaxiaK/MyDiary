@@ -120,6 +120,9 @@
     <string name="toast_save_profile_picture_fail">大頭貼存檔失敗&#8230;</string>
     <string name="toast_crop_profile_picture_fail">大頭貼裁切失敗&#8230;</string>
 
+    <string name="setting_system_title">系統</string>
+    <string name="setting_system_fix_dir_hint">更新後如果無法看見圖片，請按此嘗試修復</string>
+    <string name="setting_system_fix_dir_button">修復圖片</string>
 
 
 </resources>

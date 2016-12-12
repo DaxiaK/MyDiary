@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
@@ -64,6 +65,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private Spinner SP_setting_theme, SP_setting_language;
     private ImageView IV_setting_profile_bg, IV_setting_theme_main_color, IV_setting_theme_dark_color;
     private Button But_setting_theme_default_bg, But_setting_theme_default, But_setting_theme_apply;
+    private Button But_setting_fix_photo_17_dir;
 
 
     @Override
@@ -89,6 +91,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         But_setting_theme_apply.setOnClickListener(this);
 
         SP_setting_language = (Spinner) findViewById(R.id.SP_setting_language);
+
+        But_setting_fix_photo_17_dir = (Button) findViewById(R.id.But_setting_fix_photo_17_dir);
+        But_setting_fix_photo_17_dir.setOnClickListener(this);
+
         initSpinner();
         initTheme(themeManager.getCurrentTheme());
         initLanguage();
@@ -305,7 +311,27 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 secColorPickerFragment.setCallBack(this, R.id.IV_setting_theme_dark_color);
                 secColorPickerFragment.show(getSupportFragmentManager(), "secColorPickerFragment");
                 break;
-
+            case R.id.But_setting_fix_photo_17_dir:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            OldVersionHelper.Version17MoveTheDiaryIntoNewDir(SettingActivity.this);
+                            SettingActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(SettingActivity.this, "successful", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } catch (Exception e) {
+                            SettingActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(SettingActivity.this, "fail", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    }
+                }).run();
+                break;
         }
 
     }
