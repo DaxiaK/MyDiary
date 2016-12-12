@@ -75,6 +75,7 @@ Coding & Designing:
 
 ~~* Some problem for selecting image file on Xiaomi~~
 * requesting permissions dialog fail on HTC D820t [API 23], HUAWEI honor 7i [API 22]   
+* The callback will be null in DiaryPhotoBottomSheet on ZenFone C & HTC Desire 626  
 
 ## Plan
 
@@ -86,6 +87,8 @@ If you want to help this project , you can select them first and let me know:
 3. Implments search in MainActivity , ContactsActivity
 4. load contacts from phone
 5. Add password (4 number , save it in sharedpreference after decoding)
+6. Add border radius in all dialogfragment 
+
 
 ## Use case
 
