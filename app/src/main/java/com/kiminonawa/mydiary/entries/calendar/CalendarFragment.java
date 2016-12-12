@@ -47,7 +47,7 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
      * UI
      */
     private LinearLayout LL_calendar_content;
-    private RelativeLayout RL_calendar_content_bg, RL_calendar_edit_bar;
+    private RelativeLayout  RL_calendar_edit_bar;
     private View View_calendar_content_shadow;
     private TextView TV_calendar_months, TV_calendar_date, TV_calendar_day;
 
@@ -73,9 +73,6 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_cnlendar, container, false);
-
-        RL_calendar_content_bg = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content_bg);
-        RL_calendar_content_bg.setBackgroundColor(themeManager.getThemeMainColor(getActivity()));
 
         RL_calendar_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_edit_bar);
         RL_calendar_edit_bar.setBackgroundColor(themeManager.getThemeMainColor(getActivity()));

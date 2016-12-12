@@ -33,7 +33,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
      * UI
      */
     private TextView TV_entries_count;
-    private RelativeLayout RL_entries_content, RL_entries_edit_bar;
+    private RelativeLayout RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
     private ImageView IV_entries_edit, IV_entries_photo;
     private final static int MAX_TEXT_LENGTH = 10;
@@ -68,10 +68,6 @@ public class EntriesFragment extends BaseDiaryFragment implements
 
         RecyclerView_entries = (RecyclerView) rootView.findViewById(R.id.RecyclerView_entries);
         TV_entries_count = (TextView) rootView.findViewById(R.id.TV_entries_count);
-        RL_entries_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_content);
-        RL_entries_content.setBackground(
-                ThemeManager.getInstance().getEntriesBgDrawable(getActivity(), getTopicId()));
-
         RL_entries_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_entries_edit_bar);
         RL_entries_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
         entriesList = new ArrayList<>();

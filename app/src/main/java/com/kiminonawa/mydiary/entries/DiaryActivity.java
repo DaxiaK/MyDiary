@@ -51,7 +51,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
@@ -91,16 +91,18 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         }
     }
 
+    /**
+     * Init Viewpager
+     */
     private void initViewPager() {
-        /**
-         * Init Viewpager
-         */
         ViewPager_diary_content = (ViewPager) findViewById(R.id.ViewPager_diary_content);
         //Make viewpager load one fragment every time.
         ViewPager_diary_content.setOffscreenPageLimit(2);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         ViewPager_diary_content.setAdapter(mPagerAdapter);
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
+        ViewPager_diary_content.setBackground(
+                ThemeManager.getInstance().getEntriesBgDrawable(this, getTopicId()));
     }
 
 
