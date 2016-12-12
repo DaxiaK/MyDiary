@@ -124,5 +124,9 @@
     <string name="setting_system_fix_dir_hint">If your photo is gone after updating, click it to fix</string>
     <string name="setting_system_fix_dir_button">fix photo</string>
 
+    <string name="toast_setting_successful">Successful</string>
+    <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
+    <string name="toast_setting_fail">Fail</string>
+
 
 </resources>

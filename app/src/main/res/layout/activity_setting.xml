@@ -196,7 +196,6 @@
                 android:id="@+id/SP_setting_language"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="@dimen/setting_group_margin_top"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:background="@drawable/spinner_bg" />
 
@@ -221,6 +220,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/setting_group_margin_top"
                 android:layout_marginTop="@dimen/setting_content_margin_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">

@@ -321,13 +321,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             if (OldVersionHelper.Version17MoveTheDiaryIntoNewDir(SettingActivity.this)) {
                                 SettingActivity.this.runOnUiThread(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(SettingActivity.this, "successful", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_successful), Toast.LENGTH_LONG).show();
                                     }
                                 });
                             } else {
                                 SettingActivity.this.runOnUiThread(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(SettingActivity.this, "You don't want to fix any thing", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_wont_fix), Toast.LENGTH_LONG).show();
                                     }
                                 });
                             }
@@ -335,7 +335,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                             e.printStackTrace();
                             SettingActivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(SettingActivity.this, "Fix fail", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_fail), Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

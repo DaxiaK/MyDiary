@@ -124,4 +124,9 @@
     <string name="setting_system_fix_dir_hint">更新后如果无法看见图片，请按此尝试修复</string>
     <string name="setting_system_fix_dir_button">修复图片</string>
 
+    <string name="toast_setting_successful">成功</string>
+    <string name="toast_setting_wont_fix">你不需要修复任何东西</string>
+    <string name="toast_setting_fail">失败</string>
+
+
 </resources>
