@@ -70,6 +70,12 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
         } else {
             fileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
         }
+        try {
+            callBack = (PhotoCallBack) getTargetFragment();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
+        }
         return dialog;
     }
 
@@ -100,7 +106,8 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
             dismiss();
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
             if (resultCode == RESULT_OK) {
-                if (data != null && data.getData() != null) {
+                //fix the ZenPhone C & HTC 626 crash issues
+                if (data != null && data.getData() != null && callBack != null) {
                     callBack.selectPhoto(data.getData());
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
@@ -108,10 +115,6 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
             }
             dismiss();
         }
-    }
-
-    public void setCallBack(PhotoCallBack callBack) {
-        this.callBack = callBack;
     }
 
 
