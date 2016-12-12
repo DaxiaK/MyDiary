@@ -3,7 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
-    <string name="release_note">**0.2.1.161208_01_d_h**\n
+    <string name="release_note">**0.2.1.161212_1_d_h2\n
+        -調整畫面\n
+        -修復 zenPhone c 和 htc 626 當機問題(需要回報)\n
+        -設定頁面加入修復日記消失圖片的按鈕\n\n
+        **0.2.1.161208_01_d_h**\n
         -修復與支援Android 6.0 + 狀態欄透明\n
         (裝置Android 6.0+ 請重新設定個人檔案橫幅)\n
         -修復大頭貼bug\n
