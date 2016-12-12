@@ -25,7 +25,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/ic_contacts_image_default"
+            android:src="@drawable/ic_person_picture_default"
             android:tint="@android:color/white" />
 
         <EditText

@@ -40,7 +40,7 @@
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_contacts_image_default"
+                android:src="@drawable/ic_person_picture_default"
                 android:tint="@color/contacts_photo_tint" />
 
             <TextView

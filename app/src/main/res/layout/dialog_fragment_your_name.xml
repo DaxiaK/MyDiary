@@ -31,7 +31,7 @@
                     android:layout_height="80dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_profile_image"
+                    android:src="@drawable/ic_person_picture_default"
                     app:civ_border_color="@android:color/white"
                     app:civ_border_width="2dp" />
 

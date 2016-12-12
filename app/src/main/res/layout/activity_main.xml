@@ -21,7 +21,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_profile_image" />
+            android:src="@drawable/ic_person_picture_default" />
 
         <TextView
             android:id="@+id/TV_main_profile_username"
