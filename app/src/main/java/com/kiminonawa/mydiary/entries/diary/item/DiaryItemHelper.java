@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
+import android.content.Context;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -15,8 +16,7 @@ public class DiaryItemHelper extends Observable {
     public final static int MAX_PHOTO_COUNT = 7;
 
 
-    //For test to Public
-    public List<IDairyRow> diaryItemList;
+    private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
     private int nowPhotoCount = 0;
     private static int visibleHeight = -1, visibleWidth = -1;
@@ -62,24 +62,32 @@ public class DiaryItemHelper extends Observable {
             nowPhotoCount++;
         }
         diaryItemList.add(diaryItem);
-        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
         if (diaryItemList.size() == 1) {
             setChanged();
             notifyObservers();
         }
     }
 
+    public void addViewToDiaryContent(Context context) {
+        diaryItemList.get(diaryItemList.size() - 1).initView(context, itemContentLayout);
+        itemContentLayout.addView(diaryItemList.get(diaryItemList.size() - 1).getView());
+    }
+
+
     public void createItem(IDairyRow diaryItem, int position) {
         if (diaryItem instanceof DiaryPhoto) {
             nowPhotoCount++;
         }
         diaryItemList.add(position, diaryItem);
-        itemContentLayout.addView(diaryItem.getView(), position);
         if (diaryItemList.size() == 1) {
             setChanged();
             notifyObservers();
         }
+    }
 
+    public void addViewToDiaryContent(Context context, int position) {
+        diaryItemList.get(position).initView(context, itemContentLayout);
+        itemContentLayout.addView(diaryItemList.get(position).getView(), position);
     }
 
 

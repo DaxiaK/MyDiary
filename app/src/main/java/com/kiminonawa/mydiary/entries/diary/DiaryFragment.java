@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryBlock;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
@@ -170,6 +171,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         LL_diary_item_content.setOnClickListener(this);
 
         IV_diary_menu = (ImageView) rootView.findViewById(R.id.IV_diary_menu);
+        IV_diary_menu.setOnClickListener(this);
         IV_diary_location = (ImageView) rootView.findViewById(R.id.IV_diary_location);
         IV_diary_location.setOnClickListener(this);
         IV_diary_photo = (ImageView) rootView.findViewById(R.id.IV_diary_photo);
@@ -293,18 +295,22 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     diaryText.setPosition(tag.getPositionTag());
                     diaryText.setContent(tag.getNextEditTextStr());
                     diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                    diaryItemHelper.addViewToDiaryContent(getActivity(), tag.getPositionTag() + 1);
                     diaryText.getView().requestFocus();
                     //Add photo
                     diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
                     diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
+                    diaryItemHelper.addViewToDiaryContent(getActivity(), tag.getPositionTag() + 1);
                 } else {
                     //Add photo
                     diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
                     diaryItemHelper.createItem(diaryPhoto);
+                    diaryItemHelper.addViewToDiaryContent(getActivity());
                     //Add new edittext
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
+                    diaryItemHelper.addViewToDiaryContent(getActivity());
                     diaryText.getView().requestFocus();
                 }
             } else {
@@ -390,7 +396,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
-        diaryPhotoBottomSheet.setTargetFragment(this,0);
+        diaryPhotoBottomSheet.setTargetFragment(this, 0);
         diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 
@@ -517,6 +523,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.IV_diary_menu:
+                DiaryBlock diaryBlock = new DiaryBlock(getActivity());
+                diaryBlock.setPosition(diaryItemHelper.getItemSize());
+                diaryItemHelper.createItem(diaryBlock);
+                diaryItemHelper.addViewToDiaryContent(getContext());
+                break;
             case R.id.LL_diary_time_information:
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
                 datePickerFragment.setOnDateSetListener(this);

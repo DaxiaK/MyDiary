@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.kiminonawa.mydiary.shared.ScreenHelper;
@@ -33,7 +34,8 @@ public class DiaryText implements IDairyRow {
         int padding = ScreenHelper.dpToPixel(context.getResources(), 2);
         EDT_diary_text.setPadding(padding, padding, padding, padding);
     }
-    public void insertText(String text){
+
+    public void insertText(String text) {
         EDT_diary_text.getText().insert(EDT_diary_text.getText().length(), text);
 
     }
@@ -48,10 +50,17 @@ public class DiaryText implements IDairyRow {
         return TYPE_TEXT;
     }
 
+
+    @Override
+    public void initView(Context context, ViewGroup parent) {
+
+    }
+
     @Override
     public View getView() {
         return EDT_diary_text;
     }
+
 
     @Override
     public void setEditMode(boolean isEditMode) {

@@ -35,8 +35,7 @@
             android:layout_marginRight="25dp"
             android:layout_toLeftOf="@id/IV_diary_location"
             android:clickable="false"
-            android:src="@drawable/ic_more_horiz_white_24dp"
-            android:tint="@color/button_disable_color" />
+            android:src="@drawable/ic_more_horiz_white_24dp" />
 
 
         <ImageView

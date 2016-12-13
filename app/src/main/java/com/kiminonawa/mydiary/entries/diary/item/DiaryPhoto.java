@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.entries.diary.item;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.kiminonawa.mydiary.shared.BitmapHelper;
 import com.kiminonawa.mydiary.shared.ExifUtil;
@@ -67,6 +68,11 @@ public class DiaryPhoto implements IDairyRow {
     @Override
     public int getType() {
         return TYPE_PHOTO;
+    }
+
+    @Override
+    public void initView(Context context, ViewGroup parent) {
+
     }
 
     @Override
