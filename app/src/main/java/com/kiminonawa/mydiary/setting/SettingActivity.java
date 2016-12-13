@@ -284,6 +284,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                                 Toast.makeText(this, getString(R.string.toast_save_profile_banner_fail), Toast.LENGTH_SHORT).show();
                                 break;
                             }
+                        } else {
+                            new File(new FileManager(this, FileManager.SETTING_DIR).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
                         }
                         SPFManager.setCustomProfileBannerBg(this, hasCustomProfileBannerBg);
                     }
