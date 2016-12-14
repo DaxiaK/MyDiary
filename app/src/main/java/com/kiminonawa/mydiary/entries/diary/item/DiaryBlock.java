@@ -1,6 +1,8 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by daxia on 2016/11/19.
  */
@@ -23,24 +26,28 @@ import java.util.List;
 public class DiaryBlock implements IDairyRow {
 
     private int position;
-    private String titile;
+    private String title;
     private JSONArray blockJsonContent;
-    private List blockDataList;
+    private List<Fragment> diaryBlockFragmentList;
+    private List<DiaryBlockEntity> diaryBlockDataList;
+    private DiaryBlockAdapter diaryBlockAdapter;
 
     /**
      * UI
      */
     private View blockView;
     private LinearLayout TV_diary_content;
-    private TextView TV_diary_block_title;
+    private TextView TV_diary_block_view_title;
     private ViewPager ViewPager_diary_block;
 
-    public DiaryBlock(Context context) {
+    public DiaryBlock() {
         //Test data
-        titile = "Taki test";
-        blockDataList = new ArrayList();
-        blockDataList.add(new DiaryBlockObj("12333333", "12333333"));
-        blockDataList.add(new DiaryBlockObj("123456789", "123456"));
+        title = "Taki test";
+        diaryBlockDataList = new ArrayList();
+        diaryBlockDataList.add(new DiaryBlockEntity("1111", "1111", "www.google.com.tw"));
+        diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.com"));
+        diaryBlockFragmentList = new ArrayList();
+
     }
 
 
@@ -71,13 +78,22 @@ public class DiaryBlock implements IDairyRow {
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         blockView =
                 layoutInflater
-                        .inflate(R.layout.diary_block_item, parent, false);
+                        .inflate(R.layout.diary_block_view, parent, false);
         TV_diary_content = (LinearLayout) blockView.findViewById(R.id.TV_diary_content);
-        TV_diary_block_title = (TextView) blockView.findViewById(R.id.TV_diary_block_title);
-        ViewPager_diary_block = (ViewPager) blockView.findViewById(R.id.ViewPager_diary_block);
-        //Bind Ui & data
+        TV_diary_block_view_title = (TextView) blockView.findViewById(R.id.TV_diary_block_view_title);
+        ViewPager_diary_block = (ViewPager) blockView.findViewById(R.id.ViewPager_diary_view_block);
+        //Bind Ui
         TV_diary_content.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(context));
-        TV_diary_block_title.setText(titile);
+        //Bind data
+        TV_diary_block_view_title.setText(title);
+        for (DiaryBlockEntity diaryBlockEntity : diaryBlockDataList) {
+            diaryBlockFragmentList.add(
+                    DiaryBlockFragment.newInstance(diaryBlockEntity.getTitle(), diaryBlockEntity.getSubtitle(),
+                            diaryBlockEntity.getUrl()));
+        }
+        diaryBlockAdapter = new DiaryBlockAdapter((FragmentActivity) context,
+                diaryBlockFragmentList, diaryBlockDataList);
+        ViewPager_diary_block.setAdapter(diaryBlockAdapter);
     }
 
     @Override

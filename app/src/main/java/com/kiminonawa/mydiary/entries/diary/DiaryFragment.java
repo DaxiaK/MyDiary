@@ -524,7 +524,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.IV_diary_menu:
-                DiaryBlock diaryBlock = new DiaryBlock(getActivity());
+                DiaryBlock diaryBlock = new DiaryBlock();
                 diaryBlock.setPosition(diaryItemHelper.getItemSize());
                 diaryItemHelper.createItem(diaryBlock);
                 diaryItemHelper.addViewToDiaryContent(getContext());
