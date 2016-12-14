@@ -43,6 +43,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private String JA;
     private String ZH_TW;
     private String ZH_CN;
+    private String KO;
 
     /**
      * UI
@@ -75,7 +76,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
 
         themeManager = ThemeManager.getInstance();
@@ -130,6 +131,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
                 + "-" + Locale.TAIWAN.getCountry();
         ZH_CN = Locale.CHINA.getLanguage()
                 + "-" + Locale.CHINA.getCountry();
+        KO = Locale.KOREAN.getLanguage();
     }
 
     private void initTopbar() {
@@ -243,6 +245,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
      * 日本語 = 2
      * 繁體中文 = 3
      * 简体中文= 4
+     * 한국어 = 5
      */
 
     private String checkLanguage() {
@@ -267,6 +270,10 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
             case 4:
                 // SIMPLIFIED_CHINESE;
                 language = ZH_CN;
+                break;
+            case 5:
+                // SIMPLIFIED_CHINESE;
+                language = KO;
                 break;
         }
         return language;
