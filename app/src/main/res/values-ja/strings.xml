@@ -73,7 +73,7 @@
     <string name="diary_no_title">タイトルなし</string>
 
     <string name="toast_diary_empty">日記の本文がありません</string>
-    <string name="toast_refashioning">位置情報を取得します</string>
+
     <string name="toast_not_image">ファイルは写真ではありません</string>
     <string name="toast_photo_path_error">写真のパスに問題があります</string>
     <string name="toast_photo_intent_error">写真の読み込みに失敗しました</string>
@@ -130,5 +130,8 @@
     <string name="toast_setting_successful">成功した</string>
     <string name="toast_setting_wont_fix">何も修正する必要はありません</string>
     <string name="toast_setting_fail">失敗します</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
 </resources>

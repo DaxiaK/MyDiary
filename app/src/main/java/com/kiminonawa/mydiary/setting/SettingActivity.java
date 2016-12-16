@@ -108,8 +108,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     //Compute the bg size
                     int bgWidth = ScreenHelper.getScreenWidth(this);
                     int bgHeight = getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
+                    UCrop.Options options = new UCrop.Options();
+                    options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(this));
+                    options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(this));
                     UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(bgWidth, bgHeight)
+                            .withOptions(options)
                             .withAspectRatio(bgWidth, bgHeight)
                             .start(this);
                 } else {

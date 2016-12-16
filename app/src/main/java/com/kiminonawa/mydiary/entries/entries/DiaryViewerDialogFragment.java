@@ -32,6 +32,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -243,6 +245,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                     }
                 }, 1000);
                 initHandlerOrTaskIsRunning = true;
+                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
             } else {
                 diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 initData();
@@ -331,6 +334,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
     }
 
 
@@ -468,17 +472,22 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         }
     }
 
-    private void openGooglePlacePicker(){
-        try {
-            progressDialog.show();
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-            progressDialog.dismiss();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-            progressDialog.dismiss();
+    private void openGooglePlacePicker() {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
+
+            try {
+                progressDialog.show();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
         }
     }
 

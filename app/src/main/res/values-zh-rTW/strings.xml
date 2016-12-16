@@ -75,7 +75,7 @@
     <string name="diary_no_title">無標題</string>
 
     <string name="toast_diary_empty">日記內容是空的</string>
-    <string name="toast_refashioning">位置資訊整理中</string>
+
     <string name="toast_not_image">該檔案不是圖片</string>
     <string name="toast_photo_path_error">圖片來源異常</string>
     <string name="toast_photo_intent_error">無法取得裝置的圖片資源</string>
@@ -131,5 +131,8 @@
     <string name="toast_setting_successful">成功</string>
     <string name="toast_setting_wont_fix">你不需要修復任何東西</string>
     <string name="toast_setting_fail">失敗</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">你的Google Services無法使用或需要升級</string>
 
 </resources>

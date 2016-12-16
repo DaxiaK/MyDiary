@@ -73,7 +73,7 @@
     <string name="diary_no_title">제목없음</string>
 
     <string name="toast_diary_empty">일기의 본문이 없습니다</string>
-    <string name="toast_refashioning">위치 정보를 가져옵니다</string>
+
     <string name="toast_not_image">이미지 파일이 아닙니다</string>
     <string name="toast_photo_path_error">이미지 경로에 오류가 있습니다</string>
     <string name="toast_photo_intent_error">이미지 불러오기를 실패하였습니다</string>
@@ -130,5 +130,8 @@
     <string name="toast_setting_successful">성공</string>
     <string name="toast_setting_wont_fix">아무것도 수정할 필요가 없습니다</string>
     <string name="toast_setting_fail">실패했습니다</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
 </resources>

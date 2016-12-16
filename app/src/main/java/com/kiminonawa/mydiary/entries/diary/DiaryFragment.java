@@ -397,7 +397,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 progressDialog.dismiss();
             }
         } else {
-            Toast.makeText(getActivity(), "You don't have google services!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
         }
     }
 
