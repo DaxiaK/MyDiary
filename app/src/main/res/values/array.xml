@@ -48,6 +48,15 @@
         <item>Custom</item>
     </array>
 
+    <array name="weather_list">
+        <item>sunny</item>
+        <item>cloudy</item>
+        <item>windy</item>
+        <item>rainy</item>
+        <item>snowy</item>
+        <item>foggy</item>
+    </array>
+
     <array name="language_list">
         <item>System</item>
         <item>English</item>
