@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="months_full_name">
+        <item>1월</item>
+        <item>2월</item>
+        <item>3월</item>
+        <item>4월</item>
+        <item>5월</item>
+        <item>6월</item>
+        <item>7월</item>
+        <item>8월</item>
+        <item>9월</item>
+        <item>10월</item>
+        <item>11월</item>
+        <item>12월</item>
+    </array>
+
+    <array name="days_simple_name">
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+    </array>
+
+    <array name="days_full_name">
+        <item>일요일</item>
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+    </array>
+
+    <array name="topic_type">
+        <item>연락처</item>
+        <item>일기</item>
+        <item>메모</item>
+    </array>
+
+    <array name="theme_list">
+        <item>타키</item>
+        <item>미츠하</item>
+        <item>직접설정</item>
+    </array>
+
+    <array name="weather_list">
+        <item>sunny</item>
+        <item>cloudy</item>
+        <item>windy</item>
+        <item>rainy</item>
+        <item>snowy</item>
+        <item>foggy</item>
+    </array>
+
+    <array name="language_list">
+        <item>시스템</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>한국어</item>
+    </array>
+
+</resources>

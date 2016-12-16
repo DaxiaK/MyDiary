@@ -16,8 +16,6 @@ public class SPFManager {
      * config
      */
     private static final String SPF_CONFIG = "CONFIG";
-    //Location
-    private static final String CONFIG_OPEN_DIARY_LOCATION = "OPEN_DIARY_LOCATION";
     //Local language
     private static final String CONFIG_LOCAL_LANGUAGE = "CONFIG_LOCAL_LANGUAGE";
     /**
@@ -50,18 +48,6 @@ public class SPFManager {
     /**
      * Config method
      */
-    public static boolean getDiaryLocation(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
-        //default is close
-        return settings.getBoolean(CONFIG_OPEN_DIARY_LOCATION, false);
-    }
-
-    public static void setDiaryLocation(Context context, boolean open) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);
-        SharedPreferences.Editor PE = settings.edit();
-        PE.putBoolean(CONFIG_OPEN_DIARY_LOCATION, open);
-        PE.commit();
-    }
 
     public static int getLocalLanguageCode(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_CONFIG, 0);

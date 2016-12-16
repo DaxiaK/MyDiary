@@ -75,7 +75,7 @@
 
 
     <string name="toast_diary_empty">Diary is empty</string>
-    <string name="toast_refashioning">Location is refashioning</string>
+
     <string name="toast_not_image">The file is not a image</string>
     <string name="toast_photo_path_error">Photo path has some problem</string>
     <string name="toast_photo_intent_error">To get image resource of device fail</string>
@@ -131,6 +131,9 @@
     <string name="toast_setting_successful">Successful</string>
     <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
     <string name="toast_setting_fail">Fail</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
 
 </resources>

@@ -86,7 +86,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp">
 
-
                 <LinearLayout
                     android:id="@+id/LL_diary_time_information"
                     android:layout_width="match_parent"
@@ -101,7 +100,7 @@
                         android:layout_marginTop="10dp"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="10dp" />
+                        android:textSize="12dp" />
 
                     <TextView
                         android:id="@+id/TV_diary_date"
@@ -109,11 +108,11 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="50dp"
+                        android:textSize="48dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
-                        android:id="@+id/RL_diary_day_and_time"
+                        android:id="@+id/LL_diary_day_and_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
@@ -124,7 +123,7 @@
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="10dp" />
+                            android:textSize="12dp" />
 
                         <TextView
                             android:id="@+id/TV_diary_time"
@@ -133,23 +132,50 @@
                             android:layout_marginLeft="10dp"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="10dp" />
+                            android:textSize="12dp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/RL_diary_location"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
                         android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/IV_diary_weather"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:tint="@android:color/white"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/TV_diary_weather"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="5dp"
+                            android:includeFontPadding="false"
+                            android:maxLines="1"
+                            android:textColor="@android:color/white"
+                            android:textSize="12dp"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_location_on_white_24dp" />
 
                         <TextView
                             android:id="@+id/TV_diary_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginLeft="2dp"
                             android:includeFontPadding="false"
+                            android:maxLines="1"
                             android:textColor="@android:color/white"
-                            android:textSize="10dp" />
+                            android:textSize="12dp" />
+
 
                     </LinearLayout>
                 </LinearLayout>
@@ -190,54 +216,49 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
-                        android:inputType="text"
                         android:hint="@string/diary_title_hint"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:textColor="@android:color/black" />
 
                     <RelativeLayout
+                        android:id="@+id/RL_diary_weather"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_weight="0.15">
-
-                        <ImageView
-                            android:id="@+id/IV_diary_weather"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:visibility="gone" />
 
                         <Spinner
                             android:id="@+id/SP_diary_weather"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
-                            android:gravity="center"
-                            android:visibility="gone" />
+                            android:gravity="center" />
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/RL_diary_mood"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
                         android:layout_weight="0.15">
-
-                        <ImageView
-                            android:id="@+id/IV_diary_mood"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:visibility="gone" />
 
                         <Spinner
                             android:id="@+id/SP_diary_mood"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@null"
-                            android:gravity="center"
-                            android:visibility="gone" />
+                            android:gravity="center" />
                     </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/TV_diary_title_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="28dp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -252,7 +273,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="@string/diary_content_hint"
-                        android:textSize="30dp"
+                        android:textSize="28dp"
                         android:visibility="gone" />
 
                     <ProgressBar

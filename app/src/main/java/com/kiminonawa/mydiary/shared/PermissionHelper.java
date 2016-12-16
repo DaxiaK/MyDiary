@@ -121,4 +121,12 @@ public class PermissionHelper {
         builder.show();
     }
 
+    public static void showAccessDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.diary_location_permission_title))
+                .setMessage(context.getString(R.string.diary_location_permission_content))
+                .setPositiveButton(context.getString(R.string.dialog_button_ok), null);
+        builder.show();
+    }
+
 }

@@ -36,7 +36,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
     private RelativeLayout RL_entries_edit_bar;
     private TextView TV_entries_edit_msg;
     private ImageView IV_entries_edit, IV_entries_photo;
-    private final static int MAX_TEXT_LENGTH = 10;
+    private final static int MAX_TEXT_LENGTH = 18;
 
     /**
      * Lazy load

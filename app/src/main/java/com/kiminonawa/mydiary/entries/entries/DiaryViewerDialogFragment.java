@@ -2,8 +2,10 @@ package com.kiminonawa.mydiary.entries.entries;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +32,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BackDialogFragment;
@@ -55,6 +63,7 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static android.app.Activity.RESULT_OK;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
 /**
@@ -87,11 +96,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private ProgressBar PB_diary_item_content_hint;
     private LinearLayout LL_diary_time_information;
 
-    private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
-    private ImageView IV_diary_weather, IV_diary_mood;
+    private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time;
+
+    private ImageView IV_diary_weather;
+    private TextView TV_diary_weather, TV_diary_location;
+    private RelativeLayout RL_diary_weather, RL_diary_mood;
     private Spinner SP_diary_weather, SP_diary_mood;
 
+    private TextView TV_diary_title_content;
     private EditText EDT_diary_title;
+
     private LinearLayout LL_diary_item_content;
     private ImageView IV_diary_close_dialog, IV_diary_location, IV_diary_photo,
             IV_diary_delete, IV_diary_clear, IV_diary_save;
@@ -116,8 +130,21 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private SimpleDateFormat sdf;
 
     /**
+     * Google Place API
+     */
+    private int PLACE_PICKER_REQUEST = 1;
+    /**
+     * Location
+     */
+    private boolean haveLocation;
+    private String noLocation;
+    private ProgressDialog progressDialog;
+
+
+    /**
      * Permission
      */
+    private boolean firstAllowLocationPermission = false;
     private boolean firstAllowCameraPermission = false;
 
     //TODO Make this dialog's background has radius.
@@ -170,10 +197,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         PB_diary_item_content_hint = (ProgressBar) rootView.findViewById(R.id.PB_diary_item_content_hint);
 
         EDT_diary_title = (EditText) rootView.findViewById(R.id.EDT_diary_title);
-        //For hidden hint
-        EDT_diary_title.setText(" ");
-        EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
-                PorterDuff.Mode.SRC_ATOP);
 
         TV_diary_month = (TextView) rootView.findViewById(R.id.TV_diary_month);
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
@@ -196,6 +219,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
         initView(rootView);
         diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
+        noLocation = getString(R.string.diary_no_location);
+        initProgressDialog();
+
         return rootView;
     }
 
@@ -219,6 +245,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                     }
                 }, 1000);
                 initHandlerOrTaskIsRunning = true;
+                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
             } else {
                 diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 initData();
@@ -244,9 +271,32 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getActivity(), data);
+                if (place.getName() != null || !place.getName().equals("")) {
+                    //try to spilt the string if it is a local
+                    TV_diary_location.setText(place.getName());
+                    haveLocation = true;
+                } else {
+                    haveLocation = false;
+                }
+                initLocationIcon();
+            }
+            progressDialog.dismiss();
+        }
+    }
+
+
+    @Override
     public void onResume() {
         super.onResume();
         //For PermissionsResult
+        if (firstAllowLocationPermission) {
+            openGooglePlacePicker();
+            firstAllowLocationPermission = false;
+        }
         if (firstAllowCameraPermission) {
             openPhotoBottomSheet();
             firstAllowCameraPermission = false;
@@ -260,9 +310,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         Dialog dialog = getDialog();
         if (dialog != null) {
             int dialogHeight = ScreenHelper.getScreenHeight(getActivity()) -
-                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 30);
+                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
             int dialogWidth = ScreenHelper.getScreenWidth(getActivity()) -
-                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 15);
+                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
             dialog.getWindow().setLayout(dialogWidth, dialogHeight);
         }
     }
@@ -284,6 +334,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
     }
 
 
@@ -291,7 +342,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         DBManager dbManager = new DBManager(getActivity());
         dbManager.opeDB();
         Cursor diaryInfoCursor = dbManager.selectDiaryInfoByDiaryId(diaryId);
-        EDT_diary_title.setText(diaryInfoCursor.getString(2));
         //load Time
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(diaryInfoCursor.getLong(1));
@@ -301,16 +351,19 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         if (isEditMode) {
             //Allow to edit diary
             LL_diary_time_information.setOnClickListener(this);
+            EDT_diary_title.setText(diaryInfoCursor.getString(2));
+        } else {
+            TV_diary_title_content.setText(diaryInfoCursor.getString(2));
         }
         //load location
         String locationName = diaryInfoCursor.getString(7);
         if (locationName != null && !"".equals(locationName)) {
+            haveLocation = true;
             TV_diary_location.setText(locationName);
-            IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
         } else {
-            TV_diary_location.setText(getActivity().getString(R.string.diary_no_location));
-            IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
+            haveLocation = false;
         }
+        initLocationIcon();
         setIcon(diaryInfoCursor.getInt(3), diaryInfoCursor.getInt(4));
         diaryInfoCursor.close();
         //Get diary detail
@@ -327,26 +380,37 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
             SP_diary_weather.setVisibility(View.VISIBLE);
 
+            //For hidden hint
+            EDT_diary_title.setText(" ");
+            EDT_diary_title.getBackground().mutate().setColorFilter(ThemeManager.getInstance().getThemeMainColor(getActivity()),
+                    PorterDuff.Mode.SRC_ATOP);
+
             initMoodSpinner();
             initWeatherSpinner();
+            IV_diary_location.setOnClickListener(this);
 
             IV_diary_delete.setVisibility(View.GONE);
             IV_diary_clear.setVisibility(View.GONE);
         } else {
+            EDT_diary_title.setVisibility(View.GONE);
+            RL_diary_weather = (RelativeLayout) rootView.findViewById(R.id.RL_diary_weather);
+            RL_diary_weather.setVisibility(View.GONE);
+            RL_diary_mood = (RelativeLayout) rootView.findViewById(R.id.RL_diary_mood);
+            RL_diary_mood.setVisibility(View.GONE);
+
             IV_diary_weather = (ImageView) rootView.findViewById(R.id.IV_diary_weather);
+            TV_diary_weather = (TextView) rootView.findViewById(R.id.TV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);
-            IV_diary_mood = (ImageView) rootView.findViewById(R.id.IV_diary_mood);
-            IV_diary_mood.setVisibility(View.VISIBLE);
+            TV_diary_weather.setVisibility(View.VISIBLE);
+
+            TV_diary_title_content = (TextView) rootView.findViewById(R.id.TV_diary_title_content);
+            TV_diary_title_content.setVisibility(View.VISIBLE);
+            TV_diary_title_content.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
             IV_diary_delete.setOnClickListener(this);
             IV_diary_clear.setVisibility(View.GONE);
             IV_diary_save.setVisibility(View.GONE);
-
             IV_diary_photo.setColorFilter(R.color.button_disable_color);
-            EDT_diary_title.setFocusable(false);
-            EDT_diary_title.setFocusableInTouchMode(false);
-            EDT_diary_title.setClickable(false);
-            EDT_diary_title.setEnabled(false);
         }
     }
 
@@ -392,6 +456,41 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         diaryContentCursor.close();
     }
 
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.process_dialog_loading));
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
+    }
+
+    private void initLocationIcon() {
+        if (haveLocation) {
+            IV_diary_location.setImageResource(R.drawable.ic_location_on_white_24dp);
+        } else {
+            IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
+            TV_diary_location.setText(noLocation);
+        }
+    }
+
+    private void openGooglePlacePicker() {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
+
+            try {
+                progressDialog.show();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+        } else {
+            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private void setDiaryTime() {
         TV_diary_month.setText(timeTools.getMonthsFullName()[calendar.get(Calendar.MONTH)]);
@@ -405,8 +504,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             SP_diary_mood.setSelection(mood);
             SP_diary_weather.setSelection(weather);
         } else {
-            IV_diary_mood.setImageResource(DiaryInfoHelper.getMoodResourceId(mood));
             IV_diary_weather.setImageResource(DiaryInfoHelper.getWeatherResourceId(weather));
+            TV_diary_weather.setText(getResources().getStringArray(R.array.weather_list)[weather]);
         }
     }
 
@@ -475,8 +574,15 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
 
     private void updateDiary() {
+
+        //Create locationName
+        String locationName = TV_diary_location.getText().toString();
+        if (noLocation.equals(locationName)) {
+            locationName = "";
+        }
         new UpdateDiaryTask(getActivity(), calendar.getTimeInMillis(), EDT_diary_title.getText().toString(),
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
+                locationName,
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
                 diaryItemHelper, diaryFileManager, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
@@ -485,7 +591,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(true);
-        diaryPhotoBottomSheet.setTargetFragment(this,0);
+        diaryPhotoBottomSheet.setTargetFragment(this, 0);
         diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
 
@@ -581,6 +687,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
                 datePickerFragment.setOnDateSetListener(this);
                 datePickerFragment.show(getFragmentManager(), "datePickerFragment");
+                break;
+            case R.id.IV_diary_location:
+                if (haveLocation) {
+                    haveLocation = false;
+                    initLocationIcon();
+                } else {
+                    if (PermissionHelper.checkPermission(this, PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
+                        openGooglePlacePicker();
+                    }
+                }
                 break;
             case R.id.IV_diary_photo_delete:
                 int position = (int) v.getTag();
