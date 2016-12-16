@@ -12,7 +12,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,12 +28,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
@@ -68,8 +64,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
         DiaryPhotoBottomSheet.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
-        CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
 
     private String TAG = "DiaryFragment";
@@ -116,7 +111,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * Google Place API
      */
-    private GoogleApiClient mGoogleApiClient;
     private int PLACE_PICKER_REQUEST = 1;
     /**
      * Location
@@ -194,13 +188,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initProgressDialog();
             diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
             clearDiaryPage();
-            mGoogleApiClient = new GoogleApiClient
-                    .Builder(getActivity())
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
         }
         isCreatedView = true;
     }
@@ -211,10 +198,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         if (isCreatedView) {
             if (isVisibleToUser) {
                 diaryItemHelper.addObserver(this);
-                mGoogleApiClient.connect();
+                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
             } else {
                 diaryItemHelper.deleteObserver(this);
-                mGoogleApiClient.disconnect();
+                ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
             }
         }
     }
@@ -229,14 +216,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onResume();
         //For PermissionsResult
         if (firstAllowLocationPermission) {
-            try {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-            }
+            openGooglePlacePicker();
             firstAllowLocationPermission = false;
         }
         //For PermissionsResult
@@ -399,6 +379,20 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
     }
 
+    private void openGooglePlacePicker(){
+        try {
+            progressDialog.show();
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+            progressDialog.dismiss();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            progressDialog.dismiss();
+        }
+    }
+
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
         diaryPhotoBottomSheet.setTargetFragment(this, 0);
@@ -534,15 +528,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     initLocationIcon();
                 } else {
                     if (PermissionHelper.checkPermission(this, PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
-                        try {
-                            progressDialog.show();
-                            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                        } catch (GooglePlayServicesRepairableException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            e.printStackTrace();
-                        }
+                      openGooglePlacePicker();
                     }
                 }
                 break;
@@ -575,18 +561,4 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }
