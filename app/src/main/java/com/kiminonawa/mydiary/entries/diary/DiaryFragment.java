@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.entries.diary;
 
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -122,6 +123,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      */
     private String noLocation;
     private boolean isLocation = false;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -189,6 +191,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             initMoodSpinner();
             setCurrentTime(true);
             initLocationIcon();
+            initProgressDialog();
             diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
             clearDiaryPage();
             mGoogleApiClient = new GoogleApiClient
@@ -268,6 +271,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 initLocationIcon();
             }
+            progressDialog.dismiss();
         }
     }
 
@@ -354,6 +358,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             IV_diary_location.setImageResource(R.drawable.ic_location_off_white_24dp);
             TV_diary_location.setText(noLocation);
         }
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage(getString(R.string.process_dialog_loading));
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
     }
 
     private void initWeatherSpinner() {
@@ -524,6 +535,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 } else {
                     if (PermissionHelper.checkPermission(this, PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
                         try {
+                            progressDialog.show();
                             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                             startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
                         } catch (GooglePlayServicesRepairableException e) {
