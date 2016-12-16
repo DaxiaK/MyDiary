@@ -170,12 +170,13 @@ public class DBManager {
     }
 
     public long updateDiary(long diaryId, long time, String title,
-                            int mood, int weather, boolean attachment) {
+                            int mood, int weather, String location, boolean attachment) {
         ContentValues values = new ContentValues();
         values.put(DiaryEntry_V2.COLUMN_TIME, time);
         values.put(DiaryEntry_V2.COLUMN_TITLE, title);
         values.put(DiaryEntry_V2.COLUMN_MOOD, mood);
         values.put(DiaryEntry_V2.COLUMN_WEATHER, weather);
+        values.put(DiaryEntry_V2.COLUMN_LOCATION, location);
         values.put(DiaryEntry_V2.COLUMN_ATTACHMENT, attachment);
 
         return db.update(

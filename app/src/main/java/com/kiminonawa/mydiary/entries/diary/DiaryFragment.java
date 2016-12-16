@@ -33,6 +33,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.entries.BackDialogFragment;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
@@ -64,7 +65,8 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
         DiaryPhotoBottomSheet.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
-        CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+        CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,
+        BackDialogFragment.BackDialogCallback{
 
 
     private String TAG = "DiaryFragment";
@@ -492,6 +494,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
     }
 
+    @Override
+    public void onBack() {
+        clearDiaryPage();
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -549,7 +556,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_clear:
-                clearDiaryPage();
+                BackDialogFragment backDialogFragment = new BackDialogFragment();
+                backDialogFragment.setCallBack(this);
+                backDialogFragment.show(getFragmentManager(), "backDialogFragment");
                 break;
             case R.id.IV_diary_save:
                 if (diaryItemHelper.getItemSize() > 0) {
@@ -560,5 +569,4 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 break;
         }
     }
-
 }
