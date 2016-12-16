@@ -261,13 +261,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 Place place = PlacePicker.getPlace(getActivity(), data);
                 if (place.getName() != null || !place.getName().equals("")) {
                     //try to spilt the string if it is a local
-                    String[] placeName = place.getName().toString().split(" ");
-                    Log.e("test", placeName[0] + "," + placeName[1]);
-//                    Locale
-//                    Geocoder gc = new Geocoder(getActivity(), Locale.TRADITIONAL_CHINESE);
-//                    List<Address> lstAddress = gc.getFromLocation(lat, lng, 1);
-//                    TV_diary_location.setText(place.getName());
-
+                    TV_diary_location.setText(place.getName());
                     isLocation = true;
                 } else {
                     isLocation = false;
