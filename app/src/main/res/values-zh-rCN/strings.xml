@@ -76,6 +76,8 @@
 
     <string name="diary_title_hint">日记标题</string>
     <string name="diary_content_hint">在此写下你的日记内容</string>
+    <string name="diary_clear_message">确定要清除吗?</string>
+
 
     <string name="diary_no_title">无标题</string>
 

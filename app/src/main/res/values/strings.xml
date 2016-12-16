@@ -75,6 +75,7 @@
 
     <string name="diary_title_hint">Diary title</string>
     <string name="diary_content_hint">Write your diary here</string>
+    <string name="diary_clear_message">do you want to delete it?</string>
 
     <string name="diary_no_title">No Title</string>
 

@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,7 +36,6 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.entries.BackDialogFragment;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
@@ -48,6 +48,7 @@ import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
+import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
@@ -68,7 +69,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
         DiaryPhotoBottomSheet.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
         CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,
-        BackDialogFragment.BackDialogCallback {
+        ClearDialogFragment.ClearDialogCallback {
 
 
     private String TAG = "DiaryFragment";
@@ -76,6 +77,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * UI
      */
+    private ScrollView ScrollView_diary_content;
     private LinearLayout LL_diary_item_content, LL_diary_time_information;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
@@ -137,6 +139,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_diary, container, false);
+
+        ScrollView_diary_content = (ScrollView) rootView.findViewById(R.id.ScrollView_diary_content);
+        ViewTools.setScrollBarColor(getActivity(), ScrollView_diary_content);
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
         RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
@@ -501,7 +506,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     @Override
-    public void onBack() {
+    public void onClear() {
         clearDiaryPage();
     }
 
@@ -562,9 +567,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_clear:
-                BackDialogFragment backDialogFragment = new BackDialogFragment();
-                backDialogFragment.setCallBack(this);
-                backDialogFragment.show(getFragmentManager(), "backDialogFragment");
+                ClearDialogFragment clearDialogFragment = new ClearDialogFragment();
+                clearDialogFragment.setTargetFragment(this, 0);
+                clearDialogFragment.show(getFragmentManager(), "clearDialogFragment");
                 break;
             case R.id.IV_diary_save:
                 if (diaryItemHelper.getItemSize() > 0) {

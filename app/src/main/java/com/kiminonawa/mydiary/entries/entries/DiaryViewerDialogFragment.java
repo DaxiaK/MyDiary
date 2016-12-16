@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,6 +59,7 @@ import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
+import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
@@ -92,6 +94,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     /**
      * UI
      */
+    private ScrollView ScrollView_diary_content;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private ProgressBar PB_diary_item_content_hint;
     private LinearLayout LL_diary_time_information;
@@ -188,6 +191,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         View rootView = inflater.inflate(R.layout.fragment_diary, container);
+
+        ScrollView_diary_content = (ScrollView) rootView.findViewById(R.id.ScrollView_diary_content);
+        ViewTools.setScrollBarColor(getActivity(), ScrollView_diary_content);
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
         RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
@@ -312,7 +318,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             int dialogHeight = ScreenHelper.getScreenHeight(getActivity()) -
                     ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
             int dialogWidth = ScreenHelper.getScreenWidth(getActivity()) -
-                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
+                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 5);
             dialog.getWindow().setLayout(dialogWidth, dialogHeight);
         }
     }
@@ -353,7 +359,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             LL_diary_time_information.setOnClickListener(this);
             EDT_diary_title.setText(diaryInfoCursor.getString(2));
         } else {
-            TV_diary_title_content.setText(diaryInfoCursor.getString(2));
+            String diaryTitleStr = diaryInfoCursor.getString(2);
+            if (diaryTitleStr == null || diaryTitleStr.equals("")) {
+                diaryTitleStr = getString(R.string.diary_no_title);
+            }
+            TV_diary_title_content.setText(diaryTitleStr);
         }
         //load location
         String locationName = diaryInfoCursor.getString(7);

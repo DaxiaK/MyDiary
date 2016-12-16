@@ -74,6 +74,7 @@
 
     <string name="diary_title_hint">タイトル</string>
     <string name="diary_content_hint">タップして日記本文を記入</string>
+    <string name="diary_clear_message">do you want to delete it?</string>
 
     <string name="diary_no_title">タイトルなし</string>
 

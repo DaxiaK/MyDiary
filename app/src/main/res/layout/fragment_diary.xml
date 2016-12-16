@@ -70,10 +70,13 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/ScrollView_diary_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/RL_diary_edit_bar"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbarSize="5dp"
+        android:scrollbarStyle="insideOverlay">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -97,7 +100,7 @@
                         android:id="@+id/TV_diary_month"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="8dp"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
                         android:textSize="12dp" />
@@ -108,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="48dp"
+                        android:textSize="50dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
