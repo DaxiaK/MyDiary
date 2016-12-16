@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.1.161212_1_d_h2\n
+    <string name="release_note">**0.2.2.161216_1_d2\n
+        -配合電影調整部份畫面\n
+        -GPS定位改用地點取代地址\n
+        -修復bug\n
+        -支援韓文\n\n
+        **0.2.1.161212_1_d_h2\n
         -調整畫面\n
         -修復 zenPhone c 和 htc 626 當機問題(需要回報)\n
         -設定頁面加入修復日記消失圖片的按鈕\n\n
