@@ -28,6 +28,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -66,7 +68,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 public class DiaryFragment extends BaseDiaryFragment implements View.OnClickListener,
         DiaryPhotoBottomSheet.PhotoCallBack, Observer, SaveDiaryTask.SaveDiaryCallBack,
         CopyPhotoTask.CopyPhotoCallBack, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,
-        BackDialogFragment.BackDialogCallback{
+        BackDialogFragment.BackDialogCallback {
 
 
     private String TAG = "DiaryFragment";
@@ -381,17 +383,21 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
     }
 
-    private void openGooglePlacePicker(){
-        try {
-            progressDialog.show();
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-            progressDialog.dismiss();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-            progressDialog.dismiss();
+    private void openGooglePlacePicker() {
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
+            try {
+                progressDialog.show();
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            } catch (GooglePlayServicesNotAvailableException e) {
+                e.printStackTrace();
+                progressDialog.dismiss();
+            }
+        } else {
+            Toast.makeText(getActivity(), "You don't have google services!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -535,7 +541,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     initLocationIcon();
                 } else {
                     if (PermissionHelper.checkPermission(this, PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
-                      openGooglePlacePicker();
+                        openGooglePlacePicker();
                     }
                 }
                 break;
