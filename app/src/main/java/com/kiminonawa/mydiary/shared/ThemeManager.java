@@ -108,7 +108,7 @@ public class ThemeManager {
 
     public Drawable getProfilePictureDrawable(Context context) {
         Drawable pictureDrawable;
-        File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getPath()
+        File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getAbsolutePath()
                 + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
         if (pictureFile.exists()) {
             pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());

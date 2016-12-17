@@ -199,9 +199,13 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                     FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
                     //Clear the old photo file
                     tempFileManager.clearDiaryDir();
+                    UCrop.Options options = new UCrop.Options();
+                    options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+                    options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
                     UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(topicBgWidth, topicBgHeight)
                             .withAspectRatio(topicBgWidth, topicBgHeight)
+                            .withOptions(options)
                             .start(getActivity(), this);
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();

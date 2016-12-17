@@ -129,10 +129,14 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                     tempFileManager.clearDiaryDir();
                     //Compute the bg size
                     int photoSize = ScreenHelper.dpToPixel(getResources(), 50);
+                    UCrop.Options options = new UCrop.Options();
+                    options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+                    options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
                     UCrop.of(data.getData(), Uri.fromFile(
                             new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(photoSize, photoSize)
                             .withAspectRatio(1, 1)
+                            .withOptions(options)
                             .start(getActivity(), this);
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();

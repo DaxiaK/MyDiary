@@ -1,6 +1,8 @@
 package com.kiminonawa.mydiary.entries;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,6 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.calendar.CalendarFragment;
 import com.kiminonawa.mydiary.entries.diary.DiaryFragment;
@@ -20,7 +25,7 @@ import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DiaryActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener,
-        BackDialogFragment.BackDialogCallback {
+        BackDialogFragment.BackDialogCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     /**
@@ -44,6 +49,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      * View pager
      */
     private FragmentPagerAdapter mPagerAdapter;
+
+    /**
+     * Google API
+     */
+    private GoogleApiClient mGoogleApiClient;
 
 
     @Override
@@ -78,6 +88,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
             diaryTitle = "Diary";
         }
         TV_diary_topbar_title.setText(diaryTitle);
+
+        initGoogleAPi();
     }
 
     @Override
@@ -103,6 +115,20 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
         ViewPager_diary_content.setBackground(
                 ThemeManager.getInstance().getEntriesBgDrawable(this, getTopicId()));
+    }
+
+    private void initGoogleAPi() {
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+    }
+
+    public GoogleApiClient getGoogleApiClient() {
+        return mGoogleApiClient;
     }
 
 
@@ -191,5 +217,19 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         public int getCount() {
             return 3;
         }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

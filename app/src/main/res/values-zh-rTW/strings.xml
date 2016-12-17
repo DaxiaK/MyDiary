@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.1.161212_1_d_h2\n
+    <string name="release_note">**0.2.2.161216_1_d2\n
+        -配合電影調整部份畫面\n
+        -GPS定位改用地點取代地址\n
+        -修復bug\n
+        -支援韓文\n\n
+        **0.2.1.161212_1_d_h2\n
         -調整畫面\n
         -修復 zenPhone c 和 htc 626 當機問題(需要回報)\n
         -設定頁面加入修復日記消失圖片的按鈕\n\n
@@ -71,11 +76,12 @@
 
     <string name="diary_title_hint">日記標題</string>
     <string name="diary_content_hint">在此寫下你的日記內容</string>
+    <string name="diary_clear_message">確定要清除嗎?</string>
 
     <string name="diary_no_title">無標題</string>
 
     <string name="toast_diary_empty">日記內容是空的</string>
-    <string name="toast_refashioning">位置資訊整理中</string>
+
     <string name="toast_not_image">該檔案不是圖片</string>
     <string name="toast_photo_path_error">圖片來源異常</string>
     <string name="toast_photo_intent_error">無法取得裝置的圖片資源</string>
@@ -131,5 +137,8 @@
     <string name="toast_setting_successful">成功</string>
     <string name="toast_setting_wont_fix">你不需要修復任何東西</string>
     <string name="toast_setting_fail">失敗</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">你的Google Services無法使用或需要升級</string>
 
 </resources>

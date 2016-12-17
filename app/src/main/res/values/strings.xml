@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.2.1.161212_1_d_h2\n
+    <string name="release_note">**0.2.2.161216_1_d2\n
+        -Modify layout for matching movie\n
+        -Using place to replace address in location\n
+        -Fix bug\n
+        -Support Korean\n\n
+        **0.2.1.161212_1_d_h2\n
         -Modify layout\n
         -Fix zenPhone c and htc 626 crash(Need to reply)\n
         -Add button for fix gone photo in diary in setting page\n\n
@@ -70,12 +75,13 @@
 
     <string name="diary_title_hint">Diary title</string>
     <string name="diary_content_hint">Write your diary here</string>
+    <string name="diary_clear_message">do you want to delete it?</string>
 
     <string name="diary_no_title">No Title</string>
 
 
     <string name="toast_diary_empty">Diary is empty</string>
-    <string name="toast_refashioning">Location is refashioning</string>
+
     <string name="toast_not_image">The file is not a image</string>
     <string name="toast_photo_path_error">Photo path has some problem</string>
     <string name="toast_photo_intent_error">To get image resource of device fail</string>
@@ -131,6 +137,9 @@
     <string name="toast_setting_successful">Successful</string>
     <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
     <string name="toast_setting_fail">Fail</string>
+
+    <!--Google service API-->
+    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
 
 </resources>

@@ -9,8 +9,8 @@ android {
         targetSdkVersion 23
         // versionName rule
         // version.yyMMDD_BuildCount_OPTION , D = demo , H = hotfix
-        versionCode 21
-        versionName "0.2.1.161212_1_d_h2"
+        versionCode 22
+        versionName "0.2.2.161216_1_d"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -38,4 +38,7 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile files('libs/pinyin4j-2.5.0.jar')
+
+    //Google Lib
+    compile 'com.google.android.gms:play-services-places:10.0.1'
 }
