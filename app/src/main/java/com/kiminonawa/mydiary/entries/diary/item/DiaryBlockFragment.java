@@ -47,6 +47,6 @@ public class DiaryBlockFragment extends Fragment {
         TV_diary_block_page_subtitle.setText(subTitle);
         TV_diary_block_page_url = (TextView) rootView.findViewById(R.id.TV_diary_block_page_url);
         TV_diary_block_page_url.setText(url);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return rootView;
     }
 }

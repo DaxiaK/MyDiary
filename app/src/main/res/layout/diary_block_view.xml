@@ -3,7 +3,7 @@
     android:id="@+id/TV_diary_content"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:layout_margin="10dp"
+    android:layout_margin="15dp"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -12,11 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="123" />
+        android:textColor="@android:color/white"
+        android:textSize="24dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/ViewPager_diary_view_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    
+    <LinearLayout
+        android:layout_width=""
+        android:layout_height=""></LinearLayout>
 
 </LinearLayout>

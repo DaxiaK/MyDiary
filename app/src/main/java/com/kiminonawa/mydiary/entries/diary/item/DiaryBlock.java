@@ -45,7 +45,7 @@ public class DiaryBlock implements IDairyRow {
         title = "Taki test";
         diaryBlockDataList = new ArrayList();
         diaryBlockDataList.add(new DiaryBlockEntity("1111", "1111", "www.google.com.tw"));
-        diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.com"));
+        diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.com"));
         diaryBlockFragmentList = new ArrayList();
 
     }
@@ -91,8 +91,7 @@ public class DiaryBlock implements IDairyRow {
                     DiaryBlockFragment.newInstance(diaryBlockEntity.getTitle(), diaryBlockEntity.getSubtitle(),
                             diaryBlockEntity.getUrl()));
         }
-        diaryBlockAdapter = new DiaryBlockAdapter((FragmentActivity) context,
-                diaryBlockFragmentList, diaryBlockDataList);
+        diaryBlockAdapter = new DiaryBlockAdapter((FragmentActivity) context, diaryBlockFragmentList);
         ViewPager_diary_block.setAdapter(diaryBlockAdapter);
     }
 

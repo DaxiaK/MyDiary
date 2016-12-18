@@ -13,13 +13,11 @@ import java.util.List;
 public class DiaryBlockAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> diaryBlockFragmentList;
-    private List<DiaryBlockEntity> diaryBlockDataList;
 
     public DiaryBlockAdapter(FragmentActivity activity,
-                             List<Fragment> diaryBlockFragmentList, List<DiaryBlockEntity> diaryBlockDataList) {
+                             List<Fragment> diaryBlockFragmentList) {
         super(activity.getSupportFragmentManager());
         this.diaryBlockFragmentList = diaryBlockFragmentList;
-        this.diaryBlockDataList = diaryBlockDataList;
     }
 
     @Override
