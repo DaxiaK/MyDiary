@@ -38,6 +38,7 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile files('libs/pinyin4j-2.5.0.jar')
+    compile 'me.relex:circleindicator:1.2.2@aar'
 
     //Google Lib
     compile 'com.google.android.gms:play-services-places:10.0.1'

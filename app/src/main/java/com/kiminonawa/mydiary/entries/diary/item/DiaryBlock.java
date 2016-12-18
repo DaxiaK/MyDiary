@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * Created by daxia on 2016/11/19.
@@ -31,6 +32,7 @@ public class DiaryBlock implements IDairyRow {
     private List<Fragment> diaryBlockFragmentList;
     private List<DiaryBlockEntity> diaryBlockDataList;
     private DiaryBlockAdapter diaryBlockAdapter;
+    private CircleIndicator CI_diary_view_block;
 
     /**
      * UI
@@ -46,6 +48,9 @@ public class DiaryBlock implements IDairyRow {
         diaryBlockDataList = new ArrayList();
         diaryBlockDataList.add(new DiaryBlockEntity("1111", "1111", "www.google.com.tw"));
         diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.com"));
+        diaryBlockDataList.add(new DiaryBlockEntity("33", "33", "www.google.com.tw"));
+        diaryBlockDataList.add(new DiaryBlockEntity("44", "44", "www.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.com"));
+        diaryBlockDataList.add(new DiaryBlockEntity("55", "55", "www.google.com.tw"));
         diaryBlockFragmentList = new ArrayList();
 
     }
@@ -82,6 +87,7 @@ public class DiaryBlock implements IDairyRow {
         TV_diary_content = (LinearLayout) blockView.findViewById(R.id.TV_diary_content);
         TV_diary_block_view_title = (TextView) blockView.findViewById(R.id.TV_diary_block_view_title);
         ViewPager_diary_block = (ViewPager) blockView.findViewById(R.id.ViewPager_diary_view_block);
+        CI_diary_view_block = (CircleIndicator) blockView.findViewById(R.id.CI_diary_view_block);
         //Bind Ui
         TV_diary_content.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(context));
         //Bind data
@@ -93,6 +99,7 @@ public class DiaryBlock implements IDairyRow {
         }
         diaryBlockAdapter = new DiaryBlockAdapter((FragmentActivity) context, diaryBlockFragmentList);
         ViewPager_diary_block.setAdapter(diaryBlockAdapter);
+        CI_diary_view_block.setViewPager(ViewPager_diary_block);
     }
 
     @Override

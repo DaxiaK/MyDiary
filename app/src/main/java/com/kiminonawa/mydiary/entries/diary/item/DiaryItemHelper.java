@@ -14,7 +14,7 @@ import java.util.Observable;
 public class DiaryItemHelper extends Observable {
 
     public final static int MAX_PHOTO_COUNT = 7;
-
+    public final static int MAX_BLOCK_ITEM = 7;
 
     private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
