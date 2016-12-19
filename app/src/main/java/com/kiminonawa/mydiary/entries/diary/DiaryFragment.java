@@ -522,9 +522,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.IV_diary_menu:
                 DiaryBlock diaryBlock = new DiaryBlock();
-                diaryBlock.setPosition(diaryItemHelper.getItemSize());
                 diaryItemHelper.createItem(diaryBlock);
                 diaryItemHelper.addViewToDiaryContent(getContext());
+                diaryBlock.setPosition(diaryItemHelper.getItemSize());
+                diaryBlock.setDeleteBlockListener(this);
                 break;
             case R.id.LL_diary_time_information:
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
@@ -546,10 +547,17 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_photo_delete:
-                int position = (int) v.getTag();
-                diaryItemHelper.remove(position);
-                LL_diary_item_content.removeViewAt(position);
-                diaryItemHelper.mergerAdjacentText(position);
+                int photoPosition = (int) v.getTag();
+                diaryItemHelper.remove(photoPosition);
+                LL_diary_item_content.removeViewAt(photoPosition);
+                diaryItemHelper.mergerAdjacentText(photoPosition);
+                diaryItemHelper.resortPosition();
+                break;
+            case R.id.IV_diary_block_remove:
+                int blockPosition = (int) v.getTag();
+                diaryItemHelper.remove(blockPosition);
+                LL_diary_item_content.removeViewAt(blockPosition);
+                diaryItemHelper.mergerAdjacentText(blockPosition);
                 diaryItemHelper.resortPosition();
                 break;
             case R.id.IV_diary_location:

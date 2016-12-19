@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -38,23 +40,29 @@ public class DiaryBlock implements IDairyRow {
      * UI
      */
     private View blockView;
-    private LinearLayout TV_diary_content;
+    private RelativeLayout RL_diary_block_content;
+    private ImageView IV_diary_block_remove;
     private TextView TV_diary_block_view_title;
     private ViewPager ViewPager_diary_block;
 
+
+    //TODO check the data is losing in 2st block
     public DiaryBlock() {
+        diaryBlockDataList = new ArrayList();
+        diaryBlockFragmentList = new ArrayList();
         //Test data
         title = "Taki test";
-        diaryBlockDataList = new ArrayList();
         diaryBlockDataList.add(new DiaryBlockEntity("1111", "1111", "www.google.com.tw"));
-        diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.com"));
-        diaryBlockDataList.add(new DiaryBlockEntity("33", "33", "www.google.com.tw"));
-        diaryBlockDataList.add(new DiaryBlockEntity("44", "44", "www.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.comwww.facebook.com"));
+        diaryBlockDataList.add(new DiaryBlockEntity("2222", "2222", "www.facebook.com"));
+        diaryBlockDataList.add(new DiaryBlockEntity("33", "33", "https://tw.yahoo.com/"));
+        diaryBlockDataList.add(new DiaryBlockEntity("44", "44", "twitter.com"));
         diaryBlockDataList.add(new DiaryBlockEntity("55", "55", "www.google.com.tw"));
-        diaryBlockFragmentList = new ArrayList();
-
+        Log.e("test", "diaryBlockDataList =" + diaryBlockDataList.size());
     }
 
+    public void setDeleteBlockListener(View.OnClickListener listener) {
+        IV_diary_block_remove.setOnClickListener(listener);
+    }
 
     @Override
     public void setContent(String content) {
@@ -84,13 +92,15 @@ public class DiaryBlock implements IDairyRow {
         blockView =
                 layoutInflater
                         .inflate(R.layout.diary_block_view, parent, false);
-        TV_diary_content = (LinearLayout) blockView.findViewById(R.id.TV_diary_content);
+        RL_diary_block_content = (RelativeLayout) blockView.findViewById(R.id.RL_diary_block_content);
         TV_diary_block_view_title = (TextView) blockView.findViewById(R.id.TV_diary_block_view_title);
         ViewPager_diary_block = (ViewPager) blockView.findViewById(R.id.ViewPager_diary_view_block);
         CI_diary_view_block = (CircleIndicator) blockView.findViewById(R.id.CI_diary_view_block);
+        IV_diary_block_remove = (ImageView) blockView.findViewById(R.id.IV_diary_block_remove);
         //Bind Ui
-        TV_diary_content.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(context));
+        RL_diary_block_content.setBackground(ThemeManager.getInstance().getRadiusBgDrawable(context));
         //Bind data
+        IV_diary_block_remove.setTag(position);
         TV_diary_block_view_title.setText(title);
         for (DiaryBlockEntity diaryBlockEntity : diaryBlockDataList) {
             diaryBlockFragmentList.add(
