@@ -287,7 +287,7 @@ public class DBManager {
 
     public Cursor selectMemo(long topicId) {
         Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                MemoEntry._ID + " DESC", null);
+                MemoEntry.COLUMN_ORDER + " ASC", null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -314,6 +314,15 @@ public class DBManager {
                 new String[]{String.valueOf(memoId)});
     }
 
+    public long updateMemoOrder(long memoId, long order) {
+        ContentValues values = new ContentValues();
+        values.put(MemoEntry.COLUMN_ORDER, order);
+        return db.update(
+                MemoEntry.TABLE_NAME,
+                values,
+                MemoEntry._ID + " = ?",
+                new String[]{String.valueOf(memoId)});
+    }
 
     private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
         ContentValues values = new ContentValues();

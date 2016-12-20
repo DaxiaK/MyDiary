@@ -112,7 +112,8 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         if (topicId != -1) {
             DBManager dbManager = new DBManager(getActivity());
             dbManager.opeDB();
-            dbManager.insertMemo(EDT_edit_memo_content.getText().toString(), false, topicId);
+            long memoId = dbManager.insertMemo(EDT_edit_memo_content.getText().toString(), false, topicId);
+            dbManager.updateMemoOrder(memoId, memoId);
             dbManager.closeDB();
         }
     }
@@ -137,7 +138,7 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
                 callback.updateMemo();
             }
             dismiss();
-        }else{
+        } else {
             Toast.makeText(getActivity(), getString(R.string.toast_memo_empty), Toast.LENGTH_SHORT).show();
         }
     }

@@ -16,6 +16,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.EditMode;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.marshalchen.ultimaterecyclerview.dragsortadapter.DragSortAdapter;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
  * Created by daxia on 2016/10/17.
  */
 
-public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements EditMode {
+public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> implements EditMode {
 
 
     //Data
@@ -39,7 +40,8 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    public MemoAdapter(FragmentActivity activity, long topicId, List<MemoEntity> memoList, DBManager dbManager, EditMemoDialogFragment.MemoCallback callback) {
+    public MemoAdapter(FragmentActivity activity, long topicId, List<MemoEntity> memoList, DBManager dbManager, EditMemoDialogFragment.MemoCallback callback, RecyclerView recyclerView) {
+        super(recyclerView);
         this.mActivity = activity;
         this.topicId = topicId;
         this.memoList = memoList;
@@ -49,7 +51,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DragSortAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (isEditMode) {
             if (viewType == TYPE_HEADER) {
@@ -93,13 +95,22 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
+    @Override
+    public long getItemId(int position) {
+        if (getShiftPosition(position) >= memoList.size() || getShiftPosition(position) < 0) {
+            return -1;
+        } else {
+            return memoList.get(getShiftPosition(position)).getMemoId();
+        }
+    }
+
     private boolean isPositionHeader(int position) {
         return position == 0;
     }
 
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final DragSortAdapter.ViewHolder holder, final int position) {
         if (holder instanceof MemoViewHeader) {
 
         } else if (holder instanceof MemoViewHolder) {
@@ -139,13 +150,48 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    protected class MemoViewHeader extends RecyclerView.ViewHolder {
+    @Override
+    public int getPositionForId(long id) {
+        int shift = 0;
+        if (isEditMode) {
+            shift = 1;
+        }
+        for (MemoEntity memoEntity : memoList) {
+            if (memoEntity.getMemoId() == id) {
+                return memoList.indexOf(memoEntity) + shift;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean move(int fromPosition, int toPosition) {
+        if (toPosition == 0 && isEditMode) {
+            // should not change the order of the item "add memo"
+        } else {
+            memoList.add(getShiftPosition(toPosition), memoList.remove(getShiftPosition(fromPosition)));
+        }
+        return true;
+    }
+
+    @Override
+    public void onDrop() {
+        super.onDrop();
+        int order = 0;
+        dbManager.opeDB();
+        for (MemoEntity memoEntity : memoList) {
+            dbManager.updateMemoOrder(memoEntity.getMemoId(), order++);
+        }
+        dbManager.closeDB();
+    }
+
+    protected class MemoViewHeader extends DragSortAdapter.ViewHolder {
         private View rootView;
         private TextView TV_memo_item_add;
 
 
         public MemoViewHeader(View view) {
-            super(view);
+            super(MemoAdapter.this, view);
             this.rootView = view;
             TV_memo_item_add = (TextView) rootView.findViewById(R.id.TV_memo_item_add);
             TV_memo_item_add.setTextColor(ThemeManager.getInstance().getThemeDarkColor(mActivity));
@@ -161,9 +207,10 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
     }
 
-    protected class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    protected class MemoViewHolder extends DragSortAdapter.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private View rootView;
+        private ImageView IV_memo_item_dot;
         private TextView TV_memo_item_content;
         private ImageView IV_memo_item_delete;
         private RelativeLayout RL_memo_item_root_view;
@@ -171,9 +218,10 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
 
         protected MemoViewHolder(View view) {
-            super(view);
+            super(MemoAdapter.this, view);
             this.rootView = view;
             RL_memo_item_root_view = (RelativeLayout) rootView.findViewById(R.id.RL_memo_item_root_view);
+            IV_memo_item_dot = (ImageView) rootView.findViewById(R.id.IV_memo_item_dot);
             TV_memo_item_content = (TextView) rootView.findViewById(R.id.TV_memo_item_content);
             IV_memo_item_delete = (ImageView) rootView.findViewById(R.id.IV_memo_item_delete);
             TV_memo_item_content.setTextColor(ThemeManager.getInstance().getThemeDarkColor(mActivity));
@@ -186,13 +234,17 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         public void setItemPosition(int itemPosition) {
             if (isEditMode) {
+                IV_memo_item_dot.setImageResource(R.drawable.ic_memo_swap_vert_black_24dp);
                 IV_memo_item_delete.setVisibility(View.VISIBLE);
                 IV_memo_item_delete.setOnClickListener(this);
                 RL_memo_item_root_view.setOnClickListener(this);
+                RL_memo_item_root_view.setOnLongClickListener(this);
             } else {
+                IV_memo_item_dot.setImageResource(R.drawable.ic_memo_dot_24dp);
                 IV_memo_item_delete.setVisibility(View.GONE);
                 IV_memo_item_delete.setOnClickListener(null);
                 RL_memo_item_root_view.setOnClickListener(this);
+                RL_memo_item_root_view.setOnLongClickListener(null);
             }
             this.itemPosition = itemPosition;
         }
@@ -222,6 +274,12 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     }
                     break;
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            startDrag();
+            return false;
         }
     }
 }

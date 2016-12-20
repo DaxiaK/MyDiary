@@ -60,7 +60,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
         if (topicId == -1) {
@@ -110,7 +110,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_memo.setLayoutManager(lmr);
         RecyclerView_memo.setHasFixedSize(true);
-        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager, this);
+        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager, this, RecyclerView_memo);
         RecyclerView_memo.setAdapter(memoAdapter);
     }
 
