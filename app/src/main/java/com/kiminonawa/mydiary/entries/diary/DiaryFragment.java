@@ -521,11 +521,36 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.IV_diary_menu:
+                DiaryTextTag tag = checkoutOldDiaryContent();
                 DiaryBlock diaryBlock = new DiaryBlock();
-                diaryItemHelper.createItem(diaryBlock);
-                diaryItemHelper.addViewToDiaryContent(getContext());
-                diaryBlock.setPosition(diaryItemHelper.getItemSize());
-                diaryBlock.setDeleteBlockListener(this);
+                //Check edittext is focused
+                if (tag != null) {
+                    //Add new edittext
+                    DiaryText diaryText = new DiaryText(getActivity());
+                    diaryText.setPosition(tag.getPositionTag());
+                    diaryText.setContent(tag.getNextEditTextStr());
+                    diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
+                    diaryItemHelper.addViewToDiaryContent(getActivity(), tag.getPositionTag() + 1);
+                    diaryText.getView().requestFocus();
+                    //Add block
+                    diaryItemHelper.createItem(diaryBlock);
+                    diaryItemHelper.addViewToDiaryContent(getContext());
+                    diaryBlock.setPosition(diaryItemHelper.getItemSize() - 1);
+                    diaryBlock.setDeleteBlockListener(this);
+                } else {
+                    //Add photo
+                    diaryItemHelper.createItem(diaryBlock);
+                    diaryItemHelper.addViewToDiaryContent(getContext());
+                    diaryBlock.setPosition(diaryItemHelper.getItemSize() - 1);
+                    diaryBlock.setDeleteBlockListener(this);
+                    //Add new edittext
+                    DiaryText diaryText = new DiaryText(getActivity());
+                    diaryText.setPosition(diaryItemHelper.getItemSize());
+                    diaryItemHelper.createItem(diaryText);
+                    diaryItemHelper.addViewToDiaryContent(getActivity());
+                    diaryText.getView().requestFocus();
+                }
+
                 break;
             case R.id.LL_diary_time_information:
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
@@ -539,6 +564,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
                     diaryItemHelper.createItem(diaryText);
+                    diaryItemHelper.addViewToDiaryContent(getActivity());
                     //set Focus
                     diaryText.getView().requestFocus();
                     //Show keyboard automatically
