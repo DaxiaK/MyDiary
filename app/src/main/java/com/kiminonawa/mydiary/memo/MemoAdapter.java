@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.memo;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.EditMode;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.marshalchen.ultimaterecyclerview.dragsortadapter.DragSortAdapter;
 
@@ -36,6 +38,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
     private DBManager dbManager;
     private boolean isEditMode = false;
     private EditMemoDialogFragment.MemoCallback callback;
+    private RecyclerView recyclerView;
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
@@ -47,6 +50,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
         this.memoList = memoList;
         this.dbManager = dbManager;
         this.callback = callback;
+        this.recyclerView = recyclerView;
     }
 
 
@@ -177,10 +181,11 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
     @Override
     public void onDrop() {
         super.onDrop();
-        int order = 0;
+        recyclerView.findViewHolderForItemId(getDraggingId()).itemView.setBackgroundColor(Color.WHITE);
+        int order = memoList.size();
         dbManager.opeDB();
         for (MemoEntity memoEntity : memoList) {
-            dbManager.updateMemoOrder(memoEntity.getMemoId(), order++);
+            dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
         }
         dbManager.closeDB();
     }
@@ -235,12 +240,16 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
         public void setItemPosition(int itemPosition) {
             if (isEditMode) {
                 IV_memo_item_dot.setImageResource(R.drawable.ic_memo_swap_vert_black_24dp);
+                ViewGroup.LayoutParams layoutParams = IV_memo_item_dot.getLayoutParams();
+                layoutParams.width = layoutParams.height = ScreenHelper.dpToPixel(mActivity.getResources(), 24);
                 IV_memo_item_delete.setVisibility(View.VISIBLE);
                 IV_memo_item_delete.setOnClickListener(this);
                 RL_memo_item_root_view.setOnClickListener(this);
                 RL_memo_item_root_view.setOnLongClickListener(this);
             } else {
                 IV_memo_item_dot.setImageResource(R.drawable.ic_memo_dot_24dp);
+                ViewGroup.LayoutParams layoutParams = IV_memo_item_dot.getLayoutParams();
+                layoutParams.width = layoutParams.height = ScreenHelper.dpToPixel(mActivity.getResources(), 10);
                 IV_memo_item_delete.setVisibility(View.GONE);
                 IV_memo_item_delete.setOnClickListener(null);
                 RL_memo_item_root_view.setOnClickListener(this);
@@ -278,6 +287,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
 
         @Override
         public boolean onLongClick(View v) {
+            v.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
             startDrag();
             return false;
         }

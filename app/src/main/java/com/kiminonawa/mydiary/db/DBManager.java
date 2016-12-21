@@ -287,7 +287,7 @@ public class DBManager {
 
     public Cursor selectMemo(long topicId) {
         Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                MemoEntry.COLUMN_ORDER + " ASC", null);
+                MemoEntry.COLUMN_ORDER + " DESC", null);
         if (c != null) {
             c.moveToFirst();
         }
