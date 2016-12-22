@@ -56,70 +56,31 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
 
     @Override
     public DragSortAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
-        if (isEditMode) {
-            if (viewType == TYPE_HEADER) {
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.rv_memo_item_add_header, parent, false);
-                return new MemoViewHeader(view);
-            } else if (viewType == TYPE_ITEM) {
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.rv_memo_item, parent, false);
-                return new MemoViewHolder(view);
-            }
-        } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.rv_memo_item, parent, false);
-            return new MemoViewHolder(view);
-        }
-        throw new RuntimeException("Can't find view");
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.rv_memo_item, parent, false);
+        return new MemoViewHolder(view);
     }
 
     @Override
     public int getItemCount() {
-        int size;
-        if (isEditMode) {
-            size = memoList.size() + 1;
-        } else {
-            size = memoList.size();
-        }
-        return size;
+        return memoList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (isEditMode) {
-            if (isPositionHeader(position)) {
-                return TYPE_HEADER;
-            } else {
-                return TYPE_ITEM;
-            }
-        } else {
-            return TYPE_ITEM;
-        }
+        return TYPE_ITEM;
     }
 
     @Override
     public long getItemId(int position) {
-        if (getShiftPosition(position) >= memoList.size() || getShiftPosition(position) < 0) {
-            return -1;
-        } else {
-            return memoList.get(getShiftPosition(position)).getMemoId();
-        }
+        return memoList.get(position).getMemoId();
     }
-
-    private boolean isPositionHeader(int position) {
-        return position == 0;
-    }
-
 
     @Override
     public void onBindViewHolder(final DragSortAdapter.ViewHolder holder, final int position) {
-        if (holder instanceof MemoViewHeader) {
-
-        } else if (holder instanceof MemoViewHolder) {
-            ((MemoViewHolder) holder).setItemPosition(getShiftPosition(position));
-            setMemoContent(((MemoViewHolder) holder), getShiftPosition(position));
+        if (holder instanceof MemoViewHolder) {
+            ((MemoViewHolder) holder).setItemPosition(position);
+            setMemoContent(((MemoViewHolder) holder), position);
         }
     }
 
@@ -146,23 +107,11 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
         isEditMode = editMode;
     }
 
-    public int getShiftPosition(int position) {
-        if (isEditMode) {
-            return position - 1;
-        } else {
-            return position;
-        }
-    }
-
     @Override
     public int getPositionForId(long id) {
-        int shift = 0;
-        if (isEditMode) {
-            shift = 1;
-        }
         for (MemoEntity memoEntity : memoList) {
             if (memoEntity.getMemoId() == id) {
-                return memoList.indexOf(memoEntity) + shift;
+                return memoList.indexOf(memoEntity);
             }
         }
         return -1;
@@ -170,11 +119,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
 
     @Override
     public boolean move(int fromPosition, int toPosition) {
-        if (toPosition == 0 && isEditMode) {
-            // should not change the order of the item "add memo"
-        } else {
-            memoList.add(getShiftPosition(toPosition), memoList.remove(getShiftPosition(fromPosition)));
-        }
+        memoList.add(toPosition, memoList.remove(fromPosition));
         return true;
     }
 
@@ -188,28 +133,6 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
             dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
         }
         dbManager.closeDB();
-    }
-
-    protected class MemoViewHeader extends DragSortAdapter.ViewHolder {
-        private View rootView;
-        private TextView TV_memo_item_add;
-
-
-        public MemoViewHeader(View view) {
-            super(MemoAdapter.this, view);
-            this.rootView = view;
-            TV_memo_item_add = (TextView) rootView.findViewById(R.id.TV_memo_item_add);
-            TV_memo_item_add.setTextColor(ThemeManager.getInstance().getThemeDarkColor(mActivity));
-            TV_memo_item_add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EditMemoDialogFragment editMemoDialogFragment = EditMemoDialogFragment.newInstance(
-                            topicId, -1, true, "");
-                    editMemoDialogFragment.setCallBack(callback);
-                    editMemoDialogFragment.show(mActivity.getSupportFragmentManager(), "editMemoDialogFragment");
-                }
-            });
-        }
     }
 
     protected class MemoViewHolder extends DragSortAdapter.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

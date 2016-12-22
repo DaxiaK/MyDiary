@@ -43,17 +43,31 @@
         android:id="@+id/RL_memo_content_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/RL_memo_topbar_content">
+        android:layout_below="@+id/RL_memo_topbar_content"
+        android:paddingTop="10dp">
+
+        <!--Note that you cannot have a circular dependency between the size of the RelativeLayout and the position of its
+                      children. For example, you cannot have a RelativeLayout whose height is set to WRAP_CONTENT and a child
+                      set to ALIGN_PARENT_BOTTOM.(https://developer.android.com/reference/android/widget/RelativeLayout.html)
+                      So I give layout_height a fix value.-->
+        <include
+            android:id="@+id/Layout_memo_item_add"
+            layout="@layout/rv_memo_item_add_header"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:visibility="gone" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/RecyclerView_memo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/Layout_memo_item_add"
             android:alpha="0.95"
             android:paddingBottom="10dp"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="10dp" />
+            android:paddingRight="15dp" />
 
     </RelativeLayout>
 

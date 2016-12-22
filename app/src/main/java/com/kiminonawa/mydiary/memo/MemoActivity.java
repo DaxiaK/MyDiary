@@ -33,6 +33,8 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     private RelativeLayout RL_memo_topbar_content;
     private TextView TV_memo_topbar_title;
     private ImageView IV_memo_edit;
+    private View rootView;
+    private TextView TV_memo_item_add;
 
     /**
      * DB
@@ -85,6 +87,18 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         TV_memo_topbar_title.setText(diaryTitle);
 
         RecyclerView_memo = (RecyclerView) findViewById(R.id.RecyclerView_memo);
+        rootView = findViewById(R.id.Layout_memo_item_add);
+        TV_memo_item_add = (TextView) rootView.findViewById(R.id.TV_memo_item_add);
+        TV_memo_item_add.setTextColor(ThemeManager.getInstance().getThemeDarkColor(this));
+        TV_memo_item_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditMemoDialogFragment editMemoDialogFragment = EditMemoDialogFragment.newInstance(
+                        topicId, -1, true, "");
+                editMemoDialogFragment.setCallBack(MemoActivity.this);
+                editMemoDialogFragment.show(getSupportFragmentManager(), "editMemoDialogFragment");
+            }
+        });
         memoList = new ArrayList<>();
         dbManager = new DBManager(MemoActivity.this);
 
@@ -118,9 +132,11 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         if (isEditMode) {
             //Cancel edit
             IV_memo_edit.setImageDrawable(ViewTools.getDrawable(MemoActivity.this, R.drawable.ic_mode_edit_white_24dp));
+            rootView.setVisibility(View.GONE);
         } else {
             //Start edit
             IV_memo_edit.setImageDrawable(ViewTools.getDrawable(MemoActivity.this, R.drawable.ic_mode_edit_cancel_white_24dp));
+            rootView.setVisibility(View.VISIBLE);
         }
         memoAdapter.setEditMode(!isEditMode);
         memoAdapter.notifyDataSetChanged();
