@@ -9,7 +9,7 @@ android {
         targetSdkVersion 23
         // versionName rule
         // version.yyMMDD_BuildCount_OPTION , D = demo , H = hotfix
-        versionCode 22
+        versionCode 23
         versionName "0.2.2.161216_1_d"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
