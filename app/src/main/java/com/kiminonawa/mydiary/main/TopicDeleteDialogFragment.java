@@ -34,15 +34,12 @@ public class TopicDeleteDialogFragment extends CommonDialogFragment {
     }
 
 
-    public void setCallBack(DeleteCallback callback) {
-        this.callback = callback;
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         super.onViewCreated(view, savedInstanceState);
         topicTitle = getArguments().getString("topicTitle", "");
+        callback = (DeleteCallback) getTargetFragment();
         this.TV_common_content.setText(
                 String.format(getResources().getString(R.string.topic_dialog_delete_content), topicTitle));
     }

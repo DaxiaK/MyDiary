@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.main;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -66,6 +67,17 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
     private ImageView IV_your_name_profile_picture, IV_your_name_profile_picture_cancel;
     private EditText EDT_your_name_name;
     private MyDiaryButton But_your_name_ok, But_your_name_cancel;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (YourNameCallback) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -162,9 +174,6 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         IV_your_name_profile_picture.setImageDrawable(ThemeManager.getInstance().getProfilePictureDrawable(getActivity()));
     }
 
-    public void setCallBack(YourNameCallback callback) {
-        this.callback = callback;
-    }
 
     private void saveYourName() {
         //Save name

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Set layout
         setContentView(R.layout.activity_main);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
         themeManager = ThemeManager.getInstance();
 
@@ -200,7 +200,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.LL_main_profile:
                 YourNameDialogFragment yourNameDialogFragment = new YourNameDialogFragment();
-                yourNameDialogFragment.setCallBack(this);
                 yourNameDialogFragment.show(getSupportFragmentManager(), "yourNameDialogFragment");
                 break;
             case R.id.IV_main_setting:

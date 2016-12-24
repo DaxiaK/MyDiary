@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.main;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -101,6 +102,16 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         args.putInt("topicColorCode", topicColorCode);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (TopicCreatedCallback) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -248,9 +259,6 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         SP_topic_detail_type.setSelection(1);
     }
 
-    public void setCallBack(TopicCreatedCallback callback) {
-        this.callback = callback;
-    }
 
     private void createTopic() {
         DBManager dbManager = new DBManager(getActivity());
@@ -298,7 +306,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                 break;
             case R.id.But_topic_detail_delete:
                 TopicDeleteDialogFragment topicDeleteDialogFragment = TopicDeleteDialogFragment.newInstance(title);
-                topicDeleteDialogFragment.setCallBack(this);
+                topicDeleteDialogFragment.setTargetFragment(this, 0);
                 topicDeleteDialogFragment.show(getFragmentManager(), "topicDeleteDialogFragment");
                 break;
             case R.id.But_topic_detail_ok:
