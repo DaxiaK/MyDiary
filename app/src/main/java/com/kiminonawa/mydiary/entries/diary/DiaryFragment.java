@@ -36,6 +36,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
@@ -56,7 +58,6 @@ import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -262,6 +263,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             }
         }
         diaryHandler.removeCallbacksAndMessages(null);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -415,13 +417,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
     }
 
-    private void startGetLocation(){
-        //Open Google App or use geoCoder
-//                            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
-//                                openGooglePlacePicker();
-//                            } else {
-        openGPSListener();
-//                            }
+    private void startGetLocation() {
+//        Open Google App or use geoCoder
+        if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
+            openGooglePlacePicker();
+        } else {
+            openGPSListener();
+        }
     }
 
     private void openGooglePlacePicker() {
@@ -443,7 +445,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Log.e("test","onLocationChanged");
+            Log.e("test", "onLocationChanged");
             diaryLocations = new Location(location);
             diaryHandler.removeCallbacksAndMessages(null);
             diaryHandler.sendEmptyMessage(0);
@@ -477,7 +479,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0,
                     locationListener);
             //Waiting gps max timeout is 20s
-            diaryHandler.sendEmptyMessageDelayed(0, 20000);
+            diaryHandler.sendEmptyMessageDelayed(0, 5000);
         } catch (SecurityException e) {
             //do nothing
         }
@@ -676,39 +678,39 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
         @Override
         public void handleMessage(Message msg) {
+            Log.e("test", "work");
             DiaryFragment theFrag = mFrag.get();
             if (theFrag != null) {
                 theFrag.TV_diary_location.setText(getLocationName(theFrag));
+                theFrag.initLocationIcon();
             }
         }
 
         private String getLocationName(DiaryFragment theFrag) {
             StringBuilder returnLocation = new StringBuilder();
-            if (theFrag.diaryLocations == null) {
-                try {
-                    theFrag.diaryLocations = theFrag.locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-            }
-            List<String> providerList = theFrag.locationManager.getAllProviders();
             try {
-                if (null != theFrag.diaryLocations && null != providerList && providerList.size() > 0) {
-                    double longitude = theFrag.diaryLocations.getLongitude();
-                    double latitude = theFrag.diaryLocations.getLatitude();
-                    Geocoder geocoder = new Geocoder(theFrag.getActivity().getApplicationContext(), Locale.getDefault());
-                    List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
-                    if (null != listAddresses && listAddresses.size() > 0) {
-                        try {
-                            returnLocation.append(listAddresses.get(0).getCountryName());
-                            returnLocation.append(" ");
-                            returnLocation.append(listAddresses.get(0).getAdminArea());
-                        } catch (Exception e) {
-                            //revert it in finally
+                if (theFrag.diaryLocations != null) {
+                    List<String> providerList = theFrag.locationManager.getAllProviders();
+                    if (null != theFrag.diaryLocations && null != providerList && providerList.size() > 0) {
+                        double longitude = theFrag.diaryLocations.getLongitude();
+                        double latitude = theFrag.diaryLocations.getLatitude();
+                        Geocoder geocoder = new Geocoder(theFrag.getActivity().getApplicationContext(), Locale.getDefault());
+                        List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (null != listAddresses && listAddresses.size() > 0) {
+                            try {
+                                returnLocation.append(listAddresses.get(0).getCountryName());
+                                returnLocation.append(" ");
+                                returnLocation.append(listAddresses.get(0).getAdminArea());
+                                theFrag.isLocation = true;
+                            } catch (Exception e) {
+                                //revert it in finally
+                            }
                         }
                     }
+                } else {
+                    Toast.makeText(theFrag.getActivity(), "定位超時", Toast.LENGTH_LONG).show();
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 theFrag.diaryLocations = null;
@@ -720,6 +722,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 theFrag.progressDialog.dismiss();
                 if (returnLocation.length() == 0) {
                     returnLocation.append(theFrag.noLocation);
+                    theFrag.isLocation = false;
                 }
             }
             return returnLocation.toString();
