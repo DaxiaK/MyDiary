@@ -165,9 +165,11 @@
                             android:visibility="gone" />
 
                         <ImageView
+                            android:id="@+id/IV_diary_location_name_icon"
                             android:layout_width="12dp"
                             android:layout_height="12dp"
-                            android:src="@drawable/ic_location_on_white_24dp" />
+                            android:src="@drawable/ic_location_on_white_24dp"
+                            android:visibility="gone" />
 
                         <TextView
                             android:id="@+id/TV_diary_location"

@@ -112,6 +112,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time;
 
     private ImageView IV_diary_weather;
+    private ImageView IV_diary_location_name_icon;
     private TextView TV_diary_weather, TV_diary_location;
     private RelativeLayout RL_diary_weather, RL_diary_mood;
     private Spinner SP_diary_weather, SP_diary_mood;
@@ -135,7 +136,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      * Edit Mode
      */
     private CopyDiaryToEditCacheTask mTask;
-    private Handler delayHandler;
+    private Handler loadDiaryHandler;
     private boolean initHandlerOrTaskIsRunning = false;
 
     private Calendar calendar;
@@ -221,6 +222,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         TV_diary_date = (TextView) rootView.findViewById(R.id.TV_diary_date);
         TV_diary_day = (TextView) rootView.findViewById(R.id.TV_diary_day);
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
+
+        IV_diary_location_name_icon = (ImageView) rootView.findViewById(R.id.IV_diary_location_name_icon);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
 
         LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
@@ -255,16 +258,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 diaryFileManager.clearDiaryDir();
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
                 mTask = new CopyDiaryToEditCacheTask(getActivity(), diaryFileManager, this);
-                //Make ths ProgressBar show 1s+.
-                delayHandler = new Handler();
-                delayHandler.postDelayed(new Runnable() {
+                //Make ths ProgressBar show 0.7s+.
+                loadDiaryHandler = new Handler();
+                initHandlerOrTaskIsRunning = true;
+                loadDiaryHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //Copy the file into editCash
                         mTask.execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
                     }
-                }, 1000);
-                initHandlerOrTaskIsRunning = true;
+                }, 700);
                 ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
             } else {
                 diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
@@ -341,8 +344,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     public void onStop() {
         super.onStop();
         if (initHandlerOrTaskIsRunning) {
-            if (delayHandler != null) {
-                delayHandler.removeCallbacksAndMessages(null);
+            if (loadDiaryHandler != null) {
+                loadDiaryHandler.removeCallbacksAndMessages(null);
             }
             if (mTask != null) {
                 mTask.cancel(true);
@@ -396,9 +399,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         String locationName = diaryInfoCursor.getString(7);
         if (locationName != null && !"".equals(locationName)) {
             haveLocation = true;
+            IV_diary_location_name_icon.setVisibility(View.VISIBLE);
             TV_diary_location.setText(locationName);
         } else {
             haveLocation = false;
+            IV_diary_location_name_icon.setVisibility(View.VISIBLE);
         }
         initLocationIcon();
         setIcon(diaryInfoCursor.getInt(3), diaryInfoCursor.getInt(4));
@@ -441,6 +446,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             TV_diary_weather = (TextView) rootView.findViewById(R.id.TV_diary_weather);
             IV_diary_weather.setVisibility(View.VISIBLE);
             TV_diary_weather.setVisibility(View.VISIBLE);
+
+            IV_diary_location_name_icon.setVisibility(View.VISIBLE);
 
             TV_diary_title_content = (TextView) rootView.findViewById(R.id.TV_diary_title_content);
             TV_diary_title_content.setVisibility(View.VISIBLE);
@@ -520,7 +527,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
             openGooglePlacePicker();
         } else {
-        openGPSListener();
+            openGPSListener();
         }
     }
 
