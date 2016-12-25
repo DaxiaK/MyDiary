@@ -140,4 +140,9 @@
     <!--Google service API-->
     <string name="toast_google_service_not_work">구글 서비스 작동에 문제가 있거나 업데이트가 필요합니다</string>
 
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">Your location is close</string>
+    <string name="toast_geocoder_fail">Can\'t transform address</string>
+    <string name="toast_location_timeout">get location timeout</string>
+
 </resources>

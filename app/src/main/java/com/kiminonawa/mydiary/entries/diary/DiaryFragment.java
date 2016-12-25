@@ -418,7 +418,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     }
 
     private void startGetLocation() {
-//        Open Google App or use geoCoder
+        //Open Google App or use geoCoder
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
             openGooglePlacePicker();
         } else {
@@ -442,10 +442,22 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
     }
 
+    private void openGPSListener() {
+        progressDialog.show();
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0,
+                    locationListener);
+            //Waiting gps max timeout is 15s
+            diaryHandler.sendEmptyMessageDelayed(0, 15000);
+        } catch (SecurityException e) {
+            //do nothing
+        }
+
+    }
+
     private LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            Log.e("test", "onLocationChanged");
             diaryLocations = new Location(location);
             diaryHandler.removeCallbacksAndMessages(null);
             diaryHandler.sendEmptyMessage(0);
@@ -472,19 +484,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
         }
     };
-
-    private void openGPSListener() {
-        progressDialog.show();
-        try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0,
-                    locationListener);
-            //Waiting gps max timeout is 20s
-            diaryHandler.sendEmptyMessageDelayed(0, 5000);
-        } catch (SecurityException e) {
-            //do nothing
-        }
-
-    }
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
@@ -678,7 +677,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
         @Override
         public void handleMessage(Message msg) {
-            Log.e("test", "work");
             DiaryFragment theFrag = mFrag.get();
             if (theFrag != null) {
                 theFrag.TV_diary_location.setText(getLocationName(theFrag));
@@ -712,6 +710,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(theFrag.getActivity(), "無法解析位置", Toast.LENGTH_LONG).show();
             } finally {
                 theFrag.diaryLocations = null;
                 try {
