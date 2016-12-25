@@ -31,15 +31,13 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     private EntriesFragment mFragment;
     private DateFormat dateFormat = new SimpleDateFormat("HH:mm");
     private String[] daysSimpleName;
-    private DiaryViewerDialogFragment.DiaryViewerCallback mDiaryViewerCallback;
     private ThemeManager themeManager;
 
     private boolean isEditMode = false;
 
-    public EntriesAdapter(EntriesFragment fragment, List<EntriesEntity> topicList, DiaryViewerDialogFragment.DiaryViewerCallback callback) {
+    public EntriesAdapter(EntriesFragment fragment, List<EntriesEntity> topicList) {
         this.mFragment = fragment;
         this.entriesList = topicList;
-        this.mDiaryViewerCallback = callback;
         this.daysSimpleName = mFragment.getResources().getStringArray(R.array.days_simple_name);
         this.themeManager = ThemeManager.getInstance();
     }
@@ -89,7 +87,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             public void onClick(View v) {
                 DiaryViewerDialogFragment diaryViewerDialog =
                         DiaryViewerDialogFragment.newInstance(entriesList.get(position).getId(), isEditMode);
-                diaryViewerDialog.setCallBack(mDiaryViewerCallback);
+                diaryViewerDialog.setTargetFragment(mFragment, 0);
                 if (isEditMode) {
                     mFragment.setEditModeUI(isEditMode);
                 }

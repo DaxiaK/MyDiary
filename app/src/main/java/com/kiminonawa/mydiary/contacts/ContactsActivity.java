@@ -205,7 +205,6 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
                 ContactsDetailDialogFragment contactsDetailDialogFragment =
                         ContactsDetailDialogFragment.newInstance(ContactsDetailDialogFragment.ADD_NEW_CONTACTS,
                                 "", "", topicId);
-                contactsDetailDialogFragment.setCallBack(this);
                 contactsDetailDialogFragment.show(getSupportFragmentManager(), "contactsDetailDialogFragment");
                 break;
         }

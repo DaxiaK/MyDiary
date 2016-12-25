@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.setting.ColorPickerFragment;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -287,8 +286,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         switch (v.getId()) {
             case R.id.IV_topic_color:
                 ColorPickerFragment secColorPickerFragment =
-                        ColorPickerFragment.newInstance(topicColorCode);
-                secColorPickerFragment.setCallBack(this, R.id.IV_topic_color);
+                        ColorPickerFragment.newInstance(topicColorCode, R.id.IV_topic_color);
+                secColorPickerFragment.setTargetFragment(this, 0);
                 secColorPickerFragment.show(getFragmentManager(), "topicTextColorPickerFragment");
                 break;
 

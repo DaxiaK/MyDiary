@@ -149,7 +149,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.TopicV
                     ContactsDetailDialogFragment.newInstance(contactsNamesList.get(itemPosition).getContactsId(),
                             contactsNamesList.get(itemPosition).getName(), contactsNamesList.get(itemPosition).getPhoneNumber(),
                             topicId);
-            contactsDetailDialogFragment.setCallBack(callback);
             contactsDetailDialogFragment.show(mActivity.getSupportFragmentManager(), "contactsDetailDialogFragment");
             return true;
         }

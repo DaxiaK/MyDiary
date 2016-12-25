@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.setting;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import com.larswerkman.holocolorpicker.SVBar;
  * Created by daxia on 2016/11/25.
  */
 
-public class ColorPickerFragment extends DialogFragment implements View.OnClickListener {
+public class SettingColorPickerFragment extends DialogFragment implements View.OnClickListener {
 
 
     public interface colorPickerCallback {
@@ -33,10 +34,21 @@ public class ColorPickerFragment extends DialogFragment implements View.OnClickL
 
     private colorPickerCallback callback;
 
-    public static ColorPickerFragment newInstance(int oldColor) {
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (colorPickerCallback) context;
+        } catch (ClassCastException e) {
+        }
+    }
+
+    public static SettingColorPickerFragment newInstance(int oldColor, int viewId) {
         Bundle args = new Bundle();
-        ColorPickerFragment fragment = new ColorPickerFragment();
+        SettingColorPickerFragment fragment = new SettingColorPickerFragment();
         args.putInt("oldColor", oldColor);
+        args.putInt("viewId", viewId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +59,7 @@ public class ColorPickerFragment extends DialogFragment implements View.OnClickL
         // request a window without the title
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         oldColor = getArguments().getInt("oldColor", 0);
+        viewId = getArguments().getInt("viewId", View.NO_ID);
         return dialog;
     }
 
@@ -54,7 +67,9 @@ public class ColorPickerFragment extends DialogFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(true);
-
+        if (viewId == View.NO_ID) {
+            dismiss();
+        }
         View rootView = inflater.inflate(R.layout.dialog_fragment_color_picker, container);
         picker = (ColorPicker) rootView.findViewById(R.id.picker);
         svBar = (SVBar) rootView.findViewById(R.id.svbar);
@@ -67,11 +82,6 @@ public class ColorPickerFragment extends DialogFragment implements View.OnClickL
         But_setting_change_color.setOnClickListener(this);
         But_setting_cancel.setOnClickListener(this);
         return rootView;
-    }
-
-    public void setCallBack(colorPickerCallback callback, int viewId) {
-        this.callback = callback;
-        this.viewId = viewId;
     }
 
     @Override

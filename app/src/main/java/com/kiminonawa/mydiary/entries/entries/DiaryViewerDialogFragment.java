@@ -41,7 +41,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.entries.BackDialogFragment;
+import com.kiminonawa.mydiary.entries.EditDiaryBackDialogFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.CopyPhotoTask;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -75,7 +75,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_
 public class DiaryViewerDialogFragment extends DialogFragment implements View.OnClickListener,
         DiaryDeleteDialogFragment.DeleteCallback, CopyDiaryToEditCacheTask.EditTaskCallBack,
         DiaryPhotoBottomSheet.PhotoCallBack, CopyPhotoTask.CopyPhotoCallBack,
-        UpdateDiaryTask.UpdateDiaryCallBack, BackDialogFragment.BackDialogCallback,
+        UpdateDiaryTask.UpdateDiaryCallBack, EditDiaryBackDialogFragment.BackDialogCallback,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     /**
@@ -171,8 +171,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             @Override
             public void onBackPressed() {
                 if (isEditMode) {
-                    BackDialogFragment backDialogFragment = new BackDialogFragment();
-                    backDialogFragment.setCallBack(DiaryViewerDialogFragment.this);
+                    EditDiaryBackDialogFragment backDialogFragment = new EditDiaryBackDialogFragment();
+                    backDialogFragment.setTargetFragment(DiaryViewerDialogFragment.this, 0);
                     backDialogFragment.show(getFragmentManager(), "backDialogFragment");
                 } else {
                     super.onBackPressed();
@@ -234,6 +234,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        callback = (DiaryViewerCallback) getTargetFragment();
         diaryId = getArguments().getLong("diaryId", -1L);
         if (diaryId != -1) {
             if (isEditMode) {
@@ -577,12 +578,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         return tag;
     }
 
-
-    public void setCallBack(DiaryViewerCallback callback) {
-        this.callback = callback;
-    }
-
-
     private void updateDiary() {
 
         //Create locationName
@@ -737,7 +732,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             case R.id.IV_diary_delete:
                 DiaryDeleteDialogFragment diaryDeleteDialogFragment =
                         DiaryDeleteDialogFragment.newInstance(((DiaryActivity) getActivity()).getTopicId(), diaryId);
-                diaryDeleteDialogFragment.setCallBack(this);
+                diaryDeleteDialogFragment.setTargetFragment(this, 0);
                 diaryDeleteDialogFragment.show(getFragmentManager(), "diaryDeleteDialogFragment");
                 break;
             case R.id.IV_diary_clear:

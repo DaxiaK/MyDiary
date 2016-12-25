@@ -154,7 +154,6 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 public void onClick(View v) {
                     EditMemoDialogFragment editMemoDialogFragment = EditMemoDialogFragment.newInstance(
                             topicId, -1, true, "");
-                    editMemoDialogFragment.setCallBack(callback);
                     editMemoDialogFragment.show(mActivity.getSupportFragmentManager(), "editMemoDialogFragment");
                 }
             });
@@ -211,7 +210,6 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     if (isEditMode) {
                         EditMemoDialogFragment editMemoDialogFragment = EditMemoDialogFragment.newInstance(
                                 topicId, memoList.get(itemPosition).getMemoId(), false, memoList.get(itemPosition).getContent());
-                        editMemoDialogFragment.setCallBack(callback);
                         editMemoDialogFragment.show(mActivity.getSupportFragmentManager(), "editMemoDialogFragment");
                     } else {
                         memoList.get(itemPosition).toggleChecked();

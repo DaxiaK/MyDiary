@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.contacts;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -70,6 +71,15 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (ContactsDetailCallback) context;
+        } catch (ClassCastException e) {
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -124,9 +134,6 @@ public class ContactsDetailDialogFragment extends DialogFragment implements View
         }
     }
 
-    public void setCallBack(ContactsDetailCallback callback) {
-        this.callback = callback;
-    }
 
 
     private void addContacts() {
