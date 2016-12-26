@@ -141,5 +141,9 @@
     <!--Google service API-->
     <string name="toast_google_service_not_work">Google Services ของคุณไม่ทำงานหรือต้องได้รับการอัพเดท</string>
 
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">ตำแหน่งที่ตั้งของคุณถูกปิด</string>
+    <string name="toast_geocoder_fail">ไม่สามารถเปลี่ยนแปลงตำแหน่งที่ตั้ง</string>
+    <string name="toast_location_timeout">การรับตำแหน่งที่ตั้งล้มเหลว</string>
 
 </resources>
