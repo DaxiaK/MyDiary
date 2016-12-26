@@ -92,6 +92,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private LinearLayout LL_diary_item_content, LL_diary_time_information;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
+
     private Spinner SP_diary_weather, SP_diary_mood;
     private EditText EDT_diary_title;
     private ImageView IV_diary_menu, IV_diary_location, IV_diary_photo, IV_diary_delete, IV_diary_clear, IV_diary_save;
@@ -169,6 +170,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         TV_diary_day = (TextView) rootView.findViewById(R.id.TV_diary_day);
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
+        rootView.findViewById(R.id.IV_diary_location_name_icon).setVisibility(View.VISIBLE);
 
         SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
         SP_diary_weather.setVisibility(View.VISIBLE);
@@ -445,8 +447,12 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private void openGPSListener() {
         progressDialog.show();
         try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0,
-                    locationListener);
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
             //Waiting gps max timeout is 15s
             diaryHandler.sendEmptyMessageDelayed(0, 15000);
         } catch (SecurityException e) {
@@ -630,7 +636,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                                 locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
                             startGetLocation();
                         } else {
-                            Toast.makeText(getActivity(), "Your GPS is disable , please open it", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getString(R.string.toast_location_not_open), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -699,18 +705,22 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                                 returnLocation.append(listAddresses.get(0).getCountryName());
                                 returnLocation.append(" ");
                                 returnLocation.append(listAddresses.get(0).getAdminArea());
+                                returnLocation.append(" ");
+                                returnLocation.append(listAddresses.get(0).getLocality());
                                 theFrag.isLocation = true;
                             } catch (Exception e) {
                                 //revert it in finally
                             }
+                        } else {
+                            Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_geocoder_fail), Toast.LENGTH_LONG).show();
                         }
                     }
                 } else {
-                    Toast.makeText(theFrag.getActivity(), "定位超時", Toast.LENGTH_LONG).show();
+                    Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_location_timeout), Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(theFrag.getActivity(), "無法解析位置", Toast.LENGTH_LONG).show();
+                Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_geocoder_fail), Toast.LENGTH_LONG).show();
             } finally {
                 theFrag.diaryLocations = null;
                 try {

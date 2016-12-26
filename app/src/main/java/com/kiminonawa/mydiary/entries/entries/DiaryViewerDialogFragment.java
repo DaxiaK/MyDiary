@@ -877,10 +877,14 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                                 returnLocation.append(listAddresses.get(0).getCountryName());
                                 returnLocation.append(" ");
                                 returnLocation.append(listAddresses.get(0).getAdminArea());
+                                returnLocation.append(" ");
+                                returnLocation.append(listAddresses.get(0).getLocality());
                                 theFrag.haveLocation = true;
                             } catch (Exception e) {
                                 //revert it in finally
                             }
+                        } else {
+                            Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_geocoder_fail), Toast.LENGTH_LONG).show();
                         }
                     }
                 } else {
