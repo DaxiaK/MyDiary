@@ -2,7 +2,7 @@
 <resources>
 
     <array name="months_full_name">
-        <item>มาราคม</item>
+        <item>มกราคม</item>
         <item>กุมภาพันธ์</item>
         <item>มีนาคม</item>
         <item>เมษายน</item>
@@ -27,34 +27,34 @@
     </array>
 
     <array name="days_full_name">
-        <item>อาทิตย์</item>
-        <item>จันทร์</item>
-        <item>อังคาร</item>
-        <item>พุธ</item>
-        <item>พฤหัสบดี</item>
-        <item>ศุกร์</item>
-        <item>เสาร์</item>
+        <item>วันอาทิตย์</item>
+        <item>วันจันทร์</item>
+        <item>วันอังคาร</item>
+        <item>วันพุธ</item>
+        <item>วันพฤหัสบดี</item>
+        <item>วันศุกร์</item>
+        <item>วันเสาร์</item>
     </array>
 
     <array name="topic_type">
-        <item>รายชื่อติดต่อ</item>
+        <item>รายชื่อผู้ติดต่อ</item>
         <item>ไดอารี่</item>
-        <item>โน๊ตย่อ</item>
+        <item>บันทึก</item>
     </array>
 
     <array name="theme_list">
         <item>ทาคิ</item>
-        <item>มิตสึฮะ</item>
-        <item>ปรับแต่งเอง</item>
+        <item>มิสึฮะ</item>
+        <item>กำหนดเอง</item>
     </array>
 
     <array name="weather_list">
-        <item>แดดออก</item>
-        <item>เมฆปกคลุม</item>
-        <item>ลมแรง</item>
+        <item>แดดจ้า</item>
+        <item>มีเมฆมาก</item>
+        <item>ลมโชย</item>
         <item>ฝนตก</item>
         <item>หิมะตก</item>
-        <item>หมอกขึ้น</item>
+        <item>หมอกจัด</item>
     </array>
 
     <array name="language_list">
