@@ -49,12 +49,12 @@
     </array>
 
     <array name="weather_list">
-        <item>sunny</item>
-        <item>cloudy</item>
-        <item>windy</item>
-        <item>rainy</item>
-        <item>snowy</item>
-        <item>foggy</item>
+        <item>맑음</item>
+        <item>구름낀</item>
+        <item>바람붐</item>
+        <item>비옴</item>
+        <item>눈옴</item>
+        <item>안개낀</item>
     </array>
 
     <array name="language_list">

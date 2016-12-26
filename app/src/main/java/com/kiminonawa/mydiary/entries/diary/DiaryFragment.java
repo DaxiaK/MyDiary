@@ -10,8 +10,15 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,12 +58,16 @@ import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.LOCATION_SERVICE;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
@@ -81,6 +92,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private LinearLayout LL_diary_item_content, LL_diary_time_information;
     private RelativeLayout RL_diary_info, RL_diary_edit_bar;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
+
     private Spinner SP_diary_weather, SP_diary_mood;
     private EditText EDT_diary_title;
     private ImageView IV_diary_menu, IV_diary_location, IV_diary_photo, IV_diary_delete, IV_diary_clear, IV_diary_save;
@@ -121,6 +133,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * Location
      */
+    private DiaryHandler diaryHandler;
+    private Location diaryLocations = null;
+    private LocationManager locationManager;
     private String noLocation;
     private boolean isLocation = false;
     private ProgressDialog progressDialog;
@@ -155,6 +170,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         TV_diary_day = (TextView) rootView.findViewById(R.id.TV_diary_day);
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
+        rootView.findViewById(R.id.IV_diary_location_name_icon).setVisibility(View.VISIBLE);
 
         SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
         SP_diary_weather.setVisibility(View.VISIBLE);
@@ -190,9 +206,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (!isCreatedView) {
+            diaryHandler = new DiaryHandler(this);
             initWeatherSpinner();
             initMoodSpinner();
             setCurrentTime(true);
+            initLocationManager();
             initLocationIcon();
             initProgressDialog();
             diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
@@ -225,7 +243,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onResume();
         //For PermissionsResult
         if (firstAllowLocationPermission) {
-            openGooglePlacePicker();
+            startGetLocation();
             firstAllowLocationPermission = false;
         }
         //For PermissionsResult
@@ -239,6 +257,15 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onStop() {
         super.onStop();
+        if (locationManager != null) {
+            try {
+                locationManager.removeUpdates(locationListener);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+        }
+        diaryHandler.removeCallbacksAndMessages(null);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -339,6 +366,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         TV_diary_time.setText(sdf.format(calendar.getTime()));
     }
 
+    private void initLocationManager() {
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+    }
 
     private void initLocationIcon() {
         if (isLocation) {
@@ -388,23 +419,77 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
     }
 
-    private void openGooglePlacePicker() {
+    private void startGetLocation() {
+        //Open Google App or use geoCoder
         if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext()) == ConnectionResult.SUCCESS) {
-            try {
-                progressDialog.show();
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException e) {
-                e.printStackTrace();
-                progressDialog.dismiss();
-            } catch (GooglePlayServicesNotAvailableException e) {
-                e.printStackTrace();
-                progressDialog.dismiss();
-            }
+            openGooglePlacePicker();
         } else {
-            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
+            openGPSListener();
         }
     }
+
+    private void openGooglePlacePicker() {
+        try {
+            progressDialog.show();
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), getString(R.string.toast_google_service_not_work), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void openGPSListener() {
+        progressDialog.show();
+        try {
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+            //Waiting gps max timeout is 15s
+            diaryHandler.sendEmptyMessageDelayed(0, 15000);
+        } catch (SecurityException e) {
+            //do nothing
+        }
+
+    }
+
+    private LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            diaryLocations = new Location(location);
+            diaryHandler.removeCallbacksAndMessages(null);
+            diaryHandler.sendEmptyMessage(0);
+            try {
+                locationManager.removeUpdates(this);
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 
     private void openPhotoBottomSheet() {
         DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(false);
@@ -546,7 +631,14 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     initLocationIcon();
                 } else {
                     if (PermissionHelper.checkPermission(this, PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION)) {
-                        openGooglePlacePicker();
+                        //Check gps is open
+                        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                            startGetLocation();
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.toast_location_not_open), Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 }
                 break;
@@ -578,6 +670,71 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     Toast.makeText(getActivity(), getString(R.string.toast_diary_empty), Toast.LENGTH_SHORT).show();
                 }
                 break;
+        }
+    }
+
+    private static class DiaryHandler extends Handler {
+
+        private WeakReference<DiaryFragment> mFrag;
+
+        DiaryHandler(DiaryFragment aFragment) {
+            mFrag = new WeakReference<>(aFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            DiaryFragment theFrag = mFrag.get();
+            if (theFrag != null) {
+                theFrag.TV_diary_location.setText(getLocationName(theFrag));
+                theFrag.initLocationIcon();
+            }
+        }
+
+        private String getLocationName(DiaryFragment theFrag) {
+            StringBuilder returnLocation = new StringBuilder();
+            try {
+                if (theFrag.diaryLocations != null) {
+                    List<String> providerList = theFrag.locationManager.getAllProviders();
+                    if (null != theFrag.diaryLocations && null != providerList && providerList.size() > 0) {
+                        double longitude = theFrag.diaryLocations.getLongitude();
+                        double latitude = theFrag.diaryLocations.getLatitude();
+                        Geocoder geocoder = new Geocoder(theFrag.getActivity().getApplicationContext(), Locale.getDefault());
+                        List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        if (null != listAddresses && listAddresses.size() > 0) {
+                            try {
+                                returnLocation.append(listAddresses.get(0).getCountryName());
+                                returnLocation.append(" ");
+                                returnLocation.append(listAddresses.get(0).getAdminArea());
+                                returnLocation.append(" ");
+                                returnLocation.append(listAddresses.get(0).getLocality());
+                                theFrag.isLocation = true;
+                            } catch (Exception e) {
+                                //revert it in finally
+                            }
+                        } else {
+                            Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_geocoder_fail), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                } else {
+                    Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_location_timeout), Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(theFrag.getActivity(), theFrag.getString(R.string.toast_geocoder_fail), Toast.LENGTH_LONG).show();
+            } finally {
+                theFrag.diaryLocations = null;
+                try {
+                    theFrag.locationManager.removeUpdates(theFrag.locationListener);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+                theFrag.progressDialog.dismiss();
+                if (returnLocation.length() == 0) {
+                    returnLocation.append(theFrag.noLocation);
+                    theFrag.isLocation = false;
+                }
+            }
+            return returnLocation.toString();
         }
     }
 }

@@ -97,7 +97,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
     private void initRecyclerView() {
         LinearLayoutManager lmr = new LinearLayoutManager(getActivity());
         RecyclerView_entries.setLayoutManager(lmr);
-        entriesAdapter = new EntriesAdapter(EntriesFragment.this, entriesList, this);
+        entriesAdapter = new EntriesAdapter(EntriesFragment.this, entriesList);
         RecyclerView_entries.setAdapter(entriesAdapter);
         //true for close all view
         setEditModeUI(true);

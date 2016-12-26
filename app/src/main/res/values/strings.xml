@@ -26,7 +26,7 @@
     <string name="release_note_close_remind">Don\'t ask again</string>
 
     <!--init-->
-    <string name="init_message">Data is updating now ,please don\'t close MyDairy</string>
+    <string name="init_message">Data is updating now, please don\'t close MyDairy</string>
 
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
@@ -141,5 +141,9 @@
     <!--Google service API-->
     <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">Your location is close</string>
+    <string name="toast_geocoder_fail">Can\'t transform address</string>
+    <string name="toast_location_timeout">get location timeout</string>
 
 </resources>

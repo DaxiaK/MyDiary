@@ -36,7 +36,7 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_WRITE_ES_PE
  */
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener,
-        ColorPickerFragment.colorPickerCallback, AdapterView.OnItemSelectedListener {
+        SettingColorPickerFragment.colorPickerCallback, AdapterView.OnItemSelectedListener {
 
     /**
      * Theme
@@ -306,15 +306,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 applySetting(false);
                 break;
             case R.id.IV_setting_theme_main_color:
-                ColorPickerFragment mainColorPickerFragment
-                        = ColorPickerFragment.newInstance(themeManager.getThemeMainColor(this));
-                mainColorPickerFragment.setCallBack(this, R.id.IV_setting_theme_main_color);
+                SettingColorPickerFragment mainColorPickerFragment
+                        = SettingColorPickerFragment.newInstance(themeManager.getThemeMainColor(this), R.id.IV_setting_theme_main_color);
                 mainColorPickerFragment.show(getSupportFragmentManager(), "mainColorPickerFragment");
                 break;
             case R.id.IV_setting_theme_dark_color:
-                ColorPickerFragment secColorPickerFragment =
-                        ColorPickerFragment.newInstance(themeManager.getThemeDarkColor(this));
-                secColorPickerFragment.setCallBack(this, R.id.IV_setting_theme_dark_color);
+                SettingColorPickerFragment secColorPickerFragment =
+                        SettingColorPickerFragment.newInstance(themeManager.getThemeDarkColor(this), R.id.IV_setting_theme_dark_color);
                 secColorPickerFragment.show(getSupportFragmentManager(), "secColorPickerFragment");
                 break;
             case R.id.But_setting_fix_photo_17_dir:

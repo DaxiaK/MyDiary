@@ -25,7 +25,7 @@ import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DiaryActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener,
-        BackDialogFragment.BackDialogCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        ActivityBackDialogFragmentFrom.BackDialogCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     /**
@@ -95,9 +95,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     @Override
     public void onBackPressed() {
         if (isCreating) {
-            BackDialogFragment backDialogFragment = new BackDialogFragment();
-            backDialogFragment.setCallBack(this);
-            backDialogFragment.show(getSupportFragmentManager(), "backDialogFragment");
+            ActivityBackDialogFragmentFrom activityBackDialogFragmentFrom = new ActivityBackDialogFragmentFrom();
+            activityBackDialogFragmentFrom.show(getSupportFragmentManager(), "activityBackDialogFragmentFrom");
         } else {
             super.onBackPressed();
         }

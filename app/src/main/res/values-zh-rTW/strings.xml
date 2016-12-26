@@ -141,4 +141,10 @@
     <!--Google service API-->
     <string name="toast_google_service_not_work">你的Google Services無法使用或需要升級</string>
 
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">定位功能未打開</string>
+    <string name="toast_geocoder_fail">無法解析地址</string>
+    <string name="toast_location_timeout">定位超時</string>
+
+
 </resources>

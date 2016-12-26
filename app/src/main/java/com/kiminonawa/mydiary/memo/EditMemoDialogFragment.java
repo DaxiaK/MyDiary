@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.memo;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -67,6 +68,16 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            callback = (MemoCallback) context;
+        } catch (ClassCastException e) {
+        }
+    }
+
+
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         // request a window without the title
@@ -102,10 +113,6 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         EDT_edit_memo_content.setText(memoContent);
     }
 
-
-    public void setCallBack(MemoCallback callback) {
-        this.callback = callback;
-    }
 
 
     private void addMemo() {

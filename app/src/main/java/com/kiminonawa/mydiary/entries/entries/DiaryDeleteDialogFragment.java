@@ -56,12 +56,9 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
 
     }
 
-    public void setCallBack(DeleteCallback callback) {
-        this.callback = callback;
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        callback = (DeleteCallback) getTargetFragment();
         this.getDialog().setCanceledOnTouchOutside(false);
         super.onViewCreated(view, savedInstanceState);
         topicId = getArguments().getLong("topicId", -1L);

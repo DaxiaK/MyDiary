@@ -72,13 +72,12 @@
     <string name="diary_no_location">无位置</string>
     <string name="diary_location_permission_title">授权</string>
     <string name="diary_location_permission_content">需要授予获取位置信息的权限</string>
-    <string name="diary_photo_permission_content">需要授予新增照片的权限</string>
+    <string name="diary_photo_permission_content">需要授予拍照的权限</string>
 
     <string name="diary_title_hint">日记标题</string>
     <string name="diary_content_hint">在此写下你的日记内容</string>
     <string name="diary_clear_message">确定要清除吗?</string>
-
-
+    
     <string name="diary_no_title">无标题</string>
 
     <string name="toast_diary_empty">日记内容是空的</string>
@@ -129,7 +128,7 @@
     <string name="toast_save_profile_banner_fail">个人横幅背景保存失败&#8230;</string>
     <string name="toast_crop_profile_banner_fail">个人横幅裁剪失败&#8230;</string>
     <string name="toast_save_profile_picture_fail">大头贴存档失败&#8230;</string>
-    <string name="toast_crop_profile_picture_fail">大头贴裁切失败&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">大头贴裁剪失败&#8230;</string>
 
     <string name="setting_system_title">系统</string>
     <string name="setting_system_fix_dir_hint">更新后如果无法看见图片，请按此尝试修复</string>
@@ -141,5 +140,11 @@
 
     <!--Google service API-->
     <string name="toast_google_service_not_work">你的Google Services无法使用或需要升级</string>
+
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">定位功能未打开</string>
+    <string name="toast_geocoder_fail">无法解析地址</string>
+    <string name="toast_location_timeout">定位超时</string>
+
 
 </resources>

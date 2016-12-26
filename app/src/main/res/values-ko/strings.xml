@@ -74,7 +74,7 @@
 
     <string name="diary_title_hint">제목</string>
     <string name="diary_content_hint">이곳에 일기를 입력하세요</string>
-    <string name="diary_clear_message">do you want to delete it?</string>
+    <string name="diary_clear_message">정말 삭제하시겠습니까?</string>
 
     <string name="diary_no_title">제목없음</string>
 
@@ -138,6 +138,11 @@
     <string name="toast_setting_fail">실패했습니다</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
+    <string name="toast_google_service_not_work">구글 서비스 작동에 문제가 있거나 업데이트가 필요합니다</string>
+
+    <!--Diary Geocoder & Location  -->
+    <string name="toast_location_not_open">Your location is close</string>
+    <string name="toast_geocoder_fail">Can\'t transform address</string>
+    <string name="toast_location_timeout">get location timeout</string>
 
 </resources>
