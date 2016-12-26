@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="months_full_name">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </array>
+
+    <array name="days_simple_name">
+        <item>Sun.</item>
+        <item>Mon.</item>
+        <item>Tue.</item>
+        <item>Wed.</item>
+        <item>Thu.</item>
+        <item>Fri.</item>
+        <item>Sat.</item>
+    </array>
+
+    <array name="days_full_name">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </array>
+
+    <array name="topic_type">
+        <item>Contacts</item>
+        <item>Diary</item>
+        <item>Memo</item>
+    </array>
+
+    <array name="theme_list">
+        <item>Taki</item>
+        <item>Mitsuha</item>
+        <item>Custom</item>
+    </array>
+
+    <array name="weather_list">
+        <item>sunny</item>
+        <item>cloudy</item>
+        <item>windy</item>
+        <item>rainy</item>
+        <item>snowy</item>
+        <item>foggy</item>
+    </array>
+
+    <array name="language_list">
+        <item>System</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>한국어</item>
+    </array>
+
+</resources>
