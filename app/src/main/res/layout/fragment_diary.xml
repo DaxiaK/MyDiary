@@ -103,7 +103,7 @@
                         android:layout_marginTop="8dp"
                         android:includeFontPadding="false"
                         android:textColor="@android:color/white"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
 
                     <TextView
                         android:id="@+id/TV_diary_date"
@@ -126,7 +126,7 @@
                             android:layout_height="wrap_content"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="12dp" />
+                            android:textSize="10dp" />
 
                         <TextView
                             android:id="@+id/TV_diary_time"
@@ -135,7 +135,7 @@
                             android:layout_marginLeft="10dp"
                             android:includeFontPadding="false"
                             android:textColor="@android:color/white"
-                            android:textSize="12dp" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -147,8 +147,8 @@
 
                         <ImageView
                             android:id="@+id/IV_diary_weather"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
                             android:tint="@android:color/white"
                             android:visibility="gone" />
 
@@ -161,13 +161,13 @@
                             android:includeFontPadding="false"
                             android:maxLines="1"
                             android:textColor="@android:color/white"
-                            android:textSize="12dp"
+                            android:textSize="10dp"
                             android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/IV_diary_location_name_icon"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
                             android:src="@drawable/ic_location_on_white_24dp"
                             android:visibility="gone" />
 
@@ -179,7 +179,7 @@
                             android:includeFontPadding="false"
                             android:maxLines="1"
                             android:textColor="@android:color/white"
-                            android:textSize="12dp" />
+                            android:textSize="10dp" />
 
 
                     </LinearLayout>
