@@ -99,6 +99,9 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
             case 5:
                 locale = Locale.KOREAN;
                 break;
+            case 6:
+                locale = new Locale("th", "");
+                break;
             // 0 = default = language of system
             default:
                 locale = Locale.getDefault();

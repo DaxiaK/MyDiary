@@ -140,7 +140,7 @@
     <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is close</string>
+    <string name="toast_location_not_open">Your location is disable</string>
     <string name="toast_geocoder_fail">Can\'t transform address</string>
     <string name="toast_location_timeout">get location timeout</string>
 

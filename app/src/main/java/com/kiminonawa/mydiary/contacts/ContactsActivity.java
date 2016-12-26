@@ -44,6 +44,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private String ZH_TW;
     private String ZH_CN;
     private String KO;
+    private String TH_TH;
 
     /**
      * UI
@@ -132,6 +133,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         ZH_CN = Locale.CHINA.getLanguage()
                 + "-" + Locale.CHINA.getCountry();
         KO = Locale.KOREAN.getLanguage();
+        TH_TH = new Locale("th", "").getLanguage();
     }
 
     private void initTopbar() {
@@ -245,6 +247,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
      * 繁體中文 = 3
      * 简体中文= 4
      * 한국어 = 5
+     * ภาษาไทย = 6
      */
 
     private String checkLanguage() {
@@ -273,6 +276,10 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
             case 5:
                 // SIMPLIFIED_CHINESE;
                 language = KO;
+                break;
+            case 6:
+                // SIMPLIFIED_CHINESE;
+                language = TH_TH;
                 break;
         }
         return language;
