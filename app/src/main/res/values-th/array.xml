@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="months_full_name">
+        <item>มาราคม</item>
+        <item>กุมภาพันธ์</item>
+        <item>มีนาคม</item>
+        <item>เมษายน</item>
+        <item>พฤษภาคม</item>
+        <item>มิถุนายน</item>
+        <item>กรกฎาคม</item>
+        <item>สิงหาคม</item>
+        <item>กันยายน</item>
+        <item>ตุลาคม</item>
+        <item>พฤศจิกายน</item>
+        <item>ธันวาคม</item>
+    </array>
+
+    <array name="days_simple_name">
+        <item>อา.</item>
+        <item>จ.</item>
+        <item>อ.</item>
+        <item>พ.</item>
+        <item>พฤ.</item>
+        <item>ศ.</item>
+        <item>ส.</item>
+    </array>
+
+    <array name="days_full_name">
+        <item>อาทิตย์</item>
+        <item>จันทร์</item>
+        <item>อังคาร</item>
+        <item>พุธ</item>
+        <item>พฤหัสบดี</item>
+        <item>ศุกร์</item>
+        <item>เสาร์</item>
+    </array>
+
+    <array name="topic_type">
+        <item>รายชื่อติดต่อ</item>
+        <item>ไดอารี่</item>
+        <item>โน๊ตย่อ</item>
+    </array>
+
+    <array name="theme_list">
+        <item>ทาคิ</item>
+        <item>มิตสึฮะ</item>
+        <item>ปรับแต่งเอง</item>
+    </array>
+
+    <array name="weather_list">
+        <item>แดดออก</item>
+        <item>เมฆปกคลุม</item>
+        <item>ลมแรง</item>
+        <item>ฝนตก</item>
+        <item>หิมะตก</item>
+        <item>หมอกขึ้น</item>
+    </array>
+
+    <array name="language_list">
+        <item>System</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>한국어</item>
+        <item>ภาษาไทย</item>
+    </array>
+
+</resources>
