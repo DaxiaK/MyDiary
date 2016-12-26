@@ -2,7 +2,7 @@
     <string name="app_name">MyDiary</string>
 
     <!--Release Note-->
-    <string name="release_note_title">Release note</string>
+    <string name="release_note_title">รายละเอียดการเปลี่ยนแปลง</string>
     <string name="release_note">**0.2.3.161226_1_d\n
         -Modify get location function for no Google Service area\n
         -Fix bug\n\n
@@ -21,127 +21,127 @@
         -Fix profile picture bug\n
         -support sort Simplified Chinese in contacts(By XF-zhjnc)
     </string>
-    <string name="release_note_close_remind">Don\'t ask again</string>
+    <string name="release_note_close_remind">อย่าถามอีกครั้ง</string>
 
     <!--init-->
-    <string name="init_message">Data is updating now, please don\'t close MyDairy</string>
+    <string name="init_message">กำลังอัพเดทข้อมูล, กรุณาอย่าปิด MyDairy</string>
 
     <!--Profile-->
-    <string name="profile_username_taki">Taki</string>
-    <string name="profile_username_mitsuha">Mitsuha</string>
-    <string name="toast_change_theme">Theme is changing&#8230;</string>
-    <string name="your_name_is">Your name is</string>
+    <string name="profile_username_taki">ทาคิ</string>
+    <string name="profile_username_mitsuha">มิสึฮะ</string>
+    <string name="toast_change_theme">กำลังเปลี่ยนธีม&#8230;</string>
+    <string name="your_name_is">ชื่อของคุณคือ</string>
 
     <!--Topic detail-->
-    <string name="topic_detail_name">Topic name</string>
-    <string name="topic_detail_text_color">Text color</string>
-    <string name="topic_dialog_delete_title">Delete</string>
-    <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
+    <string name="topic_detail_name">ชื่อหัวข้อ</string>
+    <string name="topic_detail_text_color">สีตัวอักษร</string>
+    <string name="topic_dialog_delete_title">ลบ</string>
+    <string name="topic_dialog_delete_content">คุณต้องการลบ %1$s หรือไม่ ?</string>
 
-    <string name="toast_topic_empty">Topic name is empty</string>
-    <string name="topic_topic_bg_fail">To change background of topic fail&#8230;</string>
+    <string name="toast_topic_empty">หัวข้อนี้ไม่มีชื่อ</string>
+    <string name="topic_topic_bg_fail">การเปลี่ยนภาพพื้นหลังของหัวข้อนี้ล้มเหลว&#8230;</string>
 
-    <string name="topic_detail_current_bg">Topic background</string>
-    <string name="topic_detail_default_bg">default background</string>
+    <string name="topic_detail_current_bg">ภาพพื้นหลังของหัวข้อ</string>
+    <string name="topic_detail_default_bg">ภาพพื้นหลังเริ่มต้น</string>
 
     <!--Dialog -->
-    <string name="dialog_button_ok">ok</string>
-    <string name="dialog_button_call">call</string>
-    <string name="dialog_button_cancel">cancel</string>
-    <string name="dialog_button_delete">delete</string>
+    <string name="dialog_button_ok">ตกลง</string>
+    <string name="dialog_button_call">โทรออก</string>
+    <string name="dialog_button_cancel">ยกเลิก</string>
+    <string name="dialog_button_delete">ลบ</string>
 
-    <string name="process_dialog_loading">Loading&#8230;</string>
-    <string name="process_dialog_saving">Saving&#8230;</string>
+    <string name="process_dialog_loading">กำลังโหลด&#8230;</string>
+    <string name="process_dialog_saving">กำลังบันทึก&#8230;</string>
 
     <!--Diary Activity-->
-    <string name="segmented_entries">Entries</string>
-    <string name="segmented_calendar">Calendar</string>
-    <string name="segmented_Diary">Diary</string>
-    <string name="diary_back_message">There are a diary in editing ,do you want to leave it?</string>
+    <string name="segmented_entries">รายการ</string>
+    <string name="segmented_calendar">ปฏิทิน</string>
+    <string name="segmented_Diary">ไดอารี่</string>
+    <string name="diary_back_message">ไดอารี่ยังไม่ได้รับการบันทึก ,คุณไม่ต้องการบันทึกไดอารี่นี้แล้วใช่ไหม?</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d Entries</string>
-    <string name="entries_edit_view">Click diary for editing</string>
-    <string name="entries_edit_dialog_delete_content">Do you really want to delete this diary?</string>
-    <string name="entries_summary_photo">**photo**</string>
+    <string name="entries_count">%1$d รายการ</string>
+    <string name="entries_edit_view">แตะที่ไดอารี่เพื่อทำการแก้ไข</string>
+    <string name="entries_edit_dialog_delete_content">คุณต้องการลบไดอารี่นี้จริงๆใช่ไหม ?</string>
+    <string name="entries_summary_photo">**รูปภาพ**</string>
 
     <!--Diary -->
-    <string name="diary_no_location">No Location</string>
-    <string name="diary_location_permission_title">Permission</string>
-    <string name="diary_location_permission_content">We need permission to get location name</string>
-    <string name="diary_photo_permission_content">We need permission to add photo</string>
+    <string name="diary_no_location">ไม่ระบุสถานที่</string>
+    <string name="diary_location_permission_title">การอนุญาต</string>
+    <string name="diary_location_permission_content">เราต้องได้รับอนุญาตในการระบุสถานที่</string>
+    <string name="diary_photo_permission_content">เราต้องได้รับอนุญาตในการเพิ่มรูปภาพ</string>
 
-    <string name="diary_title_hint">Diary title</string>
-    <string name="diary_content_hint">Write your diary here</string>
-    <string name="diary_clear_message">do you want to delete it?</string>
+    <string name="diary_title_hint">หัวข้อไดอารี่</string>
+    <string name="diary_content_hint">สร้างไดอารี่ของคุณได้ที่นี่</string>
+    <string name="diary_clear_message">คุณต้องการลบมันใช่ไหม?</string>
 
-    <string name="diary_no_title">No Title</string>
+    <string name="diary_no_title">ไม่มีชื่อหัวข้อ</string>
 
 
-    <string name="toast_diary_empty">Diary is empty</string>
+    <string name="toast_diary_empty">ไดอารี่นี้ว่างเปล่า</string>
 
-    <string name="toast_not_image">The file is not a image</string>
-    <string name="toast_photo_path_error">Photo path has some problem</string>
-    <string name="toast_photo_intent_error">To get image resource of device fail</string>
-    <string name="toast_max_photo">Max selected photo is %1$d</string>
-    <string name="toast_space_insufficient">Free space Insufficient</string>
-    <string name="toast_diary_update_successful">Updating diary is successful</string>
-    <string name="toast_diary_update_fail">Updating diary fail</string>
-    <string name="toast_diary_insert_successful">Diary was inserted successfully</string>
-    <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully&#8230;</string>
+    <string name="toast_not_image">ไฟล์นี้ไม่ใช่รูปภาพ</string>
+    <string name="toast_photo_path_error">รูปภาพมีปัญหา</string>
+    <string name="toast_photo_intent_error">ล้มเหลวในการรับข้อมูลภาพถ่าย</string>
+    <string name="toast_max_photo">จำนวนรูปภาพที่เลือกได้สูงสุดคือ %1$d</string>
+    <string name="toast_space_insufficient">มีพื้นที่ว่างไม่เพียงพอ</string>
+    <string name="toast_diary_update_successful">การอัพเดทไดอารี่นี้สำเร็จ</string>
+    <string name="toast_diary_update_fail">การอัพเดทไดอารี่นี้ล้มเหลว</string>
+    <string name="toast_diary_insert_successful">การเขียนไดอารี่สำเร็จ</string>
+    <string name="toast_diary_insert_fail">การเขียนไดอารี่ล้มเหลว&#8230;</string>
 
     <!--Diary Viewer edit-->
-    <string name="toast_diary_copy_to_edit_fail">Reading photo data fail&#8230;</string>
+    <string name="toast_diary_copy_to_edit_fail">อ่านข้อมูลรูปภาพล้มเหลว&#8230;</string>
 
     <!--Memo-->
-    <string name="memo_item_add">Add</string>
-    <string name="toast_memo_empty">Memo is empty!</string>
+    <string name="memo_item_add">เพิ่ม</string>
+    <string name="toast_memo_empty">ไม่มีบันทึก!</string>
 
     <!--Contacts-->
-    <string name="contacts_call_phone_permission_title">Permission</string>
-    <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
-    <string name="contacts_call_phone_no_call_function">Your device can\'t call phone</string>
+    <string name="contacts_call_phone_permission_title">การอนุญาต</string>
+    <string name="contacts_call_phone_permission_content">เราต้องได้รับอนุญาตในการโทรออก</string>
+    <string name="contacts_call_phone_no_call_function">เครื่องของคุณไม่สามารถโทรออกได้</string>
 
-    <string name="contacts_detail_edt_name">Name</string>
-    <string name="contacts_detail_edt_phone_number">Phone</string>
+    <string name="contacts_detail_edt_name">ชื่อ</string>
+    <string name="contacts_detail_edt_phone_number">หมายเลขโทรศัพท์</string>
 
-    <string name="toast_contacts_empty">Contacts is empty!</string>
+    <string name="toast_contacts_empty">ไม่มีรายชื่อผู้ติดต่อ!</string>
 
     <!--About-->
-    <string name="about_title">About</string>
+    <string name="about_title">เกี่ยวกับ</string>
 
     <!--Setting-->
-    <string name="setting_theme_title">Theme</string>
-    <string name="setting_theme_hint">Choose your theme</string>
-    <string name="setting_theme_main_color">Main color</string>
-    <string name="setting_theme_sec_color">Sec. color</string>
-    <string name="setting_theme_default_profile_bg">default\n background</string>
-    <string name="setting_theme_default_color">default color</string>
-    <string name="setting_theme_apply">apply</string>
-    <string name="setting_theme_profile_bg">Profile Background</string>
+    <string name="setting_theme_title">ธีม</string>
+    <string name="setting_theme_hint">กรุณาเลือกธีมของคุณ</string>
+    <string name="setting_theme_main_color">สีหลัก</string>
+    <string name="setting_theme_sec_color">สีรอง</string>
+    <string name="setting_theme_default_profile_bg">คืนค่าภาพพื้นหลัง</string>
+    <string name="setting_theme_default_color">คืนค่าสี</string>
+    <string name="setting_theme_apply">นำไปใช้</string>
+    <string name="setting_theme_profile_bg">โปรไฟล์ ภาพพื้นหลัง</string>
 
-    <string name="setting_language_title">Language</string>
-    <string name="setting_language_hint">Choose your language</string>
+    <string name="setting_language_title">ภาษา</string>
+    <string name="setting_language_hint">เลือกภาษาของคุณ</string>
 
-    <string name="toast_save_profile_banner_fail">To save banner of profile fail&#8230;</string>
-    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail&#8230;</string>
-    <string name="toast_save_profile_picture_fail">To save profile picture fail&#8230;</string>
-    <string name="toast_crop_profile_picture_fail">To crop profile picture fail&#8230;</string>
+    <string name="toast_save_profile_banner_fail">ล้มเหลวในการบันทึกภาพแบนเนอร์โปรไฟล์&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">ล้มเหลวในการตัดภาพแบนเนอร์โปรไฟล์&#8230;</string>
+    <string name="toast_save_profile_picture_fail">ล้มเหลวในการบันทึกภาพโปรไฟล์&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">ล้มเหลวในการตัดภาพโปรไฟล์&#8230;</string>
 
-    <string name="setting_system_title">System</string>
-    <string name="setting_system_fix_dir_hint">If your photo is gone after updating, click it to fix</string>
-    <string name="setting_system_fix_dir_button">fix photo</string>
+    <string name="setting_system_title">ระบบ</string>
+    <string name="setting_system_fix_dir_hint">ถ้ารูปภาพของคุณหายไปหลังการอัพเดท, แตะเพื่อปรับปรุงรูปภาพ</string>
+    <string name="setting_system_fix_dir_button">ปรับปรุงรูปภาพ</string>
 
-    <string name="toast_setting_successful">Successful</string>
-    <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
-    <string name="toast_setting_fail">Fail</string>
+    <string name="toast_setting_successful">สำเร็จ</string>
+    <string name="toast_setting_wont_fix">คุณไม่จำเป็นต้องแก้ไขอะไรทั้งสิ้น</string>
+    <string name="toast_setting_fail">ล้มเหลว</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
+    <string name="toast_google_service_not_work">บริการของกูเกิ้ลของคุณไม่ทำงานหรือต้องได้รับการอัพเดท</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is close</string>
-    <string name="toast_geocoder_fail">Can\'t transform address</string>
-    <string name="toast_location_timeout">get location timeout</string>
+    <string name="toast_location_not_open">ตำแหน่งที่ตั้งของคุณถูกปิด</string>
+    <string name="toast_geocoder_fail">ไม่สามารถเปลี่ยนแปลงตำแหน่งที่ตั้ง</string>
+    <string name="toast_location_timeout">การรับตำแหน่งที่ตั้งล้มเหลว</string>
 
 </resources>
