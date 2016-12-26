@@ -2,7 +2,7 @@
 <resources>
 
     <array name="months_full_name">
-        <item>มาราคม</item>
+        <item>มกราคม</item>
         <item>กุมภาพันธ์</item>
         <item>มีนาคม</item>
         <item>เมษายน</item>
@@ -49,12 +49,12 @@
     </array>
 
     <array name="weather_list">
-        <item>แดดออก</item>
-        <item>เมฆปกคลุม</item>
+        <item>แดดจัด</item>
+        <item>มีเมฆมาก</item>
         <item>ลมแรง</item>
         <item>ฝนตก</item>
         <item>หิมะตก</item>
-        <item>หมอกขึ้น</item>
+        <item>หมอกจัด</item>
     </array>
 
     <array name="language_list">
