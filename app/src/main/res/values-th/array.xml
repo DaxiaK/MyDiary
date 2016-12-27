@@ -27,13 +27,13 @@
     </array>
 
     <array name="days_full_name">
-        <item>วันอาทิตย์</item>
-        <item>วันจันทร์</item>
-        <item>วันอังคาร</item>
-        <item>วันพุธ</item>
-        <item>วันพฤหัสบดี</item>
-        <item>วันศุกร์</item>
-        <item>วันเสาร์</item>
+        <item>อาทิตย์</item>
+        <item>จันทร์</item>
+        <item>อังคาร</item>
+        <item>พุธ</item>
+        <item>พฤหัสบดี</item>
+        <item>ศุกร์</item>
+        <item>เสาร์</item>
     </array>
 
     <array name="topic_type">
@@ -44,8 +44,8 @@
 
     <array name="theme_list">
         <item>ทาคิ</item>
-        <item>มิสึฮะ</item>
-        <item>กำหนดเอง</item>
+        <item>มิตสึฮะ</item>
+        <item>ปรับแต่งเอง</item>
     </array>
 
     <array name="weather_list">
