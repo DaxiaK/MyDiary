@@ -21,7 +21,7 @@
         -Fix profile picture bug\n
         -support sort Simplified Chinese in contacts(By XF-zhjnc)
     </string>
-    <string name="release_note_close_remind">ไม่ต้องถามอีกครั้ง</string>
+    <string name="release_note_close_remind">ไม่ต้องแสดงอีกครั้ง</string>
 
     <!--init-->
     <string name="init_message">กำลังอัพเดทข้อมูล กรุณาอย่าปิด MyDiary</string>
@@ -129,7 +129,7 @@
     <string name="toast_crop_profile_picture_fail">การตัดภาพโปรไฟล์ล้มเหลว&#8230;</string>
 
     <string name="setting_system_title">ระบบ</string>
-    <string name="setting_system_fix_dir_hint">ถถ้ารูปภาพของคุณหายไปหลังการอัพเดท, แตะเพื่อปรับปรุงรูปภาพ</string>
+    <string name="setting_system_fix_dir_hint">ถ้ารูปภาพของคุณหายไปหลังการอัพเดท แตะปุ่มนี้เพื่อแก้ไขรูปภาพ</string>
     <string name="setting_system_fix_dir_button">แก้ไขรูปภาพ</string>
 
     <string name="toast_setting_successful">การแก้ไขสำเร็จ</string>
@@ -137,7 +137,7 @@
     <string name="toast_setting_fail">การแก้ไขล้มเหลว</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">บริการของกูเกิ้ลของคุณไม่ทำงานหรือต้องได้รับการอัพเดท</string>
+    <string name="toast_google_service_not_work">Google Service ของคุณไม่ทำงานหรือต้องได้รับการอัพเดท</string>
 
     <!--Diary Geocoder & Location  -->
     <string name="toast_location_not_open">ตำแหน่งที่ตั้งของคุณถูกปิด</string>
