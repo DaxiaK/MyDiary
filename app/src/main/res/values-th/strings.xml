@@ -3,14 +3,16 @@
 
     <!--Release Note-->
     <string name="release_note_title">ข้อมูลการอัพเดท</string>
-      <string name="release_note">**0.2.3.161226_1_d\n
+    <string name="release_note">**0.2.3.161228_1_h\n
+        -support Thai\n\n
+        **0.2.3.161226_1_d\n
         -Modify get location function for no Google Service area\n
         -Fix bug\n\n
         **0.2.2.161216_1_d2\n
         -Modify layout for matching movie\n
         -Using place to replace address in location\n
         -Fix bug\n
-        -Support Korean\n\n
+        -Support Korean(by Meda An)\n\n
         **0.2.1.161212_1_d_h2\n
         -Modify layout\n
         -Fix zenPhone c and htc 626 crash(Need to reply)\n
