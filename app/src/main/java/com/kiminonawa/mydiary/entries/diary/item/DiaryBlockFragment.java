@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,8 @@ public class DiaryBlockFragment extends Fragment implements View.OnClickListener
         SpannableString urlText = new SpannableString(url);
         urlText.setSpan(new UnderlineSpan(), 0, urlText.length(), 0);
         TV_diary_block_page_url.setText(urlText);
+        Log.e("onCreateView","this memory=" + this.toString());
+
         return rootView;
     }
 

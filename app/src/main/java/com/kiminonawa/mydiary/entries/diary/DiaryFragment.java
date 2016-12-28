@@ -522,7 +522,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.IV_diary_menu:
                 DiaryTextTag tag = checkoutOldDiaryContent();
-                DiaryBlock diaryBlock = new DiaryBlock();
+                DiaryBlock diaryBlock = new DiaryBlock(getActivity());
                 //Check edittext is focused
                 if (tag != null) {
                     //Add new edittext
@@ -533,16 +533,14 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     diaryItemHelper.addViewToDiaryContent(getActivity(), tag.getPositionTag() + 1);
                     diaryText.getView().requestFocus();
                     //Add block
-                    diaryItemHelper.createItem(diaryBlock);
-                    diaryItemHelper.addViewToDiaryContent(getContext());
-                    diaryBlock.setPosition(diaryItemHelper.getItemSize() - 1);
-                    diaryBlock.setDeleteBlockListener(this);
+                    diaryBlock.setDeleteBlockListener(tag.getPositionTag() + 1, this);
+                    diaryItemHelper.createItem(diaryBlock, tag.getPositionTag() + 1);
+                    diaryItemHelper.addViewToDiaryContent(getActivity(), tag.getPositionTag() + 1);
                 } else {
-                    //Add photo
+                    //Add block
+                    diaryBlock.setDeleteBlockListener(diaryItemHelper.getItemSize(), this);
                     diaryItemHelper.createItem(diaryBlock);
-                    diaryItemHelper.addViewToDiaryContent(getContext());
-                    diaryBlock.setPosition(diaryItemHelper.getItemSize() - 1);
-                    diaryBlock.setDeleteBlockListener(this);
+                    diaryItemHelper.addViewToDiaryContent(getActivity());
                     //Add new edittext
                     DiaryText diaryText = new DiaryText(getActivity());
                     diaryText.setPosition(diaryItemHelper.getItemSize());
@@ -550,7 +548,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     diaryItemHelper.addViewToDiaryContent(getActivity());
                     diaryText.getView().requestFocus();
                 }
-
+                diaryItemHelper.resortPosition();
                 break;
             case R.id.LL_diary_time_information:
                 DatePickerFragment datePickerFragment = DatePickerFragment.newInstance(calendar.getTimeInMillis());
@@ -581,6 +579,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 break;
             case R.id.IV_diary_block_remove:
                 int blockPosition = (int) v.getTag();
+                Log.e("blockPosition", "blockPosition=" + blockPosition);
                 diaryItemHelper.remove(blockPosition);
                 LL_diary_item_content.removeViewAt(blockPosition);
                 diaryItemHelper.mergerAdjacentText(blockPosition);
