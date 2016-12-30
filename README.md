@@ -51,21 +51,23 @@ so, maybe I will try to create an iOS version after this app is running.
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Add web block in diary
-2. Allow order for topic , memo
-3. OOBE (Alpha) 
-4. Google account backup & setting page
+1. Add web block in diary (pending , because some memory issue)
+2. Allow order for topic , memo 
+3. Add password 
+4. import & export DB(Alpha) 
 5. page curl effect
-6. UI review & support xxxHpdi \
-7. Implments search
-8. Support Chinese sort
-9. Modify contacts detail
-10. Add password (beta)
-11. Tags
-12. load contacts from phone
-13. Add bookmark for diary
-14. Add music in diary
-15. Supprot JP sort
+6. Code refactoring
+7. Google account backup & including FireBase
+8. UI review & support xxxHpdi \
+9. Implments search
+10. Support Chinese sort
+11. Modify contacts detail (beta)
+12. Tags
+13. load contacts from phone
+14. Add bookmark for diary
+15. Add music in diary
+16. Support Chinese sort
+16. Supprot JP sort
 
 Coding & Designing:
 
