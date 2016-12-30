@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="months_full_name">
+        <item>Janvier</item>
+        <item>Fevrier</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Aout</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Decembre</item>
+    </array>
+
+    <array name="days_simple_name">
+        <item>Dim.</item>
+        <item>Lun.</item>
+        <item>Mar.</item>
+        <item>Mer.</item>
+        <item>Jeu.</item>
+        <item>Ven.</item>
+        <item>Sam.</item>
+    </array>
+
+    <array name="days_full_name">
+        <item>Dimanche</item>
+        <item>Lundi</item>
+        <item>Mardi</item>
+        <item>Mercredi</item>
+        <item>Jeudi</item>
+        <item>Vendredi</item>
+        <item>Samedi</item>
+    </array>
+
+    <array name="topic_type">
+        <item>Contacts</item>
+        <item>Journal</item>
+        <item>Memo</item>
+    </array>
+
+    <array name="theme_list">
+        <item>Taki</item>
+        <item>Mitsuha</item>
+        <item>Perso</item>
+    </array>
+
+    <array name="weather_list">
+        <item>Ensoleille</item>
+        <item>Nuageux</item>
+        <item>Venteux</item>
+        <item>Pluvieux</item>
+        <item>Neigeux</item>
+        <item>Brumeux</item>
+    </array>
+
+    <array name="language_list">
+        <item>Système</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>한국어</item>
+        <item>ภาษาไทย</item>
+        <item>Français</item>
+    </array>
+
+</resources>

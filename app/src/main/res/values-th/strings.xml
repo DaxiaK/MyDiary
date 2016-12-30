@@ -4,7 +4,7 @@
     <!--Release Note-->
     <string name="release_note_title">ข้อมูลการอัพเดท</string>
     <string name="release_note">**0.2.3.161228_1_h\n
-        -support Thai\n\n
+        -support Thai(By PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
         -Modify get location function for no Google Service area\n
         -Fix bug\n\n
