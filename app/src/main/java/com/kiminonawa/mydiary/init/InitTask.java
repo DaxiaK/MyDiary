@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.init;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -14,7 +15,10 @@ import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 
 /**
- * Version History
+ * Version History3
+ * 20170104
+ * Add order Memo
+ * ----
  * 20161203 The photo dir of diary should add one dir , So I modify it in version 17
  * ----
  * 20161120
@@ -112,6 +116,24 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             if (sampleContactsId != -1) {
                 dbManager.insertContacts(mContext.getString(R.string.profile_username_mitsuha), "090000000", "", sampleContactsId);
             }
+        }
+
+        //Memo order function work in version 23
+        if (SPFManager.getVersionCode(mContext) < 25) {
+            // init order value = memo id
+            dbManager.selectTopic();
+            Cursor topicCursor = dbManager.selectTopic();
+            for (int i = 0; i < topicCursor.getCount(); i++) {
+                Cursor memoCursor = dbManager.selectMemo(topicCursor.getLong(0));
+                for (int j = 0; j < memoCursor.getCount(); j++) {
+                    long memoId = memoCursor.getLong(0);
+                    dbManager.updateMemoOrder(memoId, memoId);
+                    memoCursor.moveToNext();
+                }
+                memoCursor.close();
+                topicCursor.moveToNext();
+            }
+            topicCursor.close();
         }
         dbManager.closeDB();
     }

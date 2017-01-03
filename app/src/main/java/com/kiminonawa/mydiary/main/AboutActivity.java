@@ -45,6 +45,9 @@ public class AboutActivity extends AppCompatActivity {
         license.append(
                 new LicenseObj("pinyin4j", "Li Min", "2006", LicenseObj.GPLv2)
                         .getLicense());
+        license.append(
+                new LicenseObj("UltimateRecyclerView", "Marshal Chen", "2014-present", LicenseObj.APACHE)
+                        .getLicense());
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
 

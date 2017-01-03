@@ -9,7 +9,7 @@
 
 
     <ImageView
-        android:id="@+id/TV_memo_item_dot"
+        android:id="@+id/IV_memo_item_dot"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_centerVertical="true"
@@ -37,7 +37,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@id/IV_memo_item_delete"
-        android:layout_toRightOf="@id/TV_memo_item_dot"
+        android:layout_toRightOf="@id/IV_memo_item_dot"
         android:gravity="center_vertical"
         android:textSize="14dp" />
 
