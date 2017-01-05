@@ -15,7 +15,7 @@
         -Support Korean(by Meda An)\n\n
         **0.2.1.161212_1_d_h2\n
         -Modify layout\n
-        -Fix zenPhone c and htc 626 crash(Need to reply)\n
+        -Fix ZenFone c and htc 626 crash(Need to reply)\n
         -Add button for fix gone photo in diary in setting page\n\n
         **0.2.1.161208_01_d_h**\n
         -Fix and support status bar transparent on Android 6.0+\n
@@ -30,7 +30,7 @@
     <!--Profile-->
     <string name="profile_username_taki">타키</string>
     <string name="profile_username_mitsuha">미츠하</string>
-    <string name="toast_change_theme">테마 변경중&#8230;</string>
+    <string name="toast_change_theme">테마 변경 중&#8230;</string>
     <string name="your_name_is">너의 이름은</string>
 
     <!--Topic detail-->
@@ -51,8 +51,8 @@
     <string name="dialog_button_cancel">취소</string>
     <string name="dialog_button_delete">삭제</string>
 
-    <string name="process_dialog_loading">로딩중&#8230;</string>
-    <string name="process_dialog_saving">저장중&#8230;</string>
+    <string name="process_dialog_loading">로딩 중&#8230;</string>
+    <string name="process_dialog_saving">저장 중&#8230;</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">항목</string>
@@ -61,15 +61,15 @@
     <string name="diary_back_message">작성중인 일기를 삭제하시겠습니까?</string>
 
     <!--Entries -->
-    <string name="entries_count">항목 %1$d 개</string>
+    <string name="entries_count">항목 %1$d개</string>
     <string name="entries_edit_view">편집하려는 일기를 선택하세요</string>
     <string name="entries_edit_dialog_delete_content">이 일기를 삭제하시겠습니까?</string>
     <string name="entries_summary_photo">**사진**</string>
 
     <!--Diary -->
-    <string name="diary_no_location">위치를 찾을수 없습니다.</string>
+    <string name="diary_no_location">위치를 찾을 수 없습니다.</string>
     <string name="diary_location_permission_title">권한</string>
-    <string name="diary_location_permission_content">위치정보 접근 권한이 필요합니다.</string>
+    <string name="diary_location_permission_content">위치 정보 권한이 필요합니다.</string>
     <string name="diary_photo_permission_content">사진 권한이 필요합니다.</string>
 
     <string name="diary_title_hint">제목</string>
@@ -83,7 +83,7 @@
     <string name="toast_not_image">이미지 파일이 아닙니다</string>
     <string name="toast_photo_path_error">이미지 경로에 오류가 있습니다</string>
     <string name="toast_photo_intent_error">이미지 불러오기를 실패하였습니다</string>
-    <string name="toast_max_photo">사진은%1$d장까지 추가할수 있습니다</string>
+    <string name="toast_max_photo">사진은 %1$d장까지 추가할 수 있습니다</string>
     <string name="toast_space_insufficient">저장공간이 부족합니다</string>
     <string name="toast_diary_update_successful">일기 갱신에 성공했습니다</string>
     <string name="toast_diary_update_fail">일기 갱신에 실패했습니다</string>
@@ -91,7 +91,7 @@
     <string name="toast_diary_insert_fail">일기 추가에 실패했습니다&#8230;</string>
 
     <!--Diary Viewer edit-->
-    <string name="toast_diary_copy_to_edit_fail">사진 데이터를 읽는데 실패했습니다&#8230;</string>
+    <string name="toast_diary_copy_to_edit_fail">사진 데이터를 읽는 데 실패했습니다&#8230;</string>
 
     <!--Memo-->
     <string name="memo_item_add">항목 추가</string>
@@ -100,7 +100,7 @@
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">권한</string>
     <string name="contacts_call_phone_permission_content">전화 발신 권한이 필요합니다</string>
-    <string name="contacts_call_phone_no_call_function">이 휴대폰은 전화를 걸수 없습니다.</string>
+    <string name="contacts_call_phone_no_call_function">이 휴대폰은 전화를 걸 수 없습니다.</string>
 
     <string name="contacts_detail_edt_name">이름</string>
     <string name="contacts_detail_edt_phone_number">전화번호</string>
@@ -115,7 +115,7 @@
     <string name="setting_theme_hint">테마 선택</string>
     <string name="setting_theme_main_color">메인 색상</string>
     <string name="setting_theme_sec_color">서브 색상</string>
-    <string name="setting_theme_default_profile_bg">기본값으로 \초기화</string>
+    <string name="setting_theme_default_profile_bg">기본값으로 \n초기화</string>
     <string name="setting_theme_default_color">기본값으로 \n초기화</string>
     <string name="setting_theme_apply">적용</string>
     <string name="setting_theme_profile_bg">프로필 배경</string>
@@ -130,19 +130,19 @@
     <string name="toast_crop_profile_picture_fail">프로필 사진 자르기에 실패했습니다</string>
 
     <string name="setting_system_title">시스템</string>
-    <string name="setting_system_fix_dir_hint">업데이트 이후 사진이 표시가 되지 않을경우 버튼을 눌러서 수정하세요</string>
+    <string name="setting_system_fix_dir_hint">업데이트 이후 사진이 표시가 되지 않을 경우 버튼을 눌러서 수정하세요</string>
     <string name="setting_system_fix_dir_button">사진 수정</string>
 
     <string name="toast_setting_successful">성공</string>
-    <string name="toast_setting_wont_fix">아무것도 수정할 필요가 없습니다</string>
+    <string name="toast_setting_wont_fix">아무 것도 수정할 필요가 없습니다</string>
     <string name="toast_setting_fail">실패했습니다</string>
 
     <!--Google service API-->
     <string name="toast_google_service_not_work">구글 서비스 작동에 문제가 있거나 업데이트가 필요합니다</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is disable</string>
-    <string name="toast_geocoder_fail">Can\'t transform address</string>
-    <string name="toast_location_timeout">get location timeout</string>
+    <string name="toast_location_not_open">위치가 비활성화 되어 있습니다.</string>
+    <string name="toast_geocoder_fail">주소를 읽을 수 없습니다.</string>
+    <string name="toast_location_timeout">위치 수신의 제한 시간이 초과되었습니다.</string>
 
 </resources>
