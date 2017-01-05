@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -126,6 +127,12 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         RecyclerView_memo.setHasFixedSize(true);
         memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager, this, RecyclerView_memo);
         RecyclerView_memo.setAdapter(memoAdapter);
+        //Set ItemTouchHelper
+        ItemTouchHelper.Callback callback =
+                new ItemTouchHelperCallback(memoAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(RecyclerView_memo);
+        memoAdapter.setItemTouchHelper(touchHelper);
     }
 
     public void setEditModeUI(boolean isEditMode) {

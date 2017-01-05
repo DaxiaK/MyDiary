@@ -1,8 +1,8 @@
 package com.kiminonawa.mydiary.memo;
 
-import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
@@ -18,8 +18,8 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.EditMode;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.marshalchen.ultimaterecyclerview.dragsortadapter.DragSortAdapter;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -27,7 +27,8 @@ import java.util.List;
  * Created by daxia on 2016/10/17.
  */
 
-public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> implements EditMode {
+public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements EditMode,
+        ItemTouchHelperAdapter {
 
 
     //Data
@@ -39,10 +40,10 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
     private boolean isEditMode = false;
     private EditMemoDialogFragment.MemoCallback callback;
     private RecyclerView recyclerView;
+    private ItemTouchHelper itemTouchHelper;
 
 
     public MemoAdapter(FragmentActivity activity, long topicId, List<MemoEntity> memoList, DBManager dbManager, EditMemoDialogFragment.MemoCallback callback, RecyclerView recyclerView) {
-        super(recyclerView);
         this.mActivity = activity;
         this.topicId = topicId;
         this.memoList = memoList;
@@ -51,9 +52,13 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
         this.recyclerView = recyclerView;
     }
 
+    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.itemTouchHelper = itemTouchHelper;
+    }
+
 
     @Override
-    public DragSortAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.rv_memo_item, parent, false);
         return new MemoViewHolder(view);
@@ -71,7 +76,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
     }
 
     @Override
-    public void onBindViewHolder(final DragSortAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MemoViewHolder) {
             ((MemoViewHolder) holder).setItemPosition(position);
             setMemoContent(((MemoViewHolder) holder), position);
@@ -102,25 +107,13 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
     }
 
     @Override
-    public int getPositionForId(long id) {
-        for (MemoEntity memoEntity : memoList) {
-            if (memoEntity.getMemoId() == id) {
-                return memoList.indexOf(memoEntity);
-            }
-        }
-        return -1;
+    public void onItemDismiss(int position) {
+        memoList.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
-    public boolean move(int fromPosition, int toPosition) {
-        memoList.add(toPosition, memoList.remove(fromPosition));
-        return true;
-    }
-
-    @Override
-    public void onDrop() {
-        super.onDrop();
-        recyclerView.findViewHolderForItemId(getDraggingId()).itemView.setBackgroundColor(Color.WHITE);
+    public void onItemMoveFinish() {
         int order = memoList.size();
         dbManager.opeDB();
         for (MemoEntity memoEntity : memoList) {
@@ -129,7 +122,41 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
         dbManager.closeDB();
     }
 
-    protected class MemoViewHolder extends DragSortAdapter.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    @Override
+    public void onItemMove(int from, int to) {
+        Collections.swap(memoList, from, to);
+        notifyItemMoved(from, to);
+    }
+
+//    @Override
+//    public int getPositionForId(long id) {
+//        for (MemoEntity memoEntity : memoList) {
+//            if (memoEntity.getMemoId() == id) {
+//                return memoList.indexOf(memoEntity);
+//            }
+//        }
+//        return -1;
+//    }
+
+//    @Override
+//    public boolean move(int fromPosition, int toPosition) {
+//        memoList.add(toPosition, memoList.remove(fromPosition));
+//        return true;
+//    }
+//
+//    @Override
+//    public void onDrop() {
+//        super.onDrop();
+//        recyclerView.findViewHolderForItemId(getDraggingId()).itemView.setBackgroundColor(Color.WHITE);
+//        int order = memoList.size();
+//        dbManager.opeDB();
+//        for (MemoEntity memoEntity : memoList) {
+//            dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
+//        }
+//        dbManager.closeDB();
+//    }
+
+    protected class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private View rootView;
         private ImageView IV_memo_item_dot;
@@ -140,7 +167,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
 
 
         protected MemoViewHolder(View view) {
-            super(MemoAdapter.this, view);
+            super(view);
             this.rootView = view;
             RL_memo_item_root_view = (RelativeLayout) rootView.findViewById(R.id.RL_memo_item_root_view);
             IV_memo_item_dot = (ImageView) rootView.findViewById(R.id.IV_memo_item_dot);
@@ -175,6 +202,10 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
             this.itemPosition = itemPosition;
         }
 
+        public RelativeLayout getRootView() {
+            return RL_memo_item_root_view;
+        }
+
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -203,8 +234,7 @@ public class MemoAdapter extends DragSortAdapter<DragSortAdapter.ViewHolder> imp
 
         @Override
         public boolean onLongClick(View v) {
-            v.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
-            startDrag();
+            itemTouchHelper.startDrag(this);
             return false;
         }
     }
