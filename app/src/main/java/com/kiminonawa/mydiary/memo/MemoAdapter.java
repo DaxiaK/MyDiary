@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.memo;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -79,6 +80,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MemoViewHolder) {
             ((MemoViewHolder) holder).setItemPosition(position);
+            ((MemoViewHolder) holder).initView();
             setMemoContent(((MemoViewHolder) holder), position);
         }
     }
@@ -108,18 +110,20 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
     @Override
     public void onItemDismiss(int position) {
-        memoList.remove(position);
-        notifyItemRemoved(position);
+        //Do nothing
     }
 
     @Override
     public void onItemMoveFinish() {
+        //save the new order
         int order = memoList.size();
         dbManager.opeDB();
         for (MemoEntity memoEntity : memoList) {
             dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
         }
         dbManager.closeDB();
+        //Revert all bg.
+        notifyDataSetChanged();
     }
 
     @Override
@@ -128,35 +132,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemMoved(from, to);
     }
 
-//    @Override
-//    public int getPositionForId(long id) {
-//        for (MemoEntity memoEntity : memoList) {
-//            if (memoEntity.getMemoId() == id) {
-//                return memoList.indexOf(memoEntity);
-//            }
-//        }
-//        return -1;
-//    }
-
-//    @Override
-//    public boolean move(int fromPosition, int toPosition) {
-//        memoList.add(toPosition, memoList.remove(fromPosition));
-//        return true;
-//    }
-//
-//    @Override
-//    public void onDrop() {
-//        super.onDrop();
-//        recyclerView.findViewHolderForItemId(getDraggingId()).itemView.setBackgroundColor(Color.WHITE);
-//        int order = memoList.size();
-//        dbManager.opeDB();
-//        for (MemoEntity memoEntity : memoList) {
-//            dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
-//        }
-//        dbManager.closeDB();
-//    }
-
-    protected class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private View rootView;
         private ImageView IV_memo_item_dot;
@@ -166,7 +142,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         private int itemPosition;
 
 
-        protected MemoViewHolder(View view) {
+        private MemoViewHolder(View view) {
             super(view);
             this.rootView = view;
             RL_memo_item_root_view = (RelativeLayout) rootView.findViewById(R.id.RL_memo_item_root_view);
@@ -176,12 +152,16 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             TV_memo_item_content.setTextColor(ThemeManager.getInstance().getThemeDarkColor(mActivity));
         }
 
-        public TextView getTVContent() {
+        private TextView getTVContent() {
             return TV_memo_item_content;
         }
 
 
-        public void setItemPosition(int itemPosition) {
+        private void setItemPosition(int itemPosition) {
+            this.itemPosition = itemPosition;
+        }
+
+        private void initView() {
             if (isEditMode) {
                 IV_memo_item_dot.setImageResource(R.drawable.ic_memo_swap_vert_black_24dp);
                 ViewGroup.LayoutParams layoutParams = IV_memo_item_dot.getLayoutParams();
@@ -199,11 +179,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 RL_memo_item_root_view.setOnClickListener(this);
                 RL_memo_item_root_view.setOnLongClickListener(null);
             }
-            this.itemPosition = itemPosition;
-        }
-
-        public RelativeLayout getRootView() {
-            return RL_memo_item_root_view;
+            RL_memo_item_root_view.setBackgroundColor(Color.WHITE);
         }
 
         @Override
@@ -234,6 +210,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         @Override
         public boolean onLongClick(View v) {
+            RL_memo_item_root_view.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
             itemTouchHelper.startDrag(this);
             return false;
         }
