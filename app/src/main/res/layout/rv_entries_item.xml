@@ -82,26 +82,27 @@
                         android:id="@+id/IV_entries_item_mood"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_mood_happy" />
+                        android:padding="4dp"
+                        android:src="@drawable/ic_mood_happy"
+                        android:layout_marginLeft="4dp" />
 
                     <ImageView
                         android:id="@+id/IV_entries_item_bookmark"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:padding="2dp"
-                        android:src="@drawable/ic_bookmark_border" />
+                        android:src="@drawable/ic_bookmark_border"
+                        android:layout_marginLeft="4dp" />
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/IV_entries_item_attachment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_attach"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_attach" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="24dp"
+                    android:layout_width="24dp"
+                    android:padding="2dp" />
 
             </RelativeLayout>
 

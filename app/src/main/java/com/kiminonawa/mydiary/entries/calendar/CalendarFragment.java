@@ -72,7 +72,7 @@ public class CalendarFragment extends BaseDiaryFragment implements Animation.Ani
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cnlendar, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         RL_calendar_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_edit_bar);
         RL_calendar_edit_bar.setBackgroundColor(themeManager.getThemeMainColor(getActivity()));
