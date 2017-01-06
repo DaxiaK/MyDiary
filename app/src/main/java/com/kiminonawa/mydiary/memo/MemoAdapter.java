@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.shared.EditMode;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.marshalchen.ultimaterecyclerview.itemTouchHelper.ItemTouchHelperViewHolder;
 
 import java.util.Collections;
 import java.util.List;
@@ -122,7 +124,6 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
         }
         dbManager.closeDB();
-        //Revert all bg.
         notifyDataSetChanged();
     }
 
@@ -132,7 +133,8 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         notifyItemMoved(from, to);
     }
 
-    private class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    private class MemoViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener, View.OnTouchListener,  ItemTouchHelperViewHolder {
 
         private View rootView;
         private ImageView IV_memo_item_dot;
@@ -167,19 +169,18 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ViewGroup.LayoutParams layoutParams = IV_memo_item_dot.getLayoutParams();
                 layoutParams.width = layoutParams.height = ScreenHelper.dpToPixel(mActivity.getResources(), 24);
                 IV_memo_item_delete.setVisibility(View.VISIBLE);
+                IV_memo_item_dot.setOnTouchListener(this);
                 IV_memo_item_delete.setOnClickListener(this);
                 RL_memo_item_root_view.setOnClickListener(this);
-                RL_memo_item_root_view.setOnLongClickListener(this);
             } else {
                 IV_memo_item_dot.setImageResource(R.drawable.ic_memo_dot_24dp);
                 ViewGroup.LayoutParams layoutParams = IV_memo_item_dot.getLayoutParams();
                 layoutParams.width = layoutParams.height = ScreenHelper.dpToPixel(mActivity.getResources(), 10);
                 IV_memo_item_delete.setVisibility(View.GONE);
+                IV_memo_item_dot.setOnTouchListener(null);
                 IV_memo_item_delete.setOnClickListener(null);
                 RL_memo_item_root_view.setOnClickListener(this);
-                RL_memo_item_root_view.setOnLongClickListener(null);
             }
-            RL_memo_item_root_view.setBackgroundColor(Color.WHITE);
         }
 
         @Override
@@ -209,9 +210,20 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         }
 
         @Override
-        public boolean onLongClick(View v) {
+        public void onItemSelected() {
             RL_memo_item_root_view.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(mActivity));
-            itemTouchHelper.startDrag(this);
+        }
+
+        @Override
+        public void onItemClear() {
+            RL_memo_item_root_view.setBackgroundColor(Color.WHITE);
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                itemTouchHelper.startDrag(this);
+            }
             return false;
         }
     }
