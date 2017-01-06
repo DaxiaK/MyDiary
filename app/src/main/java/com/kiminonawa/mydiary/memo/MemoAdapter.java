@@ -2,8 +2,8 @@ package com.kiminonawa.mydiary.memo;
 
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
@@ -42,22 +42,20 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     private DBManager dbManager;
     private boolean isEditMode = false;
     private EditMemoDialogFragment.MemoCallback callback;
-    private RecyclerView recyclerView;
-    private ItemTouchHelper itemTouchHelper;
+    private OnStartDragListener dragStartListener;
 
 
-    public MemoAdapter(FragmentActivity activity, long topicId, List<MemoEntity> memoList, DBManager dbManager, EditMemoDialogFragment.MemoCallback callback, RecyclerView recyclerView) {
+    public MemoAdapter(FragmentActivity activity, long topicId, List<MemoEntity> memoList,
+                       DBManager dbManager, EditMemoDialogFragment.MemoCallback callback,
+                       OnStartDragListener dragStartListener) {
         this.mActivity = activity;
         this.topicId = topicId;
         this.memoList = memoList;
         this.dbManager = dbManager;
         this.callback = callback;
-        this.recyclerView = recyclerView;
+        this.dragStartListener = dragStartListener;
     }
 
-    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
-        this.itemTouchHelper = itemTouchHelper;
-    }
 
 
     @Override
@@ -134,7 +132,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     private class MemoViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener, View.OnTouchListener,  ItemTouchHelperViewHolder {
+            View.OnClickListener, View.OnTouchListener, ItemTouchHelperViewHolder {
 
         private View rootView;
         private ImageView IV_memo_item_dot;
@@ -221,8 +219,8 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                itemTouchHelper.startDrag(this);
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                dragStartListener.onStartDrag(this);
             }
             return false;
         }

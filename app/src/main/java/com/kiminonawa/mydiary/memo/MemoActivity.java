@@ -20,7 +20,8 @@ import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoActivity extends FragmentActivity implements View.OnClickListener, EditMemoDialogFragment.MemoCallback {
+public class MemoActivity extends FragmentActivity implements
+        View.OnClickListener, EditMemoDialogFragment.MemoCallback, OnStartDragListener {
 
 
     /**
@@ -48,6 +49,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     private RecyclerView RecyclerView_memo;
     private MemoAdapter memoAdapter;
     private List<MemoEntity> memoList;
+    private ItemTouchHelper touchHelper;
 
     @Override
     public void onBackPressed() {
@@ -125,14 +127,14 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_memo.setLayoutManager(lmr);
         RecyclerView_memo.setHasFixedSize(true);
-        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager, this, RecyclerView_memo);
+        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager,
+                this, this);
         RecyclerView_memo.setAdapter(memoAdapter);
         //Set ItemTouchHelper
         ItemTouchHelper.Callback callback =
                 new ItemTouchHelperCallback(memoAdapter);
-        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(RecyclerView_memo);
-        memoAdapter.setItemTouchHelper(touchHelper);
     }
 
     public void setEditModeUI(boolean isEditMode) {
@@ -169,5 +171,10 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     public void updateMemo() {
         loadMemo();
         memoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        touchHelper.startDrag(viewHolder);
     }
 }

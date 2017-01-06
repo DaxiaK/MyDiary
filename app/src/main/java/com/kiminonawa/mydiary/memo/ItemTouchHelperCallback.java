@@ -51,6 +51,10 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (source.getItemViewType() != target.getItemViewType()) {
             return false;
         }
+        //It is move 1 item in 1 time
+        if (Math.abs(target.getAdapterPosition() - source.getAdapterPosition()) != 1) {
+            return false;
+        }
         // Notify the adapter of the move
         mAdapter.onItemMove(source.getAdapterPosition(), target.getAdapterPosition());
         return true;
