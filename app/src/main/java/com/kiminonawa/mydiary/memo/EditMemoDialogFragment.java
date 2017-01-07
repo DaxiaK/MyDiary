@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -111,8 +112,12 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         isAdd = getArguments().getBoolean("isAdd", true);
         memoContent = getArguments().getString("memoContent", "");
         EDT_edit_memo_content.setText(memoContent);
-    }
+        //For show keyboard
+        EDT_edit_memo_content.requestFocus();
+        getDialog().getWindow().
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
+    }
 
 
     private void addMemo() {
