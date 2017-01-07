@@ -15,9 +15,9 @@ import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 
 /**
- * Version History3
+ * Version History
  * 20170104
- * Add order Memo
+ * Add order Memo in version 25
  * ----
  * 20161203 The photo dir of diary should add one dir , So I modify it in version 17
  * ----
@@ -51,10 +51,11 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Long... params) {
         try {
-            loadSampleData();
-            if (SPFManager.getVersionCode(mContext) < 17) {
-                OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
-            }
+            DBManager dbManager = new DBManager(mContext);
+            dbManager.opeDB();
+            loadSampleData(dbManager);
+            updateData(dbManager);
+            dbManager.closeDB();
             saveCurrentVersionCode();
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,10 +69,8 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         callBack.onInitCompiled(showReleaseNote);
     }
 
-    private void loadSampleData() throws Exception {
+    private void loadSampleData(DBManager dbManager) throws Exception {
 
-        DBManager dbManager = new DBManager(mContext);
-        dbManager.opeDB();
         //Because memo function is run in version 6 ,
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(mContext) < 6) {
@@ -118,7 +117,15 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             }
         }
 
-        //Memo order function work in version 23
+    }
+
+    private void updateData(DBManager dbManager) throws Exception {
+        //Photo path modify in version 17
+        if (SPFManager.getVersionCode(mContext) < 17) {
+            OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
+        }
+
+        //Memo order function work in version 25
         if (SPFManager.getVersionCode(mContext) < 25) {
             // init order value = memo id
             dbManager.selectTopic();
@@ -135,7 +142,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             }
             topicCursor.close();
         }
-        dbManager.closeDB();
+
     }
 
     private void saveCurrentVersionCode() {
