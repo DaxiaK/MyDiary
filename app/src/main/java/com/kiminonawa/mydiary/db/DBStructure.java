@@ -44,7 +44,6 @@ public class DBStructure {
     }
 
 
-
     public static abstract class TopicEntry implements BaseColumns {
         public static final String TABLE_NAME = "topic_entry";
         public static final String COLUMN_ORDER = "topic_order";
@@ -60,6 +59,13 @@ public class DBStructure {
         public static final String COLUMN_CONTENT = "memo_content";
         public static final String COLUMN_CHECKED = "memo_checked";
         public static final String COLUMN_REF_TOPIC__ID = "memo_ref_topic_id";
+    }
+
+    public static abstract class MemoOrderEntry implements BaseColumns {
+        public static final String TABLE_NAME = "memo_order";
+        public static final String COLUMN_ORDER = "memo_order_order_in_parent";
+        public static final String COLUMN_REF_TOPIC__ID = "memo_order_ref_topic_id";
+        public static final String COLUMN_REF_MEMO__ID = "memo_order_ref_memo_id";
     }
 
 

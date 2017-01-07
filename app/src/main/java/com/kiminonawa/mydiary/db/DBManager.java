@@ -11,6 +11,7 @@ import static com.kiminonawa.mydiary.db.DBStructure.ContactsEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.MemoOrderEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 
 /**
@@ -294,6 +295,16 @@ public class DBManager {
         return c;
     }
 
+    //TODO make memoActivity get memo from here
+    public Cursor selectMemoAndMemoOrder(long topicId) {
+        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
+                MemoEntry.COLUMN_ORDER + " DESC", null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
     public long updateMemoChecked(long memoId, boolean isChecked) {
         ContentValues values = new ContentValues();
         values.put(MemoEntry.COLUMN_CHECKED, isChecked);
@@ -314,15 +325,31 @@ public class DBManager {
                 new String[]{String.valueOf(memoId)});
     }
 
-    public long updateMemoOrder(long memoId, long order) {
+    public long insertMemoOrder(long topicId, long memoId, long order) {
         ContentValues values = new ContentValues();
-        values.put(MemoEntry.COLUMN_ORDER, order);
-        return db.update(
-                MemoEntry.TABLE_NAME,
-                values,
-                MemoEntry._ID + " = ?",
-                new String[]{String.valueOf(memoId)});
+        values.put(MemoOrderEntry.COLUMN_ORDER, order);
+        values.put(MemoOrderEntry.COLUMN_REF_TOPIC__ID, topicId);
+        values.put(MemoOrderEntry.COLUMN_REF_MEMO__ID, memoId);
+        return db.insert(
+                MemoOrderEntry.TABLE_NAME,
+                null,
+                values);
     }
+
+    public long deleteMemoOrder(long memoId) {
+        return db.delete(
+                MemoOrderEntry.TABLE_NAME,
+                MemoOrderEntry.COLUMN_REF_MEMO__ID + " = ?"
+                , new String[]{String.valueOf(memoId)});
+    }
+
+    public long deleteAllCurrentMemoOrder(long topicId) {
+        return db.delete(
+                MemoOrderEntry.TABLE_NAME,
+                MemoOrderEntry.COLUMN_REF_TOPIC__ID + " = ?"
+                , new String[]{String.valueOf(topicId)});
+    }
+
 
     private ContentValues createMemoCV(String content, boolean isChecked, long refTopicId) {
         ContentValues values = new ContentValues();

@@ -10,7 +10,7 @@ android {
         // versionName rule
         // version.yyMMDD_BuildCount_OPTION , D = demo , H = hotfix
         versionCode 25
-        versionName "0.2.3.161228_1_d_h"
+        versionName "0.2.4.160107_1_d"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

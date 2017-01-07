@@ -57,7 +57,6 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -116,10 +115,11 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onItemMoveFinish() {
         //save the new order
-        int order = memoList.size();
+        int startOrder = 0;
         dbManager.opeDB();
+        dbManager.deleteAllCurrentMemoOrder(topicId);
         for (MemoEntity memoEntity : memoList) {
-            dbManager.updateMemoOrder(memoEntity.getMemoId(), order--);
+            dbManager.insertMemoOrder(topicId, memoEntity.getMemoId(), startOrder++);
         }
         dbManager.closeDB();
         notifyDataSetChanged();
@@ -187,6 +187,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 case R.id.IV_memo_item_delete:
                     dbManager.opeDB();
                     dbManager.delMemo(memoList.get(itemPosition).getMemoId());
+                    dbManager.deleteMemoOrder(memoList.get(itemPosition).getMemoId());
                     dbManager.closeDB();
                     memoList.remove(itemPosition);
                     notifyDataSetChanged();

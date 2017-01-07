@@ -225,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case ITopic.TYPE_MEMO:
                 dbManager.delAllMemoInTopic(topicList.get(position).getId());
+                dbManager.deleteAllCurrentMemoOrder(topicList.get(position).getId());
                 break;
             case ITopic.TYPE_DIARY:
                 //Because FOREIGN key is not work in this version,

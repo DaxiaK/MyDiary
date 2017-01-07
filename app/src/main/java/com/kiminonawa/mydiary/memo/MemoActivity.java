@@ -105,13 +105,15 @@ public class MemoActivity extends FragmentActivity implements
         memoList = new ArrayList<>();
         dbManager = new DBManager(MemoActivity.this);
 
-        loadMemo();
+        loadMemo(true);
         initTopicAdapter();
     }
 
-    private void loadMemo() {
+    private void loadMemo(boolean openDB) {
         memoList.clear();
-        dbManager.opeDB();
+        if (openDB) {
+            dbManager.opeDB();
+        }
         Cursor memoCursor = dbManager.selectMemo(topicId);
         for (int i = 0; i < memoCursor.getCount(); i++) {
             memoList.add(
@@ -119,7 +121,9 @@ public class MemoActivity extends FragmentActivity implements
             memoCursor.moveToNext();
         }
         memoCursor.close();
-        dbManager.closeDB();
+        if (openDB) {
+            dbManager.closeDB();
+        }
     }
 
     private void initTopicAdapter() {
@@ -162,14 +166,19 @@ public class MemoActivity extends FragmentActivity implements
     }
 
     @Override
-    public void addMemo() {
-        loadMemo();
+    public void addMemo(String memoContent) {
+        dbManager.opeDB();
+        dbManager.insertMemoOrder(topicId,
+                dbManager.insertMemo(memoContent, false, topicId)
+                , memoList.size() - 1);
+        loadMemo(false);
+        dbManager.closeDB();
         memoAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateMemo() {
-        loadMemo();
+        loadMemo(true);
         memoAdapter.notifyDataSetChanged();
     }
 

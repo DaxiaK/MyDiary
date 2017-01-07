@@ -14,6 +14,7 @@ import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.MemoOrderEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 
 /**
@@ -22,6 +23,9 @@ import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 6 by Daxia
+     * Add new table for memo order
+     * ---------------------------------
      * Version 5 by Daxia
      * Add color message in topic
      * (Topic bg name is fixed in its dir)
@@ -111,6 +115,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     FOREIGN + " (" + MemoEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
                     " )";
 
+    private static final String SQL_CREATE_MEMO_ORDER =
+            "CREATE TABLE " + MemoOrderEntry.TABLE_NAME + " (" +
+                    MemoOrderEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                    MemoOrderEntry.COLUMN_REF_MEMO__ID + INTEGER_TYPE + COMMA_SEP +
+                    MemoOrderEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + MemoOrderEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + MemoEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" + COMMA_SEP +
+                    FOREIGN + " (" + MemoOrderEntry.COLUMN_REF_MEMO__ID + ")" + REFERENCES + MemoEntry.TABLE_NAME + "(" + MemoEntry._ID + ")" +
+                    " )";
+
     private static final String SQL_CREATE_CONTACTS_ENTRIES =
             "CREATE TABLE " + ContactsEntry.TABLE_NAME + " (" +
                     ContactsEntry._ID + INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT," +
@@ -133,7 +146,10 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
         db.execSQL(SQL_CREATE_DIARY_ITEM_ENTRIES_V2);
 
+        //Add memo order table in version 6
         db.execSQL(SQL_CREATE_MEMO_ENTRIES);
+        db.execSQL(SQL_CREATE_MEMO_ORDER);
+
         db.execSQL(SQL_CREATE_CONTACTS_ENTRIES);
     }
 
@@ -171,6 +187,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL(addTopicTextColorSql);
                     //set textcolor default black color
                     version5AddTextColor(db);
+                }
+                //        Memo order function work in version 25 & db version 6
+                if (oldVersion < 6) {
+                    version6AddMemoOrder(db);
                 }
                 //Check update success
                 db.setTransactionSuccessful();
@@ -228,6 +248,25 @@ public class DBHelper extends SQLiteOpenHelper {
                     oldDiaryCursor.getString(3), oldDiaryCursor.getLong(0));
             oldDiaryCursor.moveToNext();
         }
+    }
 
+
+    private void version6AddMemoOrder(SQLiteDatabase db) {
+        DBManager dbManager = new DBManager(db);
+        // init order value = memo id
+        dbManager.selectTopic();
+        Cursor topicCursor = dbManager.selectTopic();
+        for (int i = 0; i < topicCursor.getCount(); i++) {
+            long topicId = topicCursor.getLong(0);
+            Cursor memoCursor = dbManager.selectMemo(topicId);
+            for (int j = 0; j < memoCursor.getCount(); j++) {
+                long memoId = memoCursor.getLong(0);
+                dbManager.insertMemoOrder(topicId, memoId, j);
+                memoCursor.moveToNext();
+            }
+            memoCursor.close();
+            topicCursor.moveToNext();
+        }
+        topicCursor.close();
     }
 }

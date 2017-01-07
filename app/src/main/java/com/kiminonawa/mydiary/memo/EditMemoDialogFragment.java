@@ -30,7 +30,7 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
      * Callback
      */
     public interface MemoCallback {
-        void addMemo();
+        void addMemo(String memoContent);
 
         void updateMemo();
     }
@@ -122,11 +122,7 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
 
     private void addMemo() {
         if (topicId != -1) {
-            DBManager dbManager = new DBManager(getActivity());
-            dbManager.opeDB();
-            long memoId = dbManager.insertMemo(EDT_edit_memo_content.getText().toString(), false, topicId);
-            dbManager.updateMemoOrder(memoId, memoId);
-            dbManager.closeDB();
+            callback.addMemo(EDT_edit_memo_content.getText().toString());
         }
     }
 
@@ -144,7 +140,6 @@ public class EditMemoDialogFragment extends DialogFragment implements View.OnCli
         if (EDT_edit_memo_content.getText().toString().length() > 0) {
             if (isAdd) {
                 addMemo();
-                callback.addMemo();
             } else {
                 updateMemo();
                 callback.updateMemo();
