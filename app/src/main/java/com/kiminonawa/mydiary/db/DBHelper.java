@@ -45,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -188,7 +188,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     //set textcolor default black color
                     version5AddTextColor(db);
                 }
-                //        Memo order function work in version 25 & db version 6
+                //Memo order function work in version 25 & db version 6
                 if (oldVersion < 6) {
                     version6AddMemoOrder(db);
                 }

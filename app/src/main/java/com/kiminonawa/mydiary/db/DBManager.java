@@ -285,20 +285,34 @@ public class DBManager {
                 , new String[]{String.valueOf(topicId)});
     }
 
-
+    /**
+     * For select all memo and add order when database version update
+     *
+     * @param topicId
+     * @return
+     */
     public Cursor selectMemo(long topicId) {
-        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                MemoEntry.COLUMN_ORDER + " DESC", null);
+        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)},
+                null, null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
     }
 
-    //TODO make memoActivity get memo from here
+    /**
+     * Select memo & order for show in memoActivity
+     *
+     * @param topicId
+     * @return
+     */
     public Cursor selectMemoAndMemoOrder(long topicId) {
-        Cursor c = db.query(MemoEntry.TABLE_NAME, null, MemoEntry.COLUMN_REF_TOPIC__ID + " = ?", new String[]{String.valueOf(topicId)}, null, null,
-                MemoEntry.COLUMN_ORDER + " DESC", null);
+        Cursor c = db.rawQuery("SELECT * FROM " + MemoEntry.TABLE_NAME
+                        + " LEFT OUTER JOIN " + MemoOrderEntry.TABLE_NAME
+                        + " ON " + MemoEntry._ID + " = " + MemoOrderEntry.COLUMN_REF_MEMO__ID
+                        + " WHERE " + MemoEntry.COLUMN_REF_TOPIC__ID + " = " + topicId
+                        + " ORDER BY " + MemoOrderEntry.COLUMN_ORDER + " DESC "
+                , null);
         if (c != null) {
             c.moveToFirst();
         }

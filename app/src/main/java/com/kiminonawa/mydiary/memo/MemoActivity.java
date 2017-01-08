@@ -114,7 +114,7 @@ public class MemoActivity extends FragmentActivity implements
         if (openDB) {
             dbManager.opeDB();
         }
-        Cursor memoCursor = dbManager.selectMemo(topicId);
+        Cursor memoCursor = dbManager.selectMemoAndMemoOrder(topicId);
         for (int i = 0; i < memoCursor.getCount(); i++) {
             memoList.add(
                     new MemoEntity(memoCursor.getLong(0), memoCursor.getString(2), memoCursor.getInt(3) > 0 ? true : false));
@@ -170,7 +170,7 @@ public class MemoActivity extends FragmentActivity implements
         dbManager.opeDB();
         dbManager.insertMemoOrder(topicId,
                 dbManager.insertMemo(memoContent, false, topicId)
-                , memoList.size() - 1);
+                , memoList.size());
         loadMemo(false);
         dbManager.closeDB();
         memoAdapter.notifyDataSetChanged();

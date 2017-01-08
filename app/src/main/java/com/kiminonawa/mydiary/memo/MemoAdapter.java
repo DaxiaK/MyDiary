@@ -115,11 +115,11 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     @Override
     public void onItemMoveFinish() {
         //save the new order
-        int startOrder = 0;
+        int orderNumber = memoList.size();
         dbManager.opeDB();
         dbManager.deleteAllCurrentMemoOrder(topicId);
         for (MemoEntity memoEntity : memoList) {
-            dbManager.insertMemoOrder(topicId, memoEntity.getMemoId(), startOrder++);
+            dbManager.insertMemoOrder(topicId, memoEntity.getMemoId(), --orderNumber);
         }
         dbManager.closeDB();
         notifyDataSetChanged();
