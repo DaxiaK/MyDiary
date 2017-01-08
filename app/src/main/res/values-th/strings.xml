@@ -30,7 +30,7 @@
 
     <!--Profile-->
     <string name="profile_username_taki">ทาคิ</string>
-    <string name="profile_username_mitsuha">มิตสึฮะ</string>
+    <string name="profile_username_mitsuha">มิสึฮะ</string>
     <string name="toast_change_theme">กำลังเปลี่ยนธีม&#8230;</string>
     <string name="your_name_is">ชื่อของคุณคือ</string>
 
@@ -110,7 +110,7 @@
     <string name="toast_contacts_empty">ไม่มีรายชื่อติดต่อ!</string>
 
     <!--About-->
-    <string name="about_title">เกี่ยวกับแอปลิเคชัน</string>
+    <string name="about_title">เกี่ยวกับแอปพลิเคชัน</string>
 
     <!--Setting-->
     <string name="setting_theme_title">ธีม</string>
