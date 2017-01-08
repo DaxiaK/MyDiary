@@ -190,6 +190,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
                 //Memo order function work in version 25 & db version 6
                 if (oldVersion < 6) {
+                    db.execSQL(SQL_CREATE_MEMO_ORDER);
                     version6AddMemoOrder(db);
                 }
                 //Check update success
