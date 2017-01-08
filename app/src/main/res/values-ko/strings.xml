@@ -15,7 +15,7 @@
         -Support Korean(by Meda An)\n\n
         **0.2.1.161212_1_d_h2\n
         -Modify layout\n
-        -Fix zenPhone c and htc 626 crash(Need to reply)\n
+        -Fix ZenFone c and htc 626 crash(Need to reply)\n
         -Add button for fix gone photo in diary in setting page\n\n
         **0.2.1.161208_01_d_h**\n
         -Fix and support status bar transparent on Android 6.0+\n
@@ -30,7 +30,7 @@
     <!--Profile-->
     <string name="profile_username_taki">타키</string>
     <string name="profile_username_mitsuha">미츠하</string>
-    <string name="toast_change_theme">테마 변경중&#8230;</string>
+    <string name="toast_change_theme">테마 변경 중&#8230;</string>
     <string name="your_name_is">너의 이름은</string>
 
     <!--Topic detail-->
@@ -69,7 +69,7 @@
     <!--Diary -->
     <string name="diary_no_location">위치를 찾을 수 없습니다.</string>
     <string name="diary_location_permission_title">권한</string>
-    <string name="diary_location_permission_content">위치정보 접근 권한이 필요합니다.</string>
+    <string name="diary_location_permission_content">위치 정보 권한이 필요합니다.</string>
     <string name="diary_photo_permission_content">사진 권한이 필요합니다.</string>
 
     <string name="diary_title_hint">제목</string>
@@ -83,7 +83,7 @@
     <string name="toast_photo_path_error">이미지 경로에 오류가 있습니다</string>
     <string name="toast_photo_intent_error">이미지 불러오기를 실패하였습니다</string>
     <string name="toast_max_photo">사진은 %1$d장까지 추가할수 있습니다</string>
-    <string name="toast_space_insufficient">저장 공간이 부족합니다</string>
+    <string name="toast_space_insufficient">저장공간이 부족합니다</string>
     <string name="toast_diary_update_successful">일기 갱신에 성공했습니다</string>
     <string name="toast_diary_update_fail">일기 갱신에 실패했습니다</string>
     <string name="toast_diary_insert_successful">일기가 성공적으로 추가됐습니다</string>
@@ -99,7 +99,7 @@
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">권한</string>
     <string name="contacts_call_phone_permission_content">전화 발신 권한이 필요합니다</string>
-    <string name="contacts_call_phone_no_call_function">이 휴대폰 전화를 걸 수 없습니다.</string>
+    <string name="contacts_call_phone_no_call_function">이 휴대폰은 전화를 걸 수 없습니다.</string>
 
     <string name="contacts_detail_edt_name">이름</string>
     <string name="contacts_detail_edt_phone_number">전화번호</string>
@@ -113,8 +113,8 @@
     <string name="setting_theme_hint">테마 선택</string>
     <string name="setting_theme_main_color">메인 색상</string>
     <string name="setting_theme_sec_color">서브 색상</string>
-    <string name="setting_theme_default_profile_bg">기본값</string>
-    <string name="setting_theme_default_color">기본값</string>
+    <string name="setting_theme_default_profile_bg">기본값으로 \n초기화</string>
+    <string name="setting_theme_default_color">기본값으로 \n초기화</string>
     <string name="setting_theme_apply">적용</string>
     <string name="setting_theme_profile_bg">프로필 배경</string>
 
@@ -139,8 +139,8 @@
     <string name="toast_google_service_not_work">구글 서비스 작동에 문제가 있거나 업데이트가 필요합니다</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">위치 정보를 사용할 수 없습니다</string>
-    <string name="toast_geocoder_fail">주소를 변환하는 데 실패했습니다s</string>
-    <string name="toast_location_timeout">위치 정보 타임아웃이 만료되었습니다</string>
+    <string name="toast_location_not_open">위치가 비활성화 되어 있습니다.</string>
+    <string name="toast_geocoder_fail">주소를 읽을 수 없습니다.</string>
+    <string name="toast_location_timeout">위치 수신의 제한 시간이 초과되었습니다.</string>
 
 </resources>
