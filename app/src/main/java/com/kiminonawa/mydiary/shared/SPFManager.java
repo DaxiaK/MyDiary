@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.util.Encryption;
 
 
 /**
@@ -43,6 +44,7 @@ public class SPFManager {
     private static final String SYSTEM_VERSIONCODE = "VERSIONCODE";
     public static final int DEFAULT_VERSIONCODE = -1;
     private static final String DESCRIPTION_CLOSE = "DESCRIPTION_CLOSE";
+    private static final String ENCRYPTED_PASSWORD = "ENCRYPTED_PASSWORD";
 
 
     /**
@@ -179,5 +181,22 @@ public class SPFManager {
         PE.commit();
     }
 
+    public static boolean isPasswordCorrect(Context context, String password) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+
+        /* Default password = 0000
+         * Stored password in string for possible front '0's */
+        String currentEncrypedPassword =
+                settings.getString(ENCRYPTED_PASSWORD, Encryption.SHA256(String.valueOf("0000")));
+
+        return Encryption.SHA256(password).equals(currentEncrypedPassword);
+    }
+
+    public static void setAndEncryptPassword(Context context, String password) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putString(ENCRYPTED_PASSWORD, Encryption.SHA256(password));
+        PE.commit();
+    }
 
 }
