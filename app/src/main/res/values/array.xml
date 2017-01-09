@@ -1,71 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="months_full_name">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
+    <array name="months_full_name / Spanish">
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+        <item>Mayo</item>
+        <item>Junio</item>
+        <item>Julio</item>
+        <item>Agosto</item>
+        <item>Septiembre</item>
+        <item>Octubre</item>
+        <item>Noviembre</item>
+        <item>Diciembre</item>
     </array>
 
-    <array name="days_simple_name">
-        <item>Sun.</item>
-        <item>Mon.</item>
-        <item>Tue.</item>
-        <item>Wed.</item>
-        <item>Thu.</item>
-        <item>Fri.</item>
-        <item>Sat.</item>
+    <array name="days_simple_name / Spanish">
+        <item>Dom.</item>
+        <item>Lun.</item>
+        <item>Mar.</item>
+        <item>Mie.</item>
+        <item>Jue.</item>
+        <item>Vie.</item>
+        <item>Sab.</item>
     </array>
 
-    <array name="days_full_name">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
+    <array name="days_full_name / Spanish">
+        <item>Domingo</item>
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sabado</item>
     </array>
 
-    <array name="topic_type">
-        <item>Contacts</item>
-        <item>Diary</item>
-        <item>Memo</item>
+    <array name="topic_type / Spanish">
+        <item>Contactos</item>
+        <item>Diario</item>
+        <item>Recordatorios</item>
     </array>
 
-    <array name="theme_list">
+    <array name="theme_list / Spanish">
         <item>Taki</item>
         <item>Mitsuha</item>
-        <item>Custom</item>
+        <item>Personalizado</item>
     </array>
 
-    <array name="weather_list">
-        <item>sunny</item>
-        <item>cloudy</item>
-        <item>windy</item>
-        <item>rainy</item>
-        <item>snowy</item>
-        <item>foggy</item>
+    <array name="weather_list / Spanish">
+        <item>soleado</item>
+        <item>nublado</item>
+        <item>ventoso</item>
+        <item>lluvioso</item>
+        <item>nevado</item>
+        <item>brumoso</item>
     </array>
 
-    <array name="language_list">
-        <item>System</item>
+    <array name="language_list / Spanish">
+        <item>Sistema</item>
         <item>English</item>
+        <item>Español<item>
         <item>日本語</item>
         <item>繁體中文</item>
         <item>简体中文</item>
         <item>한국어</item>
         <item>ภาษาไทย</item>
         <item>Français</item>
-    </array>
+     </array>
 
 </resources>
