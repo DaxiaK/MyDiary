@@ -108,11 +108,15 @@ public class ThemeManager {
 
     public Drawable getProfilePictureDrawable(Context context) {
         Drawable pictureDrawable;
-        File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getAbsolutePath()
-                + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
-        if (pictureFile.exists()) {
-            pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());
-        } else {
+        try {
+            File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getAbsolutePath()
+                    + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
+            if (pictureFile.exists()) {
+                pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());
+            } else {
+                pictureDrawable = ViewTools.getDrawable(context, R.drawable.ic_person_picture_default);
+            }
+        } catch (NullPointerException e) {
             pictureDrawable = ViewTools.getDrawable(context, R.drawable.ic_person_picture_default);
         }
         return pictureDrawable;
