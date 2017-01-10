@@ -32,6 +32,14 @@
                 android:src="@drawable/ic_settings_white_36dp" />
 
             <ImageView
+                android:id="@+id/IV_main_setting_setting_security"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_security_white_36dp" />
+
+            <ImageView
                 android:id="@+id/IV_main_setting_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

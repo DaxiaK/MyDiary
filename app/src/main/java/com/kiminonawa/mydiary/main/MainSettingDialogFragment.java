@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.security.PasswordActivity;
 import com.kiminonawa.mydiary.setting.SettingActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -67,6 +68,11 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
             case R.id.IV_main_setting_setting_page:
                 Intent settingPageIntent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(settingPageIntent);
+                dismiss();
+                break;
+            case R.id.IV_main_setting_setting_security:
+                Intent securityPageIntent = new Intent(getActivity(), PasswordActivity.class);
+                getActivity().startActivity(securityPageIntent);
                 dismiss();
                 break;
             case R.id.IV_main_setting_about:
