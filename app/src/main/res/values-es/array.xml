@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="months_full_name">
+        <item>Enero</item>
+        <item>Febrero</item>
+        <item>Marzo</item>
+        <item>Abril</item>
+        <item>Mayo</item>
+        <item>Junio</item>
+        <item>Julio</item>
+        <item>Agosto</item>
+        <item>Septiembre</item>
+        <item>Octubre</item>
+        <item>Noviembre</item>
+        <item>Diciembre</item>
+    </array>
+
+    <array name="days_simple_name">
+        <item>Dom.</item>
+        <item>Lun.</item>
+        <item>Mar.</item>
+        <item>Mie.</item>
+        <item>Jue.</item>
+        <item>Vie.</item>
+        <item>Sab.</item>
+    </array>
+
+    <array name="days_full_name">
+        <item>Domingo</item>
+        <item>Lunes</item>
+        <item>Martes</item>
+        <item>Miercoles</item>
+        <item>Jueves</item>
+        <item>Viernes</item>
+        <item>Sabado</item>
+    </array>
+
+    <array name="topic_type">
+        <item>Contactos</item>
+        <item>Diario</item>
+        <item>Recordatorios</item>
+    </array>
+
+    <array name="theme_list">
+        <item>Taki</item>
+        <item>Mitsuha</item>
+        <item>Personalizado</item>
+    </array>
+
+    <array name="weather_list">
+        <item>soleado</item>
+        <item>nublado</item>
+        <item>ventoso</item>
+        <item>lluvioso</item>
+        <item>nevado</item>
+        <item>brumoso</item>
+    </array>
+
+    <array name="language_list">
+        <item>Sistema</item>
+        <item>English</item>
+        <item>日本語</item>
+        <item>繁體中文</item>
+        <item>简体中文</item>
+        <item>한국어</item>
+        <item>ภาษาไทย</item>
+        <item>Français</item>
+        <item>Español</item>
+    </array>
+
+</resources>
