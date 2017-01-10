@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
-    <string name="release_note">**0.2.3.161228_1_d_h"\n
+    <string name="release_note">**0.2.4.1601010_1_d\n
+        -支援法文(By Toms) 西班牙文(By JorgeNava)
+        -支援備忘錄排序
+        -修復夜間模式問題
+        -修正bug
+        **0.2.3.161228_1_d_h\n
         -支援泰文(By PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
         -調整沒有Google Service地區的定位功能\n

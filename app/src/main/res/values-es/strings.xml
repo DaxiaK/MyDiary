@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">Acztualizaciónes</string>
-    <string name="release_note">**0.2.3.161228_1_h\n
+    <string name="release_note">**0.2.4.1601010_1_d\n
+        -support French(By Toms) Spanish(By JorgeNava)\n
+        -support sort memo\n
+        -fix night issues\n
+        -fix bug\n\n
+        **0.2.3.161228_1_h\n
         -Soporte Tailandés(Por PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
         -Modificación en función de ubicación para areas sin servicio Google\n
