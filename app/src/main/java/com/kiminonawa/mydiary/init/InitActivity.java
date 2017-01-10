@@ -105,6 +105,9 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
             case 7:
                 locale = Locale.FRENCH;
                 break;
+            case 8:
+                locale = new Locale("es", "");
+                break;
             // 0 = default = language of system
             default:
                 locale = Locale.getDefault();
