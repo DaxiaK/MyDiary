@@ -2,148 +2,148 @@
     <string name="app_name">MyDiary</string>
 
     <!--Release Note-->
-    <string name="release_note_title">Release note</string>
+    <string name="release_note_title">Acztualizaciónes</string>
     <string name="release_note">**0.2.3.161228_1_h\n
-        -support Thai(By PScoop ,trulesa)\n\n
+        -Soporte Tailandés(Por PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
-        -Modify get location function for no Google Service area\n
-        -Fix bug\n\n
+        -Modificación en función de ubicación para areas sin servicio Google\n
+        -Error arreglado\n\n
         **0.2.2.161216_1_d2\n
-        -Modify layout for matching movie\n
-        -Using place to replace address in location\n
-        -Fix bug\n
-        -Support Korean(by Meda An)\n\n
+        -Modificación de diseño semejante a la pelicula\n
+        -Uso de lugar para remplazar dirección en la ubicación\n
+        -Error arreglado\n
+        -Soporte Korean(Por Meda An)\n\n
         **0.2.1.161212_1_d_h2\n
-        -Modify layout\n
-        -Fix zenPhone c and htc 626 crash(Need to reply)\n
-        -Add button for fix gone photo in diary in setting page\n\n
+        -Modificación de diseño\n
+        -Arreglo de congelamiento de aplicaion en celulares zenPhone c y htc 636(Se necesita cotestación)\n
+        -Integración de botón para foto desaparecida  en la pagina de configración del diario\n\n
         **0.2.1.161208_01_d_h**\n
-        -Fix and support status bar transparent on Android 6.0+\n
-        (If your devices is Android 6.0+ ,please set profile banner again.)\n
-        -Fix profile picture bug\n
-        -support sort Simplified Chinese in contacts(By XF-zhjnc)
+        -Corrección y soporte de la barra de estado transparente en Android 6.0+\n
+        (Si tu dispositivo es Android 6.0 o superior, por favor establezca el banner de perfil de nuevo.)\n
+        -Error de foto de perfil corregido\n
+        -Arreglo de apoyo Chino simplificado en los contactos(Por XF-zhjnc)
     </string>
-    <string name="release_note_close_remind">Don\'t ask again</string>
+    <string name="release_note_close_remind">No mostrar otra vez</string>
 
     <!--init-->
-    <string name="init_message">Data is updating now, please don\'t close MyDairy</string>
+    <string name="init_message">La información se esta actualizando, por favor no cierre My Diary</string>
 
     <!--Profile-->
     <string name="profile_username_taki">Taki</string>
     <string name="profile_username_mitsuha">Mitsuha</string>
-    <string name="toast_change_theme">Theme is changing&#8230;</string>
-    <string name="your_name_is">Your name is</string>
+    <string name="toast_change_theme">Cambiando fondo&#8230;</string>
+    <string name="your_name_is">Tu nombre es</string>
 
     <!--Topic detail-->
-    <string name="topic_detail_name">Topic name</string>
-    <string name="topic_detail_text_color">Text color</string>
-    <string name="topic_dialog_delete_title">Delete</string>
-    <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
+    <string name="topic_detail_name">Nombre de tema</string>
+    <string name="topic_detail_text_color">Color de Texto</string>
+    <string name="topic_dialog_delete_title">Borrar</string>
+    <string name="topic_dialog_delete_content">¿Quieres borrar %1$s ?</string>
 
-    <string name="toast_topic_empty">Topic name is empty</string>
-    <string name="topic_topic_bg_fail">To change background of topic fail&#8230;</string>
+    <string name="toast_topic_empty">Nombre de tema esta vacioy</string>
+    <string name="topic_topic_bg_fail">Fallo en cambiar el fondo del Tema&#8230;</string>
 
-    <string name="topic_detail_current_bg">Topic background</string>
-    <string name="topic_detail_default_bg">default background</string>
+    <string name="topic_detail_current_bg">Fondo del tema</string>
+    <string name="topic_detail_default_bg">Fondo por defecto</string>
 
     <!--Dialog -->
-    <string name="dialog_button_ok">ok</string>
-    <string name="dialog_button_call">call</string>
-    <string name="dialog_button_cancel">cancel</string>
-    <string name="dialog_button_delete">delete</string>
+    <string name="dialog_button_ok">Okay</string>
+    <string name="dialog_button_call">Llamar</string>
+    <string name="dialog_button_cancel">Cancelar</string>
+    <string name="dialog_button_delete">Borrar</string>
 
-    <string name="process_dialog_loading">Loading&#8230;</string>
-    <string name="process_dialog_saving">Saving&#8230;</string>
+    <string name="process_dialog_loading">Cargando&#8230;</string>
+    <string name="process_dialog_saving">Guardando&#8230;</string>
 
     <!--Diary Activity-->
-    <string name="segmented_entries">Entries</string>
-    <string name="segmented_calendar">Calendar</string>
-    <string name="segmented_Diary">Diary</string>
-    <string name="diary_back_message">There are a diary in editing ,do you want to leave it?</string>
+    <string name="segmented_entries">Entradas</string>
+    <string name="segmented_calendar">Calendario</string>
+    <string name="segmented_Diary">Diario</string>
+    <string name="diary_back_message">Hay un diario en edición, ¿quieres dejarlo?</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d Entries</string>
-    <string name="entries_edit_view">Click diary for editing</string>
-    <string name="entries_edit_dialog_delete_content">Do you really want to delete this diary?</string>
-    <string name="entries_summary_photo">**photo**</string>
+    <string name="entries_count">%1$d Entradas</string>
+    <string name="entries_edit_view">Seleccionar diario para editarClick diary for editing</string>
+    <string name="entries_edit_dialog_delete_content">¿Seguro que quieres eliminar este diario?</string>
+    <string name="entries_summary_photo">**foto**</string>
 
     <!--Diary -->
-    <string name="diary_no_location">No Location</string>
-    <string name="diary_location_permission_title">Permission</string>
-    <string name="diary_location_permission_content">We need permission to get location name</string>
-    <string name="diary_photo_permission_content">We need permission to add photo</string>
+    <string name="diary_no_location">Sin ubicación</string>
+    <string name="diary_location_permission_title">Permiso</string>
+    <string name="diary_location_permission_content">Necesitamos permiso para obtener la ubicación</string>
+    <string name="diary_photo_permission_content">Necesitamos permiso para añadir foto</string>
 
-    <string name="diary_title_hint">Diary title</string>
-    <string name="diary_content_hint">Write your diary here</string>
-    <string name="diary_clear_message">do you want to delete it?</string>
+    <string name="diary_title_hint">Titulo de Diario</string>
+    <string name="diary_content_hint">Escribe tu Diario aqui</string>
+    <string name="diary_clear_message">¿Quieres eliminarlo?</string>
 
-    <string name="diary_no_title">No Title</string>
+    <string name="diary_no_title">Sin Titulo</string>
 
 
-    <string name="toast_diary_empty">Diary is empty</string>
+    <string name="toast_diary_empty">Diario vacio</string>
 
-    <string name="toast_not_image">The file is not a image</string>
-    <string name="toast_photo_path_error">Photo path has some problem</string>
-    <string name="toast_photo_intent_error">To get image resource of device fail</string>
-    <string name="toast_max_photo">Max selected photo is %1$d</string>
-    <string name="toast_space_insufficient">Free space Insufficient</string>
-    <string name="toast_diary_update_successful">Updating diary is successful</string>
-    <string name="toast_diary_update_fail">Updating diary fail</string>
-    <string name="toast_diary_insert_successful">Diary was inserted successfully</string>
-    <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully&#8230;</string>
+    <string name="toast_not_image">El archivo no es una imagen</string>
+    <string name="toast_photo_path_error">La carga de la foto tuvo algun problema</string>
+    <string name="toast_photo_intent_error">No se puede conseguir recursos de imagen del dispositivo</string>
+    <string name="toast_max_photo">El maximon de fotos seleccionadas es %1$d</string>
+    <string name="toast_space_insufficient">Espacio libre Insuficiente</string>
+    <string name="toast_diary_update_successful">Diario actualizado exitosamente</string>
+    <string name="toast_diary_update_fail">Actualización de Diario fallido</string>
+    <string name="toast_diary_insert_successful">Diario insertado exitosamente</string>
+    <string name="toast_diary_insert_fail">Diario insertado fallido&#8230;</string>
 
     <!--Diary Viewer edit-->
-    <string name="toast_diary_copy_to_edit_fail">Reading photo data fail&#8230;</string>
+    <string name="toast_diary_copy_to_edit_fail">Fallo al leer información de foto&#8230;</string>
 
     <!--Memo-->
-    <string name="memo_item_add">Add</string>
-    <string name="toast_memo_empty">Memo is empty!</string>
+    <string name="memo_item_add">Añadir</string>
+    <string name="toast_memo_empty">Sin Recordatorios!</string>
 
     <!--Contacts-->
-    <string name="contacts_call_phone_permission_title">Permission</string>
-    <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
-    <string name="contacts_call_phone_no_call_function">Your device can\'t call phone</string>
+    <string name="contacts_call_phone_permission_title">Permiso</string>
+    <string name="contacts_call_phone_permission_content">Necesitamos permiso para llamar al teléfono</string>
+    <string name="contacts_call_phone_no_call_function">Tu dispositivo no puede llamar al teléfono</string>
 
-    <string name="contacts_detail_edt_name">Name</string>
-    <string name="contacts_detail_edt_phone_number">Phone</string>
+    <string name="contacts_detail_edt_name">Nombre</string>
+    <string name="contacts_detail_edt_phone_number">teléfono</string>
 
-    <string name="toast_contacts_empty">Contacts is empty!</string>
+    <string name="toast_contacts_empty">Sin contactos!</string>
 
     <!--About-->
-    <string name="about_title">About</string>
+    <string name="about_title">Acerca de</string>
 
     <!--Setting-->
-    <string name="setting_theme_title">Theme</string>
-    <string name="setting_theme_hint">Choose your theme</string>
-    <string name="setting_theme_main_color">Main color</string>
-    <string name="setting_theme_sec_color">Sec. color</string>
-    <string name="setting_theme_default_profile_bg">default\n background</string>
-    <string name="setting_theme_default_color">default color</string>
-    <string name="setting_theme_apply">apply</string>
-    <string name="setting_theme_profile_bg">Profile Background</string>
+    <string name="setting_theme_title">Tema</string>
+    <string name="setting_theme_hint">Escoge tu tema</string>
+    <string name="setting_theme_main_color">Color principal</string>
+    <string name="setting_theme_sec_color">Color secundario</string>
+    <string name="setting_theme_default_profile_bg">defecto\n fondo</string>
+    <string name="setting_theme_default_color">color por defecto</string>
+    <string name="setting_theme_apply">aplicar</string>
+    <string name="setting_theme_profile_bg">Fonde de perfil</string>
 
-    <string name="setting_language_title">Language</string>
-    <string name="setting_language_hint">Choose your language</string>
+    <string name="setting_language_title">Lenguaje</string>
+    <string name="setting_language_hint">Escoge tu lenguaje</string>
 
-    <string name="toast_save_profile_banner_fail">To save banner of profile fail&#8230;</string>
-    <string name="toast_crop_profile_banner_fail">To crop banner of profile fail&#8230;</string>
-    <string name="toast_save_profile_picture_fail">To save profile picture fail&#8230;</string>
-    <string name="toast_crop_profile_picture_fail">To crop profile picture fail&#8230;</string>
+    <string name="toast_save_profile_banner_fail">Fallo al salvar banner de perfil&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">Fallo al cortar el banner de perfil&#8230;</string>
+    <string name="toast_save_profile_picture_fail">Fallo al salvar imagen de perfil&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">Fallo al cortar imagend e perfil&#8230;</string>
 
-    <string name="setting_system_title">System</string>
-    <string name="setting_system_fix_dir_hint">If your photo is gone after updating, click it to fix</string>
-    <string name="setting_system_fix_dir_button">fix photo</string>
+    <string name="setting_system_title">Sistema</string>
+    <string name="setting_system_fix_dir_hint">Si tu foto desaparecio desppues de actualizar, presiona arreglar.</string>
+    <string name="setting_system_fix_dir_button">Arreglar foto</string>
 
-    <string name="toast_setting_successful">Successful</string>
-    <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
-    <string name="toast_setting_fail">Fail</string>
+    <string name="toast_setting_successful">Exitoso</string>
+    <string name="toast_setting_wont_fix">No necesitas arreglar nada</string>
+    <string name="toast_setting_fail">Fallo</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
+    <string name="toast_google_service_not_work">Tu servicio de Google no funciona o necesita ser actualizado</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is disable</string>
-    <string name="toast_geocoder_fail">Can\'t transform address</string>
-    <string name="toast_location_timeout">get location timeout</string>
+    <string name="toast_location_not_open">Tu ubicación esta desabilitada</string>
+    <string name="toast_geocoder_fail">No se puede transformar dirección</string>
+    <string name="toast_location_timeout">Timepo de espera de obtención de ubicación agotado</string>
 
 </resources>
