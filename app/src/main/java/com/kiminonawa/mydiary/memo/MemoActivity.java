@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,7 +20,8 @@ import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemoActivity extends FragmentActivity implements View.OnClickListener, EditMemoDialogFragment.MemoCallback {
+public class MemoActivity extends FragmentActivity implements
+        View.OnClickListener, EditMemoDialogFragment.MemoCallback, OnStartDragListener {
 
 
     /**
@@ -47,6 +49,7 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     private RecyclerView RecyclerView_memo;
     private MemoAdapter memoAdapter;
     private List<MemoEntity> memoList;
+    private ItemTouchHelper touchHelper;
 
     @Override
     public void onBackPressed() {
@@ -102,21 +105,25 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         memoList = new ArrayList<>();
         dbManager = new DBManager(MemoActivity.this);
 
-        loadMemo();
+        loadMemo(true);
         initTopicAdapter();
     }
 
-    private void loadMemo() {
+    private void loadMemo(boolean openDB) {
         memoList.clear();
-        dbManager.opeDB();
-        Cursor memoCursor = dbManager.selectMemo(topicId);
+        if (openDB) {
+            dbManager.opeDB();
+        }
+        Cursor memoCursor = dbManager.selectMemoAndMemoOrder(topicId);
         for (int i = 0; i < memoCursor.getCount(); i++) {
             memoList.add(
                     new MemoEntity(memoCursor.getLong(0), memoCursor.getString(2), memoCursor.getInt(3) > 0 ? true : false));
             memoCursor.moveToNext();
         }
         memoCursor.close();
-        dbManager.closeDB();
+        if (openDB) {
+            dbManager.closeDB();
+        }
     }
 
     private void initTopicAdapter() {
@@ -124,8 +131,14 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_memo.setLayoutManager(lmr);
         RecyclerView_memo.setHasFixedSize(true);
-        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager, this, RecyclerView_memo);
+        memoAdapter = new MemoAdapter(MemoActivity.this, topicId, memoList, dbManager,
+                this, this);
         RecyclerView_memo.setAdapter(memoAdapter);
+        //Set ItemTouchHelper
+        ItemTouchHelper.Callback callback =
+                new ItemTouchHelperCallback(memoAdapter);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(RecyclerView_memo);
     }
 
     public void setEditModeUI(boolean isEditMode) {
@@ -153,14 +166,24 @@ public class MemoActivity extends FragmentActivity implements View.OnClickListen
     }
 
     @Override
-    public void addMemo() {
-        loadMemo();
+    public void addMemo(String memoContent) {
+        dbManager.opeDB();
+        dbManager.insertMemoOrder(topicId,
+                dbManager.insertMemo(memoContent, false, topicId)
+                , memoList.size());
+        loadMemo(false);
+        dbManager.closeDB();
         memoAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateMemo() {
-        loadMemo();
+        loadMemo(true);
         memoAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        touchHelper.startDrag(viewHolder);
     }
 }

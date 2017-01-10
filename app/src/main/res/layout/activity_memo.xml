@@ -42,7 +42,7 @@
     <RelativeLayout
         android:id="@+id/RL_memo_content_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/RL_memo_topbar_content"
         android:paddingTop="10dp">
 

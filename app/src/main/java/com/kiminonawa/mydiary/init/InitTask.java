@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.init;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 
@@ -15,9 +14,9 @@ import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 
 /**
- * Version History3
+ * Version History
  * 20170104
- * Add order Memo
+ * Add order Memo in version 25
  * ----
  * 20161203 The photo dir of diary should add one dir , So I modify it in version 17
  * ----
@@ -51,10 +50,11 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
     @Override
     protected Boolean doInBackground(Long... params) {
         try {
-            loadSampleData();
-            if (SPFManager.getVersionCode(mContext) < 17) {
-                OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
-            }
+            DBManager dbManager = new DBManager(mContext);
+            dbManager.opeDB();
+            loadSampleData(dbManager);
+            updateData(dbManager);
+            dbManager.closeDB();
             saveCurrentVersionCode();
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,10 +68,8 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         callBack.onInitCompiled(showReleaseNote);
     }
 
-    private void loadSampleData() throws Exception {
+    private void loadSampleData(DBManager dbManager) throws Exception {
 
-        DBManager dbManager = new DBManager(mContext);
-        dbManager.opeDB();
         //Because memo function is run in version 6 ,
         //So , if version < 6 , show the sample memo data
         if (SPFManager.getVersionCode(mContext) < 6) {
@@ -80,19 +78,41 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO, Color.BLACK);
             //Insert sample memo
             if (mitsuhaMemoId != -1) {
-                dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId);
-                dbManager.insertMemo("男子に触るな！", false, mitsuhaMemoId);
-                dbManager.insertMemo("脚をひらくな！", true, mitsuhaMemoId);
-                dbManager.insertMemo("体は見ない！/触らない！！", false, mitsuhaMemoId);
-                dbManager.insertMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId);
+                dbManager.insertMemoOrder(mitsuhaMemoId,
+                        dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId)
+                        , 0);
+                dbManager.insertMemoOrder(mitsuhaMemoId,
+                        dbManager.insertMemo("男子に触るな！", false, mitsuhaMemoId)
+                        , 1);
+                dbManager.insertMemoOrder(mitsuhaMemoId,
+                        dbManager.insertMemo("脚をひらくな！", true, mitsuhaMemoId)
+                        , 2);
+                dbManager.insertMemoOrder(mitsuhaMemoId,
+                        dbManager.insertMemo("体は見ない！/触らない！！", false, mitsuhaMemoId)
+                        , 3);
+                dbManager.insertMemoOrder(mitsuhaMemoId,
+                        dbManager.insertMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId)
+                        , 4);
             }
             if (takiMemoId != -1) {
-                dbManager.insertMemo("司とベタベタするな.....", true, takiMemoId);
-                dbManager.insertMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId);
-                dbManager.insertMemo("女言葉NG！", false, takiMemoId);
-                dbManager.insertMemo("遅刻するな！", true, takiMemoId);
-                dbManager.insertMemo("訛り禁止！", false, takiMemoId);
-                dbManager.insertMemo("無駄つかい禁止！", true, takiMemoId);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("司とベタベタするな.....", true, takiMemoId)
+                        , 0);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId)
+                        , 1);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("女言葉NG！", false, takiMemoId)
+                        , 2);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("遅刻するな！", true, takiMemoId)
+                        , 3);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("訛り禁止！", false, takiMemoId)
+                        , 4);
+                dbManager.insertMemoOrder(takiMemoId,
+                        dbManager.insertMemo("無駄つかい禁止！", true, takiMemoId)
+                        , 5);
             }
         }
 
@@ -118,24 +138,14 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             }
         }
 
-        //Memo order function work in version 23
-        if (SPFManager.getVersionCode(mContext) < 25) {
-            // init order value = memo id
-            dbManager.selectTopic();
-            Cursor topicCursor = dbManager.selectTopic();
-            for (int i = 0; i < topicCursor.getCount(); i++) {
-                Cursor memoCursor = dbManager.selectMemo(topicCursor.getLong(0));
-                for (int j = 0; j < memoCursor.getCount(); j++) {
-                    long memoId = memoCursor.getLong(0);
-                    dbManager.updateMemoOrder(memoId, memoId);
-                    memoCursor.moveToNext();
-                }
-                memoCursor.close();
-                topicCursor.moveToNext();
-            }
-            topicCursor.close();
+    }
+
+    private void updateData(DBManager dbManager) throws Exception {
+        //Photo path modify in version 17
+        if (SPFManager.getVersionCode(mContext) < 17) {
+            OldVersionHelper.Version17MoveTheDiaryIntoNewDir(mContext);
         }
-        dbManager.closeDB();
+
     }
 
     private void saveCurrentVersionCode() {

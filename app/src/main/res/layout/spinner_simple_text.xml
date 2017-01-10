@@ -6,4 +6,4 @@
     android:layout_height="50dp"
     android:ellipsize="marquee"
     android:maxLines="1"
-    android:textColor="@android:color/black"/>
+    android:textColor="@android:color/black" />
