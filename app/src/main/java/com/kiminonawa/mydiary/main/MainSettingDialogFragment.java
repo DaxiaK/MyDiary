@@ -30,7 +30,8 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
      */
 
     private RelativeLayout RL_main_setting_dialog;
-    private ImageView IV_main_setting_setting_page, IV_main_setting_add_topic, IV_main_setting_about;
+    private ImageView IV_main_setting_setting_page, IV_main_setting_add_topic,
+            IV_main_setting_setting_security, IV_main_setting_about;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,6 +54,8 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
         IV_main_setting_add_topic.setOnClickListener(this);
         IV_main_setting_about = (ImageView) rootView.findViewById(R.id.IV_main_setting_about);
         IV_main_setting_about.setOnClickListener(this);
+        IV_main_setting_setting_security = (ImageView) rootView.findViewById(R.id.IV_main_setting_setting_security);
+        IV_main_setting_setting_security.setOnClickListener(this);
         return rootView;
     }
 
