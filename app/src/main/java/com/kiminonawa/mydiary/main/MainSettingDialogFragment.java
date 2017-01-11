@@ -75,6 +75,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
                 break;
             case R.id.IV_main_setting_setting_security:
                 Intent securityPageIntent = new Intent(getActivity(), PasswordActivity.class);
+                securityPageIntent.putExtra("password_mode", PasswordActivity.CREATE_PASSWORD);
                 getActivity().startActivity(securityPageIntent);
                 dismiss();
                 break;

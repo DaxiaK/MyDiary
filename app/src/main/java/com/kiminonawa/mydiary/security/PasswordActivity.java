@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.Encryption;
@@ -20,18 +19,19 @@ import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
  * Created by daxia on 2017/1/10.
  */
 
-public class PasswordActivity extends AppCompatActivity implements TextWatcher {
+public class PasswordActivity extends AppCompatActivity implements TextWatcher, View.OnClickListener {
 
 
     /**
      * Mode
      */
+    public static final int FAIL = -1;
     public static final int CREATE_PASSWORD = 0;
     public static final int CREATE_PASSWORD_WITH_VERIFY = 1;
     public static final int VERIFY_PASSWORD = 2;
     public static final int REMOVE_PASSWORD = 3;
 
-    private int currentMode = CREATE_PASSWORD;
+    private int currentMode;
     private String password;
     //For verify password;
     private String createdPassword;
@@ -51,7 +51,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
     private ImageButton But_password_key_backspace;
 
 
-    private TextView TV_password_message;
+    private TextView TV_password_message,TV_password_sub_message;
 
 
     //start lifecycle
@@ -61,6 +61,12 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
         setContentView(R.layout.activity_password);
         //For set status bar
         ChinaPhoneHelper.setStatusBar(this, true);
+
+        //Get this page mode
+        currentMode = getIntent().getIntExtra("password_mode", FAIL);
+        if (currentMode == FAIL) {
+            finish();
+        }
 
         EDT_password_number_1 = (EditText) findViewById(R.id.EDT_password_number_1);
         EDT_password_number_2 = (EditText) findViewById(R.id.EDT_password_number_2);
@@ -73,6 +79,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
         EDT_password_number_4.addTextChangedListener(this);
 
         TV_password_message = (TextView) findViewById(R.id.TV_password_message);
+        TV_password_sub_message = (TextView) findViewById(R.id.TV_password_sub_message);
 
         But_password_key_1 = (Button) findViewById(R.id.But_password_key_1);
         But_password_key_2 = (Button) findViewById(R.id.But_password_key_2);
@@ -87,6 +94,19 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
         But_password_key_0 = (Button) findViewById(R.id.But_password_key_0);
         But_password_key_backspace = (ImageButton) findViewById(R.id.But_password_key_backspace);
 
+        But_password_key_1.setOnClickListener(this);
+        But_password_key_2.setOnClickListener(this);
+        But_password_key_3.setOnClickListener(this);
+        But_password_key_4.setOnClickListener(this);
+        But_password_key_5.setOnClickListener(this);
+        But_password_key_6.setOnClickListener(this);
+        But_password_key_7.setOnClickListener(this);
+        But_password_key_8.setOnClickListener(this);
+        But_password_key_9.setOnClickListener(this);
+        But_password_key_cancel.setOnClickListener(this);
+        But_password_key_0.setOnClickListener(this);
+        But_password_key_backspace.setOnClickListener(this);
+
         initUI();
     }
 
@@ -100,9 +120,25 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
                 break;
             case VERIFY_PASSWORD:
                 TV_password_message.setText("請輸入密碼");
+                But_password_key_cancel.setVisibility(View.INVISIBLE);
+                But_password_key_cancel.setOnClickListener(null);
                 break;
             case REMOVE_PASSWORD:
                 TV_password_message.setText("請輸入舊密碼");
+                break;
+        }
+    }
+
+    private void setSubMessage() {
+        switch (currentMode) {
+            case CREATE_PASSWORD_WITH_VERIFY:
+                TV_password_sub_message.setText("驗證密碼輸入錯誤");
+                break;
+            case VERIFY_PASSWORD:
+                TV_password_sub_message.setText("密碼輸入錯誤");
+                break;
+            case REMOVE_PASSWORD:
+                TV_password_sub_message.setText("舊密碼輸入錯誤");
                 break;
         }
     }
@@ -115,7 +151,6 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
     }
 
     private void afterPasswordChanged() {
-        Log.e("test", "afterPasswordChanged");
         switch (currentMode) {
             case CREATE_PASSWORD:
                 createdPassword = getPasswordFromUI();
@@ -130,7 +165,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
                     finish();
                 } else {
                     clearUiPassword();
-                    Toast.makeText(this, "你輸入的密碼有誤", Toast.LENGTH_LONG).show();
+                    setSubMessage();
                 }
                 break;
             case VERIFY_PASSWORD:
@@ -139,7 +174,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
                     clearUiPassword();
                 } else {
                     clearUiPassword();
-                    Toast.makeText(this, "你輸入的密碼有誤", Toast.LENGTH_LONG).show();
+                    setSubMessage();
                 }
                 break;
             case REMOVE_PASSWORD:
@@ -148,7 +183,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
                     savePassword("");
                 } else {
                     clearUiPassword();
-                    Toast.makeText(this, "你輸入的密碼有誤", Toast.LENGTH_LONG).show();
+                    setSubMessage();
                 }
                 break;
         }
@@ -185,7 +220,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
     @Override
     public void afterTextChanged(Editable s) {
         if (!LockForTextWatcher) {
-            Log.e("test", "afterTextChanged");
+
             if (EDT_password_number_1.getText().length() == 1) {
                 EDT_password_number_1.clearFocus();
                 EDT_password_number_2.requestFocus();
@@ -206,6 +241,37 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher {
                 LockForTextWatcher = true;
                 afterPasswordChanged();
             }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.But_password_key_1:
+                break;
+            case R.id.But_password_key_2:
+                break;
+            case R.id.But_password_key_3:
+                break;
+            case R.id.But_password_key_4:
+                break;
+            case R.id.But_password_key_5:
+                break;
+            case R.id.But_password_key_6:
+                break;
+            case R.id.But_password_key_7:
+                break;
+            case R.id.But_password_key_8:
+                break;
+            case R.id.But_password_key_9:
+                break;
+            case R.id.But_password_key_cancel:
+                finish();
+                break;
+            case R.id.But_password_key_0:
+                break;
+            case R.id.But_password_key_backspace:
+                break;
         }
     }
 }
