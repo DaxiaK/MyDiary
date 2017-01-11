@@ -1,4 +1,4 @@
-package com.kiminonawa.mydiary.util;
+package com.kiminonawa.mydiary.shared;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
