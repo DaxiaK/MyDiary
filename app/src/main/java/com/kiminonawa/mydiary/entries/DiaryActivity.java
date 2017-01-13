@@ -34,6 +34,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     private long topicId;
     private boolean isCreating;
     private boolean entriesRefresh;
+    private boolean hasEntries;
 
     /**
      * UI
@@ -64,6 +65,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ChinaPhoneHelper.setStatusBar(this, true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
+        hasEntries = getIntent().getBooleanExtra("has_entries", true);
         if (topicId == -1) {
             finish();
         }
@@ -114,6 +116,9 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
         ViewPager_diary_content.setBackground(
                 ThemeManager.getInstance().getEntriesBgDrawable(this, getTopicId()));
+        if (!hasEntries) {
+            ViewPager_diary_content.setCurrentItem(2);
+        }
     }
 
     private void initGoogleAPi() {
