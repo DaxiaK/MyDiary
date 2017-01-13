@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.security.PasswordActivity;
 import com.kiminonawa.mydiary.setting.SettingActivity;
+import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
 
@@ -29,7 +31,8 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
      */
 
     private RelativeLayout RL_main_setting_dialog;
-    private ImageView IV_main_setting_setting_page, IV_main_setting_add_topic, IV_main_setting_about;
+    private ImageView IV_main_setting_setting_page, IV_main_setting_add_topic,
+            IV_main_setting_setting_security, IV_main_setting_about;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -52,6 +55,16 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
         IV_main_setting_add_topic.setOnClickListener(this);
         IV_main_setting_about = (ImageView) rootView.findViewById(R.id.IV_main_setting_about);
         IV_main_setting_about.setOnClickListener(this);
+        IV_main_setting_setting_security = (ImageView) rootView.findViewById(R.id.IV_main_setting_setting_security);
+        IV_main_setting_setting_security.setOnClickListener(this);
+
+
+        if (((MyDiaryApplication) getActivity().getApplication()).isHasPassword()) {
+            IV_main_setting_setting_security.setImageResource(R.drawable.ic_no_encryption_white_36dp);
+        } else {
+            IV_main_setting_setting_security.setImageResource(R.drawable.ic_enhanced_encryption_white_36dp);
+
+        }
         return rootView;
     }
 
@@ -67,6 +80,16 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
             case R.id.IV_main_setting_setting_page:
                 Intent settingPageIntent = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(settingPageIntent);
+                dismiss();
+                break;
+            case R.id.IV_main_setting_setting_security:
+                Intent securityPageIntent = new Intent(getActivity(), PasswordActivity.class);
+                if (((MyDiaryApplication) getActivity().getApplication()).isHasPassword()) {
+                    securityPageIntent.putExtra("password_mode", PasswordActivity.REMOVE_PASSWORD);
+                } else {
+                    securityPageIntent.putExtra("password_mode", PasswordActivity.CREATE_PASSWORD);
+                }
+                getActivity().startActivity(securityPageIntent);
                 dismiss();
                 break;
             case R.id.IV_main_setting_about:

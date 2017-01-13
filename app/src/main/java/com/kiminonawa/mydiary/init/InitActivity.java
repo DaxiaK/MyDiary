@@ -12,6 +12,8 @@ import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.main.MainActivity;
+import com.kiminonawa.mydiary.security.PasswordActivity;
+import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -127,9 +129,18 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
 
     @Override
     public void onInitCompiled(boolean showReleaseNote) {
-        Intent goMainPageIntent = new Intent(InitActivity.this, MainActivity.class);
-        goMainPageIntent.putExtra("showReleaseNote", showReleaseNote);
-        finish();
-        InitActivity.this.startActivity(goMainPageIntent);
+
+        if (((MyDiaryApplication) getApplication()).isHasPassword()) {
+            Intent goSecurityPageIntent = new Intent(this, PasswordActivity.class);
+            goSecurityPageIntent.putExtra("password_mode", PasswordActivity.VERIFY_PASSWORD);
+            goSecurityPageIntent.putExtra("showReleaseNote", showReleaseNote);
+            finish();
+            InitActivity.this.startActivity(goSecurityPageIntent);
+        } else {
+            Intent goMainPageIntent = new Intent(InitActivity.this, MainActivity.class);
+            goMainPageIntent.putExtra("showReleaseNote", showReleaseNote);
+            finish();
+            InitActivity.this.startActivity(goMainPageIntent);
+        }
     }
 }
