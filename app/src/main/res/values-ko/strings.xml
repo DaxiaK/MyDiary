@@ -148,4 +148,15 @@
     <string name="toast_geocoder_fail">주소를 읽을 수 없습니다.</string>
     <string name="toast_location_timeout">위치 수신의 제한 시간이 초과되었습니다.</string>
 
+    
+     <!--Password-->
+     <string name="password_create_pwd">잠금을 만들기 위해 비밀번호 입력</string>
+     <string name="password_create_pwd_with_verify">비밀번호 확인</string>
+     <string name="password_verify_pwd">비밀번호 입력</string>
+     <string name="password_remove_pwd">잠금을 해제하기 위해 비밀번호 입력</string>
+ 
+     <string name="password_create_pwd_with_verify_msg">비밀번호가 일치하지 않습니다</string>
+     <string name="password_verify_pwd_msg">비밀번호가 일치하지 않습니다</string>
+     <string name="password_remove_pwd_msg">원래의 비밀번호가 일치하지 않습니다</string>
+    
 </resources>
