@@ -151,5 +151,14 @@
     <string name="toast_geocoder_fail">無法解析地址</string>
     <string name="toast_location_timeout">定位超時</string>
 
+    <!--Password-->
+    <string name="password_create_pwd">輸入新密碼來設定安全鎖</string>
+    <string name="password_create_pwd_with_verify">請再輸入一次密碼</string>
+    <string name="password_verif_pwd">請輸入密碼</string>
+    <string name="password_remove_pwd">輸入密碼來移除安全鎖</string>
+
+    <string name="password_create_pwd_with_verify_msg">密碼不符合</string>
+    <string name="password_verif_pwd_msg">密碼輸入錯誤</string>
+    <string name="password_remove_pwd_msg">舊密碼輸入錯誤</string>
 
 </resources>

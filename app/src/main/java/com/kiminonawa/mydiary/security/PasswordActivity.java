@@ -127,18 +127,18 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
         IV_password_number_1.requestFocus();
         switch (currentMode) {
             case CREATE_PASSWORD:
-                TV_password_message.setText("請輸入新密碼來新增密碼");
+                TV_password_message.setText(getString(R.string.password_create_pwd));
                 break;
             case CREATE_PASSWORD_WITH_VERIFY:
-                TV_password_message.setText("請再輸一次密碼");
+                TV_password_message.setText(getString(R.string.password_create_pwd_with_verify));
                 break;
             case VERIFY_PASSWORD:
-                TV_password_message.setText("請輸入密碼");
+                TV_password_message.setText(getString(R.string.password_verify_pwd));
                 But_password_key_cancel.setVisibility(View.INVISIBLE);
                 But_password_key_cancel.setOnClickListener(null);
                 break;
             case REMOVE_PASSWORD:
-                TV_password_message.setText("請輸入舊密碼來移除密碼鎖");
+                TV_password_message.setText(getString(R.string.password_remove_pwd));
                 break;
         }
     }
@@ -146,13 +146,13 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
     private void setSubMessage() {
         switch (currentMode) {
             case CREATE_PASSWORD_WITH_VERIFY:
-                TV_password_sub_message.setText("驗證密碼輸入錯誤");
+                TV_password_sub_message.setText(getString(R.string.password_create_pwd_with_verify_msg));
                 break;
             case VERIFY_PASSWORD:
-                TV_password_sub_message.setText("密碼輸入錯誤");
+                TV_password_sub_message.setText(getString(R.string.password_verify_pwd_msg));
                 break;
             case REMOVE_PASSWORD:
-                TV_password_sub_message.setText("舊密碼輸入錯誤");
+                TV_password_sub_message.setText(getString(R.string.password_remove_pwd_msg));
                 break;
         }
     }
