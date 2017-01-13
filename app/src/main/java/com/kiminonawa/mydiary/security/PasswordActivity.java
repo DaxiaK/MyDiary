@@ -1,25 +1,28 @@
 package com.kiminonawa.mydiary.security;
 
+import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.shared.Encryption;
+import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
+import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 /**
  * Created by daxia on 2017/1/10.
  */
 
-public class PasswordActivity extends AppCompatActivity implements TextWatcher, View.OnClickListener {
+public class PasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     /**
@@ -32,17 +35,23 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
     public static final int REMOVE_PASSWORD = 3;
 
     private int currentMode;
-    private String password;
+    /**
+     * Password keeper
+     */
+    private int passwordPointer = 0;
+    //the current password
+    private StringBuilder passwordStrBuilder;
     //For verify password;
     private String createdPassword;
 
-    private boolean LockForTextWatcher = false;
+    //For start Main activity
+    private boolean showReleaseNote;
 
     /**
      * UI
      */
-    private EditText EDT_password_number_1, EDT_password_number_2, EDT_password_number_3,
-            EDT_password_number_4;
+    private ImageView IV_password_number_1, IV_password_number_2, IV_password_number_3,
+            IV_password_number_4;
 
     private Button But_password_key_1, But_password_key_2, But_password_key_3,
             But_password_key_4, But_password_key_5, But_password_key_6,
@@ -51,7 +60,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
     private ImageButton But_password_key_backspace;
 
 
-    private TextView TV_password_message,TV_password_sub_message;
+    private TextView TV_password_message, TV_password_sub_message;
 
 
     //start lifecycle
@@ -64,19 +73,16 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
 
         //Get this page mode
         currentMode = getIntent().getIntExtra("password_mode", FAIL);
+        showReleaseNote = getIntent().getBooleanExtra("showReleaseNote", false);
         if (currentMode == FAIL) {
             finish();
         }
 
-        EDT_password_number_1 = (EditText) findViewById(R.id.EDT_password_number_1);
-        EDT_password_number_2 = (EditText) findViewById(R.id.EDT_password_number_2);
-        EDT_password_number_3 = (EditText) findViewById(R.id.EDT_password_number_3);
-        EDT_password_number_4 = (EditText) findViewById(R.id.EDT_password_number_4);
+        IV_password_number_1 = (ImageView) findViewById(R.id.IV_password_number_1);
+        IV_password_number_2 = (ImageView) findViewById(R.id.IV_password_number_2);
+        IV_password_number_3 = (ImageView) findViewById(R.id.IV_password_number_3);
+        IV_password_number_4 = (ImageView) findViewById(R.id.IV_password_number_4);
 
-        EDT_password_number_1.addTextChangedListener(this);
-        EDT_password_number_2.addTextChangedListener(this);
-        EDT_password_number_3.addTextChangedListener(this);
-        EDT_password_number_4.addTextChangedListener(this);
 
         TV_password_message = (TextView) findViewById(R.id.TV_password_message);
         TV_password_sub_message = (TextView) findViewById(R.id.TV_password_sub_message);
@@ -103,17 +109,25 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
         But_password_key_7.setOnClickListener(this);
         But_password_key_8.setOnClickListener(this);
         But_password_key_9.setOnClickListener(this);
-        But_password_key_cancel.setOnClickListener(this);
         But_password_key_0.setOnClickListener(this);
         But_password_key_backspace.setOnClickListener(this);
 
+        But_password_key_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        clearUiPassword();
         initUI();
     }
 
     private void initUI() {
+        IV_password_number_1.requestFocus();
         switch (currentMode) {
             case CREATE_PASSWORD:
-                TV_password_message.setText("請輸入新密碼");
+                TV_password_message.setText("請輸入新密碼來新增密碼");
                 break;
             case CREATE_PASSWORD_WITH_VERIFY:
                 TV_password_message.setText("請再輸一次密碼");
@@ -124,7 +138,7 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
                 But_password_key_cancel.setOnClickListener(null);
                 break;
             case REMOVE_PASSWORD:
-                TV_password_message.setText("請輸入舊密碼");
+                TV_password_message.setText("請輸入舊密碼來移除密碼鎖");
                 break;
         }
     }
@@ -144,24 +158,31 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
     }
 
     private void clearUiPassword() {
-        EDT_password_number_1.setText("");
-        EDT_password_number_2.setText("");
-        EDT_password_number_3.setText("");
-        EDT_password_number_4.setText("");
+        passwordPointer = 0;
+        passwordStrBuilder = new StringBuilder();
+        IV_password_number_1.setImageResource(R.drawable.ic_password_no_text_48dp);
+        IV_password_number_2.setImageResource(R.drawable.ic_password_no_text_48dp);
+        IV_password_number_3.setImageResource(R.drawable.ic_password_no_text_48dp);
+        IV_password_number_4.setImageResource(R.drawable.ic_password_no_text_48dp);
+
+        IV_password_number_1.clearColorFilter();
+        IV_password_number_2.clearColorFilter();
+        IV_password_number_3.clearColorFilter();
+        IV_password_number_4.clearColorFilter();
     }
 
     private void afterPasswordChanged() {
         switch (currentMode) {
             case CREATE_PASSWORD:
-                createdPassword = getPasswordFromUI();
+                createdPassword = passwordStrBuilder.toString();
                 clearUiPassword();
                 currentMode = CREATE_PASSWORD_WITH_VERIFY;
                 initUI();
                 break;
             case CREATE_PASSWORD_WITH_VERIFY:
-                password = getPasswordFromUI();
-                if (createdPassword.equals(password)) {
-                    savePassword(password);
+                if (createdPassword.equals(passwordStrBuilder.toString())) {
+                    savePassword(passwordStrBuilder.toString());
+                    ((MyDiaryApplication) getApplication()).setHasPassword(true);
                     finish();
                 } else {
                     clearUiPassword();
@@ -169,109 +190,125 @@ public class PasswordActivity extends AppCompatActivity implements TextWatcher, 
                 }
                 break;
             case VERIFY_PASSWORD:
-                password = getPasswordFromUI();
-                if (isPasswordCorrect(password)) {
-                    clearUiPassword();
+                if (isPasswordCorrect(passwordStrBuilder.toString())) {
+                    Intent goMainPageIntent = new Intent(this, MainActivity.class);
+                    goMainPageIntent.putExtra("showReleaseNote", showReleaseNote);
+                    finish();
+                    this.startActivity(goMainPageIntent);
                 } else {
                     clearUiPassword();
                     setSubMessage();
                 }
                 break;
             case REMOVE_PASSWORD:
-                if (isPasswordCorrect(password)) {
-                    clearUiPassword();
+                if (isPasswordCorrect(passwordStrBuilder.toString())) {
                     savePassword("");
+                    ((MyDiaryApplication) getApplication()).setHasPassword(false);
+                    finish();
                 } else {
                     clearUiPassword();
                     setSubMessage();
                 }
                 break;
         }
-        LockForTextWatcher = false;
     }
 
-    private String getPasswordFromUI() {
-        StringBuilder passwordStringBuilder = new StringBuilder();
-        passwordStringBuilder.append(EDT_password_number_1.getText().toString());
-        passwordStringBuilder.append(EDT_password_number_2.getText().toString());
-        passwordStringBuilder.append(EDT_password_number_3.getText().toString());
-        passwordStringBuilder.append(EDT_password_number_4.getText().toString());
-        return passwordStringBuilder.toString();
-    }
 
     private boolean isPasswordCorrect(String password) {
-        return Encryption.SHA256(SPFManager.getPassword(this)).equals(password);
+        return Encryption.SHA256(password).equals(SPFManager.getPassword(this));
     }
 
     private void savePassword(String password) {
         SPFManager.setAndEncryptPassword(this, password);
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+    private void addPasswordStr(String passwordStr) {
+        passwordStrBuilder.append(passwordStr);
+        switch (passwordPointer) {
+            case 0:
+                IV_password_number_1.setImageResource(R.drawable.ic_password_dot_48dp);
+                IV_password_number_1.setColorFilter(ThemeManager.getInstance().getThemeMainColor(this),
+                        PorterDuff.Mode.SRC_ATOP);
+                break;
+            case 1:
+                IV_password_number_2.setImageResource(R.drawable.ic_password_dot_48dp);
+                IV_password_number_2.setColorFilter(ThemeManager.getInstance().getThemeMainColor(this),
+                        PorterDuff.Mode.SRC_ATOP);
+                break;
+            case 2:
+                IV_password_number_3.setImageResource(R.drawable.ic_password_dot_48dp);
+                IV_password_number_3.setColorFilter(ThemeManager.getInstance().getThemeMainColor(this),
+                        PorterDuff.Mode.SRC_ATOP);
+                break;
+            case 3:
+                IV_password_number_4.setImageResource(R.drawable.ic_password_dot_48dp);
+                IV_password_number_4.setColorFilter(ThemeManager.getInstance().getThemeMainColor(this),
+                        PorterDuff.Mode.SRC_ATOP);
+                break;
+        }
+        passwordPointer++;
     }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (!LockForTextWatcher) {
-
-            if (EDT_password_number_1.getText().length() == 1) {
-                EDT_password_number_1.clearFocus();
-                EDT_password_number_2.requestFocus();
+    private void removePasswordStr() {
+        if (passwordPointer > 0) {
+            passwordStrBuilder.setLength(passwordStrBuilder.length() - 1);
+            switch (passwordPointer) {
+                case 1:
+                    IV_password_number_1.setImageResource(R.drawable.ic_password_no_text_48dp);
+                    IV_password_number_1.clearColorFilter();
+                    break;
+                case 2:
+                    IV_password_number_2.setImageResource(R.drawable.ic_password_no_text_48dp);
+                    IV_password_number_2.clearColorFilter();
+                    break;
+                case 3:
+                    IV_password_number_3.setImageResource(R.drawable.ic_password_no_text_48dp);
+                    IV_password_number_3.clearColorFilter();
+                    break;
             }
-
-            if (EDT_password_number_2.getText().length() == 1) {
-                EDT_password_number_2.clearFocus();
-                EDT_password_number_3.requestFocus();
-            }
-
-            if (EDT_password_number_3.getText().length() == 1) {
-                EDT_password_number_3.clearFocus();
-                EDT_password_number_4.requestFocus();
-            }
-
-            if (EDT_password_number_4.getText().length() == 1) {
-                EDT_password_number_4.clearFocus();
-                LockForTextWatcher = true;
-                afterPasswordChanged();
-            }
+            passwordPointer--;
         }
     }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.But_password_key_1:
+                addPasswordStr("1");
                 break;
             case R.id.But_password_key_2:
+                addPasswordStr("2");
                 break;
             case R.id.But_password_key_3:
+                addPasswordStr("3");
                 break;
             case R.id.But_password_key_4:
+                addPasswordStr("4");
                 break;
             case R.id.But_password_key_5:
+                addPasswordStr("5");
                 break;
             case R.id.But_password_key_6:
+                addPasswordStr("6");
                 break;
             case R.id.But_password_key_7:
+                addPasswordStr("7");
                 break;
             case R.id.But_password_key_8:
+                addPasswordStr("8");
                 break;
             case R.id.But_password_key_9:
-                break;
-            case R.id.But_password_key_cancel:
-                finish();
+                addPasswordStr("9");
                 break;
             case R.id.But_password_key_0:
+                addPasswordStr("0");
                 break;
             case R.id.But_password_key_backspace:
-                break;
+                removePasswordStr();
+        }
+        if (passwordPointer > 3) {
+            afterPasswordChanged();
         }
     }
 }

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_security_white_36dp" />
+                android:src="@drawable/ic_enhanced_encryption_white_36dp" />
 
             <ImageView
                 android:id="@+id/IV_main_setting_about"

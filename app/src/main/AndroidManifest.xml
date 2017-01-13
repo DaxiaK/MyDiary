@@ -63,8 +63,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".security.PasswordActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
