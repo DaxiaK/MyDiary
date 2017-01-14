@@ -1,36 +1,36 @@
 <resources>
-    <string name="app_name">MyDiary</string>
+    <!-- Use English application name -->
 
     <!--Release Note-->
     <string name="release_note_title">업데이트 정보</string>
     <string name="release_note">**0.2.4.1601010_1_d\n
-        -support French(By Toms) Spanish(By JorgeNava)\n
-        -support sort memo\n
-        -fix night issues\n
-        -fix bug\n\n
+        - 프랑스어(Toms님) 및 스페인어(JorgeNava님) 지원\n
+        - 메모 정렬\n
+        - night 문제 수정\n
+        - 버그 수정\n\n
         **0.2.3.161228_1_h\n
-        -support Thai(By PScoop ,trulesa)\n\n
+        - 태국어(PScoop님, trulesa님) 지원\n\n
         **0.2.3.161226_1_d\n
-        -Modify get location function for no Google Service area\n
-        -Fix bug\n\n
+        - 구글 서비스 비작동 시의 위치 확인 기능 수정\n
+        - 버그 수정\n\n
         **0.2.2.161216_1_d2\n
-        -Modify layout for matching movie\n
-        -Using place to replace address in location\n
-        -Fix bug\n
-        -Support Korean(by Meda An)\n\n
+        - 영화 속 일기 앱에 맞게 레이아웃 수정\n
+        - 위치에서 주소를 대체하기 위해 장소 사용\n
+        - 버그 수정\n
+        - 한국어(Meda An님) 지원\n\n
         **0.2.1.161212_1_d_h2\n
-        -Modify layout\n
-        -Fix ZenFone c and htc 626 crash(Need to reply)\n
-        -Add button for fix gone photo in diary in setting page\n\n
+        - 레이아웃 수정\n
+        - zenPhone C와 HTC 626 기종에서의 크래시 수정 (피드백 필요)\n
+        - 설정 페이지에서 일기 중 사라진 사진을 수정하기 위한 버튼 추가\n\n
         **0.2.1.161208_01_d_h**\n
-        -Fix and support status bar transparent on Android 6.0+\n
-        (If your devices is Android 6.0+ ,please set profile banner again.)\n
-        -Fix profile picture bug\n
-        -support sort Simplified Chinese in contacts(By XF-zhjnc)
+        - Android 6.0 이상에서 상단바 투명화 수정 및 지원\n
+        (실행하는 기기가 Android 6.0 이상인 경우, 프로필 배너를 다시 설정해 주세요.)\n
+        - 프로필 사진 버그 수정\n
+        - 연락처에서 중국어 번체의 정렬 지원 (XF-zhjnc님)
     </string>
     <string name="release_note_close_remind">다시 표시하지 않기</string>
     <!--init-->
-    <string name="init_message">데이터 업데이트 중입니다. MyDiary를 종료하지 마세요.</string>
+    <string name="init_message">데이터를 업데이트하고 있습니다. MyDiary를 종료하지 마세요.</string>
 
     <!--Profile-->
     <string name="profile_username_taki">타키</string>
@@ -44,8 +44,8 @@
     <string name="topic_dialog_delete_title">삭제</string>
     <string name="topic_dialog_delete_content">%1$s를 삭제하시겠습니까?</string>
 
-    <string name="toast_topic_empty">주제가 비어있습니다.</string>
-    <string name="topic_topic_bg_fail">배경 변경에 실패하였습니다&#8230;</string>
+    <string name="toast_topic_empty">주제 이름이 비어있습니다.</string>
+    <string name="topic_topic_bg_fail">주제 배경을 변경하지 못했습니다&#8230;</string>
 
     <string name="topic_detail_current_bg">주제 배경</string>
     <string name="topic_detail_default_bg">기본 배경</string>
@@ -56,59 +56,59 @@
     <string name="dialog_button_cancel">취소</string>
     <string name="dialog_button_delete">삭제</string>
 
-    <string name="process_dialog_loading">로딩 중&#8230;</string>
+    <string name="process_dialog_loading">불러오는 중&#8230;</string>
     <string name="process_dialog_saving">저장 중&#8230;</string>
 
     <!--Diary Activity-->
     <string name="segmented_entries">항목</string>
     <string name="segmented_calendar">캘린더</string>
     <string name="segmented_Diary">일기</string>
-    <string name="diary_back_message">작성중인 일기를 삭제하시겠습니까?</string>
+    <string name="diary_back_message">일기를 작성하고 있습니다. 작성 중인 일기를 지우시겠습니까?</string>
 
     <!--Entries -->
     <string name="entries_count">항목 %1$d개</string>
-    <string name="entries_edit_view">편집하려는 일기를 선택하세요</string>
-    <string name="entries_edit_dialog_delete_content">이 일기를 삭제하시겠습니까?</string>
+    <string name="entries_edit_view">편집하려는 일기를 선택하세요.</string>
+    <string name="entries_edit_dialog_delete_content">정말로 이 일기를 삭제하시겠습니까?</string>
     <string name="entries_summary_photo">**사진**</string>
 
     <!--Diary -->
     <string name="diary_no_location">위치를 찾을 수 없습니다.</string>
     <string name="diary_location_permission_title">권한</string>
-    <string name="diary_location_permission_content">위치 정보 권한이 필요합니다.</string>
-    <string name="diary_photo_permission_content">사진 권한이 필요합니다.</string>
+    <string name="diary_location_permission_content">위치 정보를 얻기 위한 권한이 필요합니다.</string>
+    <string name="diary_photo_permission_content">사진을 추가하기 위한 권한이 필요합니다.</string>
 
-    <string name="diary_title_hint">제목</string>
-    <string name="diary_content_hint">이곳에 일기를 입력하세요</string>
-    <string name="diary_clear_message">정말 삭제하시겠습니까?</string>
+    <string name="diary_title_hint">일기 제목</string>
+    <string name="diary_content_hint">이곳에 일기를 입력하세요.</string>
+    <string name="diary_clear_message">정말로 삭제하시겠습니까?</string>
 
-    <string name="diary_no_title">제목없음</string>
+    <string name="diary_no_title">제목 없음</string>
 
-    <string name="toast_diary_empty">내용이 없습니다</string>
-    <string name="toast_not_image">이미지 파일이 아닙니다</string>
-    <string name="toast_photo_path_error">이미지 경로에 오류가 있습니다</string>
-    <string name="toast_photo_intent_error">이미지 불러오기를 실패하였습니다</string>
-    <string name="toast_max_photo">사진은 %1$d장까지 추가할수 있습니다</string>
-    <string name="toast_space_insufficient">저장공간이 부족합니다</string>
-    <string name="toast_diary_update_successful">일기 갱신에 성공했습니다</string>
-    <string name="toast_diary_update_fail">일기 갱신에 실패했습니다</string>
-    <string name="toast_diary_insert_successful">일기가 성공적으로 추가됐습니다</string>
+    <string name="toast_diary_empty">일기 내용이 없습니다.</string>
+    <string name="toast_not_image">해당 파일은 이미지가 아닙니다.</string>
+    <string name="toast_photo_path_error">이미지 경로에 문제가 있습니다.</string>
+    <string name="toast_photo_intent_error">이미지를 불러올 수 없습니다.</string>
+    <string name="toast_max_photo">사진은 %1$d장까지만 추가할 수 있습니다.</string>
+    <string name="toast_space_insufficient">저장 공간이 부족합니다.</string>
+    <string name="toast_diary_update_successful">일기를 업데이트하였습니다.</string>
+    <string name="toast_diary_update_fail">일기 업데이트에 실패했습니다.</string>
+    <string name="toast_diary_insert_successful">일기가 성공적으로 추가되었습니다.</string>
     <string name="toast_diary_insert_fail">일기 추가에 실패했습니다&#8230;</string>
 
     <!--Diary Viewer edit-->
-    <string name="toast_diary_copy_to_edit_fail">사진 데이터를 읽는 데 실패했습니다&#8230;</string>
+    <string name="toast_diary_copy_to_edit_fail">사진 데이터를 읽을 수 없습니다&#8230;</string>
 
     <!--Memo-->
     <string name="memo_item_add">항목 추가</string>
-    <string name="toast_memo_empty">메모가 비어 있습니다</string>
+    <string name="toast_memo_empty">메모가 비어 있습니다!</string>
 
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">권한</string>
-    <string name="contacts_call_phone_permission_content">전화 발신 권한이 필요합니다</string>
-    <string name="contacts_call_phone_no_call_function">이 휴대폰은 전화를 걸 수 없습니다.</string>
+    <string name="contacts_call_phone_permission_content">전화를 발신하기 위한 권한이 필요합니다.</string>
+    <string name="contacts_call_phone_no_call_function">이 기기는 전화를 발신할 수 없습니다.</string>
 
     <string name="contacts_detail_edt_name">이름</string>
     <string name="contacts_detail_edt_phone_number">전화번호</string>
-    <string name="toast_contacts_empty">연락처가 비었습니다!</string>
+    <string name="toast_contacts_empty">연락처가 비어있습니다!</string>
 
     <!--About-->
     <string name="about_title">정보</string>
@@ -117,35 +117,45 @@
     <string name="setting_theme_title">테마</string>
     <string name="setting_theme_hint">테마 선택</string>
     <string name="setting_theme_main_color">메인 색상</string>
-    <string name="setting_theme_sec_color">서브 색상</string>
-    <string name="setting_theme_default_profile_bg">기본값으로 \n초기화</string>
-    <string name="setting_theme_default_color">기본값으로 \n초기화</string>
+    <string name="setting_theme_sec_color">2차 색상</string>
+    <string name="setting_theme_default_profile_bg">기본 배경으로 초기화</string>
+    <string name="setting_theme_default_color">기본 색상으로 초기화</string>
     <string name="setting_theme_apply">적용</string>
     <string name="setting_theme_profile_bg">프로필 배경</string>
 
 
     <string name="setting_language_title">언어</string>
-    <string name="setting_language_hint">언어를 선택하세요</string>
+    <string name="setting_language_hint">언어를 선택하세요.</string>
 
-    <string name="toast_save_profile_banner_fail">프로필 배너 저장에 실패했습니다</string>
-    <string name="toast_crop_profile_banner_fail">프로필 배너 자르기에 실패했습니다</string>
-    <string name="toast_save_profile_picture_fail">프로필 사진 저장에 실패했습니다</string>
-    <string name="toast_crop_profile_picture_fail">프로필 사진 자르기에 실패했습니다</string>
+    <string name="toast_save_profile_banner_fail">프로필 배너를 저장할 수 없습니다&#8230;</string>
+    <string name="toast_crop_profile_banner_fail">프로필 배너를 자를 수 없습니다&#8230;</string>
+    <string name="toast_save_profile_picture_fail">프로필 사진을 저장할 수 없습니다&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">프로필 사진을 자를 수 없습니다&#8230;</string>
 
     <string name="setting_system_title">시스템</string>
-    <string name="setting_system_fix_dir_hint">업데이트 이후 사진이 표시가 되지 않을 경우 버튼을 눌러서 수정하세요</string>
+    <string name="setting_system_fix_dir_hint">업데이트를 하고 난 후 사진이 사라졌다면, 여기를 눌러서 수정하세요.</string>
     <string name="setting_system_fix_dir_button">사진 수정</string>
 
     <string name="toast_setting_successful">성공</string>
-    <string name="toast_setting_wont_fix">아무 것도 수정할 필요가 없습니다</string>
-    <string name="toast_setting_fail">실패했습니다</string>
+    <string name="toast_setting_wont_fix">수정할 항목이 없습니다.</string>
+    <string name="toast_setting_fail">실패했습니다.</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">구글 서비스 작동에 문제가 있거나 업데이트가 필요합니다</string>
+    <string name="toast_google_service_not_work">Google 서비스가 작동하지 않거나 업데이트가 필요합니다.</string>
 
     <!--Diary Geocoder & Location  -->
     <string name="toast_location_not_open">위치가 비활성화 되어 있습니다.</string>
-    <string name="toast_geocoder_fail">주소를 읽을 수 없습니다.</string>
+    <string name="toast_geocoder_fail">주소를 찾을 수 없습니다.</string>
     <string name="toast_location_timeout">위치 수신의 제한 시간이 초과되었습니다.</string>
 
+    <!--Password-->
+    <string name="password_create_pwd">잠금을 위해 비밀번호를 설정하세요.</string>
+    <string name="password_create_pwd_with_verify">비밀번호 재확인</string>
+    <string name="password_verify_pwd">비밀번호 입력</string>
+    <string name="password_remove_pwd">잠금 해제를 위해 비밀번호를 입력하세요.</string>
+
+    <string name="password_create_pwd_with_verify_msg">비밀번호가 일치하지 않습니다.</string>
+    <string name="password_verify_pwd_msg">비밀번호가 일치하지 않습니다.</string>
+    <string name="password_remove_pwd_msg">비밀번호가 일치하지 않습니다.</string>
 </resources>
+
