@@ -69,7 +69,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         if (topicId == -1) {
             finish();
         }
-        initViewPager();
         /**
          * init UI
          */
@@ -80,8 +79,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         But_diary_topbar_entries = (RadioButton) findViewById(R.id.But_diary_topbar_entries);
         But_diary_topbar_calendar = (RadioButton) findViewById(R.id.But_diary_topbar_calendar);
         But_diary_topbar_diary = (RadioButton) findViewById(R.id.But_diary_topbar_diary);
-        But_diary_topbar_entries.setChecked(true);
-
         TV_diary_topbar_title = (TextView) findViewById(R.id.TV_diary_topbar_title);
         TV_diary_topbar_title.setTextColor(ThemeManager.getInstance().getThemeDarkColor(this));
 
@@ -90,7 +87,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
             diaryTitle = "Diary";
         }
         TV_diary_topbar_title.setText(diaryTitle);
-
+        //After SegmentedGroup was created
+        initViewPager();
         initGoogleAPi();
     }
 
@@ -118,6 +116,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
                 ThemeManager.getInstance().getEntriesBgDrawable(this, getTopicId()));
         if (!hasEntries) {
             ViewPager_diary_content.setCurrentItem(2);
+            //Set Default Checked Item
+            But_diary_topbar_diary.setChecked(true);
+        } else{
+            //Set Default Checked Item
+            But_diary_topbar_entries.setChecked(true);
         }
     }
 

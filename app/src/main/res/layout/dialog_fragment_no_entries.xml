@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/TV_no_entries_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="No Entries"
+        android:textSize="50dp" />
+
+
+    <TextView
+        android:id="@+id/TV_no_entries_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="日記がぉいきせん"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/TV_no_entries_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="新しいアカゥソトな作成"
+        android:textSize="20dp" />
+</LinearLayout>
+

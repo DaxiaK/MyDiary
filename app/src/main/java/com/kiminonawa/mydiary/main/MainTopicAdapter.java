@@ -85,6 +85,9 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 break;
             case ITopic.TYPE_DIARY:
                 if (topicList.get(position).getCount() == 0) {
+                    NoEntriesDialogFragment noEntriesDialogFragment =
+                            NoEntriesDialogFragment.newInstance(topicList.get(position).getId(), topicList.get(position).getTitle());
+                    noEntriesDialogFragment.show(activity.getFragmentManager(), "noEntriesDialogFragment");
                 } else {
                     Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
                     goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
