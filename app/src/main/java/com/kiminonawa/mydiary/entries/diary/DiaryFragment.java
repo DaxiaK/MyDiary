@@ -134,6 +134,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private String noLocation;
     private boolean isLocation = false;
     private ProgressDialog progressDialog;
+    private final static int GPS_TIMEOUT = 20 * 1000;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -438,8 +439,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             }
-            //Waiting gps max timeout is 15s
-            diaryHandler.sendEmptyMessageDelayed(0, 15000);
+            //Waiting gps max timeout is 20s
+            diaryHandler.sendEmptyMessageDelayed(0, GPS_TIMEOUT);
         } catch (SecurityException e) {
             //do nothing
         }
@@ -649,9 +650,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_clear:
-                ClearDialogFragment clearDialogFragment = new ClearDialogFragment();
-                clearDialogFragment.setTargetFragment(this, 0);
-                clearDialogFragment.show(getFragmentManager(), "clearDialogFragment");
+                if (diaryItemHelper.getItemSize() > 0 || EDT_diary_title.length() > 0) {
+                    ClearDialogFragment clearDialogFragment = new ClearDialogFragment();
+                    clearDialogFragment.setTargetFragment(this, 0);
+                    clearDialogFragment.show(getFragmentManager(), "clearDialogFragment");
+                }
                 break;
             case R.id.IV_diary_save:
                 if (diaryItemHelper.getItemSize() > 0) {
