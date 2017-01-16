@@ -154,11 +154,11 @@
     <!--Password-->
     <string name="password_create_pwd">键入新密码来安全锁</string>
     <string name="password_create_pwd_with_verify">请再键入一次密码</string>
-    <string name="password_verif_pwd">请键入密码</string>
+    <string name="password_verify_pwd">请键入密码</string>
     <string name="password_remove_pwd">键入密码来移除安全锁</string>
 
     <string name="password_create_pwd_with_verify_msg">密码不匹配</string>
-    <string name="password_verif_pwd_msg">密码键入错误</string>
+    <string name="password_verify_pwd_msg">密码键入错误</string>
     <string name="password_remove_pwd_msg">旧密码键入错误</string>
 
 
