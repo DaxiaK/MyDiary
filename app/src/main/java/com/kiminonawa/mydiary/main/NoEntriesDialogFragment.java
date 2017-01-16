@@ -54,7 +54,6 @@ public class NoEntriesDialogFragment extends DialogFragment implements View.OnCl
 
         this.getDialog().setCanceledOnTouchOutside(true);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
         View rootView = inflater.inflate(R.layout.dialog_fragment_no_entries, container);
 
         TV_no_entries_create = (TextView) rootView.findViewById(R.id.TV_no_entries_create);

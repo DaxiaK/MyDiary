@@ -100,11 +100,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
 
     /**
-     * Lazy load
-     */
-    private boolean isCreatedView = false;
-
-    /**
      * Permission
      */
     private boolean firstAllowLocationPermission = false;
@@ -205,37 +200,23 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!isCreatedView) {
-            diaryHandler = new DiaryHandler(this);
-            initWeatherSpinner();
-            initMoodSpinner();
-            setCurrentTime(true);
-            initLocationManager();
-            initLocationIcon();
-            initProgressDialog();
-            diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
-            clearDiaryPage();
-        }
-        isCreatedView = true;
+        diaryHandler = new DiaryHandler(this);
+        initWeatherSpinner();
+        initMoodSpinner();
+        setCurrentTime(true);
+        initLocationManager();
+        initLocationIcon();
+        initProgressDialog();
+        diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
+        clearDiaryPage();
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isCreatedView) {
-            if (isVisibleToUser) {
-                diaryItemHelper.addObserver(this);
-                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
-            } else {
-                diaryItemHelper.deleteObserver(this);
-                ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
-            }
-        }
-    }
 
     @Override
     public void onStart() {
         super.onStart();
+        diaryItemHelper.addObserver(this);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
     }
 
     @Override
@@ -257,6 +238,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onStop() {
         super.onStop();
+        //Release the resource
+        diaryItemHelper.deleteObserver(this);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
+
         if (locationManager != null) {
             try {
                 locationManager.removeUpdates(locationListener);
