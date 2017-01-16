@@ -548,7 +548,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //Clear
         clearDiaryPage();
         //Set flag
-        ((DiaryActivity) getActivity()).setEntriesRefresh(true);
+        ((DiaryActivity) getActivity()).callEntriesListRefresh();
         //Goto entries page
         ((DiaryActivity) getActivity()).gotoPage(0);
     }
@@ -601,6 +601,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     //Show keyboard automatically
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(diaryText.getView(), InputMethodManager.SHOW_IMPLICIT);
+                } else if (diaryItemHelper.getItemSize() == 1) {
+                    //Make the soft keyboard can be opened when it is only one item.
+                    diaryItemHelper.get(0).getView().requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(diaryItemHelper.get(diaryItemHelper.getItemSize() - 1).getView(), InputMethodManager.SHOW_IMPLICIT);
                 }
                 break;
             case R.id.IV_diary_photo_delete:
