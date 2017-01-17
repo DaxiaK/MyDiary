@@ -2,7 +2,7 @@
     <string name="app_name">MyDiary</string>
 
     <!--Release Note-->
-    <string name="release_note_title">Acztualizaciónes</string>
+    <string name="release_note_title">Actualizaciónes</string>
     <string name="release_note">**0.2.4.1601010_1_d\n
         -support French(By Toms) Spanish(By JorgeNava)\n
         -support sort memo\n
@@ -125,7 +125,7 @@
     <string name="setting_theme_default_profile_bg">defecto\n fondo</string>
     <string name="setting_theme_default_color">color por defecto</string>
     <string name="setting_theme_apply">aplicar</string>
-    <string name="setting_theme_profile_bg">Fonde de perfil</string>
+    <string name="setting_theme_profile_bg">Fondo de perfil</string>
 
     <string name="setting_language_title">Lenguaje</string>
     <string name="setting_language_hint">Escoge tu lenguaje</string>
@@ -133,10 +133,10 @@
     <string name="toast_save_profile_banner_fail">Fallo al salvar banner de perfil&#8230;</string>
     <string name="toast_crop_profile_banner_fail">Fallo al cortar el banner de perfil&#8230;</string>
     <string name="toast_save_profile_picture_fail">Fallo al salvar imagen de perfil&#8230;</string>
-    <string name="toast_crop_profile_picture_fail">Fallo al cortar imagend e perfil&#8230;</string>
+    <string name="toast_crop_profile_picture_fail">Fallo al cortar imagen de perfil&#8230;</string>
 
     <string name="setting_system_title">Sistema</string>
-    <string name="setting_system_fix_dir_hint">Si tu foto desaparecio desppues de actualizar, presiona arreglar.</string>
+    <string name="setting_system_fix_dir_hint">Si tu foto desaparecio despues de actualizar, presiona arreglar.</string>
     <string name="setting_system_fix_dir_button">Arreglar foto</string>
 
     <string name="toast_setting_successful">Exitoso</string>
@@ -150,5 +150,19 @@
     <string name="toast_location_not_open">Tu ubicación esta desabilitada</string>
     <string name="toast_geocoder_fail">No se puede transformar dirección</string>
     <string name="toast_location_timeout">Timepo de espera de obtención de ubicación agotado</string>
+     <!--Password-->
+    <string name="password_create_pwd">Crear contraseña</string>
+    <string name="password_create_pwd_with_verify">Confirmar contraseña</string>
+    <string name="password_verify_pwd"> Ingresar contraseña</string>
+    <string name="password_remove_pwd">Borrar contraseña</string>
+
+    <string name="password_create_pwd_with_verify_msg">La contraseña no coincide</string>
+    <string name="password_verify_pwd_msg">La contraseña no coincide</string>
+    <string name="password_remove_pwd_msg">La contraseña antigua no coincide</string>
+
+    <!--No Entries-->
+    <string name="no_entries_title">Sin entradas</string>
+    <string name="no_entries_msg">El diario esta vacio</string>
+    <string name="no_entries_create">Crea un nuevo diario</string>
 
 </resources>
