@@ -56,18 +56,19 @@ This list is what functionality I will implement , the number is the sequence fo
 3. Add password (Ui 50%)
 4. import & export DB(Alpha) (flow finish) 
 5. page curl effect
-6. Code refactoring
-7. Google account backup & including FireBase
-8. UI review & support xxxHpdi \
-9. Implments search
-10. Support Chinese sort
-11. Modify contacts detail (beta)
-12. Tags
-13. load contacts from phone
-14. Add bookmark for diary
-15. Add music in diary
-16. Support Chinese sort
-16. Supprot JP sort
+6. OOBE
+7. Code refactoring
+8. Google account backup & including FireBase
+9. UI review & support xxxHpdi \
+10. Implments search
+11. Support Chinese sort
+12. Modify contacts detail (beta)
+13. Tags
+14. load contacts from phone
+15. Add bookmark for diary
+16. Add music in diary
+17. Support Chinese sort
+18. Supprot JP sort
 
 Coding & Designing:
 
