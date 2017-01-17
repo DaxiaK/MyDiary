@@ -181,7 +181,7 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case CREATE_PASSWORD_WITH_VERIFY:
                 if (createdPassword.equals(passwordStrBuilder.toString())) {
-                    savePassword(passwordStrBuilder.toString());
+                    savePassword(Encryption.SHA256(passwordStrBuilder.toString()));
                     ((MyDiaryApplication) getApplication()).setHasPassword(true);
                     finish();
                 } else {

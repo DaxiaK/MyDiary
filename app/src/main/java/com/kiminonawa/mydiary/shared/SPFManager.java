@@ -192,7 +192,7 @@ public class SPFManager {
     public static void setAndEncryptPassword(Context context, String password) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         SharedPreferences.Editor PE = settings.edit();
-        PE.putString(ENCRYPTED_PASSWORD, Encryption.SHA256(password));
+        PE.putString(ENCRYPTED_PASSWORD, password);
         PE.commit();
     }
 
