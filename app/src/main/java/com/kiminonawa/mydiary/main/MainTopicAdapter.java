@@ -84,10 +84,17 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 activity.startActivity(goContactsPageIntent);
                 break;
             case ITopic.TYPE_DIARY:
-                Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
-                goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
-                goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
-                activity.startActivity(goEntriesPageIntent);
+                if (topicList.get(position).getCount() == 0) {
+                    NoEntriesDialogFragment noEntriesDialogFragment =
+                            NoEntriesDialogFragment.newInstance(topicList.get(position).getId(), topicList.get(position).getTitle());
+                    noEntriesDialogFragment.show(activity.getFragmentManager(), "noEntriesDialogFragment");
+                } else {
+                    Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
+                    goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
+                    goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                    goEntriesPageIntent.putExtra("has_entries", true);
+                    activity.startActivity(goEntriesPageIntent);
+                }
                 break;
             case ITopic.TYPE_MEMO:
                 Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);

@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
-import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
@@ -38,11 +37,6 @@ public class EntriesFragment extends BaseDiaryFragment implements
     private ImageView IV_entries_edit, IV_entries_photo;
     private final static int MAX_TEXT_LENGTH = 18;
 
-    /**
-     * Lazy load
-     */
-
-    private boolean isCreatedView = false;
     /**
      * RecyclerView
      */
@@ -77,22 +71,18 @@ public class EntriesFragment extends BaseDiaryFragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!isCreatedView) {
-            loadEntries();
-            initRecyclerView();
-            countEntries();
-        }
-        isCreatedView = true;
+        loadEntries();
+        initRecyclerView();
+        countEntries();
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isCreatedView && isVisibleToUser && ((DiaryActivity) getActivity()).isEntriesRefresh()) {
-            updateEntriesData();
-            ((DiaryActivity) getActivity()).setEntriesRefresh(false);
-        }
+    public void onStart() {
+        super.onStart();
+        updateEntriesData();
     }
+
+
 
     private void initRecyclerView() {
         LinearLayoutManager lmr = new LinearLayoutManager(getActivity());
