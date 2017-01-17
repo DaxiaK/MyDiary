@@ -151,4 +151,20 @@
     <string name="toast_geocoder_fail">ไม่สามารถเปลี่ยนแปลงตำแหน่งที่ตั้ง</string>
     <string name="toast_location_timeout">การรับตำแหน่งที่ตั้งล้มเหลว</string>
 
+    <!--Password-->
+    <string name="password_create_pwd">ตั้งรหัสผ่านสำหรับการล็อก</string>
+    <string name="password_create_pwd_with_verify">ยืนยันรหัสผ่าน</string>
+    <string name="password_verify_pwd">ใส่รหัสผ่าน</string>
+    <string name="password_remove_pwd">ใส่รหัสผ่านเพื่อปลดล็อก</string>
+
+    <string name="password_create_pwd_with_verify_msg">รหัสผ่านไม่ตรงกัน</string>
+    <string name="password_verify_pwd_msg">รหัสผ่านไม่ตรงกัน</string>
+    <string name="password_remove_pwd_msg">รหัสผ่านเดิมไม่ตรงกัน</string>
+
+    <!--No Entries-->
+    <string name="no_entries_title">ไม่มีรายชื่อ</string>
+    <string name="no_entries_msg">ไม่มีไดอารี่</string>
+    <string name="no_entries_create">เขียนไดอารี่ใหม่</string>
+
+    
 </resources>
