@@ -152,13 +152,19 @@
     <string name="toast_location_timeout">get location timeout</string>
 
     <!--Password-->
-    <string name="password_create_pwd">Set passcode for creating lock</string>
+    <string name="password_create_pwd">Set passcode to create lock</string>
     <string name="password_create_pwd_with_verify">confirm passcode</string>
     <string name="password_verify_pwd">Enter passcode</string>
-    <string name="password_remove_pwd">Enter passcode for removing lock</string>
+    <string name="password_remove_pwd">Enter passcode to remove lock</string>
 
     <string name="password_create_pwd_with_verify_msg">Passcode does not match</string>
     <string name="password_verify_pwd_msg">Passcode does not match</string>
     <string name="password_remove_pwd_msg">Old passcode does not match</string>
+
+    <!--No Entries-->
+    <string name="no_entries_title">No Entries</string>
+    <string name="no_entries_msg">Diary is empty</string>
+    <string name="no_entries_create">Create a new diary</string>
+
 
 </resources>

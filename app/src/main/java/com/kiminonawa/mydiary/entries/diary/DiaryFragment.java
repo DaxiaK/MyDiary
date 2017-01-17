@@ -100,11 +100,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
 
     /**
-     * Lazy load
-     */
-    private boolean isCreatedView = false;
-
-    /**
      * Permission
      */
     private boolean firstAllowLocationPermission = false;
@@ -139,6 +134,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     private String noLocation;
     private boolean isLocation = false;
     private ProgressDialog progressDialog;
+    private final static int GPS_TIMEOUT = 20 * 1000;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -205,37 +201,23 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!isCreatedView) {
-            diaryHandler = new DiaryHandler(this);
-            initWeatherSpinner();
-            initMoodSpinner();
-            setCurrentTime(true);
-            initLocationManager();
-            initLocationIcon();
-            initProgressDialog();
-            diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
-            clearDiaryPage();
-        }
-        isCreatedView = true;
+        diaryHandler = new DiaryHandler(this);
+        initWeatherSpinner();
+        initMoodSpinner();
+        setCurrentTime(true);
+        initLocationManager();
+        initLocationIcon();
+        initProgressDialog();
+        diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
+        clearDiaryPage();
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isCreatedView) {
-            if (isVisibleToUser) {
-                diaryItemHelper.addObserver(this);
-                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
-            } else {
-                diaryItemHelper.deleteObserver(this);
-                ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
-            }
-        }
-    }
 
     @Override
     public void onStart() {
         super.onStart();
+        diaryItemHelper.addObserver(this);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
     }
 
     @Override
@@ -257,6 +239,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onStop() {
         super.onStop();
+        //Release the resource
+        diaryItemHelper.deleteObserver(this);
+        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
+
         if (locationManager != null) {
             try {
                 locationManager.removeUpdates(locationListener);
@@ -453,8 +439,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             }
-            //Waiting gps max timeout is 15s
-            diaryHandler.sendEmptyMessageDelayed(0, 15000);
+            //Waiting gps max timeout is 20s
+            diaryHandler.sendEmptyMessageDelayed(0, GPS_TIMEOUT);
         } catch (SecurityException e) {
             //do nothing
         }
@@ -563,7 +549,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //Clear
         clearDiaryPage();
         //Set flag
-        ((DiaryActivity) getActivity()).setEntriesRefresh(true);
+        ((DiaryActivity) getActivity()).callEntriesListRefresh();
         //Goto entries page
         ((DiaryActivity) getActivity()).gotoPage(0);
     }
@@ -616,6 +602,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                     //Show keyboard automatically
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(diaryText.getView(), InputMethodManager.SHOW_IMPLICIT);
+                } else if (diaryItemHelper.getItemSize() == 1) {
+                    //Make the soft keyboard can be opened when it is only one item.
+                    diaryItemHelper.get(0).getView().requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(diaryItemHelper.get(diaryItemHelper.getItemSize() - 1).getView(), InputMethodManager.SHOW_IMPLICIT);
                 }
                 break;
             case R.id.IV_diary_photo_delete:
@@ -659,9 +650,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_clear:
-                ClearDialogFragment clearDialogFragment = new ClearDialogFragment();
-                clearDialogFragment.setTargetFragment(this, 0);
-                clearDialogFragment.show(getFragmentManager(), "clearDialogFragment");
+                if (diaryItemHelper.getItemSize() > 0 || EDT_diary_title.length() > 0) {
+                    ClearDialogFragment clearDialogFragment = new ClearDialogFragment();
+                    clearDialogFragment.setTargetFragment(this, 0);
+                    clearDialogFragment.show(getFragmentManager(), "clearDialogFragment");
+                }
                 break;
             case R.id.IV_diary_save:
                 if (diaryItemHelper.getItemSize() > 0) {

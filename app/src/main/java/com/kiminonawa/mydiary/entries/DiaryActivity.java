@@ -3,10 +3,13 @@ package com.kiminonawa.mydiary.entries;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -33,7 +36,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      */
     private long topicId;
     private boolean isCreating;
-    private boolean entriesRefresh;
+    private boolean hasEntries;
 
     /**
      * UI
@@ -48,7 +51,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     /**
      * View pager
      */
-    private FragmentPagerAdapter mPagerAdapter;
+    private ScreenSlidePagerAdapter mPagerAdapter;
 
     /**
      * Google API
@@ -64,10 +67,10 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ChinaPhoneHelper.setStatusBar(this, true);
 
         topicId = getIntent().getLongExtra("topicId", -1);
+        hasEntries = getIntent().getBooleanExtra("has_entries", true);
         if (topicId == -1) {
             finish();
         }
-        initViewPager();
         /**
          * init UI
          */
@@ -78,8 +81,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         But_diary_topbar_entries = (RadioButton) findViewById(R.id.But_diary_topbar_entries);
         But_diary_topbar_calendar = (RadioButton) findViewById(R.id.But_diary_topbar_calendar);
         But_diary_topbar_diary = (RadioButton) findViewById(R.id.But_diary_topbar_diary);
-        But_diary_topbar_entries.setChecked(true);
-
         TV_diary_topbar_title = (TextView) findViewById(R.id.TV_diary_topbar_title);
         TV_diary_topbar_title.setTextColor(ThemeManager.getInstance().getThemeDarkColor(this));
 
@@ -88,7 +89,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
             diaryTitle = "Diary";
         }
         TV_diary_topbar_title.setText(diaryTitle);
-
+        //After SegmentedGroup was created
+        initViewPager();
         initGoogleAPi();
     }
 
@@ -114,6 +116,14 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.addOnPageChangeListener(onPageChangeListener);
         ViewPager_diary_content.setBackground(
                 ThemeManager.getInstance().getEntriesBgDrawable(this, getTopicId()));
+        if (!hasEntries) {
+            ViewPager_diary_content.setCurrentItem(2);
+            //Set Default Checked Item
+            But_diary_topbar_diary.setChecked(true);
+        } else {
+            //Set Default Checked Item
+            But_diary_topbar_entries.setChecked(true);
+        }
     }
 
     private void initGoogleAPi() {
@@ -143,12 +153,9 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.setCurrentItem(position);
     }
 
-    public boolean isEntriesRefresh() {
-        return entriesRefresh;
-    }
 
-    public void setEntriesRefresh(boolean entriesRefresh) {
-        this.entriesRefresh = entriesRefresh;
+    public void callEntriesListRefresh() {
+        ((EntriesFragment) mPagerAdapter.getRegisteredFragment(0)).updateDiary();
     }
 
     @Override
@@ -191,6 +198,8 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
+        private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -216,6 +225,24 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         public int getCount() {
             return 3;
         }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+
+        public Fragment getRegisteredFragment(int position) {
+            return registeredFragments.get(position);
+        }
+
     }
 
     @Override
@@ -231,4 +258,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
 }
