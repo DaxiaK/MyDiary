@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="No Entries"
+        android:text="@string/no_entries_title"
         android:textSize="50dp" />
 
 
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="日記がぉいきせん"
+        android:text="@string/no_entries_msg"
         android:textSize="20dp" />
 
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="新しいアカゥソトな作成"
+        android:text="@string/no_entries_create"
         android:textSize="20dp" />
 </LinearLayout>
 
