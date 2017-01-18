@@ -60,15 +60,15 @@
     <string name="process_dialog_saving">保存中&#8230;</string>
 
     <!--Diary Activity-->
-    <string name="segmented_entries">エントリ</string>
+    <string name="segmented_entries">エントリー</string>
     <string name="segmented_calendar">カレンダー</string>
     <string name="segmented_Diary">日記</string>
     <string name="diary_back_message">編集中の日記を破棄してもよろしいですか？</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d エントリ</string>
-    <string name="entries_edit_view">編集したいエントリを選んでください</string>
-    <string name="entries_edit_dialog_delete_content">このエントリを削除しますか?</string>
+    <string name="entries_count">%1$d エントリー</string>
+    <string name="entries_edit_view">編集したいエントリーを選んでください</string>
+    <string name="entries_edit_dialog_delete_content">このエントリーを削除しますか?</string>
     <string name="entries_summary_photo">**写真**</string>
 
     <!--Diary -->
@@ -99,7 +99,7 @@
     <string name="toast_diary_copy_to_edit_fail">写真の読み込みに失敗しました&#8230;</string>
 
     <!--Memo-->
-    <string name="memo_item_add">エントリを追加</string>
+    <string name="memo_item_add">エントリーを追加</string>
     <string name="toast_memo_empty">メモは空です</string>
 
     <!--Contacts-->
@@ -151,7 +151,7 @@
     <string name="toast_location_timeout">現在地取得がタイムアウトしました</string>
     <string name="no_entries_create">新しい日記を書く</string>
     <string name="no_entries_msg">日記は空です</string>
-    <string name="no_entries_title">エントリなし</string>
+    <string name="no_entries_title">エントリーなし</string>
     <string name="password_create_pwd">新しいパスコードを入力</string>
     <string name="password_create_pwd_with_verify">もう一度入力</string>
     <string name="password_remove_pwd">パスコードを入力してロックを解除</string>
