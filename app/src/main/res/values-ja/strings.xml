@@ -149,9 +149,8 @@
     <string name="toast_location_not_open">現在地が無効です</string>
     <string name="toast_geocoder_fail">住所を取得できません</string>
     <string name="toast_location_timeout">現在地取得がタイムアウトしました</string>
-    <string name="no_entries_create">新しい日記を書く</string>
-    <string name="no_entries_msg">日記は空です</string>
-    <string name="no_entries_title">エントリーなし</string>
+
+    <!--Password-->
     <string name="password_create_pwd">新しいパスコードを入力</string>
     <string name="password_create_pwd_with_verify">もう一度入力</string>
     <string name="password_remove_pwd">パスコードを入力してロックを解除</string>
@@ -159,5 +158,10 @@
     <string name="password_remove_pwd_msg">以前のパスコードと一致しません</string>
     <string name="password_verify_pwd">パスコードを入力</string>
     <string name="password_verify_pwd_msg">パスコードが一致しません</string>
+
+    <!--No Entries-->
+    <string name="no_entries_title">エントリーなし</string>
+    <string name="no_entries_msg">日記は空です</string>
+    <string name="no_entries_create">新しい日記を書く</string>
 
 </resources>
