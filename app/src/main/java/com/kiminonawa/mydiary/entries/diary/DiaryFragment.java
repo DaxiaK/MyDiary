@@ -217,7 +217,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     public void onStart() {
         super.onStart();
         diaryItemHelper.addObserver(this);
-        ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
     }
 
     @Override
@@ -241,7 +240,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         super.onStop();
         //Release the resource
         diaryItemHelper.deleteObserver(this);
-        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
 
         if (locationManager != null) {
             try {

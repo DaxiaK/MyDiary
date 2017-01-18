@@ -160,9 +160,6 @@
     <string name="password_verify_pwd_msg">La contraseña no coincide</string>
     <string name="password_remove_pwd_msg">La contraseña antigua no coincide</string>
 
-    <!--No Entries-->
-    <string name="no_entries_title">Sin entradas</string>
-    <string name="no_entries_msg">El diario esta vacio</string>
-    <string name="no_entries_create">Crea un nuevo diario</string>
+
 
 </resources>

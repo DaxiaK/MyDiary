@@ -268,7 +268,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                         mTask.execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
                     }
                 }, 700);
-                ((DiaryActivity) getActivity()).getGoogleApiClient().connect();
             } else {
                 diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 initData();
@@ -370,7 +369,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        ((DiaryActivity) getActivity()).getGoogleApiClient().disconnect();
     }
 
 

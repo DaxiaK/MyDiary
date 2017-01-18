@@ -161,10 +161,6 @@
     <string name="password_verify_pwd_msg">密碼輸入錯誤</string>
     <string name="password_remove_pwd_msg">舊密碼輸入錯誤</string>
 
-    <!--No Entries-->
-    <string name="no_entries_title">沒有項目</string>
-    <string name="no_entries_msg">此日記還未有任何內容</string>
-    <string name="no_entries_create">撰寫新日記</string>
 
 
 </resources>

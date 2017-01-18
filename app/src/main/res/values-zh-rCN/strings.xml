@@ -161,9 +161,6 @@
     <string name="password_verify_pwd_msg">密码键入错误</string>
     <string name="password_remove_pwd_msg">旧密码键入错误</string>
 
-    <!--No Entries-->
-    <string name="no_entries_title">无项目</string>
-    <string name="no_entries_msg">此日记还未有内容</string>
-    <string name="no_entries_create">写新日记</string>
+
 
 </resources>
