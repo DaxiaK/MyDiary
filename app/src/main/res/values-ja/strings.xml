@@ -3,7 +3,10 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.2.4.1601010_1_d\n
+    <string name="release_note">**0.2.5.161018_1_d\n
+        -Add password\n
+        -Fix bug\n\n
+        **0.2.4.1601010_1_d\n
         -support French(By Toms) Spanish(By JorgeNava)\n
         -support sort memo\n
         -fix night issues\n
@@ -17,16 +20,7 @@
         -Modify layout for matching movie\n
         -Using place to replace address in location\n
         -Fix bug\n
-        -Support Korean(by Meda An)\n\n
-        **0.2.1.161212_1_d_h2\n
-        -Modify layout\n
-        -Fix zenPhone c and htc 626 crash(Need to reply)\n
-        -Add button for fix gone photo in diary in setting page\n\n
-        **0.2.1.161208_01_d_h**\n
-        -Fix and support status bar transparent on Android 6.0+\n
-        (If your devices is Android 6.0+ ,please set profile banner again.)\n
-        -Fix profile picture bug\n
-        -support sort Simplified Chinese in contacts(By XF-zhjnc)
+        -Support Korean(by Meda An)
     </string>
     <string name="release_note_close_remind">再表示しない</string>
     <!--init-->

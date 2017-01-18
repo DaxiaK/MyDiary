@@ -3,30 +3,24 @@
 
     <!--Release Note-->
     <string name="release_note_title">Actualizaciónes</string>
-    <string name="release_note">**0.2.4.1601010_1_d\n
+    <string name="release_note">**0.2.5.161018_1_d\n
+        -Add password\n
+        -Fix bug\n\n
+        **0.2.4.1601010_1_d\n
         -support French(By Toms) Spanish(By JorgeNava)\n
         -support sort memo\n
         -fix night issues\n
         -fix bug\n\n
         **0.2.3.161228_1_h\n
-        -Soporte Tailandés(Por PScoop ,trulesa)\n\n
+        -support Thai(By PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
-        -Modificación en función de ubicación para areas sin servicio Google\n
-        -Error arreglado\n\n
+        -Modify get location function for no Google Service area\n
+        -Fix bug\n\n
         **0.2.2.161216_1_d2\n
-        -Modificación de diseño semejante a la pelicula\n
-        -Uso de lugar para remplazar dirección en la ubicación\n
-        -Error arreglado\n
-        -Soporte Korean(Por Meda An)\n\n
-        **0.2.1.161212_1_d_h2\n
-        -Modificación de diseño\n
-        -Arreglo de congelamiento de aplicaion en celulares zenPhone c y htc 636(Se necesita cotestación)\n
-        -Integración de botón para foto desaparecida  en la pagina de configración del diario\n\n
-        **0.2.1.161208_01_d_h**\n
-        -Corrección y soporte de la barra de estado transparente en Android 6.0+\n
-        (Si tu dispositivo es Android 6.0 o superior, por favor establezca el banner de perfil de nuevo.)\n
-        -Error de foto de perfil corregido\n
-        -Arreglo de apoyo Chino simplificado en los contactos(Por XF-zhjnc)
+        -Modify layout for matching movie\n
+        -Using place to replace address in location\n
+        -Fix bug\n
+        -Support Korean(by Meda An)
     </string>
     <string name="release_note_close_remind">No mostrar otra vez</string>
 
