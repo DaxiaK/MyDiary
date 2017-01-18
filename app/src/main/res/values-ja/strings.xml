@@ -79,7 +79,7 @@
 
     <string name="diary_title_hint">タイトル</string>
     <string name="diary_content_hint">タップして日記本文を記入</string>
-    <string name="diary_clear_message">do you want to delete it?</string>
+    <string name="diary_clear_message">削除しますか？</string>
 
     <string name="diary_no_title">タイトルなし</string>
 
@@ -135,19 +135,29 @@
     <string name="toast_crop_profile_picture_fail">プロフィール写真の切り取りに失敗しました</string>
 
     <string name="setting_system_title">システム</string>
-    <string name="setting_system_fix_dir_hint">更新後に写真が消えたら、それをクリックして修正してください</string>
-    <string name="setting_system_fix_dir_button">写真を修正する</string>
+    <string name="setting_system_fix_dir_hint">アップデート後に写真が消えた場合はタップして修復してください。</string>
+    <string name="setting_system_fix_dir_button">写真を修復</string>
 
-    <string name="toast_setting_successful">成功した</string>
-    <string name="toast_setting_wont_fix">何も修正する必要はありません</string>
-    <string name="toast_setting_fail">失敗します</string>
+    <string name="toast_setting_successful">成功</string>
+    <string name="toast_setting_wont_fix">修復が必要な項目はありません</string>
+    <string name="toast_setting_fail">失敗</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
+    <string name="toast_google_service_not_work">Google Servicesが利用できないか、アップデートが必要です</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is disable</string>
-    <string name="toast_geocoder_fail">Can\'t transform address</string>
-    <string name="toast_location_timeout">get location timeout</string>
+    <string name="toast_location_not_open">現在地が無効です</string>
+    <string name="toast_geocoder_fail">住所を取得できません</string>
+    <string name="toast_location_timeout">現在地取得がタイムアウトしました</string>
+    <string name="no_entries_create">新しい日記を書く</string>
+    <string name="no_entries_msg">日記は空です</string>
+    <string name="no_entries_title">項目なし</string>
+    <string name="password_create_pwd">新しいパスコードを入力</string>
+    <string name="password_create_pwd_with_verify">もう一度入力</string>
+    <string name="password_remove_pwd">パスコードを入力してロックを解除</string>
+    <string name="password_create_pwd_with_verify_msg">パスコードが一致しません</string>
+    <string name="password_remove_pwd_msg">以前のパスコードと一致しません</string>
+    <string name="password_verify_pwd">パスコードを入力</string>
+    <string name="password_verify_pwd_msg">パスコードが一致しません</string>
 
 </resources>
