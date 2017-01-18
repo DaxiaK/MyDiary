@@ -158,5 +158,10 @@
      <string name="password_create_pwd_with_verify_msg">비밀번호가 일치하지 않습니다</string>
      <string name="password_verify_pwd_msg">비밀번호가 일치하지 않습니다</string>
      <string name="password_remove_pwd_msg">원래의 비밀번호가 일치하지 않습니다</string>
+
+    <!--No Entries @Not translate  -->
+    <string name="no_entries_title">No Entries</string>
+    <string name="no_entries_msg">Diary is empty</string>
+    <string name="no_entries_create">Create a new diary</string>
     
 </resources>
