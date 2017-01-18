@@ -60,9 +60,9 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
 
 
         if (((MyDiaryApplication) getActivity().getApplication()).isHasPassword()) {
-            IV_main_setting_setting_security.setImageResource(R.drawable.ic_no_encryption_white_36dp);
-        } else {
             IV_main_setting_setting_security.setImageResource(R.drawable.ic_enhanced_encryption_white_36dp);
+        } else {
+            IV_main_setting_setting_security.setImageResource(R.drawable.ic_no_encryption_white_36dp);
 
         }
         return rootView;
