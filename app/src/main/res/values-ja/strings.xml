@@ -33,18 +33,18 @@
     <string name="init_message">データを更新中です。MyDiaryを閉じないでください。</string>
 
     <!--Profile-->
-    <string name="profile_username_taki">立花　瀧</string>
-    <string name="profile_username_mitsuha">宮水　三葉</string>
+    <string name="profile_username_taki">立花 瀧</string>
+    <string name="profile_username_mitsuha">宮水 三葉</string>
     <string name="toast_change_theme">テーマを切り替え中&#8230;</string>
     <string name="your_name_is">君の名は</string>
 
     <!--Topic detail-->
-    <string name="topic_detail_name">トピック</string>
+    <string name="topic_detail_name">名前</string>
     <string name="topic_detail_text_color">テキストの色</string>
     <string name="topic_dialog_delete_title">削除</string>
     <string name="topic_dialog_delete_content">この %1$s を削除しますか?</string>
 
-    <string name="toast_topic_empty">トピックは空です</string>
+    <string name="toast_topic_empty">名前を入力してください</string>
     <string name="topic_topic_bg_fail">背景の変更に失敗しました&#8230;</string>
 
     <string name="topic_detail_current_bg">トピックの背景</string>
@@ -60,15 +60,15 @@
     <string name="process_dialog_saving">保存中&#8230;</string>
 
     <!--Diary Activity-->
-    <string name="segmented_entries">項目</string>
+    <string name="segmented_entries">エントリー</string>
     <string name="segmented_calendar">カレンダー</string>
     <string name="segmented_Diary">日記</string>
     <string name="diary_back_message">編集中の日記を破棄してもよろしいですか？</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d 項目</string>
-    <string name="entries_edit_view">編集したい日記を選んでください</string>
-    <string name="entries_edit_dialog_delete_content">この日記を削除しますか?</string>
+    <string name="entries_count">%1$d エントリー</string>
+    <string name="entries_edit_view">編集したいエントリーを選んでください</string>
+    <string name="entries_edit_dialog_delete_content">このエントリーを削除しますか?</string>
     <string name="entries_summary_photo">**写真**</string>
 
     <!--Diary -->
@@ -78,8 +78,8 @@
     <string name="diary_photo_permission_content">写真へのアクセス許可が必要です</string>
 
     <string name="diary_title_hint">タイトル</string>
-    <string name="diary_content_hint">タップして日記本文を記入</string>
-    <string name="diary_clear_message">do you want to delete it?</string>
+    <string name="diary_content_hint">タップして本文を記入</string>
+    <string name="diary_clear_message">削除しますか？</string>
 
     <string name="diary_no_title">タイトルなし</string>
 
@@ -99,7 +99,7 @@
     <string name="toast_diary_copy_to_edit_fail">写真の読み込みに失敗しました&#8230;</string>
 
     <!--Memo-->
-    <string name="memo_item_add">項目を追加</string>
+    <string name="memo_item_add">エントリーを追加</string>
     <string name="toast_memo_empty">メモは空です</string>
 
     <!--Contacts-->
@@ -135,19 +135,33 @@
     <string name="toast_crop_profile_picture_fail">プロフィール写真の切り取りに失敗しました</string>
 
     <string name="setting_system_title">システム</string>
-    <string name="setting_system_fix_dir_hint">更新後に写真が消えたら、それをクリックして修正してください</string>
-    <string name="setting_system_fix_dir_button">写真を修正する</string>
+    <string name="setting_system_fix_dir_hint">アップデート後に写真が消えた場合はタップして修復してください。</string>
+    <string name="setting_system_fix_dir_button">写真を修復</string>
 
-    <string name="toast_setting_successful">成功した</string>
-    <string name="toast_setting_wont_fix">何も修正する必要はありません</string>
-    <string name="toast_setting_fail">失敗します</string>
+    <string name="toast_setting_successful">成功</string>
+    <string name="toast_setting_wont_fix">修復が必要な項目はありません</string>
+    <string name="toast_setting_fail">失敗</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">Your Google Services doesn\'t work or needs to update</string>
+    <string name="toast_google_service_not_work">Google Servicesが利用できないか、アップデートが必要です</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">Your location is disable</string>
-    <string name="toast_geocoder_fail">Can\'t transform address</string>
-    <string name="toast_location_timeout">get location timeout</string>
+    <string name="toast_location_not_open">現在地が無効です</string>
+    <string name="toast_geocoder_fail">住所を取得できません</string>
+    <string name="toast_location_timeout">現在地取得がタイムアウトしました</string>
+
+    <!--Password-->
+    <string name="password_create_pwd">新しいパスコードを入力</string>
+    <string name="password_create_pwd_with_verify">もう一度入力</string>
+    <string name="password_remove_pwd">パスコードを入力してロックを解除</string>
+    <string name="password_create_pwd_with_verify_msg">パスコードが一致しません</string>
+    <string name="password_remove_pwd_msg">以前のパスコードと一致しません</string>
+    <string name="password_verify_pwd">パスコードを入力</string>
+    <string name="password_verify_pwd_msg">パスコードが一致しません</string>
+
+    <!--No Entries-->
+    <string name="no_entries_title">エントリーなし</string>
+    <string name="no_entries_msg">日記は空です</string>
+    <string name="no_entries_create">新しい日記を書く</string>
 
 </resources>

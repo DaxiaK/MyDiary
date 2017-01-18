@@ -2,18 +2,18 @@
 <resources>
 
     <array name="months_full_name">
-        <item>一月</item>
-        <item>二月</item>
-        <item>三月</item>
-        <item>四月</item>
-        <item>五月</item>
-        <item>六月</item>
-        <item>七月</item>
-        <item>八月</item>
-        <item>九月</item>
-        <item>十月</item>
-        <item>十一月</item>
-        <item>十二月</item>
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
     </array>
 
     <array name="days_simple_name">
@@ -38,7 +38,7 @@
 
     <array name="topic_type">
         <item>連絡先</item>
-        <item>にっき</item>
+        <item>日記</item>
         <item>メモ</item>
     </array>
 
@@ -49,12 +49,12 @@
     </array>
 
     <array name="weather_list">
-        <item>sunny</item>
-        <item>cloudy</item>
-        <item>windy</item>
-        <item>rainy</item>
-        <item>snowy</item>
-        <item>foggy</item>
+        <item>晴れ</item>
+        <item>曇り</item>
+        <item>風</item>
+        <item>雨</item>
+        <item>雪</item>
+        <item>霧</item>
     </array>
 
     <array name="language_list">
