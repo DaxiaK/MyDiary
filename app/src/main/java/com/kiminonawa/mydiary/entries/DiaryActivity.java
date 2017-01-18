@@ -95,6 +95,18 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
     public void onBackPressed() {
         if (isCreating) {
             ActivityBackDialogFragmentFrom activityBackDialogFragmentFrom = new ActivityBackDialogFragmentFrom();
@@ -134,10 +146,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
-    }
-
-    public GoogleApiClient getGoogleApiClient() {
-        return mGoogleApiClient;
     }
 
 
