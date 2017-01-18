@@ -7,31 +7,31 @@
         -支援法文(By Toms) 西班牙文(By JorgeNava)\n
         -支援備忘錄排序\n
         -修復夜間模式問題\n
-        -修正bug\n\n
+        -修正 bug\n\n
         **0.2.3.161228_1_d_h\n
         -支援泰文(By PScoop ,trulesa)\n\n
         **0.2.3.161226_1_d\n
-        -調整沒有Google Service地區的定位功能\n
-        -修復bug\n\n
+        -調整沒有 Google Service 地區的定位功能\n
+        -修復 bug\n\n
         **0.2.2.161216_1_d2\n
         -配合電影調整部份畫面\n
-        -GPS定位改用地點取代地址\n
-        -修復bug\n
+        -GPS 定位改用地點取代地址\n
+        -修復 bug\n
         -支援韓文(by Meda An)\n\n
         **0.2.1.161212_1_d_h2\n
         -調整畫面\n
-        -修復 zenPhone c 和 htc 626 當機問題(需要回報)\n
+        -修復 zenPhone c 和 HTC 626 當機問題(需要回報)\n
         -設定頁面加入修復日記消失圖片的按鈕\n\n
         **0.2.1.161208_01_d_h**\n
-        -修復與支援Android 6.0 + 狀態欄透明\n
-        (裝置Android 6.0+ 請重新設定個人檔案橫幅)\n
-        -修復大頭貼bug\n
+        -修復與支援Android 6.0 + 狀態列透明\n
+        (裝置 Android 6.0+ 請重新設定個人檔案橫幅)\n
+        -修復大頭貼 bug\n
         -支援簡體中文聯絡人拼音排序(By XF-zhjnc)
     </string>
-    <string name="release_note_close_remind">不再提醒</string>
+    <string name="release_note_close_remind">不要再詢問</string>
 
     <!--init-->
-    <string name="init_message">正在設定資料，請勿關閉MyDiary以免資料遺失</string>
+    <string name="init_message">正在設定資料，請勿關閉 MyDiary 以免資料遺失</string>
 
     <!--Profile-->
     <string name="profile_username_taki">立花 瀧</string>
@@ -47,7 +47,7 @@
     <string name="topic_dialog_delete_content">確定要刪除 %1$s 嗎?</string>
 
     <string name="toast_topic_empty">主題名稱是空的</string>
-    <string name="topic_topic_bg_fail">更換主題背景失敗&#8230;</string>
+    <string name="topic_topic_bg_fail">變更主題背景失敗&#8230;</string>
 
     <string name="topic_detail_current_bg">主題背景</string>
     <string name="topic_detail_default_bg">預設背景</string>
@@ -63,7 +63,7 @@
 
     <!--Diary Activity-->
     <string name="segmented_entries">項目</string>
-    <string name="segmented_calendar">日曆</string>
+    <string name="segmented_calendar">行事曆</string>
     <string name="segmented_Diary">日記</string>
     <string name="diary_back_message">有編輯中的日記，確定要離開嗎?</string>
 
@@ -75,22 +75,22 @@
 
     <!--Diary -->
     <string name="diary_no_location">無定位</string>
-    <string name="diary_location_permission_title">授權</string>
-    <string name="diary_location_permission_content">需要授權來取得位置名稱</string>
-    <string name="diary_photo_permission_content">需要授權來取得新增照片</string>
+    <string name="diary_location_permission_title">權限</string>
+    <string name="diary_location_permission_content">需要權限來取得位置名稱</string>
+    <string name="diary_photo_permission_content">需要權限來取得新增相片</string>
 
     <string name="diary_title_hint">日記標題</string>
     <string name="diary_content_hint">在此寫下你的日記內容</string>
-    <string name="diary_clear_message">確定要清除嗎?</string>
+    <string name="diary_clear_message">確定要清除嗎？</string>
 
     <string name="diary_no_title">無標題</string>
 
     <string name="toast_diary_empty">日記內容是空的</string>
 
-    <string name="toast_not_image">該檔案不是圖片</string>
+    <string name="toast_not_image">此檔案不是圖片</string>
     <string name="toast_photo_path_error">圖片來源異常</string>
     <string name="toast_photo_intent_error">無法取得裝置的圖片資源</string>
-    <string name="toast_max_photo">最多只能加入%1$d張照片</string>
+    <string name="toast_max_photo">最多只能加入 %1$d 張相片</string>
     <string name="toast_space_insufficient">剩餘空間不足</string>
     <string name="toast_diary_update_successful">日記更新成功</string>
     <string name="toast_diary_update_fail">日記更新出錯了&#8230;</string>
@@ -102,17 +102,17 @@
 
     <!--Memo-->
     <string name="memo_item_add">新增項目</string>
-    <string name="toast_memo_empty">備忘錄是空的!</string>
+    <string name="toast_memo_empty">備忘錄是空的！</string>
 
     <!--Contacts-->
-    <string name="contacts_call_phone_permission_title">授權</string>
-    <string name="contacts_call_phone_permission_content">需要授權來撥打電話</string>
+    <string name="contacts_call_phone_permission_title">權限</string>
+    <string name="contacts_call_phone_permission_content">需要權限來撥打電話</string>
     <string name="contacts_call_phone_no_call_function">你的裝置無法撥打電話</string>
 
     <string name="contacts_detail_edt_name">聯絡人名字</string>
     <string name="contacts_detail_edt_phone_number">電話號碼</string>
 
-    <string name="toast_contacts_empty">聯絡資料是空的!</string>
+    <string name="toast_contacts_empty">聯絡資料是空的！</string>
 
     <!--About-->
     <string name="about_title">關於</string>
@@ -124,7 +124,7 @@
     <string name="setting_theme_sec_color">次要顏色</string>
     <string name="setting_theme_default_profile_bg">預設背景</string>
     <string name="setting_theme_default_color">預設顏色</string>
-    <string name="setting_theme_apply">應用</string>
+    <string name="setting_theme_apply">套用</string>
     <string name="setting_theme_profile_bg">個人檔案背景</string>
 
     <string name="setting_language_title">語言</string>
@@ -144,12 +144,12 @@
     <string name="toast_setting_fail">失敗</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">你的Google Services無法使用或需要升級</string>
+    <string name="toast_google_service_not_work">你的 Google Services 無法使用或需要升級</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">定位功能未打開</string>
-    <string name="toast_geocoder_fail">無法解析地址</string>
-    <string name="toast_location_timeout">定位超時</string>
+    <string name="toast_location_not_open">定位功能已停用</string>
+    <string name="toast_geocoder_fail">無法轉換地址</string>
+    <string name="toast_location_timeout">定位逾時</string>
 
     <!--Password-->
     <string name="password_create_pwd">輸入新密碼來設定安全鎖</string>
