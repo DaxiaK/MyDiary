@@ -161,10 +161,7 @@
     <string name="password_verify_pwd_msg">รหัสผ่านไม่ตรงกัน</string>
     <string name="password_remove_pwd_msg">รหัสผ่านเดิมไม่ตรงกัน</string>
 
-    <!--No Entries-->
-    <string name="no_entries_title">ไม่มีรายชื่อ</string>
-    <string name="no_entries_msg">ไม่มีไดอารี่</string>
-    <string name="no_entries_create">เขียนไดอารี่ใหม่</string>
+
 
     
 </resources>

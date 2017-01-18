@@ -159,9 +159,5 @@
     <string name="password_verify_pwd">パスコードを入力</string>
     <string name="password_verify_pwd_msg">パスコードが一致しません</string>
 
-    <!--No Entries-->
-    <string name="no_entries_title">エントリーなし</string>
-    <string name="no_entries_msg">日記は空です</string>
-    <string name="no_entries_create">新しい日記を書く</string>
 
 </resources>
