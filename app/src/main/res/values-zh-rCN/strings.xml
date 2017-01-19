@@ -7,20 +7,20 @@
          - 新增密码锁\n
          - 修复错误\n\n
          * 0.2.4.1601010_1_d\n
-         - 支援法文（By Toms）西班牙文（By JorgeNava\n
+         - 支持法文（By Toms）西班牙文（By JorgeNava\n
          - 支持备忘录排序\n
          - 修复夜间模式问题\n
          - 修正错误\n\n
          ** 0.2.3.161228_1_d_h\n
-         - 支援泰文（By PScoop，trulesa）\n\n
+         - 支持泰文（By PScoop，trulesa）\n\n
          ** 0.2.3.161226_1_d \n
-         - 调整没有Google服务地区的定位功能\n
+         - 调整没有 Google 服务地区的定位功能\n
          - 修复错误\n\n
          ** 0.2.2.161216_1_d2\n
          - 配合电影调整部份画面\n
-         -GPS定位改变地点取代地址\n
+         - GPS 定位改变地点取代地址\n
          - 修复错误\n
-         - 支援韩文（由Meda An）
+         - 支持韩文（由Meda An）
     </string>
     <string name="release_note_close_remind">不再提醒</string>
 
@@ -138,7 +138,7 @@
     <string name="toast_setting_fail">失败</string>
 
     <!--Google service API-->
-    <string name="toast_google_service_not_work">你的Google Services无法使用或需要升级</string>
+    <string name="toast_google_service_not_work">你的 Google Services 无法使用或需要升级</string>
 
     <!--Diary Geocoder & Location  -->
     <string name="toast_location_not_open">定位功能未打开</string>
@@ -146,14 +146,14 @@
     <string name="toast_location_timeout">定位超时</string>
 
     <!--Password-->
-    <string name="password_create_pwd">键入新密码来安全锁</string>
-    <string name="password_create_pwd_with_verify">请再键入一次密码</string>
-    <string name="password_verify_pwd">请键入密码</string>
-    <string name="password_remove_pwd">键入密码来移除安全锁</string>
+    <string name="password_create_pwd">输入密码以设置安全锁</string>
+    <string name="password_create_pwd_with_verify">请再输入一次密码</string>
+    <string name="password_verify_pwd">请输入密码</string>
+    <string name="password_remove_pwd">输入密码来移除安全锁</string>
 
     <string name="password_create_pwd_with_verify_msg">密码不匹配</string>
-    <string name="password_verify_pwd_msg">密码键入错误</string>
-    <string name="password_remove_pwd_msg">旧密码键入错误</string>
+    <string name="password_verify_pwd_msg">密码输入错误</string>
+    <string name="password_remove_pwd_msg">旧密码输入错误</string>
 
 
 </resources>
