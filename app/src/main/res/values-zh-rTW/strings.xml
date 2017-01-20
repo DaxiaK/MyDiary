@@ -69,9 +69,9 @@
 
     <!--Diary -->
     <string name="diary_no_location">無定位</string>
-    <string name="diary_location_permission_title">授權</string>
-    <string name="diary_location_permission_content">需要授權來取得位置名稱</string>
-    <string name="diary_photo_permission_content">需要授權來取得新增照片</string>
+    <string name="diary_location_permission_title">權限</string>
+    <string name="diary_location_permission_content">需要權限來取得位置名稱</string>
+    <string name="diary_photo_permission_content">需要權限來取得新增照片</string>
 
     <string name="diary_title_hint">日記標題</string>
     <string name="diary_content_hint">在此寫下你的日記內容</string>
@@ -81,7 +81,7 @@
 
     <string name="toast_diary_empty">日記內容是空的</string>
 
-    <string name="toast_not_image">該檔案不是圖片</string>
+    <string name="toast_not_image">此檔案不是圖片</string>
     <string name="toast_photo_path_error">圖片來源異常</string>
     <string name="toast_photo_intent_error">無法取得裝置的圖片資源</string>
     <string name="toast_max_photo">最多只能加入%1$d張照片</string>
@@ -99,8 +99,8 @@
     <string name="toast_memo_empty">備忘錄是空的!</string>
 
     <!--Contacts-->
-    <string name="contacts_call_phone_permission_title">授權</string>
-    <string name="contacts_call_phone_permission_content">需要授權來撥打電話</string>
+    <string name="contacts_call_phone_permission_title">權限</string>
+    <string name="contacts_call_phone_permission_content">需要權限來撥打電話</string>
     <string name="contacts_call_phone_no_call_function">你的裝置無法撥打電話</string>
 
     <string name="contacts_detail_edt_name">聯絡人名字</string>
@@ -118,7 +118,7 @@
     <string name="setting_theme_sec_color">次要顏色</string>
     <string name="setting_theme_default_profile_bg">預設背景</string>
     <string name="setting_theme_default_color">預設顏色</string>
-    <string name="setting_theme_apply">應用</string>
+    <string name="setting_theme_apply">套用</string>
     <string name="setting_theme_profile_bg">個人檔案背景</string>
 
     <string name="setting_language_title">語言</string>
@@ -141,9 +141,9 @@
     <string name="toast_google_service_not_work">你的Google Services無法使用或需要升級</string>
 
     <!--Diary Geocoder & Location  -->
-    <string name="toast_location_not_open">定位功能未打開</string>
+    <string name="toast_location_not_open">定位功能已停用</string>
     <string name="toast_geocoder_fail">無法解析地址</string>
-    <string name="toast_location_timeout">定位超時</string>
+    <string name="toast_location_timeout">定位逾時</string>
 
     <!--Password-->
     <string name="password_create_pwd">輸入新密碼來設定安全鎖</string>
