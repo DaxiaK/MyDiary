@@ -128,6 +128,7 @@ If you want to create a new project base on this app , please create it by new f
 
 I denounce someone who only copies this project and release the same version into Google play.
 
+-----------------------------------------------
 
 **The MIT License (MIT)**
 Copyright (c) 2016 Daxia
@@ -144,6 +145,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Daxia (guava.bala@gmail.com)
 
 P.S. I spend too much time on same questions everyday (Ex.page effect, google account ,password). 
-I shold focus the coding again. So if you send some duplicate question for me , forgive me I will ignore it at sometimes. 
+I shold focus the coding again.
+
+So if you send some duplicate question for me , forgive me I will ignore it at sometimes. 
 Most question you can find it in "Functionality".
 
