@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView RecyclerView_topic;
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
+    private ItemTouchHelper touchHelper;
+
     /**
      * DB
      */
@@ -161,6 +164,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RecyclerView_topic.setHasFixedSize(true);
         mainTopicAdapter = new MainTopicAdapter(this, topicList);
         RecyclerView_topic.setAdapter(mainTopicAdapter);
+
+        //Set ItemTouchHelper
+        ItemTouchHelper.Callback callback =
+                new TopicItemTouchHelperCallback(this,mainTopicAdapter);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(RecyclerView_topic);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {

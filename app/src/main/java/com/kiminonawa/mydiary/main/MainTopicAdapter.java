@@ -12,6 +12,7 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -21,7 +22,8 @@ import java.util.List;
  * Created by daxia on 2016/10/17.
  */
 
-public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> {
+public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
+        ItemTouchHelperAdapter{
 
 
     private List<ITopic> topicList;
@@ -62,17 +64,17 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 gotoTopic(topicList.get(position).getType(), position);
             }
         });
-        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                TopicDetailDialogFragment createTopicDialogFragment =
-                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
-                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
-                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
-                        "createTopicDialogFragment");
-                return true;
-            }
-        });
+//        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                TopicDetailDialogFragment createTopicDialogFragment =
+//                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
+//                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
+//                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
+//                        "createTopicDialogFragment");
+//                return true;
+//            }
+//        });
     }
 
     public void gotoTopic(final int type, final int position) {
@@ -97,6 +99,21 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 activity.startActivity(goMemoPageIntent);
                 break;
         }
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+
+    }
+
+    @Override
+    public void onItemSwap(int position) {
+
+    }
+
+    @Override
+    public void onItemMoveFinish() {
+
     }
 
 
