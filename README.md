@@ -46,33 +46,38 @@ so, maybe I will try to create an iOS version after this app is running.
 * Main Setting page
 * More theme , More profile
 * Add profile picture
+* Add password
 
 **Not Work:**
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Add web block in diary (pending , because some memory issue)
-2. Allow order for topic , memo (Memo work)
-3. Add password (Ui 50%)
-4. import & export DB(Alpha) (flow finish) 
-5. page curl effect
-6. OOBE
-7. Code refactoring
-8. Google account backup & including FireBase
-9. UI review & support xxxHpdi \
-10. Implments search
-11. Support Chinese sort
-12. Modify contacts detail (beta)
-13. Tags
-14. load contacts from phone
-15. Add bookmark for diary
-16. Add music in diary
-17. Support Chinese sort
-18. Supprot JP sort
+1. Allow order for topic , memo (Memo work)
+2. import & export DB(Alpha) (flow finish) 
+3. Search function
+4. page curl effect
+5. OOBE
+6. Code refactoring
+7. Google account backup & including FireBase
+8. UI review & support xxxHpdi \
+9. Implments search
+10. Support Chinese sort
+11. Modify contacts detail (beta)
+12. Tags
+13. load contacts from phone
+14. Add bookmark for diary
+15. Add music in diary
+16. Support Chinese sort
+17. Supprot JP sort
 
 Coding & Designing:
 
 1. Add mistake-proofing
+
+**pending**
+
+1. Add web block in diary ( some memory issue)
+
 
 **Plan**
 
@@ -83,7 +88,6 @@ If you want to help this project , you can select them first and let me know:
 2. Implments search in MainActivity , ContactsActivity
 3. load contacts from phone
 4. Add border and radius in all dialogfragment 
-5. Test GPS flash back issue in China
 
 ## known issue
 
@@ -118,6 +122,12 @@ Designing.
 
 
 ## License
+
+For MIT licenese , I encourage more user or developer who like this moive can get some idea to do best project. 
+If you want to create a new project base on this app , please create it by new feature ,new idea or new design.
+
+I denounce someone who only copies this project and release the same version into Google play.
+
 
 **The MIT License (MIT)**
 Copyright (c) 2016 Daxia
