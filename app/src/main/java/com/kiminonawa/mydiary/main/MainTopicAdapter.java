@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
@@ -15,6 +16,7 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ import java.util.List;
  */
 
 public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
-        ItemTouchHelperAdapter{
+        ItemTouchHelperAdapter {
 
 
     private List<ITopic> topicList;
@@ -51,6 +53,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
         holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getIconView().setColorFilter(topicList.get(position).getColor());
         holder.getTitleView().setText(topicList.get(position).getTitle());
@@ -64,17 +67,16 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 gotoTopic(topicList.get(position).getType(), position);
             }
         });
-//        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                TopicDetailDialogFragment createTopicDialogFragment =
-//                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
-//                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
-//                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
-//                        "createTopicDialogFragment");
-//                return true;
-//            }
-//        });
+        holder.getTopicLeftSettingEditView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TopicDetailDialogFragment createTopicDialogFragment =
+                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
+                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
+                createTopicDialogFragment.show(activity.getSupportFragmentManager(),
+                        "createTopicDialogFragment");
+            }
+        });
     }
 
     public void gotoTopic(final int type, final int position) {
@@ -124,6 +126,9 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private TextView TV_topic_count;
         private ImageView IV_topic_arrow_right;
         private View rootView;
+        private SwipeLayout USL_topic;
+        private LinearLayout LL_topic_left_setting;
+        private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
 
         protected TopicViewHolder(View view) {
             super(view);
@@ -132,6 +137,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
             this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
+
+            //Left setting view
+            this.USL_topic = (SwipeLayout) rootView.findViewById(R.id.USL_topic);
+            this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
+            this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
+            this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
+
+            this.USL_topic.setDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
+            this.USL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
         }
 
         protected ImageView getIconView() {
@@ -152,6 +166,18 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         protected View getRootView() {
             return rootView;
+        }
+
+        protected View getTopicLeftSettingView() {
+            return LL_topic_left_setting;
+        }
+
+        protected View getTopicLeftSettingEditView() {
+            return IV_topic_left_setting_edit;
+        }
+
+        protected View getTopicLeftSettingDeleteView() {
+            return IV_topic_left_setting_delete;
         }
     }
 }

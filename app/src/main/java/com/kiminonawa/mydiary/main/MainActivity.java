@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Set ItemTouchHelper
         ItemTouchHelper.Callback callback =
-                new TopicItemTouchHelperCallback(this,mainTopicAdapter);
+                new TopicItemTouchHelperCallback(mainTopicAdapter);
         touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(RecyclerView_topic);
     }

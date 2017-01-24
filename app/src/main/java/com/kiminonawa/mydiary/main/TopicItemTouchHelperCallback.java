@@ -1,18 +1,10 @@
 package com.kiminonawa.mydiary.main;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
 
-import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.ItemTouchHelperViewHolder;
 
@@ -26,14 +18,10 @@ public class TopicItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public static final float ALPHA_FULL = 1.0f;
 
     private final ItemTouchHelperAdapter mAdapter;
-    private Context context;
-    private Paint paint;
 
 
-    public TopicItemTouchHelperCallback(Context context, ItemTouchHelperAdapter adapter) {
-        this.context = context;
+    public TopicItemTouchHelperCallback( ItemTouchHelperAdapter adapter) {
         this.mAdapter = adapter;
-        paint = new Paint();
     }
 
     @Override
@@ -43,7 +31,7 @@ public class TopicItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return true;
+        return false;
     }
 
     @Override
@@ -83,23 +71,10 @@ public class TopicItemTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-
-            Bitmap icon;
-            View itemView = viewHolder.itemView;
-            float height = (float) itemView.getBottom() - (float) itemView.getTop();
-            float width = height / 3;
-
-            if (dX > 0) {
-                paint.setColor(Color.parseColor("#388E3C"));
-                RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
-                c.drawRect(background, paint);
-                icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_mode_edit_white_24dp);
-                RectF icon_dest = new RectF((float) itemView.getLeft() + width, (float) itemView.getTop() + width, (float) itemView.getLeft() + 2 * width, (float) itemView.getBottom() - width);
-                c.drawBitmap(icon, null, icon_dest, paint);
-            }
+            //Do nothing
+        } else {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
     }
 
     @Override
