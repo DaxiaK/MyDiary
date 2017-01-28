@@ -33,7 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
+        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback ,
+        TopicDeleteDialogFragment.DeleteCallback {
 
 
     /**
@@ -224,8 +225,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTopicAdapter.notifyDataSetChanged();
     }
 
+
     @Override
-    public void TopicDeleted(final int position) {
+    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
+        DBManager dbManager = new DBManager(this);
+        dbManager.opeDB();
+        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
+        dbManager.closeDB();
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged();
+        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
+    }
+
+    @Override
+    public void updateName() {
+        initProfile();
+        loadProfilePicture();
+    }
+
+    @Override
+    public void onTopicDelete(final int position) {
         DBManager dbManager = new DBManager(MainActivity.this);
         dbManager.opeDB();
         switch (topicList.get(position).getType()) {
@@ -261,22 +280,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topicList.remove(position);
         mainTopicAdapter.notifyItemRemoved(position);
         mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
-    }
-
-    @Override
-    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
-        DBManager dbManager = new DBManager(this);
-        dbManager.opeDB();
-        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
-        dbManager.closeDB();
-        loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
-        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
-    }
-
-    @Override
-    public void updateName() {
-        initProfile();
-        loadProfilePicture();
     }
 }

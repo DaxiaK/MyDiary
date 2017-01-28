@@ -77,6 +77,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         "createTopicDialogFragment");
             }
         });
+
+        holder.getTopicLeftSettingDeleteView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TopicDeleteDialogFragment topicDeleteDialogFragment =
+                        TopicDeleteDialogFragment.newInstance(position, topicList.get(position).getTitle());
+                topicDeleteDialogFragment.show(activity.getSupportFragmentManager(), "topicDeleteDialogFragment");
+            }
+        });
     }
 
     public void gotoTopic(final int type, final int position) {
