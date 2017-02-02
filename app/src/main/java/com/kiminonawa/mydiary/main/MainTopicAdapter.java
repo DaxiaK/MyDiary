@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +54,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getUSLView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getIconView().setColorFilter(topicList.get(position).getColor());
@@ -61,9 +63,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getTVCount().setTextColor(topicList.get(position).getColor());
         holder.getArrow().setColorFilter(topicList.get(position).getColor());
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+        holder.getUSLView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("test", "123");
                 gotoTopic(topicList.get(position).getType(), position);
             }
         });
@@ -114,17 +117,18 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-
+        Collections.swap(topicList, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override
     public void onItemSwap(int position) {
-
+        //Do nothing
     }
 
     @Override
     public void onItemMoveFinish() {
-
+        //save the new order
     }
 
 
@@ -175,6 +179,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         protected View getRootView() {
             return rootView;
+        }
+
+        protected SwipeLayout getUSLView(){
+            return USL_topic;
         }
 
         protected View getTopicLeftSettingView() {

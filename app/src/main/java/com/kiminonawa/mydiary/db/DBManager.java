@@ -92,6 +92,12 @@ public class DBManager {
         return c;
     }
 
+    public long deleteAllCurrentTopicOrder() {
+        return db.delete(
+                DBStructure.TopicOrderEntry.TABLE_NAME,
+                null, null);
+    }
+
     public int getDiaryCountByTopicId(long topicId) {
         Cursor cursor = db.rawQuery("SELECT COUNT (*) FROM " + DiaryEntry_V2.TABLE_NAME + " WHERE " + DiaryEntry_V2.COLUMN_REF_TOPIC__ID + "=?",
                 new String[]{String.valueOf(topicId)});

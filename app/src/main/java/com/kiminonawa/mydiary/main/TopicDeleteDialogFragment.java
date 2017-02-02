@@ -51,10 +51,14 @@ public class TopicDeleteDialogFragment extends CommonDialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         super.onViewCreated(view, savedInstanceState);
-        position = getArguments().getInt("position", position);
+        position = getArguments().getInt("position", -1);
+        if (position == -1) {
+            dismiss();
+        }
         topicTitle = getArguments().getString("topicTitle", "");
         this.TV_common_content.setText(
                 String.format(getResources().getString(R.string.topic_dialog_delete_content), topicTitle));
+
     }
 
     @Override
