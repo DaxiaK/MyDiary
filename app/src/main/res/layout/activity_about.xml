@@ -26,7 +26,8 @@
             android:layout_height="match_parent"
             android:textColor="@android:color/black"
             android:textIsSelectable="true"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:autoLink="web"/>
 
     </ScrollView>
 

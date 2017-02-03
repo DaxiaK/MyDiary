@@ -23,11 +23,12 @@ public class AboutActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_about);
         license = new StringBuilder();
-        license.append("This open source project is coding by Daxia , see more information:\n\n" +
+        license.append("This open source project is coding by Daxia. You can copy and modify it for free.\n" +
+                "But please don't release into Google Play again without any modifying. To see more information:\n" +
                 "https://github.com/erttyy8821/MyDiary\n\n");
         license.append("This project release by MIT License:\n");
         license.append(
-                new LicenseObj("MyDiary", "Daxia", "2016", LicenseObj.MIT)
+                new LicenseObj("MyDiary", "Daxia", "2016 - 2017", LicenseObj.MIT)
                         .getLicense());
         license.append("\nI use some lib from:\n");
         license.append(

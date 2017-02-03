@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         dbManager.delTopic(topicList.get(position).getId());
+        //Don't delete the topic order, it will be refreshed next moving time.
         dbManager.closeDB();
         topicList.remove(position);
         mainTopicAdapter.notifyItemRemoved(position);
