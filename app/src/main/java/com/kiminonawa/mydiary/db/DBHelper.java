@@ -205,7 +205,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL(SQL_CREATE_MEMO_ORDER);
                     version6AddMemoOrder(db);
                 }
-                //TODO Add order
+                if (oldVersion < 7) {
+                    db.execSQL(SQL_CREATE_TOPIC_ORDER);
+                    version7AddTopicOrder(db);
+                }
 
                 //Check update success
                 db.setTransactionSuccessful();
@@ -280,6 +283,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 memoCursor.moveToNext();
             }
             memoCursor.close();
+            topicCursor.moveToNext();
+        }
+        topicCursor.close();
+    }
+
+    private void version7AddTopicOrder(SQLiteDatabase db) {
+        DBManager dbManager = new DBManager(db);
+        // init order value = memo id
+        dbManager.selectTopic();
+        Cursor topicCursor = dbManager.selectTopic();
+        for (int i = 0; i < topicCursor.getCount(); i++) {
+            long topicId = topicCursor.getLong(0);
+            dbManager.insertTopicOrder(topicId, i);
             topicCursor.moveToNext();
         }
         topicCursor.close();
