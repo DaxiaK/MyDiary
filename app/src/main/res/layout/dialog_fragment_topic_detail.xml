@@ -139,20 +139,20 @@
             android:layout_marginTop="10dp"
             android:gravity="center">
 
+            <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+                android:id="@+id/But_topic_detail_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+
+                android:text="@string/dialog_button_cancel"
+                android:textAllCaps="false" />
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
                 android:id="@+id/But_topic_detail_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
                 android:text="@string/dialog_button_ok"
-                android:textAllCaps="false" />
-
-            <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_detail_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />
         </LinearLayout>
     </LinearLayout>

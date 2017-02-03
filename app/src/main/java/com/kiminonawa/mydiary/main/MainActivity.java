@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback ,
+        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
         TopicDeleteDialogFragment.DeleteCallback {
 
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
-        mainTopicAdapter = new MainTopicAdapter(this, topicList ,dbManager);
+        mainTopicAdapter = new MainTopicAdapter(this, topicList, dbManager);
         RecyclerView_topic.setAdapter(mainTopicAdapter);
 
         //Set ItemTouchHelper
@@ -220,7 +220,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void TopicCreated() {
+    public void TopicCreated(final String topicTitle, final int type, final int color) {
+        dbManager.opeDB();
+
+        //Create newTopic into List first
+        final long newTopicId = dbManager.insertTopic(topicTitle, type, color);
+        //This ITopic is temp object
+        topicList.add(0,
+                new ITopic() {
+                    @Override
+                    public String getTitle() {
+                        return topicTitle;
+                    }
+
+                    @Override
+                    public int getType() {
+                        return type;
+                    }
+
+                    @Override
+                    public long getId() {
+                        return newTopicId;
+                    }
+
+                    @Override
+                    public int getIcon() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getCount() {
+                        return 0;
+                    }
+
+                    @Override
+                    public int getColor() {
+                        return color;
+                    }
+                });
+        //Get size
+        int orderNumber = topicList.size();
+        //Remove this topic order
+        dbManager.deleteAllCurrentTopicOrder();
+        //sort the topic order
+        for (ITopic topic : topicList) {
+            dbManager.insertTopicOrder(topic.getId(), --orderNumber);
+        }
+        dbManager.closeDB();
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged();
     }

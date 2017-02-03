@@ -22,7 +22,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
@@ -44,7 +43,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
 
 
     public interface TopicCreatedCallback {
-        void TopicCreated();
+        void TopicCreated(String topicTitle, int type, int color);
 
         void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newBgFileName);
     }
@@ -254,15 +253,6 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     }
 
 
-    private void createTopic() {
-        DBManager dbManager = new DBManager(getActivity());
-        dbManager.opeDB();
-        dbManager.insertTopic(EDT_topic_detail_title.getText().toString(),
-                SP_topic_detail_type.getSelectedItemPosition(), topicColorCode);
-        dbManager.closeDB();
-    }
-
-
     @Override
     public void onColorChange(int colorCode, int viewId) {
         topicColorCode = colorCode;
@@ -303,8 +293,8 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                     }
                 } else {
                     if (EDT_topic_detail_title.getText().toString().length() > 0) {
-                        createTopic();
-                        callback.TopicCreated();
+                        callback.TopicCreated(EDT_topic_detail_title.getText().toString(),
+                                SP_topic_detail_type.getSelectedItemPosition(), topicColorCode);
                         dismiss();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.toast_topic_empty), Toast.LENGTH_SHORT).show();
