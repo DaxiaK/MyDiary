@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
-        mainTopicAdapter = new MainTopicAdapter(this, topicList);
+        mainTopicAdapter = new MainTopicAdapter(this, topicList ,dbManager);
         RecyclerView_topic.setAdapter(mainTopicAdapter);
 
         //Set ItemTouchHelper

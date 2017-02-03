@@ -205,7 +205,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL(SQL_CREATE_MEMO_ORDER);
                     version6AddMemoOrder(db);
                 }
-                //Todo Add order
+                //TODO Add order
 
                 //Check update success
                 db.setTransactionSuccessful();

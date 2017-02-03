@@ -2,16 +2,17 @@ package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
@@ -32,10 +33,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     private List<ITopic> topicList;
     private MainActivity activity;
+    private DBManager dbManager;
 
-    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
+
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
         this.activity = activity;
         this.topicList = topicList;
+        this.dbManager = dbManager;
     }
 
 
@@ -54,7 +58,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getUSLView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getContentView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getIconView().setColorFilter(topicList.get(position).getColor());
@@ -63,10 +67,9 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getTVCount().setTextColor(topicList.get(position).getColor());
         holder.getArrow().setColorFilter(topicList.get(position).getColor());
-        holder.getUSLView().setOnClickListener(new View.OnClickListener() {
+        holder.getContentView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("test", "123");
                 gotoTopic(topicList.get(position).getType(), position);
             }
         });
@@ -128,7 +131,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public void onItemMoveFinish() {
-        //save the new order
+        //save the new topic order
+        int orderNumber = topicList.size();
+        dbManager.opeDB();
+        dbManager.deleteAllCurrentTopicOrder();
+        for (ITopic topic : topicList) {
+            dbManager.insertTopicOrder(topic.getId(), --orderNumber);
+        }
+        dbManager.closeDB();
+        notifyDataSetChanged();
     }
 
 
@@ -138,14 +149,14 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private ImageView IV_topic_arrow_right;
-        private View rootView;
         private SwipeLayout USL_topic;
         private LinearLayout LL_topic_left_setting;
+        private RelativeLayout RL_topic_content;
         private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
 
-        protected TopicViewHolder(View view) {
-            super(view);
-            this.rootView = view;
+        protected TopicViewHolder(View rootView) {
+            super(rootView);
+            this.RL_topic_content = (RelativeLayout) rootView.findViewById(R.id.RL_topic_content);
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
@@ -177,12 +188,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return IV_topic_arrow_right;
         }
 
-        protected View getRootView() {
-            return rootView;
-        }
-
-        protected SwipeLayout getUSLView(){
-            return USL_topic;
+        protected View getContentView() {
+            return RL_topic_content;
         }
 
         protected View getTopicLeftSettingView() {
