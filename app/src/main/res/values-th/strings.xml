@@ -37,7 +37,7 @@
     <string name="topic_detail_name">ชื่อหัวข้อ</string>
     <string name="topic_detail_text_color">สีตัวอักษร</string>
     <string name="topic_dialog_delete_title">ลบ</string>
-    <string name="topic_dialog_delete_content">คุณต้องการลบหรือไม่?</string>
+    <string name="topic_dialog_delete_content">คุณต้องการลบหรือไม่%1$s?</string>
 
     <string name="toast_topic_empty">ไม่มีชื่อหัวข้อ</string>
     <string name="topic_topic_bg_fail">การเปลี่ยนภาพพื้นหลังของหัวข้อล้มเหลว&#8230;</string>
