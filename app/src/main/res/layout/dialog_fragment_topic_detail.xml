@@ -132,32 +132,19 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp">
-
-
-            <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-                android:id="@+id/But_topic_detail_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="5dp"
-                android:gravity="center"
-                android:text="@string/dialog_button_delete"
-                android:textAllCaps="false"
-                android:visibility="gone" />
+            android:layout_marginTop="10dp"
+            android:gravity="center">
 
 
             <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
                 android:id="@+id/But_topic_detail_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_marginRight="5dp"
-                android:gravity="center"
                 android:text="@string/dialog_button_ok"
                 android:textAllCaps="false" />
 
@@ -165,11 +152,8 @@
                 android:id="@+id/But_topic_detail_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@id/But_topic_detail_ok"
-                android:gravity="center"
                 android:text="@string/dialog_button_cancel"
                 android:textAllCaps="false" />
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

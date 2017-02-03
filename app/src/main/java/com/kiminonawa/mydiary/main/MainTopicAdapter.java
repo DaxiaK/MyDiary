@@ -6,30 +6,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by daxia on 2016/10/17.
  */
 
-public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> {
+public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
+        ItemTouchHelperAdapter {
 
 
     private List<ITopic> topicList;
     private MainActivity activity;
+    private DBManager dbManager;
 
-    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
+
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
         this.activity = activity;
         this.topicList = topicList;
+        this.dbManager = dbManager;
     }
 
 
@@ -48,7 +58,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(TopicViewHolder holder, final int position) {
 
-        holder.getRootView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getContentView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
         holder.getIconView().setImageResource(topicList.get(position).getIcon());
         holder.getIconView().setColorFilter(topicList.get(position).getColor());
         holder.getTitleView().setText(topicList.get(position).getTitle());
@@ -56,21 +67,29 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getTVCount().setTextColor(topicList.get(position).getColor());
         holder.getArrow().setColorFilter(topicList.get(position).getColor());
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+        holder.getContentView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoTopic(topicList.get(position).getType(), position);
             }
         });
-        holder.getRootView().setOnLongClickListener(new View.OnLongClickListener() {
+        holder.getTopicLeftSettingEditView().setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 TopicDetailDialogFragment createTopicDialogFragment =
                         TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
                                 topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
                 createTopicDialogFragment.show(activity.getSupportFragmentManager(),
                         "createTopicDialogFragment");
-                return true;
+            }
+        });
+
+        holder.getTopicLeftSettingDeleteView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TopicDeleteDialogFragment topicDeleteDialogFragment =
+                        TopicDeleteDialogFragment.newInstance(position, topicList.get(position).getTitle());
+                topicDeleteDialogFragment.show(activity.getSupportFragmentManager(), "topicDeleteDialogFragment");
             }
         });
     }
@@ -99,6 +118,30 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         }
     }
 
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        Collections.swap(topicList, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onItemSwap(int position) {
+        //Do nothing
+    }
+
+    @Override
+    public void onItemMoveFinish() {
+        //save the new topic order
+        int orderNumber = topicList.size();
+        dbManager.opeDB();
+        dbManager.deleteAllCurrentTopicOrder();
+        for (ITopic topic : topicList) {
+            dbManager.insertTopicOrder(topic.getId(), --orderNumber);
+        }
+        dbManager.closeDB();
+        notifyDataSetChanged();
+    }
+
 
     protected class TopicViewHolder extends RecyclerView.ViewHolder {
 
@@ -106,15 +149,27 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private ImageView IV_topic_arrow_right;
-        private View rootView;
+        private SwipeLayout USL_topic;
+        private LinearLayout LL_topic_left_setting;
+        private RelativeLayout RL_topic_content;
+        private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
 
-        protected TopicViewHolder(View view) {
-            super(view);
-            this.rootView = view;
+        protected TopicViewHolder(View rootView) {
+            super(rootView);
+            this.RL_topic_content = (RelativeLayout) rootView.findViewById(R.id.RL_topic_content);
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
             this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
+
+            //Left setting view
+            this.USL_topic = (SwipeLayout) rootView.findViewById(R.id.USL_topic);
+            this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
+            this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
+            this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
+
+            this.USL_topic.setDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
+            this.USL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
         }
 
         protected ImageView getIconView() {
@@ -133,8 +188,20 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return IV_topic_arrow_right;
         }
 
-        protected View getRootView() {
-            return rootView;
+        protected View getContentView() {
+            return RL_topic_content;
+        }
+
+        protected View getTopicLeftSettingView() {
+            return LL_topic_left_setting;
+        }
+
+        protected View getTopicLeftSettingEditView() {
+            return IV_topic_left_setting_edit;
+        }
+
+        protected View getTopicLeftSettingDeleteView() {
+            return IV_topic_left_setting_delete;
         }
     }
 }

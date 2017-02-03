@@ -16,6 +16,7 @@ import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoOrderEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.TopicOrderEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -23,6 +24,9 @@ import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
 public class DBHelper extends SQLiteOpenHelper {
 
     /**
+     * Version 7 by Daxia
+     * Add new table for topic order
+     * -------------
      * Version 6 by Daxia
      * Add new table for memo order
      * ---------------------------------
@@ -45,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Version 1 by Daxia：
      * First DB
      */
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "mydiary.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -64,6 +68,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     TopicEntry.COLUMN_SUBTITLE + TEXT_TYPE + COMMA_SEP +
                     TopicEntry.COLUMN_COLOR + INTEGER_TYPE +
                     " )";
+
+    private static final String SQL_CREATE_TOPIC_ORDER =
+            "CREATE TABLE " + TopicOrderEntry.TABLE_NAME + " (" +
+                    TopicOrderEntry.COLUMN_REF_TOPIC__ID + INTEGER_TYPE + COMMA_SEP +
+                    TopicOrderEntry.COLUMN_ORDER + INTEGER_TYPE + COMMA_SEP +
+                    FOREIGN + " (" + TopicOrderEntry.COLUMN_REF_TOPIC__ID + ")" + REFERENCES + TopicEntry.TABLE_NAME + "(" + TopicEntry._ID + ")" +
+                    ")";
 
     /**
      * Discarded DIARY DB
@@ -141,6 +152,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_TOPIC_ENTRIES);
+        db.execSQL(SQL_CREATE_TOPIC_ORDER);
 
         //Diary V2 work from db version 4
         db.execSQL(SQL_CREATE_DIARY_ENTRIES_V2);
@@ -193,6 +205,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL(SQL_CREATE_MEMO_ORDER);
                     version6AddMemoOrder(db);
                 }
+                if (oldVersion < 7) {
+                    db.execSQL(SQL_CREATE_TOPIC_ORDER);
+                    version7AddTopicOrder(db);
+                }
+
                 //Check update success
                 db.setTransactionSuccessful();
             } finally {
@@ -266,6 +283,19 @@ public class DBHelper extends SQLiteOpenHelper {
                 memoCursor.moveToNext();
             }
             memoCursor.close();
+            topicCursor.moveToNext();
+        }
+        topicCursor.close();
+    }
+
+    private void version7AddTopicOrder(SQLiteDatabase db) {
+        DBManager dbManager = new DBManager(db);
+        // init order value = memo id
+        dbManager.selectTopic();
+        Cursor topicCursor = dbManager.selectTopic();
+        for (int i = 0; i < topicCursor.getCount(); i++) {
+            long topicId = topicCursor.getLong(0);
+            dbManager.insertTopicOrder(topicId, i);
             topicCursor.moveToNext();
         }
         topicCursor.close();

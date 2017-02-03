@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,7 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback {
+        TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback ,
+        TopicDeleteDialogFragment.DeleteCallback {
 
 
     /**
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView RecyclerView_topic;
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
+    private ItemTouchHelper touchHelper;
+
     /**
      * DB
      */
@@ -159,8 +163,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
-        mainTopicAdapter = new MainTopicAdapter(this, topicList);
+        mainTopicAdapter = new MainTopicAdapter(this, topicList ,dbManager);
         RecyclerView_topic.setAdapter(mainTopicAdapter);
+
+        //Set ItemTouchHelper
+        ItemTouchHelper.Callback callback =
+                new TopicItemTouchHelperCallback(mainTopicAdapter);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(RecyclerView_topic);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
@@ -215,8 +225,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTopicAdapter.notifyDataSetChanged();
     }
 
+
     @Override
-    public void TopicDeleted(final int position) {
+    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
+        DBManager dbManager = new DBManager(this);
+        dbManager.opeDB();
+        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
+        dbManager.closeDB();
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged();
+        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
+    }
+
+    @Override
+    public void updateName() {
+        initProfile();
+        loadProfilePicture();
+    }
+
+    @Override
+    public void onTopicDelete(final int position) {
         DBManager dbManager = new DBManager(MainActivity.this);
         dbManager.opeDB();
         switch (topicList.get(position).getType()) {
@@ -252,22 +280,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topicList.remove(position);
         mainTopicAdapter.notifyItemRemoved(position);
         mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
-    }
-
-    @Override
-    public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
-        DBManager dbManager = new DBManager(this);
-        dbManager.opeDB();
-        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
-        dbManager.closeDB();
-        loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
-        updateTopicBg(position, topicBgStatus, newTopicBgFileName);
-    }
-
-    @Override
-    public void updateName() {
-        initProfile();
-        loadProfilePicture();
     }
 }

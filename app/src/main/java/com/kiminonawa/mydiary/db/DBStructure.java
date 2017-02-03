@@ -53,6 +53,13 @@ public class DBStructure {
         public static final String COLUMN_COLOR = "topic_color";
     }
 
+
+    public static abstract class TopicOrderEntry implements BaseColumns {
+        public static final String TABLE_NAME = "topic_order";
+        public static final String COLUMN_ORDER = "topic_order_order_in_parent";
+        public static final String COLUMN_REF_TOPIC__ID = "topic_order_ref_topic_id";
+    }
+
     public static abstract class MemoEntry implements BaseColumns {
         public static final String TABLE_NAME = "memo_entry";
         public static final String COLUMN_ORDER = "memo_order";
