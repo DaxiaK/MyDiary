@@ -136,7 +136,7 @@ public class MemoActivity extends FragmentActivity implements
         RecyclerView_memo.setAdapter(memoAdapter);
         //Set ItemTouchHelper
         ItemTouchHelper.Callback callback =
-                new ItemTouchHelperCallback(memoAdapter);
+                new MemoItemTouchHelperCallback(memoAdapter);
         touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(RecyclerView_memo);
     }

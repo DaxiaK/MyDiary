@@ -13,6 +13,7 @@ import static com.kiminonawa.mydiary.db.DBStructure.DiaryItemEntry_V2;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.MemoOrderEntry;
 import static com.kiminonawa.mydiary.db.DBStructure.TopicEntry;
+import static com.kiminonawa.mydiary.db.DBStructure.TopicOrderEntry;
 
 /**
  * Created by daxia on 2016/4/2.
@@ -33,7 +34,7 @@ public class DBManager {
         this.db = db;
     }
 
-    /**
+    /*
      * DB IO
      */
 
@@ -61,7 +62,7 @@ public class DBManager {
         db.endTransaction();
     }
 
-    /**
+    /*
      * Topic
      */
 
@@ -70,6 +71,16 @@ public class DBManager {
                 TopicEntry.TABLE_NAME,
                 null,
                 this.createTopicCV(name, type, color));
+    }
+
+    public long insertTopicOrder(long topicId, long order) {
+        ContentValues values = new ContentValues();
+        values.put(TopicOrderEntry.COLUMN_ORDER, order);
+        values.put(TopicOrderEntry.COLUMN_REF_TOPIC__ID, topicId);
+        return db.insert(
+                TopicOrderEntry.TABLE_NAME,
+                null,
+                values);
     }
 
     public long updateTopic(long topicId, String name, int color) {
@@ -83,13 +94,27 @@ public class DBManager {
                 new String[]{String.valueOf(topicId)});
     }
 
+    /**
+     * Select Topic & order for show in Topic list
+     *
+     * @return
+     */
     public Cursor selectTopic() {
-        Cursor c = db.query(TopicEntry.TABLE_NAME, null, null, null, null, null,
-                TopicEntry._ID + " DESC");
+        Cursor c = db.rawQuery("SELECT * FROM " + TopicEntry.TABLE_NAME
+                        + " LEFT OUTER JOIN " + TopicOrderEntry.TABLE_NAME
+                        + " ON " + TopicEntry._ID + " = " + TopicOrderEntry.COLUMN_REF_TOPIC__ID
+                        + " ORDER BY " + TopicOrderEntry.COLUMN_ORDER + " DESC "
+                , null);
         if (c != null) {
             c.moveToFirst();
         }
         return c;
+    }
+
+    public long deleteAllCurrentTopicOrder() {
+        return db.delete(
+                TopicOrderEntry.TABLE_NAME,
+                null, null);
     }
 
     public int getDiaryCountByTopicId(long topicId) {
@@ -151,7 +176,7 @@ public class DBManager {
     }
 
 
-    /**
+    /*
      * Diary
      */
     public long insertDiaryInfo(long time, String title,
@@ -260,7 +285,7 @@ public class DBManager {
         return values;
     }
 
-    /**
+    /*
      * MEMO
      */
     public long insertMemo(String content, boolean isChecked, long refTopicId) {
@@ -373,7 +398,7 @@ public class DBManager {
         return values;
     }
 
-    /**
+    /*
      * Contacts
      */
 
@@ -443,7 +468,7 @@ public class DBManager {
     }
 
 
-    /**
+    /*
      * Debug
      */
 

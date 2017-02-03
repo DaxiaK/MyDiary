@@ -108,7 +108,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemSwap(int position) {
         //Do nothing
     }
 

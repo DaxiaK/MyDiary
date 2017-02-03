@@ -76,6 +76,9 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
             //Insert sample topic
             long mitsuhaMemoId = dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO, Color.BLACK);
             long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO, Color.BLACK);
+
+            dbManager.insertTopicOrder(mitsuhaMemoId, 0);
+            dbManager.insertTopicOrder(takiMemoId, 1);
             //Insert sample memo
             if (mitsuhaMemoId != -1) {
                 dbManager.insertMemoOrder(mitsuhaMemoId,
@@ -119,6 +122,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         if (SPFManager.getVersionCode(mContext) < 10) {
             //Insert sample topic
             long topicOnDiarySampleId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY, Color.BLACK);
+            dbManager.insertTopicOrder(topicOnDiarySampleId, 2);
             if (topicOnDiarySampleId != -1) {
                 //Insert sample diary
                 long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
@@ -131,7 +135,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
         if (SPFManager.getVersionCode(mContext) < 10) {
             //Insert sample contacts
             long sampleContactsId = dbManager.insertTopic("緊急時以外かけちゃダメ！", ITopic.TYPE_CONTACTS, Color.BLACK);
-
+            dbManager.insertTopicOrder(sampleContactsId, 3);
             //Insert sample contacts
             if (sampleContactsId != -1) {
                 dbManager.insertContacts(mContext.getString(R.string.profile_username_mitsuha), "090000000", "", sampleContactsId);

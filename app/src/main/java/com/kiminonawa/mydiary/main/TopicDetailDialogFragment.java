@@ -40,13 +40,11 @@ import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_WRITE_ES_PE
  * Created by daxia on 2016/8/27.
  */
 public class TopicDetailDialogFragment extends DialogFragment implements View.OnClickListener,
-        ColorPickerFragment.colorPickerCallback, TopicDeleteDialogFragment.DeleteCallback {
+        ColorPickerFragment.colorPickerCallback {
 
 
     public interface TopicCreatedCallback {
         void TopicCreated();
-
-        void TopicDeleted(int position);
 
         void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newBgFileName);
     }
@@ -86,7 +84,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
     private ImageView IV_topic_color, IV_topic_detail_topic_bg;
     private MyDiaryButton But_topic_detail_default_bg;
     private Spinner SP_topic_detail_type;
-    private MyDiaryButton But_topic_detail_ok, But_topic_detail_cancel, But_topic_detail_delete;
+    private MyDiaryButton But_topic_detail_ok, But_topic_detail_cancel;
 
 
     public static TopicDetailDialogFragment newInstance(boolean isEditMode, int position, long topicId,
@@ -169,9 +167,6 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
             But_topic_detail_default_bg.setEnabled(isTopicHaveCustomBg() ? true : false);
 
             EDT_topic_detail_title.setText(title);
-            But_topic_detail_delete = (MyDiaryButton) rootView.findViewById(R.id.But_topic_detail_delete);
-            But_topic_detail_delete.setVisibility(View.VISIBLE);
-            But_topic_detail_delete.setOnClickListener(this);
         } else {
             SP_topic_detail_type = (Spinner) rootView.findViewById(R.id.SP_topic_detail_type);
             SP_topic_detail_type.setVisibility(View.VISIBLE);
@@ -274,12 +269,6 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         setTextColor(colorCode);
     }
 
-    @Override
-    public void onTopicDelete() {
-        callback.TopicDeleted(position);
-        dismiss();
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -302,11 +291,6 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                 IV_topic_detail_topic_bg.setImageDrawable(
                         ThemeManager.getInstance().getTopicBgDefaultDrawable(getActivity(), topicType));
                 But_topic_detail_default_bg.setEnabled(false);
-                break;
-            case R.id.But_topic_detail_delete:
-                TopicDeleteDialogFragment topicDeleteDialogFragment = TopicDeleteDialogFragment.newInstance(title);
-                topicDeleteDialogFragment.setTargetFragment(this, 0);
-                topicDeleteDialogFragment.show(getFragmentManager(), "topicDeleteDialogFragment");
                 break;
             case R.id.But_topic_detail_ok:
                 if (isEditMode) {

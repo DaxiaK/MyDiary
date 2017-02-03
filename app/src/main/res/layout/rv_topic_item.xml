@@ -5,56 +5,93 @@
     android:addStatesFromChildren="true"
     android:clickable="true">
 
-    <RelativeLayout
+    <com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout
+        android:id="@+id/USL_topic"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/IV_topic_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp" />
-
-        <ImageView
-            android:id="@+id/IV_topic_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
-
-        <TextView
-            android:id="@+id/TV_topic_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/IV_topic_arrow_right"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/TV_topic_title"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/LL_topic_left_setting"
+            android:layout_width="102dp"
             android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/TV_topic_count"
-            android:layout_toRightOf="@id/IV_topic_icon"
-            android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@android:color/black"
-            android:textSize="16dp" />
-    </RelativeLayout>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/IV_topic_left_setting_edit"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_mode_edit_white_36dp" />
+
+            <ImageView
+                android:id="@+id/IV_topic_left_setting_delete"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_delete_white_36dp" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/RL_topic_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/IV_topic_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp" />
+
+                <ImageView
+                    android:id="@+id/IV_topic_arrow_right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+                <TextView
+                    android:id="@+id/TV_topic_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@id/IV_topic_arrow_right"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/TV_topic_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toLeftOf="@id/TV_topic_count"
+                    android:layout_toRightOf="@id/IV_topic_icon"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="16dp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="@color/topic_divider" />
-
 </RelativeLayout>
