@@ -168,9 +168,20 @@ public class MemoActivity extends FragmentActivity implements
     @Override
     public void addMemo(String memoContent) {
         dbManager.opeDB();
-        dbManager.insertMemoOrder(topicId,
-                dbManager.insertMemo(memoContent, false, topicId)
-                , memoList.size());
+
+        //Create newMemoEntity into List first
+        MemoEntity newMemoEntity = new MemoEntity(dbManager.insertMemo(memoContent, false, topicId)
+                , memoContent, false);
+        memoList.add(0, newMemoEntity);
+        //Get size
+        int orderNumber = memoList.size();
+        //Remove this topic's all memo order
+        dbManager.deleteAllCurrentMemoOrder(topicId);
+        //sort the memo order
+        for (MemoEntity memoEntity : memoList) {
+            dbManager.insertMemoOrder(topicId, memoEntity.getMemoId(), --orderNumber);
+        }
+        //Load again
         loadMemo(false);
         dbManager.closeDB();
         memoAdapter.notifyDataSetChanged();
