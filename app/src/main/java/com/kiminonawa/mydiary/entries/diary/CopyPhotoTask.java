@@ -8,8 +8,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.BitmapHelper;
-import com.kiminonawa.mydiary.shared.ExifUtil;
+import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
+import com.kiminonawa.mydiary.shared.photo.ExifUtil;
 import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.FileOutputStream;

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 
-import com.kiminonawa.mydiary.shared.BitmapHelper;
-import com.kiminonawa.mydiary.shared.ExifUtil;
+import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
+import com.kiminonawa.mydiary.shared.photo.ExifUtil;
 import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
 
 import java.io.IOException;

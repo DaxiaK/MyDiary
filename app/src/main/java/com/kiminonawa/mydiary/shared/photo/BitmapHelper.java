@@ -1,4 +1,4 @@
-package com.kiminonawa.mydiary.shared;
+package com.kiminonawa.mydiary.shared.photo;
 
 import android.content.Context;
 import android.graphics.Bitmap;

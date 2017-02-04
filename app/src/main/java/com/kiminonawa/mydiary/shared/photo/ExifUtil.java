@@ -1,4 +1,4 @@
-package com.kiminonawa.mydiary.shared;
+package com.kiminonawa.mydiary.shared.photo;
 
 
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+
+import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.IOException;
 
