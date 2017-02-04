@@ -31,13 +31,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
         TopicDeleteDialogFragment.DeleteCallback {
 
 
-    /**
+    /*
      * RecyclerView
      */
     private RecyclerView RecyclerView_topic;
@@ -45,12 +47,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<ITopic> topicList;
     private ItemTouchHelper touchHelper;
 
-    /**
+    /*
      * DB
      */
     private DBManager dbManager;
+    /*
+     * Back button event
+     */
 
-    /**
+    private static Boolean isExit = false;
+    private Timer backTimer = new Timer();
+
+    /*
      * UI
      */
     private ThemeManager themeManager;
@@ -105,6 +113,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Init topic adapter
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isExit == false) {
+            isExit = true;
+            Toast.makeText(this, getString(R.string.main_activity_exit_app), Toast.LENGTH_SHORT).show();
+            TimerTask task;
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    isExit = false;
+                }
+            };
+            backTimer.schedule(task, 2000);
+        } else {
+            super.onBackPressed();
+
+        }
     }
 
     private void initProfile() {

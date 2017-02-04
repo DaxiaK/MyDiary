@@ -153,5 +153,7 @@
     <string name="password_verify_pwd">パスコードを入力</string>
     <string name="password_verify_pwd_msg">パスコードが一致しません</string>
 
+    <!--Back event-->
+    <string name="main_activity_exit_app">Click back button again to close</string>
 
 </resources>

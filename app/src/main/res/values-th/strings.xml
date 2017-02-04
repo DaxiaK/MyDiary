@@ -156,6 +156,7 @@
     <string name="password_remove_pwd_msg">รหัสผ่านเดิมไม่ตรงกัน</string>
 
 
-
+    <!--Back event-->
+    <string name="main_activity_exit_app">Click back button again to close</string>
     
 </resources>

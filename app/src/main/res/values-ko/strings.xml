@@ -153,5 +153,7 @@
      <string name="password_verify_pwd_msg">비밀번호가 일치하지 않습니다</string>
      <string name="password_remove_pwd_msg">원래의 비밀번호가 일치하지 않습니다</string>
 
+    <!--Back event-->
+    <string name="main_activity_exit_app">Click back button again to close</string>
 
 </resources>

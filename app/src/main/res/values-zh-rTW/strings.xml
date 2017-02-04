@@ -155,6 +155,10 @@
     <string name="password_verify_pwd_msg">密碼輸入錯誤</string>
     <string name="password_remove_pwd_msg">舊密碼輸入錯誤</string>
 
+    <!--Back event-->
+    <string name="main_activity_exit_app">再按一次返回鍵退出</string>
+
+
 
 
 </resources>
