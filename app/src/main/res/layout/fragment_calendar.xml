@@ -11,18 +11,19 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/RL_calendar_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.7"
             android:background="@color/colorPrimary"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:gravity="center">
+
 
             <LinearLayout
-                android:id="@+id/LL_calendar_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
@@ -30,32 +31,32 @@
                 android:paddingTop="10dp">
 
 
-                <TextView
-                    android:id="@+id/TV_calendar_months"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="40dp" />
+                <!--<TextView-->
+                    <!--android:id="@+id/TV_calendar_months"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text=""-->
+                    <!--android:textSize="40dp" />-->
 
-                <TextView
-                    android:id="@+id/TV_calendar_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text=""
-                    android:textSize="100dp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:id="@+id/TV_calendar_date"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text=""-->
+                    <!--android:textSize="100dp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/TV_calendar_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text=""
-                    android:textSize="25dp" />
+                <!--<TextView-->
+                    <!--android:id="@+id/TV_calendar_day"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:text=""-->
+                    <!--android:textSize="25dp" />-->
 
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 

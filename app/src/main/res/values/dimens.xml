@@ -20,5 +20,11 @@
     <dimen name="setting_content_margin_top">10dp</dimen>
     <dimen name="setting_group_margin_top">20dp</dimen>
 
+    <!--Calendar-->
+
+    <dimen name="calendar_months_full_name_text_size">40dp</dimen>
+    <dimen name="calendar_date_full_name_text_size">100dp</dimen>
+    <dimen name="calendar_day_full_name_text_size">25dp</dimen>
+
 
 </resources>
