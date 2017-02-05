@@ -205,6 +205,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     db.execSQL(SQL_CREATE_MEMO_ORDER);
                     version6AddMemoOrder(db);
                 }
+                //Topic order method work in version 27 & db version 27
                 if (oldVersion < 7) {
                     db.execSQL(SQL_CREATE_TOPIC_ORDER);
                     version7AddTopicOrder(db);
@@ -270,16 +271,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private void version6AddMemoOrder(SQLiteDatabase db) {
-        DBManager dbManager = new DBManager(db);
+        DBUpdateTool dbUpdateTool = new DBUpdateTool(db);
         // init order value = memo id
-        dbManager.selectTopic();
-        Cursor topicCursor = dbManager.selectTopic();
+        Cursor topicCursor = dbUpdateTool.version_6_SelectTopic();
         for (int i = 0; i < topicCursor.getCount(); i++) {
             long topicId = topicCursor.getLong(0);
-            Cursor memoCursor = dbManager.selectMemo(topicId);
+            Cursor memoCursor = dbUpdateTool.version_6_SelectMemo(topicId);
             for (int j = 0; j < memoCursor.getCount(); j++) {
                 long memoId = memoCursor.getLong(0);
-                dbManager.insertMemoOrder(topicId, memoId, j);
+                dbUpdateTool.version_6_InsertMemoOrder(topicId, memoId, j);
                 memoCursor.moveToNext();
             }
             memoCursor.close();
@@ -289,13 +289,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void version7AddTopicOrder(SQLiteDatabase db) {
-        DBManager dbManager = new DBManager(db);
+        DBUpdateTool dbUpdateTool = new DBUpdateTool(db);
         // init order value = memo id
-        dbManager.selectTopic();
-        Cursor topicCursor = dbManager.selectTopic();
+        Cursor topicCursor = dbUpdateTool.version_7_SelectTopic();
         for (int i = 0; i < topicCursor.getCount(); i++) {
             long topicId = topicCursor.getLong(0);
-            dbManager.insertTopicOrder(topicId, i);
+            dbUpdateTool.version_7_InsertTopicOrder(topicId, i);
             topicCursor.moveToNext();
         }
         topicCursor.close();
