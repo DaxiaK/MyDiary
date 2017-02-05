@@ -5,8 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
-import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 
@@ -28,36 +29,46 @@ public class CalendarFactory {
 
     private Rect textRect;
     private int textBaseX;
+    private float centerBaseLine, monthBaseLine, dayBaseLine;
+    //Test size
+    private float scale;
+
 
     public CalendarFactory(Context context, int width, int height) {
 
         calendar = Calendar.getInstance();
         timeTools = TimeTools.getInstance(context);
         mContext = context;
-        textRect = new Rect(0, 0, width, height / 2);
-
+        textRect = new Rect(0, 0, width, height);
+        scale = context.getResources().getDisplayMetrics().density;
 
         //init Color
         monthPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        monthPaint.setTextSize(context.getResources().getDimension(R.dimen.calendar_months_full_name_text_size));
+        setPrintTextSize(monthPaint,40);
         monthPaint.setColor(ThemeManager.getInstance().getThemeDarkColor(context));
         monthPaint.setTextAlign(Paint.Align.CENTER);
-        Paint.FontMetricsInt fontMetrics = monthPaint.getFontMetricsInt();
-        textBaseX = (textRect.bottom + textRect.top - fontMetrics.bottom - fontMetrics.top) / 2;
 
-        //Need bold
         datePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        datePaint.setTextSize(context.getResources().getDimension(R.dimen.calendar_date_full_name_text_size));
+        setPrintTextSize(datePaint,130);
         datePaint.setColor(ThemeManager.getInstance().getThemeDarkColor(context));
         datePaint.setTextAlign(Paint.Align.CENTER);
+        datePaint.setTypeface(Typeface.DEFAULT_BOLD);
 
         dayPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        dayPaint.setTextSize(context.getResources().getDimension(R.dimen.calendar_day_full_name_text_size));
+        setPrintTextSize(dayPaint,25);
         dayPaint.setColor(ThemeManager.getInstance().getThemeDarkColor(context));
         dayPaint.setTextAlign(Paint.Align.CENTER);
 
+        textBaseX = width / 2;
+        centerBaseLine = textRect.centerY() + (getTextHeight(datePaint) / 2) - datePaint.getFontMetrics().bottom;
+        monthBaseLine = centerBaseLine + (datePaint.getFontMetrics().top - ScreenHelper.dpToPixel(mContext.getResources(), 5));
+        dayBaseLine = centerBaseLine + (getTextHeight(dayPaint) + ScreenHelper.dpToPixel(mContext.getResources(), 20));
     }
 
+    private void setPrintTextSize(Paint paint, float textSize) {
+        paint.setTextSize(textSize * scale + 0.5f);
+
+    }
 
     public synchronized void onDraw(Canvas canvas) {
         canvas.drawColor(Color.WHITE);
@@ -81,9 +92,21 @@ public class CalendarFactory {
 
 
     private void updateCalendar(Canvas canvas) {
-        canvas.drawText(timeTools.getMonthsFullName()[calendar.get(Calendar.MONTH)], textBaseX, textRect.centerX() / 2, monthPaint);
-        canvas.drawText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)), textBaseX, textRect.centerX(), datePaint);
-        canvas.drawText(timeTools.getDaysFullName()[calendar.get(Calendar.DAY_OF_WEEK) - 1], textBaseX, textRect.centerX() + 300, dayPaint);
+        canvas.drawText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)),
+                textBaseX, centerBaseLine, datePaint);
+
+        canvas.drawText(timeTools.getMonthsFullName()[calendar.get(Calendar.MONTH)],
+                textBaseX, monthBaseLine, monthPaint);
+
+        canvas.drawText(timeTools.getDaysFullName()[calendar.get(Calendar.DAY_OF_WEEK) - 1],
+                textBaseX, dayBaseLine, dayPaint);
+    }
+
+    private float getTextHeight(Paint paint) {
+        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        float top = fontMetrics.top;
+        float bottom = fontMetrics.bottom;
+        return bottom - top;
     }
 
 }

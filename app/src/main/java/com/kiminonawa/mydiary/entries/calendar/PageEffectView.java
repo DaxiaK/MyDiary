@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
 
+import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 
 //Ref: http://blog.csdn.net/hmg25/article/details/6419694
@@ -106,7 +107,7 @@ public class PageEffectView extends View {
     private void setScreen(Context context) {
         mWidth = ScreenHelper.getScreenWidth(context);
         mHeight = (int)
-                ((ScreenHelper.getScreenHeight(context) - ScreenHelper.dpToPixel(context.getResources(), 80)) * 0.7);
+                ((ScreenHelper.getScreenHeight(context) - context.getResources().getDimension(R.dimen.top_bar_height)) * 0.7);
         mMaxLength = (float) Math.hypot(mWidth, mHeight);
     }
 

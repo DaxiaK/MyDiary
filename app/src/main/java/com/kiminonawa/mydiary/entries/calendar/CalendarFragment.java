@@ -25,7 +25,6 @@ public class CalendarFragment extends BaseDiaryFragment {
      */
     private Calendar calendar;
     private Date currentDate;
-    private int dateChange = 0;
 
     private TimeTools timeTools;
     private ThemeManager themeManager;
