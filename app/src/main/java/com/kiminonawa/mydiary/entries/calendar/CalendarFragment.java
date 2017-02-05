@@ -59,23 +59,11 @@ public class CalendarFragment extends BaseDiaryFragment {
 
         RL_calendar_content = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content);
 
-
-//        TV_calendar_months.setTextColor(themeManager.getThemeDarkColor(getActivity()));
-//        TV_calendar_date.setTextColor(themeManager.getThemeDarkColor(getActivity()));
-//        TV_calendar_day.setTextColor(themeManager.getThemeDarkColor(getActivity()));
-
         PageEffectView pageEffectView = new PageEffectView(getActivity());
         RL_calendar_content.addView(pageEffectView);
 
-
         return rootView;
     }
-
-//    private void updateCalendar() {
-//        TV_calendar_months.setText(timeTools.getMonthsFullName()[calendar.get(Calendar.MONTH)]);
-//        TV_calendar_date.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-//        TV_calendar_day.setText(timeTools.getDaysFullName()[calendar.get(Calendar.DAY_OF_WEEK) - 1]);
-//    }
 
 
 

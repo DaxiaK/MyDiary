@@ -101,6 +101,9 @@ public class PageEffectView extends View {
 
         mTouch.x = 0.01f; // 不让x,y为0,否则在点计算时会有问题
         mTouch.y = 0.01f;
+
+        //Set today text
+        calendarFactory.onDraw(mCurrentPageCanvas);
     }
 
 
@@ -140,20 +143,7 @@ public class PageEffectView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean ret;
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            abortAnimation();
-            calcCornerXY(event.getX(), event.getY());
-            calendarFactory.onDraw(mCurrentPageCanvas);
-            if (DragToRight()) {
-                calendarFactory.preDateDraw(mNextPageCanvas);
-            } else {
-                calendarFactory.nextDateDraw(mNextPageCanvas);
-            }
-        }
-
-        ret = doTouchEvent(event);
-        return ret;
+        return doTouchEvent(event);
     }
 
     public boolean doTouchEvent(MotionEvent event) {
@@ -167,6 +157,11 @@ public class PageEffectView extends View {
                 break;
 
             case MotionEvent.ACTION_DOWN:
+                //
+                abortAnimation();
+                calcCornerXY(event.getX(), event.getY());
+                calendarFactory.onDraw(mCurrentPageCanvas);
+                //
                 mTouch.x = event.getX();
                 mTouch.y = event.getY();
                 // calcCornerXY(mTouch.x, mTouch.y);
@@ -176,6 +171,11 @@ public class PageEffectView extends View {
             case MotionEvent.ACTION_UP:
                 getParent().requestDisallowInterceptTouchEvent(false);
                 if (canDragOver()) {
+                    if (DragToRight()) {
+                        calendarFactory.preDateDraw(mNextPageCanvas);
+                    } else {
+                        calendarFactory.nextDateDraw(mNextPageCanvas);
+                    }
                     startAnimation(1200);
                 } else {
                     mTouch.x = mCornerX - 0.09f;
@@ -184,6 +184,7 @@ public class PageEffectView extends View {
                 this.postInvalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
+                abortAnimation();
                 getParent().requestDisallowInterceptTouchEvent(false);
                 break;
         }
