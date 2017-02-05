@@ -47,28 +47,28 @@ so, maybe I will try to create an iOS version after this app is running.
 * More theme , More profile
 * Add profile picture
 * Add password
+* Allow order for topic , memo
 
 **Not Work:**
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Allow order for topic , memo (Memo work)
-2. import & export DB(Alpha) (flow finish) 
-3. Search function
-4. page curl effect
-5. OOBE
-6. Code refactoring
-7. Google account backup & including FireBase
-8. UI review & support xxxHpdi \
-9. Implments search
-10. Support Chinese sort
-11. Modify contacts detail (beta)
-12. Tags
-13. load contacts from phone
-14. Add bookmark for diary
-15. Add music in diary
-16. Support Chinese sort
-17. Supprot JP sort
+1. import & export DB(Alpha) (flow finish) 
+2. Search function
+3. page curl effect (80%)
+4. OOBE
+5. Code refactoring
+6. Google account backup & including FireBase
+7. UI review & support xxxHpdi \
+8. Implments search
+9. Support Chinese sort
+10. Modify contacts detail (beta)
+11. Tags
+12. load contacts from phone
+13. Add bookmark for diary
+14. Add music in diary
+15. Support Chinese sort
+16. Supprot JP sort
 
 Coding & Designing:
 
@@ -84,10 +84,8 @@ Coding & Designing:
 Some function will be implemented later ,but some user is asking about them.
 If you want to help this project , you can select them first and let me know:
 
-1. page curl effect in calendar(ref: [1](https://github.com/harism/android_page_curl) [2](http://blog.csdn.net/aigestudio/article/details/42678541) )
-2. Implments search in MainActivity , ContactsActivity
-3. load contacts from phone
-4. Add border and radius in all dialogfragment 
+1. Implments search in MainActivity , ContactsActivity
+2. Add border and radius in all dialogfragment 
 
 ## known issue
 
