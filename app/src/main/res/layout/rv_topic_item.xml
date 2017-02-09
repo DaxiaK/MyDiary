@@ -5,7 +5,7 @@
     android:addStatesFromChildren="true"
     android:clickable="true">
 
-    <com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout
+    <com.kiminonawa.mydiary.main.LeftSwipeLayout
         android:id="@+id/USL_topic"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -87,7 +87,7 @@
 
         </RelativeLayout>
 
-    </com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout>
+    </com.kiminonawa.mydiary.main.LeftSwipeLayout>
 
     <ImageView
         android:layout_width="match_parent"

@@ -18,7 +18,6 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 
 import java.util.Collections;
 import java.util.List;
@@ -149,7 +148,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private ImageView IV_topic_arrow_right;
-        private SwipeLayout USL_topic;
+        private LeftSwipeLayout USL_topic;
         private LinearLayout LL_topic_left_setting;
         private RelativeLayout RL_topic_content;
         private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
@@ -163,13 +162,13 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
 
             //Left setting view
-            this.USL_topic = (SwipeLayout) rootView.findViewById(R.id.USL_topic);
+            this.USL_topic = (LeftSwipeLayout) rootView.findViewById(R.id.USL_topic);
             this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
             this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
             this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
 
-            this.USL_topic.setDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
-            this.USL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
+            this.USL_topic.setDrag(LeftSwipeLayout.DragEdge.Left, LL_topic_left_setting);
+            this.USL_topic.setShowMode(LeftSwipeLayout.ShowMode.PullOut);
         }
 
         protected ImageView getIconView() {
