@@ -218,10 +218,10 @@ public class PageEffectView extends View {
         mBezierControl2.y = mMiddleY - (mCornerX - mMiddleX)
                 * (mCornerX - mMiddleX) / (mCornerY - mMiddleY);
 
-        // Log.i("hmg", "mTouchX  " + mTouch.x + "  mTouchY  " + mTouch.y);
-        // Log.i("hmg", "mBezierControl1.x  " + mBezierControl1.x
+        // Log.i("TAG", "mTouchX  " + mTouch.x + "  mTouchY  " + mTouch.y);
+        // Log.i("TAG", "mBezierControl1.x  " + mBezierControl1.x
         // + "  mBezierControl1.y  " + mBezierControl1.y);
-        // Log.i("hmg", "mBezierControl2.x  " + mBezierControl2.x
+        // Log.i("TAG", "mBezierControl2.x  " + mBezierControl2.x
         // + "  mBezierControl2.y  " + mBezierControl2.y);
 
         mBezierStart1.x = mBezierControl1.x - (mCornerX - mBezierControl1.x)
@@ -253,11 +253,11 @@ public class PageEffectView extends View {
                 mBezierControl2.x = mCornerX;
                 mBezierControl2.y = mMiddleY - (mCornerX - mMiddleX)
                         * (mCornerX - mMiddleX) / (mCornerY - mMiddleY);
-                // Log.i("hmg", "mTouchX --> " + mTouch.x + "  mTouchY-->  "
+                // Log.i("TAG", "mTouchX --> " + mTouch.x + "  mTouchY-->  "
                 // + mTouch.y);
-                // Log.i("hmg", "mBezierControl1.x--  " + mBezierControl1.x
+                // Log.i("TAG", "mBezierControl1.x--  " + mBezierControl1.x
                 // + "  mBezierControl1.y -- " + mBezierControl1.y);
-                // Log.i("hmg", "mBezierControl2.x -- " + mBezierControl2.x
+                // Log.i("TAG", "mBezierControl2.x -- " + mBezierControl2.x
                 // + "  mBezierControl2.y -- " + mBezierControl2.y);
                 mBezierStart1.x = mBezierControl1.x
                         - (mCornerX - mBezierControl1.x) / 2;
@@ -275,9 +275,9 @@ public class PageEffectView extends View {
         mBezierEnd2 = getCross(mTouch, mBezierControl2, mBezierStart1,
                 mBezierStart2);
 
-        // Log.i("hmg", "mBezierEnd1.x  " + mBezierEnd1.x + "  mBezierEnd1.y  "
+        // Log.i("TAG", "mBezierEnd1.x  " + mBezierEnd1.x + "  mBezierEnd1.y  "
         // + mBezierEnd1.y);
-        // Log.i("hmg", "mBezierEnd2.x  " + mBezierEnd2.x + "  mBezierEnd2.y  "
+        // Log.i("TAG", "mBezierEnd2.x  " + mBezierEnd2.x + "  mBezierEnd2.y  "
         // + mBezierEnd2.y);
 
 		/*
@@ -289,6 +289,7 @@ public class PageEffectView extends View {
         mBeziervertex1.y = (2 * mBezierControl1.y + mBezierStart1.y + mBezierEnd1.y) / 4;
         mBeziervertex2.x = (mBezierStart2.x + 2 * mBezierControl2.x + mBezierEnd2.x) / 4;
         mBeziervertex2.y = (2 * mBezierControl2.y + mBezierStart2.y + mBezierEnd2.y) / 4;
+
     }
 
     private void drawCurrentPageArea(Canvas canvas, Bitmap bitmap, Path path) {
@@ -460,7 +461,13 @@ public class PageEffectView extends View {
         mPath1.reset();
         mPath1.moveTo(x, y);
         mPath1.lineTo(mTouch.x, mTouch.y);
-        mPath1.lineTo(mBezierControl2.x, mBezierControl2.y);
+        float newBezierControl2Y ;
+        if (mBezierControl2.y > 0) {
+            newBezierControl2Y = mBezierControl2.y > mHeight ? mHeight : mBezierControl2.y;
+        } else {
+            newBezierControl2Y = mBezierControl2.y < 0 ? 0 : mBezierControl2.y;
+        }
+        mPath1.lineTo(mBezierControl2.x, newBezierControl2Y);
         mPath1.lineTo(mBezierStart2.x, mBezierStart2.y);
         mPath1.close();
         canvas.save();
@@ -479,23 +486,24 @@ public class PageEffectView extends View {
                 - mTouch.y, mBezierControl2.x - mTouch.x));
         canvas.rotate(rotateDegrees, mBezierControl2.x, mBezierControl2.y);
         float temp;
-        if (mBezierControl2.y < 0)
+        if (mBezierControl2.y < 0) {
             temp = mBezierControl2.y - mHeight;
-        else
+        } else {
             temp = mBezierControl2.y;
-
+        }
         int hmg = (int) Math.hypot(mBezierControl2.x, temp);
-        if (hmg > mMaxLength)
+        if (hmg > mMaxLength) {
             mCurrentPageShadow
                     .setBounds((int) (mBezierControl2.x - 25) - hmg, leftx,
                             (int) (mBezierControl2.x + mMaxLength) - hmg,
                             rightx);
-        else
+        } else {
             mCurrentPageShadow.setBounds(
                     (int) (mBezierControl2.x - mMaxLength), leftx,
                     (int) (mBezierControl2.x), rightx);
+        }
 
-        // Log.i("hmg", "mBezierControl2.x   " + mBezierControl2.x
+        // Log.i("TAG", "mBezierControl2.x   " + mBezierControl2.x
         // + "  mBezierControl2.y  " + mBezierControl2.y);
         mCurrentPageShadow.draw(canvas);
         canvas.restore();
