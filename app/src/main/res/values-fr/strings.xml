@@ -3,7 +3,10 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.2.6.170205_1_d\n
+    <string name="release_note">**0.2.6.170209_1_d_h\n
+        -Fix calendar shadow is not right on some devices\n
+        -Fix left swipe fail on some device\n\n
+        **0.2.6.170205_1_d\n
         -Now you can sort the topic list\n
         -Modify edit and delete function into left swipe\n
         -Add simple page effect\n

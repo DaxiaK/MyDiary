@@ -3,29 +3,32 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
-    <string name="release_note">**0.2.6.170205_1_d\n
-         - 新增主题排序功能\n
-         - 修改和删除主题调整到左滑\n
-         - 新增简单纸张翻页效果\n
-         - 修复bug\n\n
+    <string name="release_note">**0.2.6.170209_1_d_h\n
+        -修复部份装置上的日历阴影显示异常\n
+        -修复部份装置上的主题选单左滑会失效\n\n
+        **0.2.6.170205_1_d\n
+        -新增主题排序功能\n
+        -修改和删除主题调整到左滑\n
+        -新增简单纸张翻页效果\n
+        -修复bug\n\n
         **0.2.5.161018_1_d\n
-         - 新增密码锁\n
-         - 修复错误\n\n
-         * 0.2.4.1601010_1_d\n
-         - 支持法文（By Toms）西班牙文（By JorgeNava\n
-         - 支持备忘录排序\n
-         - 修复夜间模式问题\n
-         - 修正错误\n\n
-         ** 0.2.3.161228_1_d_h\n
-         - 支持泰文（By PScoop，trulesa）\n\n
-         ** 0.2.3.161226_1_d \n
-         - 调整没有 Google 服务地区的定位功能\n
-         - 修复错误\n\n
-         ** 0.2.2.161216_1_d2\n
-         - 配合电影调整部份画面\n
-         - GPS 定位改用地点取代地址\n
-         - 修复错误\n
-         - 支持韩文（由Meda An）
+        -新增密码锁\n
+        -修复错误\n\n
+        **0.2.4.1601010_1_d\n
+        -支持法文（By Toms）西班牙文（By JorgeNava\n
+        -支持备忘录排序\n
+        -修复夜间模式问题\n
+        -修正错误\n\n
+        **0.2.3.161228_1_d_h\n
+        -支持泰文（By PScoop，trulesa）\n\n
+        **0.2.3.161226_1_d\n
+        -调整没有 Google 服务地区的定位功能\n
+        -修复错误\n\n
+        **0.2.2.161216_1_d2\n
+        -配合电影调整部份画面\n
+        -GPS 定位改用地点取代地址\n
+        -修复错误\n
+        -支持韩文（由Meda An）
     </string>
     <string name="release_note_close_remind">不再提醒</string>
 
