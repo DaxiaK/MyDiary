@@ -168,8 +168,11 @@ public class FileManager {
     public void clearDiaryDir() {
         if (fileDir.isDirectory()) {
             String[] children = fileDir.list();
-            for (int i = 0; i < children.length; i++) {
-                new File(fileDir, children[i]).delete();
+            //For avoid no file in this dir
+            if (children != null) {
+                for (int i = 0; i < children.length; i++) {
+                    new File(fileDir, children[i]).delete();
+                }
             }
         }
     }
