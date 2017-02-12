@@ -60,11 +60,13 @@ public class CalendarFragment extends BaseDiaryFragment {
         RL_calendar_content = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content);
 
         PageEffectView pageEffectView = new PageEffectView(getActivity());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        pageEffectView.setLayoutParams(params);
         RL_calendar_content.addView(pageEffectView);
 
         return rootView;
     }
-
 
 
 }

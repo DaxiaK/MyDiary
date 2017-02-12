@@ -17,6 +17,7 @@ import android.widget.Scroller;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 //Ref: http://blog.csdn.net/hmg25/article/details/6419694
 public class PageEffectView extends View {
@@ -109,8 +110,17 @@ public class PageEffectView extends View {
 
     private void setScreen(Context context) {
         mWidth = ScreenHelper.getScreenWidth(context);
-        mHeight = (int)
-                ((ScreenHelper.getScreenHeight(context) - context.getResources().getDimension(R.dimen.top_bar_height)) * 0.7);
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            mHeight =
+                    (int) ((ScreenHelper.getScreenHeight(context) - ScreenHelper.getStatusBarHeight(context)
+                            - context.getResources().getDimension(R.dimen.top_bar_height))
+                            * 0.7);
+        } else {
+            mHeight =
+                    (int) ((ScreenHelper.getScreenHeight(context) -
+                            context.getResources().getDimension(R.dimen.top_bar_height))
+                            * 0.7);
+        }
         mMaxLength = (float) Math.hypot(mWidth, mHeight);
     }
 
@@ -461,13 +471,7 @@ public class PageEffectView extends View {
         mPath1.reset();
         mPath1.moveTo(x, y);
         mPath1.lineTo(mTouch.x, mTouch.y);
-        float newBezierControl2Y ;
-        if (mBezierControl2.y > 0) {
-            newBezierControl2Y = mBezierControl2.y > mHeight ? mHeight : mBezierControl2.y;
-        } else {
-            newBezierControl2Y = mBezierControl2.y < 0 ? 0 : mBezierControl2.y;
-        }
-        mPath1.lineTo(mBezierControl2.x, newBezierControl2Y);
+        mPath1.lineTo(mBezierControl2.x, mBezierControl2.y);
         mPath1.lineTo(mBezierStart2.x, mBezierStart2.y);
         mPath1.close();
         canvas.save();
