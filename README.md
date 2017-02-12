@@ -90,7 +90,7 @@ If you want to help this project , you can select them first and let me know:
 ## known issue
 
 * requesting permissions dialog fail on HTC D820t [API 23], HUAWEI honor 7i [API 22]
-* Writeing diary with location will crash on some China device. 
+* Writing diary with location will crash on some China device. 
 
 ## Use case
 
@@ -121,10 +121,10 @@ Designing.
 
 ## License
 
-For MIT licenese , I encourage more user or developer who like this moive can get some idea to do best project. 
-If you want to create a new project base on this app , please create it by new feature ,new idea or new design.
+For MIT licenese , I encourage more user or developer who like this movie can get some idea to do best project. 
+If you want to create a new project based on this app , please create it by new feature, new idea or new design.
 
-I denounce someone who only copies this project and release the same version into Google play.
+I denounce someone who only copies this project and release the same version onto Google play.
 
 -----------------------------------------------
 
