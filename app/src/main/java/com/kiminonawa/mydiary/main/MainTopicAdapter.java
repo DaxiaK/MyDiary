@@ -67,12 +67,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getTVCount().setTextColor(topicList.get(position).getColor());
         holder.getArrow().setColorFilter(topicList.get(position).getColor());
-        holder.getLeftSettingOpenView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                holder.getLeftSettingView().toggle();
-            }
-        });
         holder.getContentView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +148,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
-        private ImageView IV_topic_left_setting_open, IV_topic_arrow_right;
+        private ImageView  IV_topic_arrow_right;
         private SwipeLayout DMJSL_topic;
         private LinearLayout LL_topic_left_setting;
         private RelativeLayout RL_topic_content;
@@ -163,7 +157,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         protected TopicViewHolder(View rootView) {
             super(rootView);
             this.RL_topic_content = (RelativeLayout) rootView.findViewById(R.id.RL_topic_content);
-            this.IV_topic_left_setting_open = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_open);
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
             this.TV_topic_count = (TextView) rootView.findViewById(R.id.TV_topic_count);
@@ -185,9 +178,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return IV_topic_icon;
         }
 
-        protected ImageView getLeftSettingOpenView() {
-            return IV_topic_left_setting_open;
-        }
 
         protected SwipeLayout getLeftSettingView() {
             return DMJSL_topic;

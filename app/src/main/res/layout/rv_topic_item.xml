@@ -37,22 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/IV_topic_left_setting_open"
-                android:layout_width="34dp"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:src="@drawable/ic_more_vert_black_24dp" />
 
             <ImageView
                 android:id="@+id/IV_topic_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:layout_toRightOf="@+id/IV_topic_left_setting_open" />
+                android:layout_marginLeft="30dp"/>
 
             <ImageView
                 android:id="@+id/IV_topic_arrow_right"
@@ -93,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="34dp"
+            android:layout_marginLeft="30dp"
             android:background="@color/topic_divider" />
     </RelativeLayout>
 
