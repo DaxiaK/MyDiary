@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.2.6.170209_1_d_h\n
+    <string name="release_note">**0.2.6.170213_1_d_h2\n
+        -Fix left swipe fail\n
+        -Optimize calendar\n
+        -Fix calendar shadow bug(Android 4.2 and some device not yet)\n
+        -Fix bug\n\n
+        **0.2.6.170209_1_d_h\n
         -Fix calendar shadow is not right on some devices\n
         -Fix left swipe fail on some device\n\n
         **0.2.6.170205_1_d\n

@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.6.170209_1_d_h\n
+    <string name="release_note">**0.2.6.170213_1_d_h2\n
+        -修復左滑失效問題\n
+        -優化日曆效果\n
+        -修復日曆陰影問題(Android 4.2與少數裝置仍有問題)\n
+        -修復bug\n\n
+        **0.2.6.170209_1_d_h\n
         -修復部份裝置上的日曆陰影顯示異常\n
         -修復部份裝置上的主題選單左滑會失效\n\n
         **0.2.6.170205_1_d\n
