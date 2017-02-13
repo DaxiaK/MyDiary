@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -154,7 +155,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private ImageView IV_topic_left_setting_open, IV_topic_arrow_right;
-        private LeftSwipeLayout LSL_topic;
+        private SwipeLayout DMJSL_topic;
         private LinearLayout LL_topic_left_setting;
         private RelativeLayout RL_topic_content;
         private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
@@ -169,13 +170,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
 
             //Left setting view
-            this.LSL_topic = (LeftSwipeLayout) rootView.findViewById(R.id.USL_topic);
+            this.DMJSL_topic = (SwipeLayout) rootView.findViewById(R.id.DMJSL_topic);
             this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
             this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
             this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
 
-            this.LSL_topic.setDrag(LeftSwipeLayout.DragEdge.Left, LL_topic_left_setting);
-            this.LSL_topic.setShowMode(LeftSwipeLayout.ShowMode.PullOut);
+            this.DMJSL_topic.setRightSwipeEnabled(false);
+            this.DMJSL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
+            this.DMJSL_topic.addDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
+
         }
 
         protected ImageView getIconView() {
@@ -186,8 +189,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return IV_topic_left_setting_open;
         }
 
-        protected LeftSwipeLayout getLeftSettingView() {
-            return LSL_topic;
+        protected SwipeLayout getLeftSettingView() {
+            return DMJSL_topic;
         }
 
         protected TextView getTitleView() {
