@@ -69,7 +69,8 @@
     <string name="diary_back_message">Un journal est en modif.Voulez vous quitter?</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d Entrees</string>
+    <string name="entries_single_count">%1$d Entrees</string>
+    <string name="entries_multi_count">%1$d Entrees</string>
     <string name="entries_edit_view">Clickez sur le journal a editer</string>
     <string name="entries_edit_dialog_delete_content">Supprimer ce journal?</string>
     <string name="entries_summary_photo">**photo**</string>

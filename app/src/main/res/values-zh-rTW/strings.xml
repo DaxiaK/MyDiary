@@ -70,7 +70,8 @@
     <string name="diary_back_message">有編輯中的日記，確定要離開嗎?</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d 項目</string>
+    <string name="entries_single_count">%1$d 項目</string>
+    <string name="entries_multi_count">%1$d 項目</string>
     <string name="entries_edit_view">點選要編輯的日記</string>
     <string name="entries_edit_dialog_delete_content">確定要刪除日記嗎?</string>
     <string name="entries_summary_photo">**圖片**</string>

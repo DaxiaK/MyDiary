@@ -68,7 +68,8 @@
     <string name="diary_back_message">작성중인 일기를 삭제하시겠습니까?</string>
 
     <!--Entries -->
-    <string name="entries_count">항목 %1$d개</string>
+    <string name="entries_single_count">항목 %1$d개</string>
+    <string name="entries_multi_count">항목 %1$d개</string>
     <string name="entries_edit_view">편집하려는 일기를 선택하세요</string>
     <string name="entries_edit_dialog_delete_content">이 일기를 삭제하시겠습니까?</string>
     <string name="entries_summary_photo">**사진**</string>
