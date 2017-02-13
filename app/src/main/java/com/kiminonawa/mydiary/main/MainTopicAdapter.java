@@ -177,7 +177,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
             this.DMJSL_topic.setRightSwipeEnabled(false);
             this.DMJSL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
-            this.DMJSL_topic.addDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
+            this.DMJSL_topic.setDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
 
         }
 
