@@ -41,7 +41,7 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.7.0'
-    compile "com.daimajia.swipelayout:library:1.2.0@aar"
+    compile 'com.github.daimajia:AndroidSwipeLayout:f66ac6942b'
 
 
 
