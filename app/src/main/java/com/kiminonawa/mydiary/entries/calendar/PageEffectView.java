@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 import android.view.MotionEvent;
@@ -33,6 +34,8 @@ public class PageEffectView extends View {
     private Bitmap mCurPageBitmap = null; // 当前页
     private Bitmap mNextPageBitmap = null;
     private Canvas mCurrentPageCanvas, mNextPageCanvas;
+    //This rect is to clip the over view shadow.
+    private Rect calendarRect;
 
     private PointF mTouch = new PointF(); // 拖拽点
     private PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
@@ -121,6 +124,7 @@ public class PageEffectView extends View {
                             context.getResources().getDimension(R.dimen.top_bar_height))
                             * 0.7);
         }
+        calendarRect = new Rect(0, 0, mWidth, mHeight);
         mMaxLength = (float) Math.hypot(mWidth, mHeight);
     }
 
@@ -477,6 +481,7 @@ public class PageEffectView extends View {
         canvas.save();
         canvas.clipPath(mPath0, Region.Op.XOR);
         canvas.clipPath(mPath1, Region.Op.INTERSECT);
+        canvas.clipRect(calendarRect);
         if (mIsRTandLB) {
             leftx = (int) (mBezierControl2.y);
             rightx = (int) (mBezierControl2.y + 25);
