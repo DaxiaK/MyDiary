@@ -26,10 +26,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //Android lib
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:gridlayout-v7:23.4.0'
+
     testCompile 'junit:junit:4.12'
     //Lib
     compile 'info.hoang8f:android-segmented:1.0.6'
@@ -38,7 +41,9 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.7.0'
-    compile 'com.android.support:gridlayout-v7:23.4.0'
+    compile 'com.github.daimajia:AndroidSwipeLayout:f66ac6942b'
+
+
 
     compile files('libs/pinyin4j-2.5.0.jar')
 

@@ -70,7 +70,8 @@
     <string name="diary_back_message">日记正在编辑，确定要离开吗？</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d 项目</string>
+    <string name="entries_single_count">%1$d 项目</string>
+    <string name="entries_multi_count">%1$d 项目</string>
     <string name="entries_edit_view">点击要编辑的日记</string>
     <string name="entries_edit_dialog_delete_content">确定要删除日记吗？</string>
     <string name="entries_summary_photo">**图片**</string>

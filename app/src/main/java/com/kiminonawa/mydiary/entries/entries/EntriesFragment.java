@@ -83,7 +83,6 @@ public class EntriesFragment extends BaseDiaryFragment implements
     }
 
 
-
     private void initRecyclerView() {
         LinearLayoutManager lmr = new LinearLayoutManager(getActivity());
         RecyclerView_entries.setLayoutManager(lmr);
@@ -133,8 +132,14 @@ public class EntriesFragment extends BaseDiaryFragment implements
     }
 
     private void countEntries() {
-        TV_entries_count.setText(
-                String.format(getResources().getString(R.string.entries_count), entriesList.size()));
+
+        if (entriesList.size() >= 2) {
+            TV_entries_count.setText(
+                    String.format(getResources().getString(R.string.entries_multi_count), entriesList.size()));
+        } else {
+            TV_entries_count.setText(
+                    String.format(getResources().getString(R.string.entries_single_count), entriesList.size()));
+        }
     }
 
     public void setEditModeUI(boolean isEditMode) {

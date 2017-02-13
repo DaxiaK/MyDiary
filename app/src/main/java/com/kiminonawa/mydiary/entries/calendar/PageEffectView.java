@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import android.widget.Scroller;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 //Ref: http://blog.csdn.net/hmg25/article/details/6419694
 public class PageEffectView extends View {
@@ -29,11 +31,15 @@ public class PageEffectView extends View {
     private int mCornerY = 0;
     private Path mPath0;
     private Path mPath1;
-    private Bitmap mCurPageBitmap = null; // 当前页
+    private Bitmap mCurPageBitmap = null; // this page
     private Bitmap mNextPageBitmap = null;
     private Canvas mCurrentPageCanvas, mNextPageCanvas;
+    //This rect is to clip the over view shadow.
+    private Rect calendarRect;
 
-    private PointF mTouch = new PointF(); // 拖拽点
+    private PointF mTouch = new PointF(); // Touch point
+    private float initialTouchX; // start touch point
+    private int minSize;
     private PointF mBezierStart1 = new PointF(); // 贝塞尔曲线起始点
     private PointF mBezierControl1 = new PointF(); // 贝塞尔曲线控制点
     private PointF mBeziervertex1 = new PointF(); // 贝塞尔曲线顶点
@@ -69,6 +75,10 @@ public class PageEffectView extends View {
     private Paint mPaint;
 
     private Scroller mScroller;
+
+
+    //Calendar lock
+    private boolean isCalendarUpdated = false;
 
     public PageEffectView(Context context) {
         super(context);
@@ -109,9 +119,20 @@ public class PageEffectView extends View {
 
     private void setScreen(Context context) {
         mWidth = ScreenHelper.getScreenWidth(context);
-        mHeight = (int)
-                ((ScreenHelper.getScreenHeight(context) - context.getResources().getDimension(R.dimen.top_bar_height)) * 0.7);
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            mHeight =
+                    (int) ((ScreenHelper.getScreenHeight(context) - ScreenHelper.getStatusBarHeight(context)
+                            - context.getResources().getDimension(R.dimen.top_bar_height))
+                            * 0.7);
+        } else {
+            mHeight =
+                    (int) ((ScreenHelper.getScreenHeight(context) -
+                            context.getResources().getDimension(R.dimen.top_bar_height))
+                            * 0.7);
+        }
+        calendarRect = new Rect(0, 0, mWidth, mHeight);
         mMaxLength = (float) Math.hypot(mWidth, mHeight);
+        minSize = mWidth / 10;
     }
 
     private void createBitmaps() {
@@ -148,15 +169,9 @@ public class PageEffectView extends View {
 
     public boolean doTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            case MotionEvent.ACTION_MOVE:
-                getParent().requestDisallowInterceptTouchEvent(true);
-
-                mTouch.x = event.getX();
-                mTouch.y = event.getY();
-                this.postInvalidate();
-                break;
-
             case MotionEvent.ACTION_DOWN:
+                getParent().requestDisallowInterceptTouchEvent(true);
+                isCalendarUpdated = false;
                 //
                 abortAnimation();
                 calcCornerXY(event.getX(), event.getY());
@@ -164,18 +179,24 @@ public class PageEffectView extends View {
                 //
                 mTouch.x = event.getX();
                 mTouch.y = event.getY();
-                // calcCornerXY(mTouch.x, mTouch.y);
-                // this.postInvalidate();
+                initialTouchX = event.getX();
                 break;
-
-            case MotionEvent.ACTION_UP:
-                getParent().requestDisallowInterceptTouchEvent(false);
-                if (canDragOver()) {
+            case MotionEvent.ACTION_MOVE:
+                if (isDragOverMinSize(event.getX()) && !isCalendarUpdated) {
                     if (DragToRight()) {
                         calendarFactory.preDateDraw(mNextPageCanvas);
                     } else {
                         calendarFactory.nextDateDraw(mNextPageCanvas);
                     }
+                    isCalendarUpdated = true;
+                }
+                mTouch.x = event.getX();
+                mTouch.y = event.getY();
+                this.postInvalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                getParent().requestDisallowInterceptTouchEvent(false);
+                if (canDragOver() && isCalendarUpdated) {
                     startAnimation(1200);
                 } else {
                     mTouch.x = mCornerX - 0.09f;
@@ -184,7 +205,6 @@ public class PageEffectView extends View {
                 this.postInvalidate();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                abortAnimation();
                 getParent().requestDisallowInterceptTouchEvent(false);
                 break;
         }
@@ -461,18 +481,13 @@ public class PageEffectView extends View {
         mPath1.reset();
         mPath1.moveTo(x, y);
         mPath1.lineTo(mTouch.x, mTouch.y);
-        float newBezierControl2Y ;
-        if (mBezierControl2.y > 0) {
-            newBezierControl2Y = mBezierControl2.y > mHeight ? mHeight : mBezierControl2.y;
-        } else {
-            newBezierControl2Y = mBezierControl2.y < 0 ? 0 : mBezierControl2.y;
-        }
-        mPath1.lineTo(mBezierControl2.x, newBezierControl2Y);
+        mPath1.lineTo(mBezierControl2.x, mBezierControl2.y);
         mPath1.lineTo(mBezierStart2.x, mBezierStart2.y);
         mPath1.close();
         canvas.save();
         canvas.clipPath(mPath0, Region.Op.XOR);
         canvas.clipPath(mPath1, Region.Op.INTERSECT);
+        canvas.clipRect(calendarRect);
         if (mIsRTandLB) {
             leftx = (int) (mBezierControl2.y);
             rightx = (int) (mBezierControl2.y + 25);
@@ -600,9 +615,27 @@ public class PageEffectView extends View {
         }
     }
 
+    /**
+     * Check touch point is not in Corner
+     *
+     * @return
+     */
     public boolean canDragOver() {
-        if (mTouchToCornerDis > mWidth / 10) {
+        if (mTouchToCornerDis > minSize) {
             return true;
+        }
+        return false;
+    }
+
+    public boolean isDragOverMinSize(float newX) {
+        if (DragToRight()) {
+            if ((newX - initialTouchX) > minSize) {
+                return true;
+            }
+        } else {
+            if ((initialTouchX - newX) > minSize) {
+                return true;
+            }
         }
         return false;
     }

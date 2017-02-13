@@ -69,7 +69,8 @@
     <string name="diary_back_message">There are a diary in editing ,do you want to leave it?</string>
 
     <!--Entries -->
-    <string name="entries_count">%1$d Entries</string>
+    <string name="entries_single_count">%1$d Entry</string>
+    <string name="entries_multi_count">%1$d Entries</string>
     <string name="entries_edit_view">Click diary for editing</string>
     <string name="entries_edit_dialog_delete_content">Do you really want to delete this diary?</string>
     <string name="entries_summary_photo">**photo**</string>

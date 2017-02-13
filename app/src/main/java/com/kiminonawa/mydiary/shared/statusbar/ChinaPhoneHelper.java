@@ -26,6 +26,8 @@ public class ChinaPhoneHelper {
 
     }
 
+    private static int deviceStatusBarType = 0;
+
     public static final int OTHER = -1;
     public static final int MIUI = 1;
     public static final int FLYME = 2;
@@ -37,8 +39,8 @@ public class ChinaPhoneHelper {
      *
      * @return 1:MIUI 2:Flyme 3:android6.0
      */
-    public static int setStatusBar(Activity activity, boolean lightMode) {
-        @SystemType int result = 0;
+    public static void setStatusBar(Activity activity, boolean lightMode) {
+        @SystemType int result = OTHER;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (new MIUIHelper().setStatusBarLightMode(activity, lightMode)) {
                 result = MIUI;
@@ -48,7 +50,13 @@ public class ChinaPhoneHelper {
                 result = ANDROID_M;
             }
         }
-        return result;
+        if (deviceStatusBarType == 0) {
+            deviceStatusBarType = result;
+        }
+    }
+
+    public static int getDeviceStatusBarType() {
+        return deviceStatusBarType;
     }
 }
 
