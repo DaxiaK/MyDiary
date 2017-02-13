@@ -967,7 +967,6 @@ public class LeftSwipeLayout extends FrameLayout {
 
             default://handle other action, such as ACTION_POINTER_DOWN/UP
                 mDragHelper.processTouchEvent(event);
-                break;
         }
 
         return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
