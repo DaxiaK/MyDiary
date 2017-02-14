@@ -96,15 +96,16 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
             imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
                     - ScreenHelper.getStatusBarHeight(InitActivity.this)
-                    //diary activity top bar  -( diary info + diary bottom bar + padding)
-                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
-        }else{
+                    //diary activity top bar  -( diary info + diary bottom bar + diary padding+ photo padding)
+                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5) + (2 * 5));
+        } else {
             imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
-                    //diary activity top bar  -( diary info + diary bottom bar + padding)
-                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
+                    //diary activity top bar  -( diary info + diary bottom bar + diary padding + photo padding)
+                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5) + (2 * 5));
         }
         int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
-                ScreenHelper.dpToPixel(getResources(), 2 * 5);
+                //(diary padding + photo padding)
+                ScreenHelper.dpToPixel(getResources(), (2 * 5) + (2 * 5));
         DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
     }
 

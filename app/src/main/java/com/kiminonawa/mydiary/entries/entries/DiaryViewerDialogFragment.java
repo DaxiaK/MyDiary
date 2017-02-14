@@ -473,7 +473,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String content = "";
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
+                content = FileManager.FILE_HEADER +
+                        diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
@@ -608,8 +609,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private void loadFileFromTemp(String fileName) {
         try {
             String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
-//            Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
-//            if (resizeBmp != null) {
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -634,9 +633,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 diaryItemHelper.createItem(diaryText);
                 diaryText.getView().requestFocus();
             }
-//            } else {
-//                throw new FileNotFoundException(tempFileSrc + "not found or bitmap is null");
-//            }
         } catch (Exception e) {
             Log.e(TAG, e.toString());
             Toast.makeText(getActivity(), getString(R.string.toast_photo_path_error), Toast.LENGTH_LONG).show();

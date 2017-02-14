@@ -108,6 +108,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
 
     private String savePhotoToTemp(Bitmap bitmap) throws Exception {
+
         FileOutputStream out = null;
         String fileName = FileManager.createRandomFileName();
         try {

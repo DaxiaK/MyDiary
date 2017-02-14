@@ -41,7 +41,6 @@ public class DiaryPhotoLayout extends LinearLayout {
     }
 
     public void setPhotoUri(Uri photoUri) {
-
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(photoUri)
                 .setResizeOptions(new ResizeOptions(DiaryItemHelper.getVisibleWidth(),
                         DiaryItemHelper.getVisibleHeight()))
