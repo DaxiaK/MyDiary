@@ -21,5 +21,9 @@ public class BackupManager {
         buTopicList.add(topic);
     }
 
+    public IBUTopic getTopic(int position) {
+        return buTopicList.get(position);
+    }
+
 }
 

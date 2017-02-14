@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.backup.entries.BUDiaryEntries;
 import com.kiminonawa.mydiary.backup.entries.BUMemoEntries;
+import com.kiminonawa.mydiary.backup.item.BUDiaryItem;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.FileManager;
@@ -57,6 +59,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         dbManager.opeDB();
         exportDiary();
         exportMemo();
+        backupManager.getTopic(0);
         dbManager.closeDB();
     }
 
@@ -73,19 +76,30 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < topicCursor.getCount(); i++) {
             if (topicCursor.getInt(2) == ITopic.TYPE_DIARY) {
                 //Select memo first
-                Cursor diaryCursor = dbManager.selectDiaryList(topicCursor.getLong(0));
-                List<BUDiary> diaryItemItemList = new ArrayList<>();
-                dbManager.showCursor(diaryCursor);
-                for (int j = 0; j < diaryCursor.getCount(); j++) {
-//                    diaryItemItemList.add(
-//                            new BUMemoEntries(memoCursor.getString(2), memoCursor.getInt(7),
-//                                    memoCursor.getInt(3) > 0 ? true : false));
-//                    memoCursor.moveToNext();
+                Cursor diaryEntriesCursor = dbManager.selectDiaryList(topicCursor.getLong(0));
+                List<BUDiaryEntries> diaryEntriesItemList = new ArrayList<>();
+
+                for (int j = 0; j < diaryEntriesCursor.getCount(); j++) {
+
+                    Cursor diaryItemCursor = dbManager.selectDiaryContentByDiaryId(diaryEntriesCursor.getLong(0));
+                    List<BUDiaryItem> diaryItemItemList = new ArrayList<>();
+                    for (int k = 0; k < diaryItemCursor.getCount(); k++) {
+                        diaryItemItemList.add(
+                                new BUDiaryItem(diaryItemCursor.getInt(1), diaryItemCursor.getInt(2),
+                                        diaryItemCursor.getString(3)));
+                    }
+                    diaryItemCursor.close();
+                    diaryEntriesItemList.add(
+                            new BUDiaryEntries(diaryEntriesCursor.getLong(1), diaryEntriesCursor.getInt(3),
+                                    diaryEntriesCursor.getInt(4), diaryEntriesCursor.getInt(5) > 0 ? true : false,
+                                    diaryEntriesCursor.getString(7), diaryItemItemList));
+                    diaryEntriesCursor.moveToNext();
                 }
-                //Create the BUmemo
-//                backupManager.addTopic(
-//                        new BUMemo(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), memoItemItemList));
-                diaryCursor.close();
+                diaryEntriesCursor.close();
+
+                //Create the BUDiary
+                backupManager.addTopic(
+                        new BUDiary(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), null));
             }
             topicCursor.moveToNext();
         }
@@ -104,18 +118,18 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < topicCursor.getCount(); i++) {
             if (topicCursor.getInt(2) == ITopic.TYPE_MEMO) {
                 //Select memo first
-                Cursor memoCursor = dbManager.selectMemoAndMemoOrder(topicCursor.getLong(0));
-                List<BUMemoEntries> memoItemItemList = new ArrayList<>();
-                for (int j = 0; j < memoCursor.getCount(); j++) {
-                    memoItemItemList.add(
-                            new BUMemoEntries(memoCursor.getString(2), memoCursor.getInt(7),
-                                    memoCursor.getInt(3) > 0 ? true : false));
-                    memoCursor.moveToNext();
+                Cursor memoEntriesCursor = dbManager.selectMemoAndMemoOrder(topicCursor.getLong(0));
+                List<BUMemoEntries> memoEntriesItemList = new ArrayList<>();
+                for (int j = 0; j < memoEntriesCursor.getCount(); j++) {
+                    memoEntriesItemList.add(
+                            new BUMemoEntries(memoEntriesCursor.getString(2), memoEntriesCursor.getInt(7),
+                                    memoEntriesCursor.getInt(3) > 0 ? true : false));
+                    memoEntriesCursor.moveToNext();
                 }
+                memoEntriesCursor.close();
                 //Create the BUmemo
                 backupManager.addTopic(
-                        new BUMemo(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), memoItemItemList));
-                memoCursor.close();
+                        new BUMemo(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), memoEntriesItemList));
             }
             topicCursor.moveToNext();
         }

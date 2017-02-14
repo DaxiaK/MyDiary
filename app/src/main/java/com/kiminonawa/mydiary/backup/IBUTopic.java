@@ -6,19 +6,18 @@ import java.util.List;
  * Created by daxia on 2017/2/14.
  */
 
-public interface IBUTopic  {
+public interface IBUTopic {
 
 
     String getTitle();
 
-    int getType();
+    int getOrder();
 
     int getColor();
 
+    int getType();
+
     List getTopicContentItem();
-
-    int getOrder();
-
 
 
 }
