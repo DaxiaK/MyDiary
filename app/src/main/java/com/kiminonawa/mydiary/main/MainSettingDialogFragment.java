@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.backup.BackupActivity;
 import com.kiminonawa.mydiary.security.PasswordActivity;
 import com.kiminonawa.mydiary.setting.SettingActivity;
 import com.kiminonawa.mydiary.shared.MyDiaryApplication;
@@ -95,7 +96,7 @@ public class MainSettingDialogFragment extends BottomSheetDialogFragment impleme
                 dismiss();
                 break;
             case R.id.IV_main_setting_backup:
-                Intent backupIntent = new Intent(getActivity(), AboutActivity.class);
+                Intent backupIntent = new Intent(getActivity(), BackupActivity.class);
                 getActivity().startActivity(backupIntent);
                 dismiss();
                 break;
