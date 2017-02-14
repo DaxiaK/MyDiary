@@ -71,6 +71,7 @@ public class FileManager {
     public final static int MEMO_ROOT_DIR = 4;
     public final static int CONTACTS_ROOT_DIR = 5;
     public final static int SETTING_DIR = 6;
+    public final static int BACKUP_DIR = 7;
 
     /**
      * The path is :
@@ -86,6 +87,8 @@ public class FileManager {
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/typeId/
      * 6.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
+     * 7.Backup temp path
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/backup/
      */
     private File fileDir;
     private Context mContext;
@@ -95,6 +98,7 @@ public class FileManager {
     private final static String CONTACTS_ROOT_DIR_STR = "contacts/";
     private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
     private final static String SETTING_DIR_STR = "setting/";
+    private final static String BACKUP_DIR_STR = "backup/";
 
     /**
      * Create trem dir file manager
@@ -124,6 +128,9 @@ public class FileManager {
                 break;
             case SETTING_DIR:
                 this.fileDir = mContext.getExternalFilesDir(SETTING_DIR_STR);
+                break;
+            case BACKUP_DIR:
+                this.fileDir = mContext.getExternalFilesDir(BACKUP_DIR_STR);
                 break;
         }
     }
