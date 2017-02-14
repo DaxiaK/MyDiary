@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/IV_diary_photo"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/SDV_diary_new_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        fresco:actualImageScaleType="centerInside" />
 
     <ImageView
         android:id="@+id/IV_diary_photo_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|right"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
         android:background="@color/diary_photo_layout_delete_bg"
         android:src="@drawable/ic_delete_white_24dp" />

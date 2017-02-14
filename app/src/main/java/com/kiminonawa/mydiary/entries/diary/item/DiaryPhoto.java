@@ -2,11 +2,12 @@ package com.kiminonawa.mydiary.entries.diary.item;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 
+import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
 import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
 import com.kiminonawa.mydiary.shared.photo.ExifUtil;
-import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
 
 import java.io.IOException;
 
@@ -31,10 +32,11 @@ public class DiaryPhoto implements IDairyRow {
         diaryPhotoLayout.setPositiontag(positionTag);
     }
 
-    public void setPhoto(Bitmap bitmap, String photoFileName) {
+    public void setPhoto(Uri photoUri, String photoFileName) {
         this.photoFileName = photoFileName;
-        diaryPhotoLayout.setPhotoBitmap(bitmap);
+        diaryPhotoLayout.setPhotoUri(photoUri);
     }
+
 
     public void setPhotoFileName(String photoFileName) {
         this.photoFileName = photoFileName;
@@ -47,7 +49,7 @@ public class DiaryPhoto implements IDairyRow {
             Bitmap bitmap = ExifUtil.rotateBitmap(content,
                     BitmapHelper.getBitmapFromTempFileSrc(content,
                             DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
-            diaryPhotoLayout.setPhotoBitmap(bitmap);
+            diaryPhotoLayout.setPhotoUri(Uri.parse(content));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -62,6 +62,7 @@ public class FileManager {
     private static final String TAG = "FileManager";
     //Min free space is 50 MB
     public static final int MIN_FREE_SPACE = 50;
+    public static final String FILE_HEADER = "file://";
 
     public final static int ROOT_DIR = 0;
     public final static int TEMP_DIR = 1;

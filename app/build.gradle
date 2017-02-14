@@ -43,6 +43,7 @@ dependencies {
     compile 'com.marshalchen.ultimaterecyclerview:library:0.7.0'
     compile 'com.github.daimajia:AndroidSwipeLayout:f66ac6942b'
 
+    compile 'com.facebook.fresco:fresco:1.0.1'
 
 
     compile files('libs/pinyin4j-2.5.0.jar')

@@ -17,6 +17,7 @@ import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.Locale;
 
@@ -43,23 +44,11 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         //topbar height
         int topbarHeight = getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
         //topic bg
-        int bgWeight = ScreenHelper.getScreenWidth(InitActivity.this);
-        int bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                //diary activity top bar  + edit bottom bar
-                ScreenHelper.dpToPixel(getResources(), 40) - topbarHeight;
-        int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                //diary activity top bar
-                topbarHeight;
-        ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
-
+        initBgSize(topbarHeight);
         //Diary photo size
-        int imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
-                //diary activity top bar  -( diary info + diary button bar + padding)
-                - topbarHeight - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
-        int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
-                ScreenHelper.dpToPixel(getResources(), 2 * 5);
-        DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
-
+        initDiaryPhotoSize(topbarHeight);
+        //Init screen Ratio
+        ScreenHelper.setScreenRatio(this);
     }
 
     @Override
@@ -83,7 +72,43 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         initHandler.removeCallbacksAndMessages(null);
     }
 
-    public void setLocaleLanguage() {
+    private void initBgSize(int topBarSize) {
+        int bgWeight = ScreenHelper.getScreenWidth(InitActivity.this);
+        int bgHeight;
+        int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
+                //diary activity top bar
+                topBarSize;
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
+                    ScreenHelper.getStatusBarHeight(InitActivity.this) -
+                    //diary activity top bar  + edit bottom bar
+                    ScreenHelper.dpToPixel(getResources(), 40) - topBarSize;
+        } else {
+            bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
+                    //diary activity top bar  + edit bottom bar
+                    ScreenHelper.dpToPixel(getResources(), 40) - topBarSize;
+        }
+        ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
+    }
+
+    private void initDiaryPhotoSize(int topBarSize) {
+        int imageHeight;
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
+                    - ScreenHelper.getStatusBarHeight(InitActivity.this)
+                    //diary activity top bar  -( diary info + diary bottom bar + padding)
+                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
+        }else{
+            imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
+                    //diary activity top bar  -( diary info + diary bottom bar + padding)
+                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5));
+        }
+        int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
+                ScreenHelper.dpToPixel(getResources(), 2 * 5);
+        DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
+    }
+
+    private void setLocaleLanguage() {
         Locale locale;
         switch (SPFManager.getLocalLanguageCode(this)) {
             case 1:
