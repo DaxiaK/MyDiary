@@ -52,6 +52,10 @@ public class AboutActivity extends AppCompatActivity {
         license.append(
                 new LicenseObj("AndroidSwipeLayout", "代码家", "2014", LicenseObj.MIT)
                         .getLicense());
+        license.append(
+                new LicenseObj("Fresco", "Facebook, Inc.", "2015-present", LicenseObj.BSD)
+                        .getLicense());
+
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
 
@@ -60,6 +64,7 @@ public class AboutActivity extends AppCompatActivity {
         public final static int MIT = 0;
         public final static int APACHE = 1;
         public final static int GPLv2 = 2;
+        public final static int BSD = 3;
 
         private String softwareName;
         private String author;
@@ -129,6 +134,36 @@ public class AboutActivity extends AppCompatActivity {
                             "along with this program; if not, write to the Free Software\n" +
                             "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n" +
                             "\n\n=====\n";
+
+                case BSD:
+                    return "\n==" + softwareName + "==\n\n" +
+                            "copyright (c)" + year + ", " + author + "All rights reserved.\n\n" +
+                            "Redistribution and use in source and binary forms, with or without modification,\n" +
+                            "are permitted provided that the following conditions are met:\n" +
+                            "\n" +
+                            " * Redistributions of source code must retain the above copyright notice, this\n" +
+                            "   list of conditions and the following disclaimer.\n" +
+                            "\n" +
+                            " * Redistributions in binary form must reproduce the above copyright notice,\n" +
+                            "   this list of conditions and the following disclaimer in the documentation\n" +
+                            "   and/or other materials provided with the distribution.\n" +
+                            "\n" +
+                            " * Neither the name Facebook nor the names of its contributors may be used to\n" +
+                            "   endorse or promote products derived from this software without specific\n" +
+                            "   prior written permission.\n" +
+                            "\n" +
+                            "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\n" +
+                            "ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\n" +
+                            "WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\n" +
+                            "DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR\n" +
+                            "ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n" +
+                            "(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\n" +
+                            "LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON\n" +
+                            "ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n" +
+                            "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n" +
+                            "SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n" +
+                            "\n\n=====\n";
+
                 default:
                     return "";
             }
