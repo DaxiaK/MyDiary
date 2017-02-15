@@ -90,8 +90,9 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     diaryItemCursor.close();
                     diaryEntriesItemList.add(
-                            new BUDiaryEntries(diaryEntriesCursor.getLong(1), diaryEntriesCursor.getInt(3),
-                                    diaryEntriesCursor.getInt(4), diaryEntriesCursor.getInt(5) > 0 ? true : false,
+                            new BUDiaryEntries(diaryEntriesCursor.getLong(0), diaryEntriesCursor.getLong(1),
+                                    diaryEntriesCursor.getInt(3), diaryEntriesCursor.getInt(4),
+                                    diaryEntriesCursor.getInt(5) > 0 ? true : false,
                                     diaryEntriesCursor.getString(7), diaryItemItemList));
                     diaryEntriesCursor.moveToNext();
                 }
@@ -99,7 +100,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
 
                 //Create the BUDiary
                 backupManager.addTopic(
-                        new BUDiary(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), null));
+                        new BUDiary(topicCursor.getLong(0),topicCursor.getString(1),
+                                topicCursor.getInt(7), topicCursor.getInt(5), null));
             }
             topicCursor.moveToNext();
         }
@@ -129,7 +131,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                 memoEntriesCursor.close();
                 //Create the BUmemo
                 backupManager.addTopic(
-                        new BUMemo(topicCursor.getString(1), topicCursor.getInt(7), topicCursor.getInt(5), memoEntriesItemList));
+                        new BUMemo(topicCursor.getLong(0),topicCursor.getString(1),
+                                topicCursor.getInt(7), topicCursor.getInt(5), memoEntriesItemList));
             }
             topicCursor.moveToNext();
         }

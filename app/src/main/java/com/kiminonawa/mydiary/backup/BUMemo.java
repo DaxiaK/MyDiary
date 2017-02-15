@@ -11,15 +11,17 @@ import java.util.List;
 
 public class BUMemo implements IBUTopic {
 
-    //common
+    //For select memo data
+    private long memo_topic_id;
     private String memo_topic_title;
     private int memo_topic_order;
     private int memo_topic_color;
     private List<BUMemoEntries> memoItemItemList;
 
 
-    public BUMemo(String memo_topic_title, int memo_topic_order,
+    public BUMemo(long memo_topic_id,String memo_topic_title, int memo_topic_order,
                   int memo_topic_color, List<BUMemoEntries> memoItemItemList) {
+        this.memo_topic_id = memo_topic_id;
         this.memo_topic_title = memo_topic_title;
         this.memo_topic_order = memo_topic_order;
         this.memo_topic_color = memo_topic_color;
@@ -44,6 +46,11 @@ public class BUMemo implements IBUTopic {
     @Override
     public int getType() {
         return ITopic.TYPE_MEMO;
+    }
+
+    @Override
+    public long getId() {
+        return memo_topic_id;
     }
 
     @Override

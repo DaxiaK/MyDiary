@@ -17,6 +17,8 @@ public interface IBUTopic {
 
     int getType();
 
+    long getId();
+
     List getTopicContentItem();
 
 
