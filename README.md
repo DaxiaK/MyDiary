@@ -48,6 +48,7 @@ so, maybe I will try to create an iOS version after this app is running.
 * Add profile picture
 * Add password
 * Allow order for topic , memo
+* page curl effect
 
 **Not Work:**
 
@@ -55,20 +56,19 @@ This list is what functionality I will implement , the number is the sequence fo
 
 1. import & export DB(Alpha) (flow finish) 
 2. Search function
-3. page curl effect (80%)
-4. OOBE
-5. Code refactoring
-6. Google account backup & including FireBase
-7. UI review & support xxxHpdi \
-8. Implments search
-9. Support Chinese sort
-10. Modify contacts detail (beta)
-11. Tags
-12. load contacts from phone
-13. Add bookmark for diary
-14. Add music in diary
-15. Support Chinese sort
-16. Supprot JP sort
+3. OOBE
+4. Code refactoring
+5. Google account backup & including FireBase
+6. UI review & support xxxHpdi \
+7. Implments search
+8. Support Chinese sort
+9. Modify contacts detail (beta)
+10. Tags
+11. load contacts from phone
+12. Add bookmark for diary
+13. Add music in diary
+14. Support Chinese sort
+15. Supprot JP sort
 
 Coding & Designing:
 
@@ -84,8 +84,7 @@ Coding & Designing:
 Some function will be implemented later ,but some user is asking about them.
 If you want to help this project , you can select them first and let me know:
 
-1. Implments search in MainActivity , ContactsActivity
-2. Add border and radius in all dialogfragment 
+1. Add border and radius in all dialogfragment 
 
 ## known issue
 
@@ -99,10 +98,6 @@ If you have any idea or find some functionality that I miss, you can tell me or 
 
 ![](/screenshot/usercase.png) 
 
-
-## Ui flow
-
-Designing.
 
 ## screenshot
 
