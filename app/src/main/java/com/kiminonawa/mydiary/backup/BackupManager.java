@@ -1,5 +1,8 @@
 package com.kiminonawa.mydiary.backup;
 
+import com.kiminonawa.mydiary.BuildConfig;
+import com.kiminonawa.mydiary.backup.obj.BUTopic;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,20 +12,27 @@ import java.util.List;
 
 public class BackupManager {
 
-    private List<IBUTopic> buTopicList;
+    //For assert this json file is for mydiary backup
+    //This value is "MyDiaryBackup" before encoding
+    public final static String header = "79997e7ee0902e2010690e4f1951f81d";
+    private int version_code;
+    private long create_time;
+    private List<BUTopic> backup_topic_list;
 
 
     public BackupManager() {
-        buTopicList = new ArrayList<>();
+        version_code = BuildConfig.VERSION_CODE;
+        create_time = System.currentTimeMillis();
+        backup_topic_list = new ArrayList<>();
     }
 
 
-    public void addTopic(IBUTopic topic) {
-        buTopicList.add(topic);
+    public void addTopic(BUTopic topic) {
+        backup_topic_list.add(topic);
     }
 
-    public IBUTopic getTopic(int position) {
-        return buTopicList.get(position);
+    public BUTopic getTopic(int position) {
+        return backup_topic_list.get(position);
     }
 
 }

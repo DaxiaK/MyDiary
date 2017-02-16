@@ -1,6 +1,4 @@
-package com.kiminonawa.mydiary.backup.entries;
-
-import com.kiminonawa.mydiary.backup.item.BUDiaryItem;
+package com.kiminonawa.mydiary.backup.obj;
 
 import java.util.List;
 
