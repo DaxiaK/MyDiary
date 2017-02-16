@@ -19,6 +19,8 @@ public class BackupManager {
     private long create_time;
     private List<BUTopic> backup_topic_list;
 
+    public final static String BACKUP_JSON_FILE_NAME = "backup.json";
+
 
     public BackupManager() {
         version_code = BuildConfig.VERSION_CODE;

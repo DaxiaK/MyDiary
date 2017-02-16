@@ -21,13 +21,15 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipManager {
 
+    private String backupJsonFilePath;
     private FileManager diaryFileManager;
     private final int BUFFER_SIZE = 2048;
 
 
-    public ZipManager(Context context) {
+    public ZipManager(Context context, String backupJsonFilePath) {
+        //Copy data form diary
         diaryFileManager = new FileManager(context, FileManager.DIARY_ROOT_DIR);
-
+        this.backupJsonFilePath = backupJsonFilePath;
     }
 
     public boolean zipFileAtPath(String toLocation) {
@@ -64,7 +66,7 @@ public class ZipManager {
 
     private void zipBackupJsonFile(ZipOutputStream out) throws IOException {
         byte data[] = new byte[BUFFER_SIZE];
-        FileInputStream fi = new FileInputStream("/sdcard/Output.json");
+        FileInputStream fi = new FileInputStream(backupJsonFilePath);
         BufferedInputStream jsonFileOrigin = new BufferedInputStream(fi, BUFFER_SIZE);
         ZipEntry entry = new ZipEntry("Output.json");
         out.putNextEntry(entry);
