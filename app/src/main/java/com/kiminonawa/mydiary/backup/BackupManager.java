@@ -14,7 +14,7 @@ public class BackupManager {
 
     //For assert this json file is for mydiary backup
     //This value is "MyDiaryBackup" before encoding
-    public final static String header = "79997e7ee0902e2010690e4f1951f81d";
+    private String header = "79997e7ee0902e2010690e4f1951f81d";
     private int version_code;
     private long create_time;
     private List<BUTopic> backup_topic_list;

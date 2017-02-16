@@ -9,6 +9,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.backup.obj.BUContacts;
 import com.kiminonawa.mydiary.backup.obj.BUDiary;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryEntries;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
@@ -152,6 +153,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                         topicCursor.getInt(7), topicCursor.getInt(5), diaryEntriesItemList);
                 break;
             case ITopic.TYPE_CONTACTS:
+                topic = new BUContacts(topicCursor.getLong(0), topicCursor.getString(1),
+                        topicCursor.getInt(7), topicCursor.getInt(5), null);
                 break;
         }
         return topic;
