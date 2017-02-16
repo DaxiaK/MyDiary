@@ -69,15 +69,15 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private void outputBackupJson() throws IOException {
-            Writer writer = new FileWriter("/sdcard/Output.json");
-            Gson gson = new GsonBuilder().create();
-            gson.toJson(backupManager, writer);
-            writer.close();
+        Writer writer = new FileWriter("/sdcard/Output.json");
+        Gson gson = new GsonBuilder().create();
+        gson.toJson(backupManager, writer);
+        writer.close();
     }
 
-    private void zipBackupFile() throws IOException {
+    private boolean zipBackupFile() throws IOException {
         ZipManager zipManager = new ZipManager(this);
-        zipManager.zipFileAtPath("/sdcard/123.zip");
+        return zipManager.zipFileAtPath("/sdcard/123.zip");
     }
 
 
@@ -166,6 +166,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                 try {
                     exportDataIntoBackupManager();
                     outputBackupJson();
+                    //TODO if this return the false , it means exporting fail
                     zipBackupFile();
                 } catch (Exception e) {
                     Log.e(TAG, "export fail", e);

@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.backup;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.kiminonawa.mydiary.shared.FileManager;
 
@@ -29,29 +30,36 @@ public class ZipManager {
 
     }
 
-    public void zipFileAtPath(String toLocation) throws IOException {
-        File sourceFile = diaryFileManager.getDiaryDir();
-        BufferedInputStream origin = null;
-        FileOutputStream dest = new FileOutputStream(toLocation);
-        ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
-                dest));
-        if (sourceFile.isDirectory()) {
-            zipSubFolder(out, sourceFile, sourceFile.getParent().length());
-        } else {
-            byte data[] = new byte[BUFFER_SIZE];
-            FileInputStream fi = new FileInputStream(sourceFile);
-            origin = new BufferedInputStream(fi, BUFFER_SIZE);
-            ZipEntry entry = new ZipEntry(sourceFile.getName());
-            out.putNextEntry(entry);
-            int count;
-            while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
-                out.write(data, 0, count);
-            }
-        }
-        //Zip the json file
-        zipBackupJsonFile(out);
+    public boolean zipFileAtPath(String toLocation) {
 
-        out.close();
+        File sourceFile = diaryFileManager.getDiaryDir();
+        try {
+            BufferedInputStream origin = null;
+            FileOutputStream dest = new FileOutputStream(toLocation);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
+                    dest));
+            if (sourceFile.isDirectory()) {
+                zipSubFolder(out, sourceFile, sourceFile.getParent().length());
+            } else {
+                byte data[] = new byte[BUFFER_SIZE];
+                FileInputStream fi = new FileInputStream(sourceFile);
+                origin = new BufferedInputStream(fi, BUFFER_SIZE);
+                ZipEntry entry = new ZipEntry(sourceFile.getName());
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER_SIZE)) != -1) {
+                    out.write(data, 0, count);
+                }
+            }
+            //Zip the json file
+            zipBackupJsonFile(out);
+
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     private void zipBackupJsonFile(ZipOutputStream out) throws IOException {
@@ -97,35 +105,39 @@ public class ZipManager {
     }
 
     public void unzip(String zipFile, String location) throws IOException {
-        File f = new File(location);
-        if (!f.isDirectory()) {
-            f.mkdirs();
-        }
-        ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFile));
         try {
-            ZipEntry ze = null;
-            while ((ze = zin.getNextEntry()) != null) {
-                String path = location + ze.getName();
+            File f = new File(location);
+            if (!f.isDirectory()) {
+                f.mkdirs();
+            }
+            ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFile));
+            try {
+                ZipEntry ze = null;
+                while ((ze = zin.getNextEntry()) != null) {
+                    String path = location + ze.getName();
 
-                if (ze.isDirectory()) {
-                    File unzipFile = new File(path);
-                    if (!unzipFile.isDirectory()) {
-                        unzipFile.mkdirs();
-                    }
-                } else {
-                    FileOutputStream fout = new FileOutputStream(path, false);
-                    try {
-                        for (int c = zin.read(); c != -1; c = zin.read()) {
-                            fout.write(c);
+                    if (ze.isDirectory()) {
+                        File unzipFile = new File(path);
+                        if (!unzipFile.isDirectory()) {
+                            unzipFile.mkdirs();
                         }
-                        zin.closeEntry();
-                    } finally {
-                        fout.close();
+                    } else {
+                        FileOutputStream fout = new FileOutputStream(path, false);
+                        try {
+                            for (int c = zin.read(); c != -1; c = zin.read()) {
+                                fout.write(c);
+                            }
+                            zin.closeEntry();
+                        } finally {
+                            fout.close();
+                        }
                     }
                 }
+            } finally {
+                zin.close();
             }
-        } finally {
-            zin.close();
+        } catch (Exception e) {
+            Log.e("ZIP", "Unzip exception", e);
         }
     }
 }
