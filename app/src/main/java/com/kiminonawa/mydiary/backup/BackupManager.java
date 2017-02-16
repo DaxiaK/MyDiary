@@ -20,6 +20,8 @@ public class BackupManager {
     private List<BUTopic> backup_topic_list;
 
     public final static String BACKUP_JSON_FILE_NAME = "backup.json";
+    public final static String BACKUP_ZIP_FILE_HEADER = "MyDiaryBackup_";
+    public final static String BACKUP_ZIP_FILE_SUB_FILE_NAME = ".zip";
 
 
     public BackupManager() {

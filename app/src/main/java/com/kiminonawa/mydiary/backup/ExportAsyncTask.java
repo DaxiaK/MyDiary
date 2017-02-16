@@ -25,8 +25,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.kiminonawa.mydiary.backup.BackupManager.BACKUP_ZIP_FILE_HEADER;
+import static com.kiminonawa.mydiary.backup.BackupManager.BACKUP_ZIP_FILE_SUB_FILE_NAME;
 
 /**
  * Created by daxia on 2017/2/16.
@@ -45,7 +50,9 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
      * Backup
      */
     private BackupManager backupManager;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
     private String backupJsonFilePath;
+    private String backupZieFilePath;
     /*
      * DB
      */
@@ -59,13 +66,14 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private ProgressDialog progressDialog;
     private ExportCallBack callBack;
 
-    public ExportAsyncTask(Activity activity, ExportCallBack callBack) {
+    public ExportAsyncTask(Activity activity, ExportCallBack callBack, String backupZieFilePath) {
 
         this.mContext = activity.getApplicationContext();
         this.backupManager = new BackupManager();
         this.dbManager = new DBManager(activity.getApplicationContext());
         this.backupJsonFilePath = new FileManager(activity.getApplicationContext(), FileManager.BACKUP_DIR).getDiaryDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
+        this.backupZieFilePath = backupZieFilePath;
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(activity);
 
@@ -116,9 +124,10 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     private boolean zipBackupFile() throws IOException {
-        ZipManager zipManager = new ZipManager(mContext,backupJsonFilePath);
+        ZipManager zipManager = new ZipManager(mContext, backupJsonFilePath);
         //TODO This file path should be selected by user
-        return zipManager.zipFileAtPath("/sdcard/temp.zip");
+        return zipManager.zipFileAtPath(backupZieFilePath + "/" +
+                BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME);
     }
 
 
