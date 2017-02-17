@@ -19,7 +19,7 @@ public class AboutActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //For set status bar
-        ChinaPhoneHelper.setStatusBar(this,true);
+        ChinaPhoneHelper.setStatusBar(this, true);
 
         setContentView(R.layout.activity_about);
         license = new StringBuilder();
@@ -55,6 +55,9 @@ public class AboutActivity extends AppCompatActivity {
         license.append(
                 new LicenseObj("Fresco", "Facebook, Inc.", "2015-present", LicenseObj.BSD)
                         .getLicense());
+        license.append(
+                new LicenseObj("NoNonsense-FilePicker", "spacecowboy", "", LicenseObj.MPLv2)
+                        .getLicense());
 
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
@@ -65,6 +68,7 @@ public class AboutActivity extends AppCompatActivity {
         public final static int APACHE = 1;
         public final static int GPLv2 = 2;
         public final static int BSD = 3;
+        public final static int MPLv2 = 4;
 
         private String softwareName;
         private String author;
@@ -163,6 +167,18 @@ public class AboutActivity extends AppCompatActivity {
                             "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\n" +
                             "SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n" +
                             "\n\n=====\n";
+                case MPLv2:
+                    return "==" + softwareName + " , " + author + "==\n\n" +
+                            " This Source Code Form is subject to the terms of the Mozilla Public\n" +
+                            "  License, v. 2.0. If a copy of the MPL was not distributed with this\n" +
+                            "  file, You can obtain one at http://mozilla.org/MPL/2.0/.\n" +
+                            "\n" +
+                            "If it is not possible or desirable to put the notice in a particular\n" +
+                            "file, then You may include the notice in a location (such as a LICENSE\n" +
+                            "file in a relevant directory) where a recipient would be likely to look\n" +
+                            "for such a notice.\n" +
+                            "\n" +
+                            "You may add additional accurate notices of copyright ownership.";
 
                 default:
                     return "";
