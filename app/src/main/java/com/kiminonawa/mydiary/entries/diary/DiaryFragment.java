@@ -298,7 +298,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + tempFileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = FileManager.FILE_HEADER + tempFileManager.getDir().getAbsolutePath() + "/" + fileName;
 //            Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
 //            if (resizeBmp != null) {
             Log.e("test", "test" + Uri.parse(tempFileSrc).toString());
@@ -384,7 +384,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_weather.setSelection(0);
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
-        tempFileManager.clearDiaryDir();
+        tempFileManager.clearDir();
     }
 
     private void saveDiary() {

@@ -172,4 +172,7 @@
     <!--Back event-->
     <string name="main_activity_exit_app">Click back button again to close</string>
 
+    <!--Backup overwrite string-->
+    <string name="nnf_select_something_first">Please select something first</string>
+
 </resources>

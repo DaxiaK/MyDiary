@@ -252,7 +252,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             if (isEditMode) {
                 diaryViewerHandler = new DiaryViewerHandler(this);
                 diaryFileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
-                diaryFileManager.clearDiaryDir();
+                diaryFileManager.clearDir();
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
                 mTask = new CopyDiaryToEditCacheTask(getActivity(), diaryFileManager, this);
                 //Make ths ProgressBar show 0.7s+.
@@ -474,7 +474,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
                 content = FileManager.FILE_HEADER +
-                        diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
+                        diaryFileManager.getDir().getAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
@@ -608,7 +608,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDiaryDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDir().getAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();

@@ -15,7 +15,7 @@ public class OldVersionHelper {
 
     public static boolean Version17MoveTheDiaryIntoNewDir(Context context) throws Exception {
         FileManager rootFileManager = new FileManager(context, FileManager.ROOT_DIR);
-        File[] dataFiles = rootFileManager.getDiaryDir().listFiles();
+        File[] dataFiles = rootFileManager.getDir().listFiles();
         boolean moveIntoNewDir = false;
         //router all dir first
         for (int i = 0; i < dataFiles.length; i++) {
@@ -26,17 +26,17 @@ public class OldVersionHelper {
         }
         //If the numeric dir is exist , move it
         if (moveIntoNewDir) {
-            File destDir = new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDir();
+            File destDir = new FileManager(context, FileManager.DIARY_ROOT_DIR).getDir();
             FileUtils.deleteDirectory(destDir);
             for (int i = 0; i < dataFiles.length; i++) {
                 if (FileManager.isNumeric(dataFiles[i].getName())) {
                     FileUtils.moveDirectoryToDirectory(dataFiles[i],
-                            new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDir()
+                            new FileManager(context, FileManager.DIARY_ROOT_DIR).getDir()
                             , true);
                 }
             }
             //Remove the diary/temp/
-            FileUtils.deleteDirectory(new File(new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath() + "/temp"));
+            FileUtils.deleteDirectory(new File(new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath() + "/temp"));
         }
         return moveIntoNewDir;
     }

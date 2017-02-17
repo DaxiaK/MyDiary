@@ -180,7 +180,8 @@ public class DBManager {
      * Diary
      */
     public long insertDiaryInfo(long time, String title,
-                                int mood, int weather, boolean attachment, long refTopicId, String locationName) {
+                                int mood, int weather, boolean attachment,
+                                long refTopicId, String locationName) {
         return db.insert(
                 DiaryEntry_V2.TABLE_NAME,
                 null,

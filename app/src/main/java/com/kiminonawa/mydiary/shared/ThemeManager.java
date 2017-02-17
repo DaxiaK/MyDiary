@@ -94,7 +94,7 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_mitsuha);
                 break;
             default:
-                File profileBgFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getPath()
+                File profileBgFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDir().getPath()
                         + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (profileBgFile.exists()) {
                     bgDrawable = Drawable.createFromPath(profileBgFile.getAbsolutePath());
@@ -109,7 +109,7 @@ public class ThemeManager {
     public Drawable getProfilePictureDrawable(Context context) {
         Drawable pictureDrawable;
         try {
-            File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDiaryDir().getAbsolutePath()
+            File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDir().getAbsolutePath()
                     + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
             if (pictureFile.exists()) {
                 pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());
@@ -164,7 +164,7 @@ public class ThemeManager {
     public Drawable getEntriesBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
         File memoBg = new File(
-                new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
+                new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
         if (memoBg.exists()) {
@@ -188,7 +188,7 @@ public class ThemeManager {
     public Drawable getMemoBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
         File memoBg = new File(
-                new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
+                new FileManager(context, FileManager.MEMO_ROOT_DIR).getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
         if (memoBg.exists()) {
@@ -212,7 +212,7 @@ public class ThemeManager {
     public Drawable getContactsBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
         File memoBg = new File(
-                new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
+                new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
         if (memoBg.exists()) {
@@ -396,20 +396,20 @@ public class ThemeManager {
         switch (topicType) {
             case ITopic.TYPE_MEMO:
                 outputFile = new File(
-                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDiaryDirAbsolutePath()
+                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;
             case ITopic.TYPE_CONTACTS:
                 outputFile = new File(
-                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDiaryDirAbsolutePath()
+                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;
             //TYPE_DIARY
             default:
                 outputFile = new File(
-                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDiaryDirAbsolutePath()
+                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;
