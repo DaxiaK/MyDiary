@@ -9,13 +9,15 @@
     </style>
 
     <!--Start For NoNonsense-FilePicker-->
-    <!--It must set the theme , or lib will crash.-->
-
+    <!--It must set the theme or lib will crash.-->
     <style name="FilePickerTheme" parent="NNF_BaseTheme">
-        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textAllCaps">false</item>
 
+        <item name="android:textAppearanceLarge">@style/FilePickerTextAppearanceLarge</item>
+        <item name="android:textColorSecondary">@color/colorAccent</item>
         <item name="alertDialogTheme">@style/FilePickerAlertDialogTheme</item>
 
     </style>
@@ -25,6 +27,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="FilePickerTextAppearanceLarge" parent="android:TextAppearance.Large">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <!--End For NoNonsense-FilePicker-->
 
 

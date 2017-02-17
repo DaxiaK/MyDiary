@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -108,6 +109,11 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean exportSuccessful) {
         super.onPostExecute(exportSuccessful);
         progressDialog.dismiss();
+        if (exportSuccessful) {
+            Toast.makeText(mContext, "匯出成功", Toast.LENGTH_LONG);
+        } else {
+            Toast.makeText(mContext, "糟糕，匯出失敗了...請檢查權限或洽詢作者", Toast.LENGTH_LONG);
+        }
         callBack.onExportCompiled(exportSuccessful);
     }
 

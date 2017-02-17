@@ -20,29 +20,50 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/TV_backup_export_src"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="start"
             android:text="Click me to select the path"
-            android:ellipsize="start" />
+            android:textSize="20dp" />
 
         <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
             android:id="@+id/But_backup_export"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="Export" />
     </LinearLayout>
 
-    <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
-        android:id="@+id/But_backup_import"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="import" />
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/TV_backup_import_src"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="start"
+            android:text="Click me to select the backup file"
+            android:textSize="20dp" />
+
+
+        <com.kiminonawa.mydiary.shared.gui.MyDiaryButton
+            android:id="@+id/But_backup_import"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="import" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
