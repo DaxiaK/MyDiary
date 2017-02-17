@@ -68,7 +68,7 @@ public class ZipManager {
         byte data[] = new byte[BUFFER_SIZE];
         FileInputStream fi = new FileInputStream(backupJsonFilePath);
         BufferedInputStream jsonFileOrigin = new BufferedInputStream(fi, BUFFER_SIZE);
-        ZipEntry entry = new ZipEntry("Output.json");
+        ZipEntry entry = new ZipEntry(BackupManager.BACKUP_JSON_FILE_NAME);
         out.putNextEntry(entry);
         int count;
         while ((count = jsonFileOrigin.read(data, 0, BUFFER_SIZE)) != -1) {

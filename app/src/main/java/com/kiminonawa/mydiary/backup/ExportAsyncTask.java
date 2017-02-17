@@ -10,19 +10,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.backup.obj.BUContacts;
 import com.kiminonawa.mydiary.backup.obj.BUContactsEntries;
-import com.kiminonawa.mydiary.backup.obj.BUDiary;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryEntries;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
-import com.kiminonawa.mydiary.backup.obj.BUMemo;
 import com.kiminonawa.mydiary.backup.obj.BUMemoEntries;
-import com.kiminonawa.mydiary.backup.obj.BUTopic;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.shared.FileManager;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -71,6 +66,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
         this.mContext = context;
         this.backupManager = new BackupManager();
+        this.backupManager.initBackupManagerExportInfo();
+
         this.dbManager = new DBManager(context);
         this.backupJsonFilePath = new FileManager(context, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
@@ -119,7 +116,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 
     private void deleteBackupJsonFile() {
-        new File(backupJsonFilePath).delete();
+        new FileManager(mContext, FileManager.BACKUP_DIR).clearDir();
     }
 
     private void outputBackupJson() throws IOException {
@@ -144,7 +141,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         dbManager.opeDB();
         Cursor topicCursor = dbManager.selectTopic();
         for (int i = 0; i < topicCursor.getCount(); i++) {
-            BUTopic exportTopic = loadTopicDataFormDB(topicCursor);
+            BackupManager.BackupTopicListBean exportTopic = loadTopicDataFormDB(topicCursor);
             if (exportTopic != null) {
                 backupManager.addTopic(exportTopic);
                 topicCursor.moveToNext();
@@ -157,8 +154,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     }
 
 
-    private BUTopic loadTopicDataFormDB(Cursor topicCursor) {
-        BUTopic topic = null;
+    private BackupManager.BackupTopicListBean loadTopicDataFormDB(Cursor topicCursor) {
+        BackupManager.BackupTopicListBean topic = null;
         switch (topicCursor.getInt(2)) {
             //This memo have 2 part , 1st is topic , 2nd is memo entries
             case ITopic.TYPE_MEMO:
@@ -173,8 +170,10 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 }
                 memoEntriesCursor.close();
                 //Create the BUmemo
-                topic = new BUMemo(topicCursor.getLong(0), topicCursor.getString(1),
-                        topicCursor.getInt(7), topicCursor.getInt(5), memoEntriesItemList);
+                topic = new BackupManager.BackupTopicListBean(topicCursor.getLong(0), topicCursor.getString(1),
+                        topicCursor.getInt(7), topicCursor.getInt(5));
+                topic.setTopic_type(ITopic.TYPE_MEMO);
+                topic.setMemo_topic_entries_list(memoEntriesItemList);
                 break;
             //   This diary have 3 part , 1st is topic , 2nd is diary entries , 3rd is diary item (content)
             case ITopic.TYPE_DIARY:
@@ -203,8 +202,10 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 diaryEntriesCursor.close();
 
                 //Create the BUDiary
-                topic = new BUDiary(topicCursor.getLong(0), topicCursor.getString(1),
-                        topicCursor.getInt(7), topicCursor.getInt(5), diaryEntriesItemList);
+                topic = new BackupManager.BackupTopicListBean(topicCursor.getLong(0), topicCursor.getString(1),
+                        topicCursor.getInt(7), topicCursor.getInt(5));
+                topic.setTopic_type(ITopic.TYPE_DIARY);
+                topic.setDiary_topic_entries_list(diaryEntriesItemList);
                 break;
             case ITopic.TYPE_CONTACTS:
                 //Select contacts entries first
@@ -219,8 +220,10 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
                 }
                 contactsEntriesCursor.close();
                 //Create the BUmemo
-                topic = new BUContacts(topicCursor.getLong(0), topicCursor.getString(1),
-                        topicCursor.getInt(7), topicCursor.getInt(5), contactsEntriesItemList);
+                topic = new BackupManager.BackupTopicListBean(topicCursor.getLong(0), topicCursor.getString(1),
+                        topicCursor.getInt(7), topicCursor.getInt(5));
+                topic.setTopic_type(ITopic.TYPE_CONTACTS);
+                topic.setContacts_topic_entries_list(contactsEntriesItemList);
                 break;
         }
         return topic;
