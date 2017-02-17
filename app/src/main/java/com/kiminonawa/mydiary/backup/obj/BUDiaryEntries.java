@@ -9,17 +9,20 @@ import java.util.List;
 public class BUDiaryEntries {
 
     private long diary_entries_id;
+    private String diary_entries_title;
     private long diary_entries_time;
     private int diary_entries_mood, diary_entries_weather;
     private boolean diary_entries_attachment;
     private String diary_entries_location;
     private List<BUDiaryItem> diary_item_list;
 
-    public BUDiaryEntries(long diary_entries_id, long diary_entries_time, int diary_entries_mood, int diary_entries_weather,
+    public BUDiaryEntries(long diary_entries_id, long diary_entries_time, String diary_entries_title,
+                          int diary_entries_mood, int diary_entries_weather,
                           boolean diary_entries_attachment, String diary_entries_location,
                           List<BUDiaryItem> diary_item_list) {
         this.diary_entries_id = diary_entries_id;
         this.diary_entries_time = diary_entries_time;
+        this.diary_entries_title = diary_entries_title;
         this.diary_entries_mood = diary_entries_mood;
         this.diary_entries_weather = diary_entries_weather;
         this.diary_entries_attachment = diary_entries_attachment;
@@ -33,6 +36,10 @@ public class BUDiaryEntries {
 
     public long getDiaryEntriesTime() {
         return diary_entries_time;
+    }
+
+    public String getDiaryEntriesTitle() {
+        return diary_entries_title;
     }
 
     public int getDiaryEntriesMood() {

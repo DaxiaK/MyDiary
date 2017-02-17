@@ -15,4 +15,16 @@ public class BUContactsEntries {
         Contacts_entries_name = contacts_entries_name;
         Contacts_entries_phonenumber = contacts_entries_phonenumber;
     }
+
+    public long getContactsEntriesId() {
+        return Contacts_entries_id;
+    }
+
+    public String getContactsEntriesName() {
+        return Contacts_entries_name;
+    }
+
+    public String getContactsEntriesPhonenumber() {
+        return Contacts_entries_phonenumber;
+    }
 }

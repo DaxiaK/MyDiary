@@ -18,6 +18,8 @@ import android.util.Log;
 
 import com.kiminonawa.mydiary.main.topic.ITopic;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -175,12 +177,10 @@ public class FileManager {
 
     public void clearDir() {
         if (fileDir.isDirectory()) {
-            String[] children = fileDir.list();
-            //For avoid no file in this dir
-            if (children != null) {
-                for (int i = 0; i < children.length; i++) {
-                    new File(fileDir, children[i]).delete();
-                }
+            try {
+                FileUtils.cleanDirectory(fileDir);
+            } catch (IOException e) {
+                Log.e(TAG, "ClearDir file", e);
             }
         }
     }

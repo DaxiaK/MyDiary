@@ -107,9 +107,9 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         super.onPostExecute(exportSuccessful);
         progressDialog.dismiss();
         if (exportSuccessful) {
-            Toast.makeText(mContext, "匯出成功", Toast.LENGTH_LONG);
+            Toast.makeText(mContext, "匯出成功", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mContext, "糟糕，匯出失敗了...請檢查權限或洽詢作者", Toast.LENGTH_LONG);
+            Toast.makeText(mContext, "糟糕，匯出失敗了...請檢查權限或洽詢作者", Toast.LENGTH_LONG).show();
         }
         callBack.onExportCompiled(exportSuccessful);
     }
@@ -193,7 +193,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
                     }
                     diaryItemCursor.close();
                     diaryEntriesItemList.add(
-                            new BUDiaryEntries(diaryEntriesCursor.getLong(0), diaryEntriesCursor.getLong(1),
+                            new BUDiaryEntries(diaryEntriesCursor.getLong(0),
+                                    diaryEntriesCursor.getLong(1), diaryEntriesCursor.getString(2),
                                     diaryEntriesCursor.getInt(3), diaryEntriesCursor.getInt(4),
                                     diaryEntriesCursor.getInt(5) > 0 ? true : false,
                                     diaryEntriesCursor.getString(7), diaryItemItemList));
