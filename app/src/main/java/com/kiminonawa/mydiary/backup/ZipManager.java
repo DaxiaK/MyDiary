@@ -15,24 +15,24 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by daxia on 2017/2/16.
  */
 
 public class ZipManager {
 
-    private String backupJsonFilePath;
     private FileManager diaryFileManager;
     private final int BUFFER_SIZE = 2048;
 
 
-    public ZipManager(Context context, String backupJsonFilePath) {
+    public ZipManager(Context context) {
         //Copy data form diary
         diaryFileManager = new FileManager(context, FileManager.DIARY_ROOT_DIR);
-        this.backupJsonFilePath = backupJsonFilePath;
     }
 
-    public boolean zipFileAtPath(String toLocation) {
+    public boolean zipFileAtPath(String backupJsonFilePath, String toLocation) {
 
         File sourceFile = diaryFileManager.getDir();
         try {
@@ -54,7 +54,7 @@ public class ZipManager {
                 }
             }
             //Zip the json file
-            zipBackupJsonFile(out);
+            zipBackupJsonFile(backupJsonFilePath, out);
 
             out.close();
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class ZipManager {
         return true;
     }
 
-    private void zipBackupJsonFile(ZipOutputStream out) throws IOException {
+    private void zipBackupJsonFile(String backupJsonFilePath, ZipOutputStream out) throws IOException {
         byte data[] = new byte[BUFFER_SIZE];
         FileInputStream fi = new FileInputStream(backupJsonFilePath);
         BufferedInputStream jsonFileOrigin = new BufferedInputStream(fi, BUFFER_SIZE);
@@ -106,31 +106,51 @@ public class ZipManager {
         }
     }
 
-    public void unzip( String location) throws IOException {
+    public void unzip(String backupZieFilePath, String location) throws IOException {
+        int size;
+        byte[] buffer = new byte[BUFFER_SIZE];
+
         try {
+            if (!location.endsWith("/")) {
+                location += "/";
+            }
             File f = new File(location);
             if (!f.isDirectory()) {
                 f.mkdirs();
             }
-            ZipInputStream zin = new ZipInputStream(new FileInputStream(backupJsonFilePath));
+            ZipInputStream zin = new ZipInputStream(
+                    new BufferedInputStream(
+                            new FileInputStream(backupZieFilePath), BUFFER_SIZE));
             try {
                 ZipEntry ze = null;
                 while ((ze = zin.getNextEntry()) != null) {
                     String path = location + ze.getName();
+                    File unzipFile = new File(path);
 
                     if (ze.isDirectory()) {
-                        File unzipFile = new File(path);
                         if (!unzipFile.isDirectory()) {
                             unzipFile.mkdirs();
                         }
                     } else {
-                        FileOutputStream fout = new FileOutputStream(path, false);
-                        try {
-                            for (int c = zin.read(); c != -1; c = zin.read()) {
-                                fout.write(c);
+                        // check for and create parent directories if they don't exist
+                        File parentDir = unzipFile.getParentFile();
+                        if (null != parentDir) {
+                            if (!parentDir.isDirectory()) {
+                                parentDir.mkdirs();
                             }
+                        }
+
+                        // unzip the file
+                        FileOutputStream out = new FileOutputStream(unzipFile, false);
+                        BufferedOutputStream fout = new BufferedOutputStream(out, BUFFER_SIZE);
+                        try {
+                            while ((size = zin.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                                fout.write(buffer, 0, size);
+                            }
+
                             zin.closeEntry();
                         } finally {
+                            fout.flush();
                             fout.close();
                         }
                     }
@@ -139,7 +159,7 @@ public class ZipManager {
                 zin.close();
             }
         } catch (Exception e) {
-            Log.e("ZIP", "Unzip exception", e);
+            Log.e(TAG, "Unzip exception", e);
         }
     }
 }

@@ -10,12 +10,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by daxia on 2017/2/14.
@@ -100,13 +98,8 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                         .execute();
                 break;
             case R.id.But_backup_import:
-                try {
-                    ZipManager zipManager = new ZipManager(this, TV_backup_import_src.getText().toString());
-                    zipManager.unzip(new FileManager(this, FileManager.BACKUP_DIR).getDirAbsolutePath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+                new ImportAsyncTask(this, null, TV_backup_import_src.getText().toString())
+                        .execute();
                 break;
         }
     }

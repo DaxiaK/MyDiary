@@ -1,6 +1,5 @@
 package com.kiminonawa.mydiary.backup;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.backup.obj.BUContacts;
+import com.kiminonawa.mydiary.backup.obj.BUContactsEntries;
 import com.kiminonawa.mydiary.backup.obj.BUDiary;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryEntries;
 import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
@@ -67,19 +67,19 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private ProgressDialog progressDialog;
     private ExportCallBack callBack;
 
-    public ExportAsyncTask(Activity activity, ExportCallBack callBack, String backupZieFilePath) {
+    public ExportAsyncTask(Context context, ExportCallBack callBack, String backupZieFilePath) {
 
-        this.mContext = activity.getApplicationContext();
+        this.mContext = context;
         this.backupManager = new BackupManager();
-        this.dbManager = new DBManager(activity.getApplicationContext());
-        this.backupJsonFilePath = new FileManager(activity.getApplicationContext(), FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
+        this.dbManager = new DBManager(context);
+        this.backupJsonFilePath = new FileManager(context, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZieFilePath = backupZieFilePath;
         this.callBack = callBack;
-        this.progressDialog = new ProgressDialog(activity);
+        this.progressDialog = new ProgressDialog(context);
 
         //Init progressDialog
-        progressDialog.setMessage(activity.getString(R.string.process_dialog_loading));
+        progressDialog.setMessage(context.getString(R.string.process_dialog_loading));
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar);
         progressDialog.show();
@@ -130,9 +130,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     }
 
     private boolean zipBackupFile() throws IOException {
-        ZipManager zipManager = new ZipManager(mContext, backupJsonFilePath);
-        //TODO This file path should be selected by user
-        return zipManager.zipFileAtPath(backupZieFilePath + "/" +
+        ZipManager zipManager = new ZipManager(mContext);
+        return zipManager.zipFileAtPath(backupJsonFilePath, backupZieFilePath + "/" +
                 BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME);
     }
 
@@ -208,8 +207,20 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
                         topicCursor.getInt(7), topicCursor.getInt(5), diaryEntriesItemList);
                 break;
             case ITopic.TYPE_CONTACTS:
+                //Select contacts entries first
+                Cursor contactsEntriesCursor = dbManager.selectContacts(topicCursor.getLong(0));
+                List<BUContactsEntries> contactsEntriesItemList = new ArrayList<>();
+                for (int j = 0; j < contactsEntriesCursor.getCount(); j++) {
+                    contactsEntriesItemList.add(
+                            new BUContactsEntries(contactsEntriesCursor.getLong(0),
+                                    contactsEntriesCursor.getString(1),
+                                    contactsEntriesCursor.getString(2)));
+                    contactsEntriesCursor.moveToNext();
+                }
+                contactsEntriesCursor.close();
+                //Create the BUmemo
                 topic = new BUContacts(topicCursor.getLong(0), topicCursor.getString(1),
-                        topicCursor.getInt(7), topicCursor.getInt(5), null);
+                        topicCursor.getInt(7), topicCursor.getInt(5), contactsEntriesItemList);
                 break;
         }
         return topic;
