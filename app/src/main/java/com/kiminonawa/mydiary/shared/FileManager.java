@@ -165,15 +165,15 @@ public class FileManager {
     }
 
 
-    public File getDiaryDir() {
+    public File getDir() {
         return fileDir;
     }
 
-    public String getDiaryDirAbsolutePath() {
+    public String getDirAbsolutePath() {
         return fileDir.getAbsolutePath();
     }
 
-    public void clearDiaryDir() {
+    public void clearDir() {
         if (fileDir.isDirectory()) {
             String[] children = fileDir.list();
             //For avoid no file in this dir

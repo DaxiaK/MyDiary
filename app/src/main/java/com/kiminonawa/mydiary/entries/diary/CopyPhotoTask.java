@@ -55,7 +55,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     public CopyPhotoTask(Context context, String srcFileName,
                          int reqWidth, int reqHeight,
                          FileManager fileManager, CopyPhotoCallBack callBack) {
-        this.srcFileName = fileManager.getDiaryDir().getAbsolutePath() + "/" + srcFileName;
+        this.srcFileName = fileManager.getDir().getAbsolutePath() + "/" + srcFileName;
         isAddPicture = true;
         initTask(context, reqWidth, reqHeight, fileManager, callBack);
     }
@@ -112,7 +112,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
         FileOutputStream out = null;
         String fileName = FileManager.createRandomFileName();
         try {
-            out = new FileOutputStream(fileManager.getDiaryDir().getAbsolutePath() + "/" + fileName);
+            out = new FileOutputStream(fileManager.getDir().getAbsolutePath() + "/" + fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
         } finally {
             try {

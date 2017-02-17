@@ -80,7 +80,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
             //Save content
             diaryFileManager = new FileManager(mContext, topicId, diaryId);
             //Check no any garbage in this diary.
-            diaryFileManager.clearDiaryDir();
+            diaryFileManager.clearDir();
             if (diaryId != -1) {
                 for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
                     //Copy photo from temp to diary dir
@@ -97,7 +97,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
             }
         } catch (Exception e) {
             //Revert the Data
-            diaryFileManager.clearDiaryDir();
+            diaryFileManager.clearDir();
             saveResult = RESULT_INSERT_ERROR;
         } finally {
             dbManager.endTransaction();
@@ -119,7 +119,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
-                new File(diaryFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename));
+        FileManager.copy(new File(tempFileManager.getDir().getAbsoluteFile() + "/" + filename),
+                new File(diaryFileManager.getDir().getAbsoluteFile() + "/" + filename));
     }
 }

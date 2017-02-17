@@ -138,14 +138,14 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
 
                     //Create fileManager for get temp folder
                     tempFileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
-                    tempFileManager.clearDiaryDir();
+                    tempFileManager.clearDir();
                     //Compute the bg size
                     int photoSize = ScreenHelper.dpToPixel(getResources(), 50);
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
                     UCrop.of(data.getData(), Uri.fromFile(
-                            new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                            new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(photoSize, photoSize)
                             .withAspectRatio(1, 1)
                             .withOptions(options)
@@ -181,7 +181,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         //Save profile picture
         if (isAddNewProfilePicture) {
             //Remove the old file
-            File oldProfilePictureFile = new File(new FileManager(getActivity(), FileManager.SETTING_DIR).getDiaryDir().getAbsoluteFile()
+            File oldProfilePictureFile = new File(new FileManager(getActivity(), FileManager.SETTING_DIR).getDir().getAbsoluteFile()
                     + "/" + ThemeManager.CUSTOM_PROFILE_PICTURE_FILENAME);
             if (oldProfilePictureFile.exists()) {
                 oldProfilePictureFile.delete();
@@ -189,7 +189,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
             if (!"".equals(profilePictureFileName)) {
                 try {
                     //Copy the profile into setting dir
-                    FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + profilePictureFileName),
+                    FileManager.copy(new File(tempFileManager.getDir().getAbsoluteFile() + "/" + profilePictureFileName),
                             oldProfilePictureFile);
                 } catch (IOException e) {
                     e.printStackTrace();

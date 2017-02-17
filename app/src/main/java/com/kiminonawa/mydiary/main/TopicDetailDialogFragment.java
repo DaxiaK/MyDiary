@@ -202,11 +202,11 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                     }
                     FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
                     //Clear the old photo file
-                    tempFileManager.clearDiaryDir();
+                    tempFileManager.clearDir();
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
-                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(topicBgWidth, topicBgHeight)
                             .withAspectRatio(topicBgWidth, topicBgHeight)
                             .withOptions(options)

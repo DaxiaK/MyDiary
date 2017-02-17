@@ -48,7 +48,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
         dbManager.closeDB();
         //Delete photo data
         try {
-            deleteDirectory(new FileManager(getActivity(), topicId, diaryId).getDiaryDir());
+            deleteDirectory(new FileManager(getActivity(), topicId, diaryId).getDir());
         } catch (IOException e) {
             //just do nothing
             e.printStackTrace();

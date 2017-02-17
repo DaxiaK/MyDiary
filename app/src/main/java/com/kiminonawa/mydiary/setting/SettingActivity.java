@@ -79,7 +79,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         themeManager = ThemeManager.getInstance();
         //Create fileManager for get temp folder
         tempFileManager = new FileManager(this, FileManager.TEMP_DIR);
-        tempFileManager.clearDiaryDir();
+        tempFileManager.clearDir();
 
         SP_setting_theme = (Spinner) findViewById(R.id.SP_setting_theme);
         IV_setting_profile_bg = (ImageView) findViewById(R.id.IV_setting_profile_bg);
@@ -111,7 +111,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(this));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(this));
-                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDiaryDir() + "/" + FileManager.createRandomFileName())))
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
                             .withMaxResultSize(bgWidth, bgHeight)
                             .withOptions(options)
                             .withAspectRatio(bgWidth, bgHeight)
@@ -280,8 +280,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         if (!"".equals(profileBgFileName)) {
                             try {
                                 //Copy the profile into setting dir
-                                FileManager.copy(new File(tempFileManager.getDiaryDir().getAbsoluteFile() + "/" + profileBgFileName),
-                                        new File(new FileManager(this, FileManager.SETTING_DIR).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
+                                FileManager.copy(new File(tempFileManager.getDir().getAbsoluteFile() + "/" + profileBgFileName),
+                                        new File(new FileManager(this, FileManager.SETTING_DIR).getDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
                                 hasCustomProfileBannerBg = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -289,7 +289,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                                 break;
                             }
                         } else {
-                            new File(new FileManager(this, FileManager.SETTING_DIR).getDiaryDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
+                            new File(new FileManager(this, FileManager.SETTING_DIR).getDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
                         }
                         SPFManager.setCustomProfileBannerBg(this, hasCustomProfileBannerBg);
                     }

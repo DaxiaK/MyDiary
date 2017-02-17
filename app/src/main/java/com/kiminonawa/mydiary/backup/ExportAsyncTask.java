@@ -72,7 +72,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         this.mContext = activity.getApplicationContext();
         this.backupManager = new BackupManager();
         this.dbManager = new DBManager(activity.getApplicationContext());
-        this.backupJsonFilePath = new FileManager(activity.getApplicationContext(), FileManager.BACKUP_DIR).getDiaryDirAbsolutePath() + "/"
+        this.backupJsonFilePath = new FileManager(activity.getApplicationContext(), FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZieFilePath = backupZieFilePath;
         this.callBack = callBack;

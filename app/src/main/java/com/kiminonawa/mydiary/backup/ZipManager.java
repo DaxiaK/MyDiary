@@ -34,7 +34,7 @@ public class ZipManager {
 
     public boolean zipFileAtPath(String toLocation) {
 
-        File sourceFile = diaryFileManager.getDiaryDir();
+        File sourceFile = diaryFileManager.getDir();
         try {
             BufferedInputStream origin = null;
             FileOutputStream dest = new FileOutputStream(toLocation);
@@ -106,13 +106,13 @@ public class ZipManager {
         }
     }
 
-    public void unzip(String zipFile, String location) throws IOException {
+    public void unzip( String location) throws IOException {
         try {
             File f = new File(location);
             if (!f.isDirectory()) {
                 f.mkdirs();
             }
-            ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFile));
+            ZipInputStream zin = new ZipInputStream(new FileInputStream(backupJsonFilePath));
             try {
                 ZipEntry ze = null;
                 while ((ze = zin.getNextEntry()) != null) {

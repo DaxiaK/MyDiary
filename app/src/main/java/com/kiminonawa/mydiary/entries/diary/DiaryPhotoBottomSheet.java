@@ -123,7 +123,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
             case R.id.IV_diary_photo_add_a_photo:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 tempFileName = "/" + fileManager.createRandomFileName();
-                File tmpFile = new File(fileManager.getDiaryDir(), tempFileName);
+                File tmpFile = new File(fileManager.getDir(), tempFileName);
                 Uri outputFileUri = Uri.fromFile(tmpFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, REQUEST_START_CAMERA_CODE);

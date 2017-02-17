@@ -42,8 +42,8 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
         long diaryId = params[1];
         try {
             FileManager diaryFileManager = new FileManager(mContext, topicId, diaryId);
-            File[] childrenPhoto = diaryFileManager.getDiaryDir().listFiles();
-            for (int i = 0; i < diaryFileManager.getDiaryDir().listFiles().length; i++) {
+            File[] childrenPhoto = diaryFileManager.getDir().listFiles();
+            for (int i = 0; i < diaryFileManager.getDir().listFiles().length; i++) {
                 copyPhoto(childrenPhoto[i].getName(), diaryFileManager);
             }
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void copyPhoto(String filename, FileManager diaryFileManager) throws Exception {
-        FileManager.copy(new File(diaryFileManager.getDiaryDir().getAbsoluteFile() + "/" + filename),
-                new File(editCacheFileManage.getDiaryDir().getAbsoluteFile() + "/" + filename));
+        FileManager.copy(new File(diaryFileManager.getDir().getAbsoluteFile() + "/" + filename),
+                new File(editCacheFileManage.getDir().getAbsoluteFile() + "/" + filename));
     }
 }
