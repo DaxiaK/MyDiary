@@ -1,6 +1,6 @@
 package com.kiminonawa.mydiary.shared.gui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,23 +28,23 @@ public class DiaryPhotoLayout extends LinearLayout {
     private SimpleDraweeView SDV_diary_new_photo;
     private ImageView IV_diary_photo_delete;
 
-    public DiaryPhotoLayout(Context context) {
-        super(context);
-        View v = LayoutInflater.from(context).inflate(R.layout.layout_diaryphoto, this, true);
+    public DiaryPhotoLayout(Activity activity) {
+        super(activity);
+        View v = LayoutInflater.from(activity).inflate(R.layout.layout_diaryphoto, this, true);
         SDV_diary_new_photo = (SimpleDraweeView) v.findViewById(R.id.SDV_diary_new_photo);
         RelativeLayout.LayoutParams params =
                 (RelativeLayout.LayoutParams) SDV_diary_new_photo.getLayoutParams();
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        params.height = DiaryItemHelper.getVisibleHeight();
+        params.height = DiaryItemHelper.getVisibleHeight(activity);
         SDV_diary_new_photo.setLayoutParams(params);
-        SDV_diary_new_photo.setAspectRatio(ScreenHelper.getScreenRatio());
+        SDV_diary_new_photo.setAspectRatio(ScreenHelper.getScreenRatio(activity));
         IV_diary_photo_delete = (ImageView) v.findViewById(R.id.IV_diary_photo_delete);
     }
 
-    public void setPhotoUri(Uri photoUri) {
+    public void setPhotoUri( Uri photoUri) {
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(photoUri)
-                .setResizeOptions(new ResizeOptions(DiaryItemHelper.getVisibleWidth(),
-                        DiaryItemHelper.getVisibleHeight()))
+                .setResizeOptions(new ResizeOptions(DiaryItemHelper.getVisibleWidth(getContext()),
+                        DiaryItemHelper.getVisibleHeight(getContext())))
                 .setRotationOptions(RotationOptions.autoRotate())
                 .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()

@@ -10,14 +10,11 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.security.PasswordActivity;
 import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
-import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.Locale;
 
@@ -39,16 +36,6 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
         initHandler = new Handler();
         //init UI
         TV_init_message = (TextView) findViewById(R.id.TV_init_message);
-
-        //Init photo value
-        //topbar height
-        int topbarHeight = getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
-        //topic bg
-        initBgSize(topbarHeight);
-        //Diary photo size
-        initDiaryPhotoSize(topbarHeight);
-        //Init screen Ratio
-        ScreenHelper.setScreenRatio(this);
     }
 
     @Override
@@ -70,43 +57,6 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
     protected void onPause() {
         super.onPause();
         initHandler.removeCallbacksAndMessages(null);
-    }
-
-    private void initBgSize(int topBarSize) {
-        int bgWeight = ScreenHelper.getScreenWidth(InitActivity.this);
-        int bgHeight;
-        int withoutEditBarHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                //diary activity top bar
-                topBarSize;
-        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
-            bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                    ScreenHelper.getStatusBarHeight(InitActivity.this) -
-                    //diary activity top bar  + edit bottom bar
-                    ScreenHelper.dpToPixel(getResources(), 40) - topBarSize;
-        } else {
-            bgHeight = ScreenHelper.getScreenHeight(InitActivity.this) -
-                    //diary activity top bar  + edit bottom bar
-                    ScreenHelper.dpToPixel(getResources(), 40) - topBarSize;
-        }
-        ThemeManager.getInstance().setBgSize(bgWeight, bgHeight, withoutEditBarHeight);
-    }
-
-    private void initDiaryPhotoSize(int topBarSize) {
-        int imageHeight;
-        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
-            imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
-                    - ScreenHelper.getStatusBarHeight(InitActivity.this)
-                    //diary activity top bar  -( diary info + diary bottom bar + diary padding+ photo padding)
-                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5) + (2 * 5));
-        } else {
-            imageHeight = ScreenHelper.getScreenHeight(InitActivity.this)
-                    //diary activity top bar  -( diary info + diary bottom bar + diary padding + photo padding)
-                    - topBarSize - ScreenHelper.dpToPixel(getResources(), 120 + 40 + (2 * 5) + (2 * 5));
-        }
-        int imageWeight = ScreenHelper.getScreenWidth(InitActivity.this) -
-                //(diary padding + photo padding)
-                ScreenHelper.dpToPixel(getResources(), (2 * 5) + (2 * 5));
-        DiaryItemHelper.setVisibleArea(imageWeight, imageHeight);
     }
 
     private void setLocaleLanguage() {

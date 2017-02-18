@@ -1,6 +1,6 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
-import android.content.Context;
+import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 
@@ -16,8 +16,8 @@ public class DiaryPhoto implements IDairyRow {
     private String photoFileName;
     private int position;
 
-    public DiaryPhoto(Context context) {
-        diaryPhotoLayout = new DiaryPhotoLayout(context);
+    public DiaryPhoto(Activity activity) {
+        diaryPhotoLayout = new DiaryPhotoLayout(activity);
         //Default is editable
         setEditMode(true);
     }
@@ -29,7 +29,7 @@ public class DiaryPhoto implements IDairyRow {
 
     public void setPhoto(Uri photoUri, String photoFileName) {
         this.photoFileName = photoFileName;
-        diaryPhotoLayout.setPhotoUri(photoUri);
+        diaryPhotoLayout.setPhotoUri( photoUri);
     }
 
 

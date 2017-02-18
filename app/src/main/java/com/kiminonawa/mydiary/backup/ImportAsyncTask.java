@@ -131,12 +131,12 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         boolean importSuccessful = true;
         try {
             dbManager.opeDB();
-            //Start a transcation
+            //Start a transaction
             dbManager.beginTransaction();
             for (int i = 0; i < backupManager.getBackup_topic_list().size(); i++) {
                 saveTopicIntoDB(backupManager.getBackup_topic_list().get(i));
             }
-            //Re-sort the top
+            //Re-sort the topic
 
             //Check update success
             dbManager.setTransactionSuccessful();

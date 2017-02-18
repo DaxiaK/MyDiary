@@ -13,6 +13,7 @@ import android.support.v4.media.RatingCompat;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.io.File;
 
@@ -30,8 +31,6 @@ public class ThemeManager {
     public final static String CUSTOM_PROFILE_PICTURE_FILENAME = "custom_profile_picture_bg";
     public final static String CUSTOM_TOPIC_BG_FILENAME = "custom_topic_bg";
 
-
-    private static int topicBgWidth = -1, topicBgHeight = -1, topicBgWithoutEditBarHeight = -1;
 
 
     //Default color is TAKI
@@ -53,22 +52,32 @@ public class ThemeManager {
         return instance;
     }
 
-    public void setBgSize(int width, int height, int withoutEditBarHeight) {
-        topicBgWidth = width;
-        topicBgHeight = height;
-        topicBgWithoutEditBarHeight = withoutEditBarHeight;
+    public int getTopicBgWidth(Context context) {
+        return ScreenHelper.getScreenWidth(context);
     }
 
-    public int getTopicBgWidth() {
-        return topicBgWidth;
+    public int getTopicBgHeight(Context context) {
+        int topbarHeight = context.getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
+        int bgHeight;
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            bgHeight = ScreenHelper.getScreenHeight(context) -
+                    ScreenHelper.getStatusBarHeight(context) -
+                    //diary activity top bar  + edit bottom bar
+                    ScreenHelper.dpToPixel(context.getResources(), 40) - topbarHeight;
+        } else {
+            bgHeight = ScreenHelper.getScreenHeight(context) -
+                    //diary activity top bar  + edit bottom bar
+                    ScreenHelper.dpToPixel(context.getResources(), 40) - topbarHeight;
+        }
+        return bgHeight;
     }
 
-    public int getTopicBgHeight() {
-        return topicBgHeight;
-    }
-
-    public int getTopicBgWithoutEditBarHeight() {
-        return topicBgWithoutEditBarHeight;
+    public int getTopicBgWithoutEditBarHeight(Context context) {
+        int topbarHeight = context.getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
+        int withoutEditBarHeight = ScreenHelper.getScreenHeight(context) -
+                //diary activity top bar
+                topbarHeight;
+        return withoutEditBarHeight;
     }
 
     public void saveTheme(Context context, int themeId) {

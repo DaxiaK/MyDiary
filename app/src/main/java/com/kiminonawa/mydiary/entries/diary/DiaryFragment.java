@@ -505,7 +505,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
-                    DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
+                    DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
                     tempFileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
@@ -517,7 +517,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //1.get saved file for rotating & resize from temp
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
-                DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight(),
+                DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
                 tempFileManager, this).execute();
     }
 

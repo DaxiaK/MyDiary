@@ -14,16 +14,12 @@ import java.text.DecimalFormat;
 
 public class ScreenHelper {
 
-    private static float ScreenRatio;
 
-    public static void setScreenRatio(Context context) {
+    public static float getScreenRatio(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
         DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
-        ScreenRatio = Float.valueOf(mDecimalFormat.format(metrics.heightPixels / metrics.widthPixels));
-    }
-
-    public static float getScreenRatio() {
+        float ScreenRatio = Float.valueOf(mDecimalFormat.format(metrics.heightPixels / metrics.widthPixels));
         return ScreenRatio;
     }
 

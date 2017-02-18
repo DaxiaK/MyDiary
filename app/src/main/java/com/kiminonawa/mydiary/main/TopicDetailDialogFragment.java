@@ -192,13 +192,13 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         if (requestCode == SELECT_TOPIC_BG) {
             if (resultCode == RESULT_OK) {
                 if (data != null && data.getData() != null) {
-                    int topicBgWidth = ThemeManager.getInstance().getTopicBgWidth();
+                    int topicBgWidth = ThemeManager.getInstance().getTopicBgWidth(getActivity());
                     int topicBgHeight;
 
                     if (topicType == ITopic.TYPE_DIARY) {
-                        topicBgHeight = ThemeManager.getInstance().getTopicBgHeight();
+                        topicBgHeight = ThemeManager.getInstance().getTopicBgHeight(getActivity());
                     } else {
-                        topicBgHeight = ThemeManager.getInstance().getTopicBgWithoutEditBarHeight();
+                        topicBgHeight = ThemeManager.getInstance().getTopicBgWithoutEditBarHeight(getActivity());
                     }
                     FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
                     //Clear the old photo file

@@ -1,6 +1,11 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
+import android.content.Context;
 import android.widget.LinearLayout;
+
+import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +21,9 @@ public class DiaryItemHelper extends Observable {
 
 
     //For test to Public
-    public List<IDairyRow> diaryItemList;
+    private List<IDairyRow> diaryItemList;
     private LinearLayout itemContentLayout;
     private int nowPhotoCount = 0;
-    private static int visibleHeight = -1, visibleWidth = -1;
 
 
     public DiaryItemHelper(LinearLayout itemContentLayout) {
@@ -28,23 +32,30 @@ public class DiaryItemHelper extends Observable {
     }
 
     /**
-     * Make all item < 1 view, so It should be computed show area.
+     * Make all item < 1 screen, so It should be computed show area.
      * The height & Width is fixed value for a device.
      */
-    public static void setVisibleArea(int weight, int height) {
-        visibleHeight = height;
-        visibleWidth = weight;
+    public static int getVisibleHeight(Context context) {
+        int topbarHeight = context.getResources().getDimensionPixelOffset(R.dimen.top_bar_height);
+        int imageHeight;
+        if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+            imageHeight = ScreenHelper.getScreenHeight(context)
+                    - ScreenHelper.getStatusBarHeight(context)
+                    //diary activity top bar  -( diary info + diary bottom bar + diary padding+ photo padding)
+                    - topbarHeight - ScreenHelper.dpToPixel(context.getResources(), 120 + 40 + (2 * 5) + (2 * 5));
+        } else {
+            imageHeight = ScreenHelper.getScreenHeight(context)
+                    //diary activity top bar  -( diary info + diary bottom bar + diary padding + photo padding)
+                    - topbarHeight - ScreenHelper.dpToPixel(context.getResources(), 120 + 40 + (2 * 5) + (2 * 5));
+        }
+        return imageHeight;
     }
 
-    /**
-     * Observable
-     */
-    public static int getVisibleHeight() {
-        return visibleHeight;
-    }
-
-    public static int getVisibleWidth() {
-        return visibleWidth;
+    public static int getVisibleWidth(Context context) {
+        int imageWeight = ScreenHelper.getScreenWidth(context) -
+                //(diary padding + photo padding)
+                ScreenHelper.dpToPixel(context.getResources(), (2 * 5) + (2 * 5));
+        return imageWeight;
     }
 
     public void initDiary() {
