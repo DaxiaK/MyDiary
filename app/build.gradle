@@ -8,9 +8,10 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         // versionName rule
-        // version.yyMMDD_BuildCount_OPTION , D = demo , H = hotfix
-        versionCode 29
-        versionName "0.2.6.170213_1_d_h2"
+        // version.yyMMDD_BuildCount_OPTION ,
+        // BuildCount_OPTION: D = demo , A = alpha,  H = hotfix
+        versionCode 30
+        versionName "0.2.7.170219_1_A"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

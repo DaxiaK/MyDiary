@@ -3,7 +3,14 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.6.170213_1_d_h2\n
+    <string name="release_note">**0.2.7.170219_1_A\n
+        -進入alpha版本啦 :)
+        -支援簡單的備份功能\n
+        -優化日記圖片新增和顯示\n
+        -修復Android 4.2日曆陰影問題\n
+        (如果你的裝置仍有異常請來信告知)\n
+        -修復主題選單點擊失效問題\n\n
+        **0.2.6.170213_1_d_h2\n
         -修復左滑失效問題\n
         -優化日曆效果\n
         -修復日曆陰影問題(Android 4.2與少數裝置仍有問題)\n
@@ -19,21 +26,6 @@
         **0.2.5.161018_1_d\n
         -新增密碼鎖\n
         -修復bug\n\n
-        **0.2.4.1601010_1_d\n
-        -支援法文(By Toms) 西班牙文(By JorgeNava)\n
-        -支援備忘錄排序\n
-        -修復夜間模式問題\n
-        -修正bug\n\n
-        **0.2.3.161228_1_d_h\n
-        -支援泰文(By PScoop ,trulesa)\n\n
-        **0.2.3.161226_1_d\n
-        -調整沒有Google Service地區的定位功能\n
-        -修復bug\n\n
-        **0.2.2.161216_1_d2\n
-        -配合電影調整部份畫面\n
-        -GPS定位改用地點取代地址\n
-        -修復bug\n
-        -支援韓文(by Meda An)
     </string>
     <string name="release_note_close_remind">不再提醒</string>
 

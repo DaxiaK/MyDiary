@@ -3,7 +3,14 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.2.6.170213_1_d_h2\n
+    <string name="release_note">**0.2.7.170219_1_A\n
+        -Now it is alpha version :)
+        -Support simple backup\n
+        -Optimizing add and show photo in diary\n
+        -Fix calendar shadow bug on Android 4.2\n
+        (If your device still have calendar issue , send mail for me!)\n
+        -Fix click fail on topic list\n\n
+        **0.2.6.170213_1_d_h2\n
         -Fix left swipe fail\n
         -Optimize calendar\n
         -Fix calendar shadow bug(Android 4.2 and some device not yet)\n
@@ -19,21 +26,6 @@
         **0.2.5.161018_1_d\n
         -Add password\n
         -Fix bug\n\n
-        **0.2.4.1601010_1_d\n
-        -support French(By Toms) Spanish(By JorgeNava)\n
-        -support sort memo\n
-        -fix night issues\n
-        -fix bug\n\n
-        **0.2.3.161228_1_h\n
-        -support Thai(By PScoop ,trulesa)\n\n
-        **0.2.3.161226_1_d\n
-        -Modify get location function for no Google Service area\n
-        -Fix bug\n\n
-        **0.2.2.161216_1_d2\n
-        -Modify layout for matching movie\n
-        -Using place to replace address in location\n
-        -Fix bug\n
-        -Support Korean(by Meda An)
     </string>
     <string name="release_note_close_remind">Don\'t ask again</string>
 
