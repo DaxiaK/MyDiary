@@ -49,26 +49,27 @@ so, maybe I will try to create an iOS version after this app is running.
 * Add password
 * Allow order for topic , memo
 * page curl effect
+* import & export DB(Alpha) (flow finish) 
+
 
 **Not Work:**
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. import & export DB(Alpha) (flow finish) 
-2. Search function
-3. OOBE
-4. Code refactoring
-5. Google account backup & including FireBase
-6. UI review & support xxxHpdi \
-7. Implments search
-8. Support Chinese sort
-9. Modify contacts detail (beta)
-10. Tags
-11. load contacts from phone
-12. Add bookmark for diary
-13. Add music in diary
-14. Support Chinese sort
-15. Supprot JP sort
+1. Search function
+2. OOBE
+3. Code refactoring
+4. Google account backup & including FireBase
+5. UI review & support xxxHpdi \
+6. Implments search
+7. Support Chinese sort
+8. Modify contacts detail (beta)
+9. Tags
+10. load contacts from phone
+11. Add bookmark for diary
+12. Add music in diary
+13. Support Chinese sort
+14. Supprot JP sort
 
 Coding & Designing:
 
