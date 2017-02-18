@@ -67,7 +67,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
         holder.getTVCount().setTextColor(topicList.get(position).getColor());
         holder.getArrow().setColorFilter(topicList.get(position).getColor());
-        holder.getContentView().setOnClickListener(new View.OnClickListener() {
+        holder.getDMJSLView().getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoTopic(topicList.get(position).getType(), position);
@@ -179,7 +179,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         }
 
 
-        protected SwipeLayout getLeftSettingView() {
+        protected SwipeLayout getDMJSLView() {
             return DMJSL_topic;
         }
 
