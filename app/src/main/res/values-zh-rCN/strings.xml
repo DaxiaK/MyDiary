@@ -172,4 +172,26 @@
     <!--Back event-->
     <string name="main_activity_exit_app">再按一次返回键离开</string>
 
+    <!--Backup overwrite string-->
+    <string name="nnf_select_something_first">请先选择</string>
+    <string name="nnf_permission_external_write_denied">需要存取档案系统的权限</string>
+
+    <!--Backup-->
+    <string name="backup_title">备份</string>
+    <string name="backup_export_title">导出</string>
+    <string name="backup_export_hint">导出所有的内容(不包含设定档)</string>
+    <string name="backup_export_path_hint">点击选择导出的目录</string>
+    <string name="backup_export_button">导出</string>
+
+    <string name="toast_export_successful">%1$s\n导出成功</string>
+    <string name="toast_export_fail">导出失败&#8230;请检查权限或剩余空间</string>
+
+    <string name="backup_import_title">导入</string>
+    <string name="backup_import_hint">导入已存在内容(不包含设定档)</string>
+    <string name="backup_import_path_hint">点击选择导入的档案</string>
+    <string name="backup_import_button">导入</string>
+
+    <string name="toast_import_successful">导入成功</string>
+    <string name="toast_import_fail">导入失败&#8230;请检查导入的档案</string>
+
 </resources>

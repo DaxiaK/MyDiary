@@ -173,7 +173,28 @@
     <string name="main_activity_exit_app">再按一次返回鍵退出</string>
 
     <!--Backup overwrite string-->
-    <string name="nnf_select_something_first">請先選擇一些東西</string>
+    <string name="nnf_select_something_first">請先選擇</string>
+    <string name="nnf_permission_external_write_denied">需要存取檔案系統的權限</string>
+
+
+    <!--Backup-->
+    <string name="backup_title">備份</string>
+    <string name="backup_export_title">匯出</string>
+    <string name="backup_export_hint">匯出所有的內容(不包含設定檔)</string>
+    <string name="backup_export_path_hint">點擊選擇匯出的目錄</string>
+    <string name="backup_export_button">匯出</string>
+
+    <string name="toast_export_successful">%1$s\n匯出成功</string>
+    <string name="toast_export_fail">糟糕，匯出失敗&#8230;請檢查權限或剩餘空間</string>
+
+    <string name="backup_import_title">匯入</string>
+    <string name="backup_import_hint">匯入已存在內容(不包含設定檔)</string>
+    <string name="backup_import_path_hint">點擊選擇匯入的檔案</string>
+    <string name="backup_import_button">匯入</string>
+
+    <string name="toast_import_successful">匯入成功</string>
+    <string name="toast_import_fail">糟糕，匯入失敗&#8230;請檢查匯入的檔案</string>
+
 
 
 </resources>

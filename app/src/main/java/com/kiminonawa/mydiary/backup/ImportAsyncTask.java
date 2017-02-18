@@ -101,9 +101,9 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         super.onPostExecute(importSuccessful);
         progressDialog.dismiss();
         if (importSuccessful) {
-            Toast.makeText(mContext, "匯入成功", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_import_successful), Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mContext, "匯入失敗...請檢查匯入的檔案", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_import_fail), Toast.LENGTH_LONG).show();
         }
         //callBack.onImportCompiled(importSuccessful);
     }

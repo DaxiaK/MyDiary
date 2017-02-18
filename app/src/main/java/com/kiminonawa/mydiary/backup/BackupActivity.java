@@ -50,7 +50,6 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         But_backup_import = (MyDiaryButton) findViewById(R.id.But_backup_import);
         But_backup_import.setOnClickListener(this);
         But_backup_import.setEnabled(false);
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

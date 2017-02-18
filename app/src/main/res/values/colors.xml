@@ -62,4 +62,7 @@
     <!--Setting-->
     <color name="setting_hint_text_color">#828282</color>
 
+    <!--Backup-->
+    <color name="backup_hint_text_color">#828282</color>
+
 </resources>

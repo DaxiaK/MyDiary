@@ -48,7 +48,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private BackupManager backupManager;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
     private String backupJsonFilePath;
-    private String backupZieFilePath;
+    private String backupZipFilePath;
+    private String backupZipFileName;
     /*
      * DB
      */
@@ -71,7 +72,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         this.dbManager = new DBManager(context);
         this.backupJsonFilePath = new FileManager(context, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
-        this.backupZieFilePath = backupZieFilePath;
+        this.backupZipFilePath = backupZieFilePath;
+        this.backupZipFileName = BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME;
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(context);
 
@@ -107,9 +109,11 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         super.onPostExecute(exportSuccessful);
         progressDialog.dismiss();
         if (exportSuccessful) {
-            Toast.makeText(mContext, "匯出成功", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext,
+                    String.format(mContext.getResources().getString(R.string.toast_export_successful), backupZipFileName)
+                    , Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(mContext, "糟糕，匯出失敗了...請檢查權限或洽詢作者", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.toast_export_fail), Toast.LENGTH_LONG).show();
         }
         callBack.onExportCompiled(exportSuccessful);
     }
@@ -128,8 +132,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private boolean zipBackupFile() throws IOException {
         ZipManager zipManager = new ZipManager(mContext);
-        return zipManager.zipFileAtPath(backupJsonFilePath, backupZieFilePath + "/" +
-                BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME);
+        return zipManager.zipFileAtPath(backupJsonFilePath, backupZipFilePath + "/" + backupZipFileName);
     }
 
 

@@ -172,4 +172,26 @@
     <!--Back event-->
     <string name="main_activity_exit_app">Click back button again to close</string>
 
+    <!--Backup overwrite string-->
+    <string name="nnf_select_something_first">Please select something first</string>
+    <string name="nnf_permission_external_write_denied">Need permission to access file system</string>
+
+    <!--Backup-->
+    <string name="backup_title">Backup</string>
+    <string name="backup_export_title">Export</string>
+    <string name="backup_export_hint">Export all data(Not including profile)</string>
+    <string name="backup_export_path_hint">Click to select exporting folder</string>
+    <string name="backup_export_button">export</string>
+
+    <string name="toast_export_successful">%1$s\nexport successful</string>
+    <string name="toast_export_fail">export fail&#8230;please checking permission or storage</string>
+
+    <string name="backup_import_title">Import</string>
+    <string name="backup_import_hint">Import existing file((Not including profile)</string>
+    <string name="backup_import_path_hint">Click to select importing file</string>
+    <string name="backup_import_button">import</string>
+
+    <string name="toast_import_successful">import successful</string>
+    <string name="toast_import_fail">import fail&#8230;please checking file</string>
+
 </resources>
