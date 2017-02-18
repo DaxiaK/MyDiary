@@ -4,9 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -32,12 +32,13 @@ public class DiaryPhotoLayout extends LinearLayout {
         super(context);
         View v = LayoutInflater.from(context).inflate(R.layout.layout_diaryphoto, this, true);
         SDV_diary_new_photo = (SimpleDraweeView) v.findViewById(R.id.SDV_diary_new_photo);
-        SDV_diary_new_photo.setAspectRatio(ScreenHelper.getScreenRatio());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                DiaryItemHelper.getVisibleWidth(), FrameLayout.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params =
+                (RelativeLayout.LayoutParams) SDV_diary_new_photo.getLayoutParams();
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        params.height = DiaryItemHelper.getVisibleHeight();
         SDV_diary_new_photo.setLayoutParams(params);
+        SDV_diary_new_photo.setAspectRatio(ScreenHelper.getScreenRatio());
         IV_diary_photo_delete = (ImageView) v.findViewById(R.id.IV_diary_photo_delete);
-
     }
 
     public void setPhotoUri(Uri photoUri) {
