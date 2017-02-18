@@ -91,9 +91,17 @@ public class BitmapHelper {
         int inSampleSize = 1;
         try {
             if ((height > reqHeight || width > reqWidth) && options.outHeight > 0 && options.outWidth > 0) {
-                // Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
-                while ((options.outHeight / inSampleSize) > reqHeight
-                        || (options.outWidth / inSampleSize) > reqWidth) {
+
+                final int halfHeight = height / 2;
+                final int halfWidth = width / 2;
+
+                //Old version (version =< 29):
+                //  Choose the max ratio as inSampleSize value, I hope it can show fully without scrolling
+                //New version (Version > 30)
+                //  This bitmap is only for making photo size small ,
+                // The only show one page method is implemented by fresco
+                while ((halfHeight / inSampleSize) >= reqHeight
+                        && (halfWidth / inSampleSize) >= reqWidth) {
                     inSampleSize *= 2;
                 }
                 // This offers some additional logic in case the image has a strange

@@ -1,14 +1,10 @@
 package com.kiminonawa.mydiary.entries.diary.item;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 
-import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
-import com.kiminonawa.mydiary.shared.photo.ExifUtil;
 import com.kiminonawa.mydiary.shared.gui.DiaryPhotoLayout;
-
-import java.io.IOException;
 
 /**
  * Created by daxia on 2016/11/19.
@@ -31,10 +27,11 @@ public class DiaryPhoto implements IDairyRow {
         diaryPhotoLayout.setPositiontag(positionTag);
     }
 
-    public void setPhoto(Bitmap bitmap, String photoFileName) {
+    public void setPhoto(Uri photoUri, String photoFileName) {
         this.photoFileName = photoFileName;
-        diaryPhotoLayout.setPhotoBitmap(bitmap);
+        diaryPhotoLayout.setPhotoUri(photoUri);
     }
+
 
     public void setPhotoFileName(String photoFileName) {
         this.photoFileName = photoFileName;
@@ -42,15 +39,7 @@ public class DiaryPhoto implements IDairyRow {
 
     @Override
     public void setContent(String content) {
-        //For some big size image
-        try {
-            Bitmap bitmap = ExifUtil.rotateBitmap(content,
-                    BitmapHelper.getBitmapFromTempFileSrc(content,
-                            DiaryItemHelper.getVisibleWidth(), DiaryItemHelper.getVisibleHeight()));
-            diaryPhotoLayout.setPhotoBitmap(bitmap);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        diaryPhotoLayout.setPhotoUri(Uri.parse(content));
     }
 
     @Override

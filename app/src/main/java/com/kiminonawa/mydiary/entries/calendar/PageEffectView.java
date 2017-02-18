@@ -12,6 +12,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
@@ -86,6 +87,12 @@ public class PageEffectView extends View {
     }
 
     private void init(Context context) {
+
+        //In the Android 4.2 , LAYER_TYPE_SOFTWARE will cause some question
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
+
         //View
         setScreen(context);
         createBitmaps();

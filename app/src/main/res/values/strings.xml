@@ -83,8 +83,8 @@
     <!--Diary -->
     <string name="diary_no_location">No Location</string>
     <string name="diary_location_permission_title">Permission</string>
-    <string name="diary_location_permission_content">We need permission to get location name</string>
-    <string name="diary_photo_permission_content">We need permission to add photo</string>
+    <string name="diary_location_permission_content">Need permission to get location name</string>
+    <string name="diary_photo_permission_content">Need permission to add photo</string>
 
     <string name="diary_title_hint">Diary title</string>
     <string name="diary_content_hint">Write your diary here</string>
@@ -114,7 +114,7 @@
 
     <!--Contacts-->
     <string name="contacts_call_phone_permission_title">Permission</string>
-    <string name="contacts_call_phone_permission_content">We need permission to call phone</string>
+    <string name="contacts_call_phone_permission_content">Need permission to call phone</string>
     <string name="contacts_call_phone_no_call_function">Your device can\'t call phone</string>
 
     <string name="contacts_detail_edt_name">Name</string>
@@ -171,5 +171,27 @@
 
     <!--Back event-->
     <string name="main_activity_exit_app">Click back button again to close</string>
+
+    <!--Backup overwrite string-->
+    <string name="nnf_select_something_first">Please select something first</string>
+    <string name="nnf_permission_external_write_denied">Need permission to access file system</string>
+
+    <!--Backup-->
+    <string name="backup_title">Backup</string>
+    <string name="backup_export_title">Export</string>
+    <string name="backup_export_hint">Export all data(Not including profile)</string>
+    <string name="backup_export_path_hint">Click to select exporting folder</string>
+    <string name="backup_export_button">export</string>
+
+    <string name="toast_export_successful">%1$s\nexport successful</string>
+    <string name="toast_export_fail">export fail&#8230;please checking permission or storage</string>
+
+    <string name="backup_import_title">Import</string>
+    <string name="backup_import_hint">Import existing file((Not including profile)</string>
+    <string name="backup_import_path_hint">Click to select importing file</string>
+    <string name="backup_import_button">import</string>
+
+    <string name="toast_import_successful">import successful</string>
+    <string name="toast_import_fail">import fail&#8230;please checking file</string>
 
 </resources>

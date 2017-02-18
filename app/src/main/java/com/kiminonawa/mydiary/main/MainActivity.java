@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         outputFile.delete();
                     }
                     FileUtils.moveFile(new File(
-                                    new FileManager(this, FileManager.TEMP_DIR).getDiaryDirAbsolutePath()
+                                    new FileManager(this, FileManager.TEMP_DIR).getDirAbsolutePath()
                                             + "/" + newTopicBgFileName),
                             outputFile);
                     //Enter the topic
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Delete the dir if it exist.
         try {
             FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getType(),
-                    topicList.get(position).getId()).getDiaryDir());
+                    topicList.get(position).getId()).getDir());
         } catch (IOException e) {
             //Do nothing if delete fail
             e.printStackTrace();
