@@ -32,7 +32,6 @@ public class ThemeManager {
     public final static String CUSTOM_TOPIC_BG_FILENAME = "custom_topic_bg";
 
 
-
     //Default color is TAKI
     public int currentTheme = TAKI;
 
@@ -172,12 +171,12 @@ public class ThemeManager {
 
     public Drawable getEntriesBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
-        File memoBg = new File(
+        File entriesBg = new File(
                 new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
-        if (memoBg.exists()) {
-            bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+        if (entriesBg.exists()) {
+            bgDrawable = Drawable.createFromPath(entriesBg.getAbsolutePath());
         } else {
             switch (currentTheme) {
                 case TAKI:
@@ -310,6 +309,24 @@ public class ThemeManager {
 
     public Drawable getButtonBgDrawable(Context context) {
         return createButtonCustomBg(context);
+    }
+
+    public Drawable createDiaryViewerInfoBg(Context context) {
+        int dp10 = ScreenHelper.dpToPixel(context.getResources(), 10);
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(getThemeMainColor(context));
+        shape.setCornerRadii(new float[]{dp10, dp10, dp10, dp10, 0, 0, 0, 0});
+        return shape;
+    }
+
+    public Drawable createDiaryViewerEditBarBg(Context context) {
+        int dp10 = ScreenHelper.dpToPixel(context.getResources(), 10);
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setColor(getThemeMainColor(context));
+        shape.setCornerRadii(new float[]{0, 0, 0, 0, dp10, dp10, dp10, dp10});
+        return shape;
     }
 
     /**
