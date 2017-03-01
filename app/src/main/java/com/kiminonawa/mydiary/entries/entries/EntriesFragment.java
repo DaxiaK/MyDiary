@@ -79,7 +79,6 @@ public class EntriesFragment extends BaseDiaryFragment implements
     @Override
     public void onStart() {
         super.onStart();
-        updateEntriesData();
     }
 
 
