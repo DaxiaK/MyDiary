@@ -13,7 +13,7 @@ public class Memo implements ITopic {
     private int count;
     private int color;
 
-    public Memo(long id, String title ,int count, int color) {
+    public Memo(long id, String title, int count, int color) {
         this.id = id;
         this.title = title;
         this.count = count;
@@ -29,6 +29,11 @@ public class Memo implements ITopic {
     @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -50,5 +55,10 @@ public class Memo implements ITopic {
     @Override
     public int getColor() {
         return color;
+    }
+
+    @Override
+    public void setColor(int color) {
+        this.color = color;
     }
 }

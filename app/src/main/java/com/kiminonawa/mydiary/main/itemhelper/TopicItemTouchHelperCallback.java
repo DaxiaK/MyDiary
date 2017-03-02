@@ -1,11 +1,10 @@
-package com.kiminonawa.mydiary.main;
+package com.kiminonawa.mydiary.main.itemhelper;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.marshalchen.ultimaterecyclerview.itemTouchHelper.ItemTouchHelperViewHolder;
 
 
@@ -17,16 +16,16 @@ public class TopicItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     public static final float ALPHA_FULL = 1.0f;
 
-    private final ItemTouchHelperAdapter mAdapter;
+    private final ItemTouchHelperWithFilterAdapter mAdapter;
 
 
-    public TopicItemTouchHelperCallback( ItemTouchHelperAdapter adapter) {
+    public TopicItemTouchHelperCallback( ItemTouchHelperWithFilterAdapter adapter) {
         this.mAdapter = adapter;
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return !mAdapter.isFilter();
     }
 
     @Override

@@ -18,8 +18,8 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.main.itemhelper.ItemTouchHelperWithFilterAdapter;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -32,7 +32,7 @@ import java.util.List;
  */
 
 public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
-        ItemTouchHelperAdapter, Filterable {
+        ItemTouchHelperWithFilterAdapter, Filterable {
 
 
     private List<ITopic> originalTopicList;
@@ -53,7 +53,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
 
-    public boolean isFiliter() {
+    @Override
+    public boolean isFilter() {
         return topicFilter.isFilter();
     }
 
@@ -63,6 +64,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             filteredTopicList.addAll(originalTopicList);
         }
         super.notifyDataSetChanged();
+    }
+
+    public List<ITopic> getList(){
+        return filteredTopicList;
     }
 
     @Override
@@ -89,6 +94,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setText(String.valueOf(filteredTopicList.get(position).getCount()));
         holder.getTVCount().setTextColor(filteredTopicList.get(position).getColor());
         holder.getArrow().setColorFilter(filteredTopicList.get(position).getColor());
+
+
         holder.getDMJSLView().getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +169,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             dbManager.insertTopicOrder(topic.getId(), --orderNumber);
         }
         dbManager.closeDB();
-        notifyDataSetChanged(true);
+        notifyDataSetChanged(false);
     }
 
     @Override
