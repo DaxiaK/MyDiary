@@ -68,7 +68,6 @@
             android:layout_toLeftOf="@id/IV_main_setting"
             android:background="@drawable/edittext_rounded_corner_bg"
             android:drawableLeft="@drawable/ic_search_white_18dp"
-            android:drawableTint="@color/button_disable_color"
             android:textColor="@android:color/white" />
 
     </RelativeLayout>

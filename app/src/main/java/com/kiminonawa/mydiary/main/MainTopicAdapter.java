@@ -2,9 +2,12 @@ package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,6 +23,7 @@ import com.kiminonawa.mydiary.memo.ItemTouchHelperAdapter;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,20 +32,38 @@ import java.util.List;
  */
 
 public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
-        ItemTouchHelperAdapter {
+        ItemTouchHelperAdapter, Filterable {
 
 
-    private List<ITopic> topicList;
+    private List<ITopic> originalTopicList;
+    private List<ITopic> filteredTopicList;
     private MainActivity activity;
     private DBManager dbManager;
+    private TopicFilter topicFilter;
 
 
     public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
         this.activity = activity;
-        this.topicList = topicList;
         this.dbManager = dbManager;
+
+        originalTopicList = topicList;
+        filteredTopicList = new ArrayList<>();
+
+        topicFilter = new TopicFilter(this, originalTopicList);
     }
 
+
+    public boolean isFiliter() {
+        return topicFilter.isFilter();
+    }
+
+    public void notifyDataSetChanged(boolean clear) {
+        if (clear) {
+            filteredTopicList.clear();
+            filteredTopicList.addAll(originalTopicList);
+        }
+        super.notifyDataSetChanged();
+    }
 
     @Override
     public TopicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,7 +74,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public int getItemCount() {
-        return topicList.size();
+        return filteredTopicList.size();
     }
 
     @Override
@@ -60,25 +82,26 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         holder.getContentView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
-        holder.getIconView().setImageResource(topicList.get(position).getIcon());
-        holder.getIconView().setColorFilter(topicList.get(position).getColor());
-        holder.getTitleView().setText(topicList.get(position).getTitle());
-        holder.getTitleView().setTextColor(topicList.get(position).getColor());
-        holder.getTVCount().setText(String.valueOf(topicList.get(position).getCount()));
-        holder.getTVCount().setTextColor(topicList.get(position).getColor());
-        holder.getArrow().setColorFilter(topicList.get(position).getColor());
+        holder.getIconView().setImageResource(filteredTopicList.get(position).getIcon());
+        holder.getIconView().setColorFilter(filteredTopicList.get(position).getColor());
+        holder.getTitleView().setText(filteredTopicList.get(position).getTitle());
+        holder.getTitleView().setTextColor(filteredTopicList.get(position).getColor());
+        holder.getTVCount().setText(String.valueOf(filteredTopicList.get(position).getCount()));
+        holder.getTVCount().setTextColor(filteredTopicList.get(position).getColor());
+        holder.getArrow().setColorFilter(filteredTopicList.get(position).getColor());
         holder.getDMJSLView().getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gotoTopic(topicList.get(position).getType(), position);
+                gotoTopic(filteredTopicList.get(position).getType(), position);
             }
         });
         holder.getTopicLeftSettingEditView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TopicDetailDialogFragment createTopicDialogFragment =
-                        TopicDetailDialogFragment.newInstance(true, position, topicList.get(position).getId(),
-                                topicList.get(position).getTitle(), topicList.get(position).getType(), topicList.get(position).getColor());
+                        TopicDetailDialogFragment.newInstance(true, position, filteredTopicList.get(position).getId(),
+                                filteredTopicList.get(position).getTitle(), filteredTopicList.get(position).getType(),
+                                filteredTopicList.get(position).getColor());
                 createTopicDialogFragment.show(activity.getSupportFragmentManager(),
                         "createTopicDialogFragment");
             }
@@ -88,7 +111,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             @Override
             public void onClick(View v) {
                 TopicDeleteDialogFragment topicDeleteDialogFragment =
-                        TopicDeleteDialogFragment.newInstance(position, topicList.get(position).getTitle());
+                        TopicDeleteDialogFragment.newInstance(position, filteredTopicList.get(position).getTitle());
                 topicDeleteDialogFragment.show(activity.getSupportFragmentManager(), "topicDeleteDialogFragment");
             }
         });
@@ -98,21 +121,21 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         switch (type) {
             case ITopic.TYPE_CONTACTS:
                 Intent goContactsPageIntent = new Intent(activity, ContactsActivity.class);
-                goContactsPageIntent.putExtra("topicId", topicList.get(position).getId());
-                goContactsPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                goContactsPageIntent.putExtra("topicId", filteredTopicList.get(position).getId());
+                goContactsPageIntent.putExtra("diaryTitle", filteredTopicList.get(position).getTitle());
                 activity.startActivity(goContactsPageIntent);
                 break;
             case ITopic.TYPE_DIARY:
                 Intent goEntriesPageIntent = new Intent(activity, DiaryActivity.class);
-                goEntriesPageIntent.putExtra("topicId", topicList.get(position).getId());
-                goEntriesPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                goEntriesPageIntent.putExtra("topicId", filteredTopicList.get(position).getId());
+                goEntriesPageIntent.putExtra("diaryTitle", filteredTopicList.get(position).getTitle());
                 goEntriesPageIntent.putExtra("has_entries", true);
                 activity.startActivity(goEntriesPageIntent);
                 break;
             case ITopic.TYPE_MEMO:
                 Intent goMemoPageIntent = new Intent(activity, MemoActivity.class);
-                goMemoPageIntent.putExtra("topicId", topicList.get(position).getId());
-                goMemoPageIntent.putExtra("diaryTitle", topicList.get(position).getTitle());
+                goMemoPageIntent.putExtra("topicId", filteredTopicList.get(position).getId());
+                goMemoPageIntent.putExtra("diaryTitle", filteredTopicList.get(position).getTitle());
                 activity.startActivity(goMemoPageIntent);
                 break;
         }
@@ -120,7 +143,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(topicList, fromPosition, toPosition);
+        Collections.swap(filteredTopicList, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
     }
 
@@ -132,14 +155,19 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onItemMoveFinish() {
         //save the new topic order
-        int orderNumber = topicList.size();
+        int orderNumber = filteredTopicList.size();
         dbManager.opeDB();
         dbManager.deleteAllCurrentTopicOrder();
-        for (ITopic topic : topicList) {
+        for (ITopic topic : filteredTopicList) {
             dbManager.insertTopicOrder(topic.getId(), --orderNumber);
         }
         dbManager.closeDB();
-        notifyDataSetChanged();
+        notifyDataSetChanged(true);
+    }
+
+    @Override
+    public Filter getFilter() {
+        return topicFilter;
     }
 
 
@@ -148,7 +176,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
-        private ImageView  IV_topic_arrow_right;
+        private ImageView IV_topic_arrow_right;
         private SwipeLayout DMJSL_topic;
         private LinearLayout LL_topic_left_setting;
         private RelativeLayout RL_topic_content;
@@ -209,6 +237,66 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         protected View getTopicLeftSettingDeleteView() {
             return IV_topic_left_setting_delete;
+        }
+    }
+
+    private static class TopicFilter extends Filter {
+
+        private final MainTopicAdapter adapter;
+
+        private final List<ITopic> originalList;
+
+        private final List<ITopic> filteredList;
+
+        private boolean isFilter = false;
+
+        public boolean isFilter() {
+            return isFilter;
+        }
+
+        public void setFilter(boolean filter) {
+            isFilter = filter;
+        }
+
+        private TopicFilter(MainTopicAdapter adapter, List<ITopic> originalList) {
+            super();
+            this.adapter = adapter;
+            this.originalList = originalList;
+            this.filteredList = new ArrayList<>();
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            filteredList.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint.length() == 0) {
+                filteredList.addAll(originalList);
+                Log.e("test","performFiltering 0 =" + filteredList.size());
+
+                isFilter = false;
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+                for (final ITopic topic : originalList) {
+                    if (topic.getTitle().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(topic);
+                    }
+                }
+                Log.e("test","performFiltering =" + filteredList.size());
+                isFilter = true;
+            }
+            results.values = filteredList;
+            results.count = filteredList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            adapter.filteredTopicList.clear();
+            adapter.filteredTopicList.addAll((ArrayList<ITopic>) results.values);
+            Log.e("test","publishResults =" + filteredList.size());
+
+            adapter.notifyDataSetChanged(false);
         }
     }
 }

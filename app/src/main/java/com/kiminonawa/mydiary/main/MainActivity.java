@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,7 +39,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
-        TopicDeleteDialogFragment.DeleteCallback {
+        TopicDeleteDialogFragment.DeleteCallback, TextWatcher {
 
 
     /*
@@ -87,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
 
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
+        EDT_main_topic_search.addTextChangedListener(this);
+
         IV_main_setting = (ImageView) findViewById(R.id.IV_main_setting);
         IV_main_setting.setOnClickListener(this);
 
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         //Init topic adapter
         loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+        mainTopicAdapter.notifyDataSetChanged(true);
     }
 
     @Override
@@ -295,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         dbManager.closeDB();
         loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+        mainTopicAdapter.notifyDataSetChanged(true);
     }
 
 
@@ -306,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
         dbManager.closeDB();
         loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+        mainTopicAdapter.notifyDataSetChanged(true);
         updateTopicBg(position, topicBgStatus, newTopicBgFileName);
     }
 
@@ -354,5 +359,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         topicList.remove(position);
         mainTopicAdapter.notifyItemRemoved(position);
         mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
+    }
+
+    /*
+     * For search
+     */
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        Log.e("test","onTextChanged");
+        mainTopicAdapter.getFilter().filter(s);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
