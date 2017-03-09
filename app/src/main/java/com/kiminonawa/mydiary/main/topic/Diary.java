@@ -2,8 +2,6 @@ package com.kiminonawa.mydiary.main.topic;
 
 import com.kiminonawa.mydiary.R;
 
-import static android.R.attr.textColor;
-
 /**
  * Created by daxia on 2016/10/17.
  */
@@ -34,6 +32,11 @@ public class Diary implements ITopic {
     }
 
     @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
     public int getType() {
         return TYPE_DIARY;
     }
@@ -51,5 +54,10 @@ public class Diary implements ITopic {
     @Override
     public int getColor() {
         return color;
+    }
+
+    @Override
+    public void setColor(int color) {
+        this.color = color;
     }
 }
