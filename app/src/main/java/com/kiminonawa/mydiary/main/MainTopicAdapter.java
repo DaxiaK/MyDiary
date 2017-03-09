@@ -66,7 +66,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         super.notifyDataSetChanged();
     }
 
-    public List<ITopic> getList(){
+    public List<ITopic> getList() {
         return filteredTopicList;
     }
 
@@ -95,7 +95,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setTextColor(filteredTopicList.get(position).getColor());
         holder.getArrow().setColorFilter(filteredTopicList.get(position).getColor());
 
-
+        //Revert the left view
+        holder.getDMJSLView().close();
         holder.getDMJSLView().getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,8 +280,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
             if (constraint.length() == 0) {
                 filteredList.addAll(originalList);
-                Log.e("test","performFiltering 0 =" + filteredList.size());
-
                 isFilter = false;
             } else {
                 final String filterPattern = constraint.toString().toLowerCase().trim();
@@ -289,7 +288,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         filteredList.add(topic);
                     }
                 }
-                Log.e("test","performFiltering =" + filteredList.size());
+                Log.e("test", "performFiltering =" + filteredList.size());
                 isFilter = true;
             }
             results.values = filteredList;
@@ -301,8 +300,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         protected void publishResults(CharSequence constraint, FilterResults results) {
             adapter.filteredTopicList.clear();
             adapter.filteredTopicList.addAll((ArrayList<ITopic>) results.values);
-            Log.e("test","publishResults =" + filteredList.size());
-
             adapter.notifyDataSetChanged(false);
         }
     }

@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         //Init topic adapter
+        //OnResume load topic  because import data
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged(true);
     }
@@ -312,6 +313,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.closeDB();
         loadTopic();
         mainTopicAdapter.notifyDataSetChanged(true);
+        //Clear the filter
+        EDT_main_topic_search.setText("");
     }
 
 
@@ -327,12 +330,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTopicAdapter.notifyDataSetChanged(false);
 
         updateTopicBg(position, topicBgStatus, newTopicBgFileName);
-    }
-
-    @Override
-    public void updateName() {
-        initProfile();
-        loadProfilePicture();
+        //Clear the filter
+        EDT_main_topic_search.setText("");
     }
 
     @Override
@@ -383,6 +382,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Notify recycle view
         mainTopicAdapter.notifyItemRemoved(position);
         mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
+        //Clear the filter
+        EDT_main_topic_search.setText("");
+    }
+
+
+    @Override
+    public void updateName() {
+        initProfile();
+        loadProfilePicture();
     }
 
     /*
