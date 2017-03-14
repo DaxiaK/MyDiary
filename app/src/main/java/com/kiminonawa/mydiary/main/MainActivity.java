@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -17,14 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
-import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.main.itemhelper.TopicItemTouchHelperCallback;
 import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
@@ -54,11 +53,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView RecyclerView_topic;
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
-    private ItemTouchHelper touchHelper;
 
+    //swipe
     private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
     private RecyclerView.Adapter mWrappedAdapter;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
+
+    //drag
+    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
 
     /*
      * DB
@@ -128,7 +130,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
+    protected void onPause() {
+        mRecyclerViewDragDropManager.cancelDrag();
+        if (mainTopicAdapter.isNeedToUpdate()) {
+            //save the new topic order
+            int orderNumber = topicList.size();
+            dbManager.opeDB();
+            dbManager.deleteAllCurrentTopicOrder();
+            for (ITopic topic : topicList) {
+                dbManager.insertTopicOrder(topic.getId(), --orderNumber);
+            }
+            dbManager.closeDB();
+            mainTopicAdapter.notifyDataSetChanged(false);
+            //Reset the update flag
+            mainTopicAdapter.setNeedToUpdate(false);
+        }
+        super.onPause();
+    }
+
+    @Override
     public void onDestroy() {
+
+        if (mRecyclerViewDragDropManager != null) {
+            mRecyclerViewDragDropManager.release();
+            mRecyclerViewDragDropManager = null;
+        }
         if (mRecyclerViewSwipeManager != null) {
             mRecyclerViewSwipeManager.release();
             mRecyclerViewSwipeManager = null;
@@ -225,9 +251,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initTopicAdapter() {
 
+        // For swipe
+
         // swipe manager
         mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
-
 
         // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
         mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
@@ -238,18 +265,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
-        mainTopicAdapter = new MainTopicAdapter(this, topicList, dbManager);
+        mainTopicAdapter = new MainTopicAdapter(this, topicList);
         mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mainTopicAdapter);
 
 
-        final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+        final GeneralItemAnimator animator = new DraggableItemAnimator();
 
         // Change animations are enabled by default since support-v7-recyclerview v22.
         // Disable the change animation in order to make turning back animation of swiped item works properly.
         animator.setSupportsChangeAnimations(false);
 
+
+        //For Drag
+
+        // Setup D&D feature and RecyclerView
+        mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+
+        mRecyclerViewDragDropManager.setInitiateOnMove(false);
+        mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
+        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mWrappedAdapter);
+
+
         RecyclerView_topic.setAdapter(mWrappedAdapter);// requires *wrapped* adapter
         RecyclerView_topic.setItemAnimator(animator);
+
+        //For Attach the all manager
 
         // NOTE:
         // The initialization order is very important! This order determines the priority of touch event handling.
@@ -258,12 +298,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewTouchActionGuardManager.attachRecyclerView(RecyclerView_topic);
         mRecyclerViewSwipeManager.attachRecyclerView(RecyclerView_topic);
 
+        mRecyclerViewDragDropManager.attachRecyclerView(RecyclerView_topic);
 
-        //Set ItemTouchHelper
-        ItemTouchHelper.Callback callback =
-                new TopicItemTouchHelperCallback(mainTopicAdapter);
-        touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(RecyclerView_topic);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {

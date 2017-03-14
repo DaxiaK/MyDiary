@@ -2,7 +2,6 @@ package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
@@ -21,16 +24,13 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
-import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
-import com.kiminonawa.mydiary.main.itemhelper.ItemTouchHelperWithFilterAdapter;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,20 +38,18 @@ import java.util.List;
  */
 
 public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
-        ItemTouchHelperWithFilterAdapter, Filterable,
+        Filterable, DraggableItemAdapter<MainTopicAdapter.TopicViewHolder>,
         SwipeableItemAdapter<MainTopicAdapter.TopicViewHolder> {
 
 
     private List<ITopic> originalTopicList;
     private List<ITopic> filteredTopicList;
     private MainActivity activity;
-    private DBManager dbManager;
     private TopicFilter topicFilter;
+    private boolean needToUpdate = false;
 
-
-    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
         this.activity = activity;
-        this.dbManager = dbManager;
 
         originalTopicList = topicList;
         filteredTopicList = new ArrayList<>();
@@ -64,17 +62,21 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
 
-    @Override
-    public boolean isFilter() {
-        return topicFilter.isFilter();
-    }
-
     public void notifyDataSetChanged(boolean clear) {
         if (clear) {
             filteredTopicList.clear();
             filteredTopicList.addAll(originalTopicList);
         }
         super.notifyDataSetChanged();
+    }
+
+
+    public boolean isNeedToUpdate() {
+        return needToUpdate;
+    }
+
+    public void setNeedToUpdate(boolean needToUpdate) {
+        this.needToUpdate = needToUpdate;
     }
 
     public List<ITopic> getList() {
@@ -170,29 +172,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         }
     }
 
-    @Override
-    public void onItemMove(int fromPosition, int toPosition) {
-        Collections.swap(filteredTopicList, fromPosition, toPosition);
-        notifyItemMoved(fromPosition, toPosition);
-    }
-
-    @Override
-    public void onItemSwap(int position) {
-        //Do nothing
-    }
-
-    @Override
-    public void onItemMoveFinish() {
-        //save the new topic order
-        int orderNumber = filteredTopicList.size();
-        dbManager.opeDB();
-        dbManager.deleteAllCurrentTopicOrder();
-        for (ITopic topic : filteredTopicList) {
-            dbManager.insertTopicOrder(topic.getId(), --orderNumber);
-        }
-        dbManager.closeDB();
-        notifyDataSetChanged(false);
-    }
 
     @Override
     public Filter getFilter() {
@@ -223,8 +202,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public SwipeResultAction onSwipeItem(TopicViewHolder holder, int position, int result) {
-        Log.e("test", "onSwipeItem(position = " + position + ", result = " + result + ")");
-
         switch (result) {
             // swipe right --- pin
             case SwipeableItemConstants.RESULT_SWIPED_RIGHT:
@@ -239,6 +216,40 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                     return null;
                 }
         }
+    }
+
+    @Override
+    public boolean onCheckCanStartDrag(TopicViewHolder holder, int position, int x, int y) {
+        return !topicFilter.isFilter();
+    }
+
+    @Override
+    public ItemDraggableRange onGetItemDraggableRange(TopicViewHolder holder, int position) {
+        return null;
+    }
+
+    @Override
+    public void onMoveItem(int fromPosition, int toPosition) {
+        if (fromPosition == toPosition) {
+            return;
+        }
+
+        //modify the original list
+        final ITopic originalItem = originalTopicList.remove(fromPosition);
+        originalTopicList.add(toPosition, originalItem);
+
+        //Modify the filter list
+        final ITopic filteredItem = filteredTopicList.remove(fromPosition);
+        filteredTopicList.add(toPosition, filteredItem);
+
+        notifyItemMoved(fromPosition, toPosition);
+
+        setNeedToUpdate(true);
+    }
+
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return true;
     }
 
     private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {
@@ -304,7 +315,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
 
-    protected class TopicViewHolder extends AbstractSwipeableItemViewHolder {
+    protected class TopicViewHolder extends AbstractSwipeableItemViewHolder implements DraggableItemViewHolder {
+
+        @DraggableItemStateFlags
+        private int mDragStateFlags;
 
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
@@ -335,6 +349,17 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         @Override
         public View getSwipeableContainerView() {
             return RL_topic_content;
+        }
+
+        @Override
+        public void setDragStateFlags(@DraggableItemStateFlags int flags) {
+            mDragStateFlags = flags;
+        }
+
+        @Override
+        @DraggableItemStateFlags
+        public int getDragStateFlags() {
+            return mDragStateFlags;
         }
 
         protected ImageView getIconView() {
