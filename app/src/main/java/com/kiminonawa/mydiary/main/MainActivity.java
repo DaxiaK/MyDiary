@@ -21,8 +21,10 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.main.itemhelper.TopicItemTouchHelperCallback;
 import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
@@ -130,6 +132,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    public void onDestroy() {
+        if (mRecyclerViewSwipeManager != null) {
+            mRecyclerViewSwipeManager.release();
+            mRecyclerViewSwipeManager = null;
+        }
+
+        if (mRecyclerViewTouchActionGuardManager != null) {
+            mRecyclerViewTouchActionGuardManager.release();
+            mRecyclerViewTouchActionGuardManager = null;
+        }
+
+        if (RecyclerView_topic != null) {
+            RecyclerView_topic.setItemAnimator(null);
+            RecyclerView_topic.setAdapter(null);
+            RecyclerView_topic = null;
+        }
+
+        if (mWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+            mWrappedAdapter = null;
+        }
+        mainTopicAdapter = null;
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         if (!isExit) {
             isExit = true;
@@ -224,17 +252,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Disable the change animation in order to make turning back animation of swiped item works properly.
         animator.setSupportsChangeAnimations(false);
 
-        RecyclerView_topic.setAdapter(mWrappedAdapter);
+        RecyclerView_topic.setAdapter(mWrappedAdapter);// requires *wrapped* adapter
         RecyclerView_topic.setItemAnimator(animator);
-
-        // additional decorations
-        //noinspection StatementWithEmptyBody
-//        if (supportsViewElevation()) {
-//            // Lollipop or later has native drop shadow feature. ItemShadowDecorator is not required.
-//        } else {
-//            RecyclerView_topic.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
-//        }
-//        RecyclerView_topic.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
 
         // NOTE:
         // The initialization order is very important! This order determines the priority of touch event handling.
@@ -245,10 +264,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //Set ItemTouchHelper
-//        ItemTouchHelper.Callback callback =
-//                new TopicItemTouchHelperCallback( mainTopicAdapter);
-//        touchHelper = new ItemTouchHelper(callback);
-//        touchHelper.attachToRecyclerView(RecyclerView_topic);
+        ItemTouchHelper.Callback callback =
+                new TopicItemTouchHelperCallback(mainTopicAdapter);
+        touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(RecyclerView_topic);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
