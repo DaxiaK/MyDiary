@@ -105,7 +105,7 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_import_fail), Toast.LENGTH_LONG).show();
         }
-        //callBack.onImportCompiled(importSuccessful);
+        callBack.onImportCompiled(importSuccessful);
     }
 
     private void loadBackupJsonFileIntoManager() throws Exception {

@@ -115,21 +115,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTopicAdapter();
         loadProfilePicture();
 
+        //Init topic adapter
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged(true);
+
         //Release note dialog
-        if (getIntent().getBooleanExtra("showReleaseNote", true)) {
+        if (getIntent().getBooleanExtra("showReleaseNote", false)) {
             ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
             releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Init topic adapter
-        //OnResume load topic  because import data
-        loadTopic();
-        mainTopicAdapter.notifyDataSetChanged(true);
-    }
 
     @Override
     public void onDestroy() {

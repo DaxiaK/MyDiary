@@ -244,7 +244,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {
         private MainTopicAdapter mAdapter;
         private final int mPosition;
-        private boolean mSetPinned;
 
         public SwipeRightResultAction(MainTopicAdapter adapter, int position) {
             mAdapter = adapter;
@@ -260,17 +259,12 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             if (!item.isPinned()) {
                 item.setPinned(true);
                 mAdapter.notifyItemChanged(mPosition);
-                mSetPinned = true;
             }
         }
 
         @Override
         protected void onSlideAnimationEnd() {
             super.onSlideAnimationEnd();
-
-//            if (mSetPinned && mAdapter.mEventListener != null) {
-//                mAdapter.mEventListener.onItemPinned(mPosition);
-//            }
         }
 
         @Override
