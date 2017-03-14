@@ -815,7 +815,13 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 }
                 break;
             case R.id.IV_diary_close_dialog:
-                dismiss();
+                if (isEditMode) {
+                    EditDiaryBackDialogFragment backDialogFragment = new EditDiaryBackDialogFragment();
+                    backDialogFragment.setTargetFragment(DiaryViewerDialogFragment.this, 0);
+                    backDialogFragment.show(getFragmentManager(), "backDialogFragment");
+                } else {
+                    dismiss();
+                }
                 break;
             case R.id.IV_diary_delete:
                 DiaryDeleteDialogFragment diaryDeleteDialogFragment =
