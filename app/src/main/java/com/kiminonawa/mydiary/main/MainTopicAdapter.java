@@ -13,7 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.daimajia.swipe.SwipeLayout;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionDefault;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionMoveToSwipedDirection;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -22,6 +27,7 @@ import com.kiminonawa.mydiary.main.itemhelper.ItemTouchHelperWithFilterAdapter;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +38,8 @@ import java.util.List;
  */
 
 public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.TopicViewHolder> implements
-        ItemTouchHelperWithFilterAdapter, Filterable {
+        ItemTouchHelperWithFilterAdapter, Filterable,
+        SwipeableItemAdapter<MainTopicAdapter.TopicViewHolder> {
 
 
     private List<ITopic> originalTopicList;
@@ -50,6 +57,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         filteredTopicList = new ArrayList<>();
 
         topicFilter = new TopicFilter(this, originalTopicList);
+
+        // MainTopicAdapter requires stable ID, and also
+        // have to implement the getItemId() method appropriately.
+        setHasStableIds(true);
     }
 
 
@@ -78,6 +89,11 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
     @Override
+    public long getItemId(int position) {
+        return filteredTopicList.get(position).getId();
+    }
+
+    @Override
     public int getItemCount() {
         return filteredTopicList.size();
     }
@@ -85,7 +101,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     @Override
     public void onBindViewHolder(final TopicViewHolder holder, final int position) {
 
-        holder.getContentView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
+        holder.getSwipeableContainerView().setBackground(ThemeManager.getInstance().getTopicItemSelectDrawable(activity));
         holder.getTopicLeftSettingView().setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(activity));
         holder.getIconView().setImageResource(filteredTopicList.get(position).getIcon());
         holder.getIconView().setColorFilter(filteredTopicList.get(position).getColor());
@@ -95,9 +111,14 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getTVCount().setTextColor(filteredTopicList.get(position).getColor());
         holder.getArrow().setColorFilter(filteredTopicList.get(position).getColor());
 
-        //Revert the left view
-        holder.getDMJSLView().close();
-        holder.getDMJSLView().getSurfaceView().setOnClickListener(new View.OnClickListener() {
+        // set swiping properties
+        holder.setMaxRightSwipeAmount(0.25f);
+        holder.setMaxLeftSwipeAmount(0);
+        holder.setSwipeItemHorizontalSlideAmount(filteredTopicList.get(position).isPinned() ? 0.25f : 0);
+
+
+        //Click event
+        holder.getRLTopic().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoTopic(filteredTopicList.get(position).getType(), position);
@@ -178,14 +199,124 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         return topicFilter;
     }
 
+    /*
+     * Swipe
+     */
 
-    protected class TopicViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int onGetSwipeReactionType(TopicViewHolder holder, int position, int x, int y) {
+        if (ViewTools.hitTest(holder.getSwipeableContainerView(), x, y)) {
+            return SwipeableItemConstants.REACTION_CAN_SWIPE_BOTH_H;
+        } else {
+            return SwipeableItemConstants.REACTION_CAN_NOT_SWIPE_BOTH_H;
+        }
+    }
+
+    @Override
+    public void onSetSwipeBackground(TopicViewHolder holder, int position, int type) {
+        if (type == SwipeableItemConstants.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND) {
+            holder.getTopicLeftSettingView().setVisibility(View.GONE);
+        } else {
+            holder.getTopicLeftSettingView().setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public SwipeResultAction onSwipeItem(TopicViewHolder holder, int position, int result) {
+        Log.e("test", "onSwipeItem(position = " + position + ", result = " + result + ")");
+
+        switch (result) {
+            // swipe right --- pin
+            case SwipeableItemConstants.RESULT_SWIPED_RIGHT:
+                return new SwipeRightResultAction(this, position);
+            // other --- do nothing
+            case SwipeableItemConstants.RESULT_SWIPED_LEFT:
+            case SwipeableItemConstants.RESULT_CANCELED:
+            default:
+                if (position != RecyclerView.NO_POSITION) {
+                    return new UnpinResultAction(this, position);
+                } else {
+                    return null;
+                }
+        }
+    }
+
+    private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {
+        private MainTopicAdapter mAdapter;
+        private final int mPosition;
+        private boolean mSetPinned;
+
+        public SwipeRightResultAction(MainTopicAdapter adapter, int position) {
+            mAdapter = adapter;
+            mPosition = position;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            ITopic item = mAdapter.getList().get(mPosition);
+
+            if (!item.isPinned()) {
+                item.setPinned(true);
+                mAdapter.notifyItemChanged(mPosition);
+                mSetPinned = true;
+            }
+        }
+
+        @Override
+        protected void onSlideAnimationEnd() {
+            super.onSlideAnimationEnd();
+
+//            if (mSetPinned && mAdapter.mEventListener != null) {
+//                mAdapter.mEventListener.onItemPinned(mPosition);
+//            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+    private static class UnpinResultAction extends SwipeResultActionDefault {
+        private MainTopicAdapter mAdapter;
+        private final int mPosition;
+
+        UnpinResultAction(MainTopicAdapter adapter, int position) {
+            mAdapter = adapter;
+            mPosition = position;
+        }
+
+        @Override
+        protected void onPerformAction() {
+            super.onPerformAction();
+
+            ITopic item = mAdapter.getList().get(mPosition);
+            if (item.isPinned()) {
+                item.setPinned(false);
+                mAdapter.notifyItemChanged(mPosition);
+            }
+        }
+
+        @Override
+        protected void onCleanUp() {
+            super.onCleanUp();
+            // clear the references
+            mAdapter = null;
+        }
+    }
+
+
+    protected class TopicViewHolder extends AbstractSwipeableItemViewHolder {
 
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
         private ImageView IV_topic_arrow_right;
-        private SwipeLayout DMJSL_topic;
+        private RelativeLayout RL_topic_view;
         private LinearLayout LL_topic_left_setting;
         private RelativeLayout RL_topic_content;
         private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
@@ -199,15 +330,17 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.IV_topic_arrow_right = (ImageView) rootView.findViewById(R.id.IV_topic_arrow_right);
 
             //Left setting view
-            this.DMJSL_topic = (SwipeLayout) rootView.findViewById(R.id.DMJSL_topic);
+            this.RL_topic_view = (RelativeLayout) rootView.findViewById(R.id.RL_topic_view);
             this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
             this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
             this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
 
-            this.DMJSL_topic.setRightSwipeEnabled(false);
-            this.DMJSL_topic.setShowMode(SwipeLayout.ShowMode.PullOut);
-            this.DMJSL_topic.setDrag(SwipeLayout.DragEdge.Left, LL_topic_left_setting);
 
+        }
+
+        @Override
+        public View getSwipeableContainerView() {
+            return RL_topic_content;
         }
 
         protected ImageView getIconView() {
@@ -215,8 +348,8 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         }
 
 
-        protected SwipeLayout getDMJSLView() {
-            return DMJSL_topic;
+        protected RelativeLayout getRLTopic() {
+            return RL_topic_view;
         }
 
         protected TextView getTitleView() {
@@ -229,10 +362,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         protected ImageView getArrow() {
             return IV_topic_arrow_right;
-        }
-
-        protected View getContentView() {
-            return RL_topic_content;
         }
 
         protected View getTopicLeftSettingView() {
@@ -288,7 +417,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                         filteredList.add(topic);
                     }
                 }
-                Log.e("test", "performFiltering =" + filteredList.size());
                 isFilter = true;
             }
             results.values = filteredList;

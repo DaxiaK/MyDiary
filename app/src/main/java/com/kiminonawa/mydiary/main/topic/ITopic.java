@@ -43,4 +43,12 @@ public interface ITopic {
      * For update topic
      */
     void setColor(int color);
+
+    /**
+     * For the left swipe
+     */
+
+    void setPinned(boolean pinned);
+
+    boolean isPinned();
 }

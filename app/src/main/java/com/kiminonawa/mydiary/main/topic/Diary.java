@@ -12,7 +12,7 @@ public class Diary implements ITopic {
     private long id;
     private int count;
     private int color;
-
+    private boolean pinned = false;
 
     public Diary(long id, String title, int count, int color) {
         this.id = id;
@@ -59,5 +59,15 @@ public class Diary implements ITopic {
     @Override
     public void setColor(int color) {
         this.color = color;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    @Override
+    public boolean isPinned() {
+        return pinned;
     }
 }

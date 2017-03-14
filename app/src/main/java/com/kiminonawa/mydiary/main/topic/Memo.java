@@ -12,6 +12,7 @@ public class Memo implements ITopic {
     private long id;
     private int count;
     private int color;
+    private boolean pinned = false;
 
     public Memo(long id, String title, int count, int color) {
         this.id = id;
@@ -60,5 +61,15 @@ public class Memo implements ITopic {
     @Override
     public void setColor(int color) {
         this.color = color;
+    }
+
+    @Override
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
+    }
+
+    @Override
+    public boolean isPinned() {
+        return pinned;
     }
 }

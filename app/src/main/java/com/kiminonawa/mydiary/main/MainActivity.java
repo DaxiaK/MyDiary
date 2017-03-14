@@ -2,6 +2,7 @@ package com.kiminonawa.mydiary.main;
 
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,9 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.main.itemhelper.TopicItemTouchHelperCallback;
 import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
@@ -49,6 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
     private ItemTouchHelper touchHelper;
+
+    private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+    private RecyclerView.Adapter mWrappedAdapter;
+    private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
     /*
      * DB
@@ -123,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onBackPressed() {
-        if (isExit == false) {
+        if (!isExit) {
             isExit = true;
             Toast.makeText(this, getString(R.string.main_activity_exit_app), Toast.LENGTH_SHORT).show();
             TimerTask task;
@@ -192,18 +200,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initTopicAdapter() {
+
+        // swipe manager
+        mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
+
+
+        // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
+        mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
+        mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
+        mRecyclerViewTouchActionGuardManager.setEnabled(true);
+
         //Init topic adapter
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
         mainTopicAdapter = new MainTopicAdapter(this, topicList, dbManager);
-        RecyclerView_topic.setAdapter(mainTopicAdapter);
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mainTopicAdapter);
+
+
+        final GeneralItemAnimator animator = new SwipeDismissItemAnimator();
+
+        // Change animations are enabled by default since support-v7-recyclerview v22.
+        // Disable the change animation in order to make turning back animation of swiped item works properly.
+        animator.setSupportsChangeAnimations(false);
+
+        RecyclerView_topic.setAdapter(mWrappedAdapter);
+        RecyclerView_topic.setItemAnimator(animator);
+
+        // additional decorations
+        //noinspection StatementWithEmptyBody
+//        if (supportsViewElevation()) {
+//            // Lollipop or later has native drop shadow feature. ItemShadowDecorator is not required.
+//        } else {
+//            RecyclerView_topic.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(getContext(), R.drawable.material_shadow_z1)));
+//        }
+//        RecyclerView_topic.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(getContext(), R.drawable.list_divider_h), true));
+
+        // NOTE:
+        // The initialization order is very important! This order determines the priority of touch event handling.
+        //
+        // priority: TouchActionGuard > Swipe > DragAndDrop
+        mRecyclerViewTouchActionGuardManager.attachRecyclerView(RecyclerView_topic);
+        mRecyclerViewSwipeManager.attachRecyclerView(RecyclerView_topic);
+
 
         //Set ItemTouchHelper
-        ItemTouchHelper.Callback callback =
-                new TopicItemTouchHelperCallback(mainTopicAdapter);
-        touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(RecyclerView_topic);
+//        ItemTouchHelper.Callback callback =
+//                new TopicItemTouchHelperCallback( mainTopicAdapter);
+//        touchHelper = new ItemTouchHelper(callback);
+//        touchHelper.attachToRecyclerView(RecyclerView_topic);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
@@ -238,6 +283,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+
+    private boolean supportsViewElevation() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
 
     @Override
@@ -300,6 +350,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void setColor(int color) {
                         //do nothing
+                    }
+
+                    @Override
+                    public void setPinned(boolean pinned) {
+                        //do nothing
+                    }
+
+                    @Override
+                    public boolean isPinned() {
+                        return false;
                     }
                 });
         //Get size
