@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.memo.MemoActivity;
@@ -46,13 +48,14 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     private List<ITopic> filteredTopicList;
     private MainActivity activity;
     private TopicFilter topicFilter;
-    private boolean needToUpdate = false;
+    private DBManager dbManager;
 
-    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList) {
+    public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
         this.activity = activity;
+        this.dbManager = dbManager;
 
-        originalTopicList = topicList;
-        filteredTopicList = new ArrayList<>();
+        this.originalTopicList = topicList;
+        this.filteredTopicList = new ArrayList<>();
 
         topicFilter = new TopicFilter(this, originalTopicList);
 
@@ -68,15 +71,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             filteredTopicList.addAll(originalTopicList);
         }
         super.notifyDataSetChanged();
-    }
-
-
-    public boolean isNeedToUpdate() {
-        return needToUpdate;
-    }
-
-    public void setNeedToUpdate(boolean needToUpdate) {
-        this.needToUpdate = needToUpdate;
     }
 
     public List<ITopic> getList() {
@@ -117,7 +111,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.setMaxRightSwipeAmount(0.25f);
         holder.setMaxLeftSwipeAmount(0);
         holder.setSwipeItemHorizontalSlideAmount(filteredTopicList.get(position).isPinned() ? 0.25f : 0);
-
 
         //Click event
         holder.getRLTopic().setOnClickListener(new View.OnClickListener() {
@@ -220,7 +213,14 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public boolean onCheckCanStartDrag(TopicViewHolder holder, int position, int x, int y) {
-        return !topicFilter.isFilter();
+
+        // x, y --- relative from the itemView's top-left
+        final View containerView = holder.getSwipeableContainerView();
+
+        final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
+        final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
+
+        return !topicFilter.isFilter() && ViewTools.hitTest(containerView, x - offsetX, y - offsetY);
     }
 
     @Override
@@ -242,9 +242,15 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         final ITopic filteredItem = filteredTopicList.remove(fromPosition);
         filteredTopicList.add(toPosition, filteredItem);
 
-        notifyItemMoved(fromPosition, toPosition);
-
-        setNeedToUpdate(true);
+        //save the new topic order
+        int orderNumber = originalTopicList.size();
+        dbManager.opeDB();
+        dbManager.deleteAllCurrentTopicOrder();
+        for (ITopic topic : originalTopicList) {
+            dbManager.insertTopicOrder(topic.getId(), --orderNumber);
+        }
+        dbManager.closeDB();
+        notifyDataSetChanged(false);
     }
 
     @Override
@@ -263,6 +269,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         @Override
         protected void onPerformAction() {
+
             super.onPerformAction();
 
             ITopic item = mAdapter.getList().get(mPosition);
@@ -275,6 +282,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
         @Override
         protected void onSlideAnimationEnd() {
+
             super.onSlideAnimationEnd();
         }
 
@@ -304,6 +312,11 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
                 item.setPinned(false);
                 mAdapter.notifyItemChanged(mPosition);
             }
+        }
+
+        @Override
+        protected void onSlideAnimationEnd() {
+            super.onSlideAnimationEnd();
         }
 
         @Override

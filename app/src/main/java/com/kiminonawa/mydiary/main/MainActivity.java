@@ -132,19 +132,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         mRecyclerViewDragDropManager.cancelDrag();
-        if (mainTopicAdapter.isNeedToUpdate()) {
-            //save the new topic order
-            int orderNumber = topicList.size();
-            dbManager.opeDB();
-            dbManager.deleteAllCurrentTopicOrder();
-            for (ITopic topic : topicList) {
-                dbManager.insertTopicOrder(topic.getId(), --orderNumber);
-            }
-            dbManager.closeDB();
-            mainTopicAdapter.notifyDataSetChanged(false);
-            //Reset the update flag
-            mainTopicAdapter.setNeedToUpdate(false);
-        }
         super.onPause();
     }
 
@@ -265,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
-        mainTopicAdapter = new MainTopicAdapter(this, topicList);
+        mainTopicAdapter = new MainTopicAdapter(this, topicList, dbManager);
         mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mainTopicAdapter);
 
 
