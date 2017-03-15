@@ -2,7 +2,9 @@ package com.kiminonawa.mydiary.entries.calendar;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,16 @@ import android.widget.RelativeLayout;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.TimeTools;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.util.Calendar;
 import java.util.Date;
 
 
-public class CalendarFragment extends BaseDiaryFragment {
+public class CalendarFragment extends BaseDiaryFragment implements View.OnClickListener, OnDateSelectedListener {
 
 
     /**
@@ -26,7 +31,6 @@ public class CalendarFragment extends BaseDiaryFragment {
     private Calendar calendar;
     private Date currentDate;
 
-    private TimeTools timeTools;
     private ThemeManager themeManager;
 
     /**
@@ -34,6 +38,19 @@ public class CalendarFragment extends BaseDiaryFragment {
      */
     private RelativeLayout RL_calendar_content;
     private RelativeLayout RL_calendar_edit_bar;
+    private FloatingActionButton FAB_calendar_change_mode;
+
+    /**
+     * calendar Mode
+     */
+    private PageEffectView pageEffectView;
+    private MaterialCalendarView materialCalendarView;
+
+    private int currentMode;
+
+    private static final int MODE_DAY = 1;
+    private static final int MODE_MONTH = 2;
+
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -45,7 +62,6 @@ public class CalendarFragment extends BaseDiaryFragment {
         calendar = Calendar.getInstance();
         currentDate = new Date();
         calendar.setTime(currentDate);
-        timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
         themeManager = ThemeManager.getInstance();
     }
 
@@ -59,14 +75,61 @@ public class CalendarFragment extends BaseDiaryFragment {
 
         RL_calendar_content = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content);
 
-        PageEffectView pageEffectView = new PageEffectView(getActivity());
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        pageEffectView.setLayoutParams(params);
-        RL_calendar_content.addView(pageEffectView);
+        FAB_calendar_change_mode = (FloatingActionButton) rootView.findViewById(R.id.FAB_calendar_change_mode);
+        FAB_calendar_change_mode.setOnClickListener(this);
 
+        //default mode
+        currentMode = MODE_DAY;
+        setCalendarMode(currentMode);
         return rootView;
     }
 
 
+    private void setCalendarMode(int mode) {
+        RL_calendar_content.removeAllViews();
+        switch (mode) {
+            case MODE_DAY:
+                materialCalendarView = null;
+                pageEffectView = new PageEffectView(getActivity(), calendar);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT);
+                pageEffectView.setLayoutParams(params);
+                RL_calendar_content.addView(pageEffectView);
+                break;
+            case MODE_MONTH:
+                pageEffectView = null;
+                materialCalendarView = new MaterialCalendarView(getActivity());
+                RelativeLayout.LayoutParams calendarViewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT);
+                materialCalendarView.setLayoutParams(calendarViewParams);
+                materialCalendarView.state().edit()
+                        .setFirstDayOfWeek(Calendar.WEDNESDAY)
+                        .setCalendarDisplayMode(CalendarMode.MONTHS)
+                        .commit();
+                materialCalendarView.setCurrentDate(calendar);
+                materialCalendarView.setDateSelected(calendar, true);
+                materialCalendarView.setOnDateChangedListener(this);
+                RL_calendar_content.addView(materialCalendarView);
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.FAB_calendar_change_mode:
+                if (currentMode == MODE_DAY) {
+                    currentMode = MODE_MONTH;
+                } else {
+                    currentMode = MODE_DAY;
+                }
+                setCalendarMode(currentMode);
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        calendar.setTime(date.getDate());
+    }
 }

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/RL_calendar_content_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,8 +18,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.7"
             android:background="@color/colorPrimary"
-            android:gravity="center">
-        </RelativeLayout>
+            android:gravity="center" />
     </LinearLayout>
 
 
@@ -72,6 +72,17 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/shadow_height_3dp"
         android:background="@drawable/view_bottom_shadow" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FAB_calendar_change_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/RL_calendar_edit_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="mini" />
 
 
 </RelativeLayout>
