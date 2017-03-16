@@ -28,7 +28,6 @@ import com.kiminonawa.mydiary.entries.entries.EntriesEntity;
 import com.kiminonawa.mydiary.entries.entries.EntriesFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,9 +68,9 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     /**
      * The diary list for every fragment
      */
-    private List<EntriesEntity> entriesList = new ArrayList<>();;
+    private List<EntriesEntity> entriesList = new ArrayList<>();
+    ;
     private final static int MAX_TEXT_LENGTH = 18;
-
 
 
     @Override
@@ -150,7 +149,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
                 title = getString(R.string.diary_no_title);
             }
             EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0),
-                    CalendarDay.from(new Date(diaryCursor.getLong(1))),
+                    new Date(diaryCursor.getLong(1)),
                     title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
                     diaryCursor.getInt(4), diaryCursor.getInt(3),
                     diaryCursor.getInt(5) > 0 ? true : false);
@@ -177,7 +176,7 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         dbManager.closeDB();
     }
 
-    public  List<EntriesEntity> getEntriesList(){
+    public List<EntriesEntity> getEntriesList() {
         return entriesList;
     }
 
@@ -226,9 +225,28 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         ViewPager_diary_content.setCurrentItem(position);
     }
 
+    public void callEntriesGotoDiaryPosition(int position) {
+        EntriesFragment entriesFragment = ((EntriesFragment) mPagerAdapter.getRegisteredFragment(0));
+        if (entriesFragment != null) {
+            gotoPage(0);
+            entriesFragment.gotoDiaryPosition(position);
+        }
+    }
 
     public void callEntriesListRefresh() {
-        ((EntriesFragment) mPagerAdapter.getRegisteredFragment(0)).updateDiary();
+
+        EntriesFragment entriesFragment = ((EntriesFragment) mPagerAdapter.getRegisteredFragment(0));
+        if (entriesFragment != null) {
+            entriesFragment.updateEntriesData();
+        }
+    }
+
+    public void callCalendarRefresh() {
+        CalendarFragment calendarFragment = ((CalendarFragment) mPagerAdapter.getRegisteredFragment(1));
+        if (calendarFragment != null) {
+            calendarFragment.refreshCalendar();
+        }
+
     }
 
     @Override

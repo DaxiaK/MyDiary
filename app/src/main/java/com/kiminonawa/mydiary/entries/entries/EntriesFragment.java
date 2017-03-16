@@ -14,12 +14,13 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 
 public class EntriesFragment extends BaseDiaryFragment implements
-        DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener{
+        DiaryViewerDialogFragment.DiaryViewerCallback, View.OnClickListener {
 
     /**
      * UI
@@ -104,10 +105,15 @@ public class EntriesFragment extends BaseDiaryFragment implements
         }
     }
 
+    public void gotoDiaryPosition(int position) {
+        RecyclerView_entries.scrollToPosition(position);
+    }
+
     public void updateEntriesData() {
         updateEntriesList();
         entriesAdapter.notifyDataSetChanged();
         countEntries();
+        ((DiaryActivity) getActivity()).callCalendarRefresh();
     }
 
     @Override

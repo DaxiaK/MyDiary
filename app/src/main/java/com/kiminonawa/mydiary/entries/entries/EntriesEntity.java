@@ -4,6 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by daxia on 2016/10/17.
  */
@@ -11,7 +14,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 public class EntriesEntity implements Comparable<CalendarDay> {
 
     private long id;
-    private CalendarDay createDate;
+    private Date createDate;
     private String title;
     private String summary;
     private int weatherId;
@@ -19,7 +22,7 @@ public class EntriesEntity implements Comparable<CalendarDay> {
     private boolean hasAttachment;
 
 
-    public EntriesEntity(long id, CalendarDay createDate, String title,
+    public EntriesEntity(long id, Date createDate, String title,
                          int weatherId, int moodId, boolean hasAttachment) {
         this.id = id;
         this.createDate = createDate;
@@ -37,7 +40,7 @@ public class EntriesEntity implements Comparable<CalendarDay> {
         return id;
     }
 
-    public CalendarDay getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
@@ -64,7 +67,14 @@ public class EntriesEntity implements Comparable<CalendarDay> {
 
     @Override
     public int compareTo(@NonNull CalendarDay calendarDay) {
-        return Long.valueOf( calendarDay.getCalendar().getTimeInMillis()).compareTo(
-                this.createDate.getCalendar().getTimeInMillis());
+        //TODO improve the compare performance
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return Long.valueOf(calendarDay.getCalendar().getTimeInMillis()).compareTo(
+                cal.getTimeInMillis());
     }
 }

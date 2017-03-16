@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
+import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
@@ -24,6 +25,8 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+
+import static java.util.Collections.binarySearch;
 
 
 public class CalendarFragment extends BaseDiaryFragment implements View.OnClickListener,
@@ -90,12 +93,23 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
         super.onActivityCreated(savedInstanceState);
         //default mode
         currentMode = MODE_DAY;
-        setCalendarMode(currentMode);
+        initCalendarMode();
     }
 
-    private void setCalendarMode(int mode) {
+    public void refreshCalendar() {
+        switch (currentMode) {
+            case MODE_DAY:
+                //TODO add decorators
+                break;
+            case MODE_MONTH:
+                materialCalendarView.invalidateDecorators();
+                break;
+        }
+    }
+
+    private void initCalendarMode() {
         RL_calendar_content.removeAllViews();
-        switch (mode) {
+        switch (currentMode) {
             case MODE_DAY:
                 materialCalendarView = null;
                 pageEffectView = new PageEffectView(getActivity(), calendar);
@@ -119,8 +133,9 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
                 materialCalendarView.setCurrentDate(calendar);
                 materialCalendarView.setDateSelected(calendar, true);
                 materialCalendarView.setOnDateChangedListener(this);
-                materialCalendarView.addDecorator(this);
                 RL_calendar_content.addView(materialCalendarView);
+                //Add view first , then add Decorator
+                materialCalendarView.addDecorator(this);
                 break;
         }
     }
@@ -135,19 +150,26 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
                 } else {
                     currentMode = MODE_DAY;
                 }
-                setCalendarMode(currentMode);
+                initCalendarMode();
                 break;
         }
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        //Make calendar sync the new date
         calendar.setTime(date.getDate());
+
+        //Goto the diary position
+        int diaryPosition = Collections.binarySearch(getEntriesList(), date);
+        if (diaryPosition >= 0) {
+            ((DiaryActivity) getActivity()).callEntriesGotoDiaryPosition(diaryPosition);
+        }
     }
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-        return Collections.binarySearch(getEntriesList(), day) >= 0;
+        return binarySearch(getEntriesList(), day) >= 0;
     }
 
     @Override
