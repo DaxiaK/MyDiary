@@ -51,6 +51,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
 
     compile 'com.nononsenseapps:filepicker:4.0.0'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
 
     compile files('libs/pinyin4j-2.5.0.jar')

@@ -50,9 +50,6 @@ public class AboutActivity extends AppCompatActivity {
                 new LicenseObj("UltimateRecyclerView", "Marshal Chen", "2014-present", LicenseObj.APACHE)
                         .getLicense());
         license.append(
-                new LicenseObj("AndroidSwipeLayout", "代码家", "2014", LicenseObj.MIT)
-                        .getLicense());
-        license.append(
                 new LicenseObj("Fresco", "Facebook, Inc.", "2015-present", LicenseObj.BSD)
                         .getLicense());
         license.append(
@@ -60,6 +57,12 @@ public class AboutActivity extends AppCompatActivity {
                         .getLicense());
         license.append(
                 new LicenseObj("device-year-class", "Facebook, Inc.", "2015", LicenseObj.BSD)
+                        .getLicense());
+        license.append(
+                new LicenseObj("android-advancedrecyclerview", "Haruki Hasegawa", "2015", LicenseObj.APACHE)
+                        .getLicense());
+        license.append(
+                new LicenseObj("Material Calendar View", "prolificinteractive", "2016", LicenseObj.MIT)
                         .getLicense());
 
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());

@@ -22,6 +22,8 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
+import java.util.Calendar;
+
 //Ref: http://blog.csdn.net/hmg25/article/details/6419694
 public class PageEffectView extends View {
 
@@ -82,12 +84,12 @@ public class PageEffectView extends View {
     //Calendar lock
     private boolean isCalendarUpdated = false;
 
-    public PageEffectView(Context context) {
+    public PageEffectView(Context context, Calendar calendar) {
         super(context);
-        init(context);
+        init(context, calendar);
     }
 
-    private void init(Context context) {
+    private void init(Context context, Calendar calendar) {
 
         //In the Android 4.2 , LAYER_TYPE_SOFTWARE will cause some question
         int year = YearClass.get(context.getApplicationContext());
@@ -101,7 +103,7 @@ public class PageEffectView extends View {
         createBitmaps();
 
         //Set calendar , this object should be created after w,h was set.
-        calendarFactory = new CalendarFactory(context, mWidth, mHeight);
+        calendarFactory = new CalendarFactory(context, calendar, mWidth, mHeight);
 
         //Page effect
         mPath0 = new Path();

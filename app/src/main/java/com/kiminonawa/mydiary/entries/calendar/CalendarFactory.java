@@ -34,9 +34,9 @@ public class CalendarFactory {
     private float scale;
 
 
-    public CalendarFactory(Context context, int width, int height) {
+    public CalendarFactory(Context context,Calendar calendar ,int width, int height) {
 
-        calendar = Calendar.getInstance();
+        this.calendar = calendar;
         timeTools = TimeTools.getInstance(context);
         mContext = context;
         textRect = new Rect(0, 0, width, height);
