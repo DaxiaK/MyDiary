@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,11 +20,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.calendar.CalendarFragment;
 import com.kiminonawa.mydiary.entries.diary.DiaryFragment;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
+import com.kiminonawa.mydiary.entries.entries.EntriesEntity;
 import com.kiminonawa.mydiary.entries.entries.EntriesFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
@@ -47,7 +56,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     private SegmentedGroup SG_diary_topbar;
     private RadioButton But_diary_topbar_entries, But_diary_topbar_calendar, But_diary_topbar_diary;
 
-
     /**
      * View pager
      */
@@ -57,6 +65,13 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      * Google API
      */
     private GoogleApiClient mGoogleApiClient;
+
+    /**
+     * The diary list for every fragment
+     */
+    private List<EntriesEntity> entriesList = new ArrayList<>();;
+    private final static int MAX_TEXT_LENGTH = 18;
+
 
 
     @Override
@@ -92,6 +107,9 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         //After SegmentedGroup was created
         initViewPager();
         initGoogleAPi();
+
+        //Load the all entries from db.
+        loadEntries();
     }
 
     @Override
@@ -114,6 +132,53 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         } else {
             super.onBackPressed();
         }
+    }
+
+    /**
+     *
+     */
+    public void loadEntries() {
+        entriesList.clear();
+        DBManager dbManager = new DBManager(this);
+        dbManager.opeDB();
+        //Select diary info
+        Cursor diaryCursor = dbManager.selectDiaryList(getTopicId());
+        for (int i = 0; i < diaryCursor.getCount(); i++) {
+            //get diary info
+            String title = diaryCursor.getString(2);
+            if ("".equals(title)) {
+                title = getString(R.string.diary_no_title);
+            }
+            EntriesEntity entity = new EntriesEntity(diaryCursor.getLong(0),
+                    CalendarDay.from(new Date(diaryCursor.getLong(1))),
+                    title.substring(0, Math.min(MAX_TEXT_LENGTH, title.length())),
+                    diaryCursor.getInt(4), diaryCursor.getInt(3),
+                    diaryCursor.getInt(5) > 0 ? true : false);
+
+            //select first diary content
+            Cursor diaryContentCursor = dbManager.selectDiaryContentByDiaryId(entity.getId());
+            if (diaryContentCursor != null && diaryContentCursor.getCount() > 0) {
+                String summary = "";
+                //Check content Type
+                if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
+                    summary = getString(R.string.entries_summary_photo);
+                } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
+                    summary = diaryContentCursor.getString(3)
+                            .substring(0, Math.min(MAX_TEXT_LENGTH, diaryContentCursor.getString(3).length()));
+                }
+                entity.setSummary(summary);
+                diaryContentCursor.close();
+            }
+            //Add entity
+            entriesList.add(entity);
+            diaryCursor.moveToNext();
+        }
+        diaryCursor.close();
+        dbManager.closeDB();
+    }
+
+    public  List<EntriesEntity> getEntriesList(){
+        return entriesList;
     }
 
     /**

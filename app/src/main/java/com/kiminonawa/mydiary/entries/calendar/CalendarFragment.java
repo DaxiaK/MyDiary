@@ -15,14 +15,19 @@ import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 
-public class CalendarFragment extends BaseDiaryFragment implements View.OnClickListener, OnDateSelectedListener {
+public class CalendarFragment extends BaseDiaryFragment implements View.OnClickListener,
+        OnDateSelectedListener, DayViewDecorator {
 
 
     /**
@@ -77,13 +82,16 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
 
         FAB_calendar_change_mode = (FloatingActionButton) rootView.findViewById(R.id.FAB_calendar_change_mode);
         FAB_calendar_change_mode.setOnClickListener(this);
-
-        //default mode
-        currentMode = MODE_DAY;
-        setCalendarMode(currentMode);
         return rootView;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        //default mode
+        currentMode = MODE_DAY;
+        setCalendarMode(currentMode);
+    }
 
     private void setCalendarMode(int mode) {
         RL_calendar_content.removeAllViews();
@@ -102,13 +110,16 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
                 RelativeLayout.LayoutParams calendarViewParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                         RelativeLayout.LayoutParams.MATCH_PARENT);
                 materialCalendarView.setLayoutParams(calendarViewParams);
+                materialCalendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+                materialCalendarView.setSelectionColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                 materialCalendarView.state().edit()
-                        .setFirstDayOfWeek(Calendar.WEDNESDAY)
+                        .setFirstDayOfWeek(Calendar.MONDAY)
                         .setCalendarDisplayMode(CalendarMode.MONTHS)
                         .commit();
                 materialCalendarView.setCurrentDate(calendar);
                 materialCalendarView.setDateSelected(calendar, true);
                 materialCalendarView.setOnDateChangedListener(this);
+                materialCalendarView.addDecorator(this);
                 RL_calendar_content.addView(materialCalendarView);
                 break;
         }
@@ -118,6 +129,7 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.FAB_calendar_change_mode:
+                //togle the mode
                 if (currentMode == MODE_DAY) {
                     currentMode = MODE_MONTH;
                 } else {
@@ -131,5 +143,15 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         calendar.setTime(date.getDate());
+    }
+
+    @Override
+    public boolean shouldDecorate(CalendarDay day) {
+        return Collections.binarySearch(getEntriesList(), day) >= 0;
+    }
+
+    @Override
+    public void decorate(DayViewFacade view) {
+        view.addSpan(new DotSpan(5, ThemeManager.getInstance().getThemeDarkColor(getActivity())));
     }
 }

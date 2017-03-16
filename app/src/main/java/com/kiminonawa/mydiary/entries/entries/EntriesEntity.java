@@ -1,15 +1,17 @@
 package com.kiminonawa.mydiary.entries.entries;
 
-import java.util.Date;
+import android.support.annotation.NonNull;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 /**
  * Created by daxia on 2016/10/17.
  */
 
-public class EntriesEntity {
+public class EntriesEntity implements Comparable<CalendarDay> {
 
     private long id;
-    private Date createDate;
+    private CalendarDay createDate;
     private String title;
     private String summary;
     private int weatherId;
@@ -17,7 +19,7 @@ public class EntriesEntity {
     private boolean hasAttachment;
 
 
-    public EntriesEntity(long id, Date createDate, String title,
+    public EntriesEntity(long id, CalendarDay createDate, String title,
                          int weatherId, int moodId, boolean hasAttachment) {
         this.id = id;
         this.createDate = createDate;
@@ -35,7 +37,7 @@ public class EntriesEntity {
         return id;
     }
 
-    public Date getCreateDate() {
+    public CalendarDay getCreateDate() {
         return createDate;
     }
 
@@ -60,4 +62,9 @@ public class EntriesEntity {
     }
 
 
+    @Override
+    public int compareTo(@NonNull CalendarDay calendarDay) {
+        return Long.valueOf( calendarDay.getCalendar().getTimeInMillis()).compareTo(
+                this.createDate.getCalendar().getTimeInMillis());
+    }
 }

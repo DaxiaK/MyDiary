@@ -59,7 +59,7 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     public void onBindViewHolder(EntriesViewHolder holder, final int position) {
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(entriesList.get(position).getCreateDate());
+        calendar.setTime(entriesList.get(position).getCreateDate().getDate());
 
         if (showHeader(position)) {
             holder.getHeader().setVisibility(View.VISIBLE);
@@ -103,9 +103,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             return true;
         } else {
             Calendar previousCalendar = new GregorianCalendar();
-            previousCalendar.setTime(entriesList.get(position - 1).getCreateDate());
+            previousCalendar.setTime(entriesList.get(position - 1).getCreateDate().getDate());
             Calendar currentCalendar = new GregorianCalendar();
-            currentCalendar.setTime(entriesList.get(position).getCreateDate());
+            currentCalendar.setTime(entriesList.get(position).getCreateDate().getDate());
             if (previousCalendar.get(Calendar.YEAR) != currentCalendar.get(Calendar.YEAR)) {
                 return true;
             } else {
