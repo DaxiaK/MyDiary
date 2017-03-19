@@ -3,8 +3,14 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.7.170219_1_A\n
-        -進入alpha版本啦 :)
+    <string name="release_note">**0.2.8.170319_1_A\n
+        -修復低記憶體時造成的異常\n
+        -修復bug\n
+        -調整版面\n
+        -增加主題搜尋功能\n
+        -新增月曆與修復日曆問題\n\n
+        **0.2.7.170219_1_A\n
+        -進入alpha版本啦 :)\n
         -支援簡單的備份功能\n
         -優化日記圖片新增和顯示\n
         -修復Android 4.2日曆陰影問題\n

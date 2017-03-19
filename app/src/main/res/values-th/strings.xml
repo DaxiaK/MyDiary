@@ -3,8 +3,14 @@
 
     <!--Release Note-->
     <string name="release_note_title">ข้อมูลการอัพเดท</string>
-    <string name="release_note">**0.2.7.170219_1_A\n
-        -Now it is alpha version :)
+    <string name="release_note">**0.2.8.170319_1_A\n
+        -Fix error when memory is low\n
+        -Fix bug\n
+        -Modify layout\n
+        -Implement search for topic\n
+        -Add month mode and fix bug in calendar\n\n
+        **0.2.7.170219_1_A\n
+        -Now it is alpha version :)\n
         -Support simple backup\n
         -Optimizing add and show photo in diary\n
         -Fix calendar shadow bug on Android 4.2\n

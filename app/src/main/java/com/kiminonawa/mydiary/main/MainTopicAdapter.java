@@ -108,9 +108,9 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         holder.getArrow().setColorFilter(filteredTopicList.get(position).getColor());
 
         // set swiping properties
-        holder.setMaxRightSwipeAmount(0.25f);
+        holder.setMaxRightSwipeAmount(0.3f);
         holder.setMaxLeftSwipeAmount(0);
-        holder.setSwipeItemHorizontalSlideAmount(filteredTopicList.get(position).isPinned() ? 0.25f : 0);
+        holder.setSwipeItemHorizontalSlideAmount(filteredTopicList.get(position).isPinned() ? 0.3f : 0);
 
         //Click event
         holder.getRLTopic().setOnClickListener(new View.OnClickListener() {
