@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.kiminonawa.mydiary"
         minSdkVersion 17
@@ -28,11 +28,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //Android lib
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:gridlayout-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:support-v13:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:gridlayout-v7:25.3.0'
 
     testCompile 'junit:junit:4.12'
     //Lib

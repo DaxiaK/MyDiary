@@ -40,7 +40,7 @@
         <activity
             android:name=".main.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".contacts.ContactsActivity"
             android:screenOrientation="portrait"
