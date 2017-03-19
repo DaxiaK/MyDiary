@@ -8,7 +8,7 @@ import android.support.annotation.DrawableRes;
 
 public interface ITopic {
     /**
-     * The contacts , Mitsuha  and Taki change their cell phone numberin this function.
+     * The contacts , Mitsuha  and Taki change their cell phone number in this function.
      */
     int TYPE_CONTACTS = 0;
     /**
@@ -17,11 +17,16 @@ public interface ITopic {
     int TYPE_DIARY = 1;
 
     /**
-     * Mitsuha and Taki add some memo for notice that something can't do.
+     * Mitsuha and Taki add some memo to notice that something can't do.
      */
     int TYPE_MEMO = 2;
 
     String getTitle();
+
+    /**
+     * For update topic
+     */
+    void setTitle(String title);
 
     int getType();
 
@@ -34,4 +39,16 @@ public interface ITopic {
 
     int getColor();
 
+    /**
+     * For update topic
+     */
+    void setColor(int color);
+
+    /**
+     * For the left swipe
+     */
+
+    void setPinned(boolean pinned);
+
+    boolean isPinned();
 }

@@ -10,17 +10,21 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
 import java.io.File;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * Created by daxia on 2017/2/14.
  */
 
 public class BackupActivity extends AppCompatActivity implements View.OnClickListener,
-        ExportAsyncTask.ExportCallBack {
+        ExportAsyncTask.ExportCallBack, ImportAsyncTask.ImportCallBack {
 
 
     private final int EXPORT_SRC_PICKER_CODE = 0;
@@ -97,7 +101,7 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                         .execute();
                 break;
             case R.id.But_backup_import:
-                new ImportAsyncTask(this, null, TV_backup_import_src.getText().toString())
+                new ImportAsyncTask(this, this, TV_backup_import_src.getText().toString())
                         .execute();
                 break;
         }
@@ -106,5 +110,12 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onExportCompiled(boolean exportSuccessful) {
         //TODO Add some step later (e.g. copy file or upload file)
+    }
+
+    @Override
+    public void onImportCompiled(boolean importSuccessful) {
+        Intent backMainActivityIntent = new Intent(this, MainActivity.class);
+        backMainActivityIntent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(backMainActivityIntent);
     }
 }

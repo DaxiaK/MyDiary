@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.kiminonawa.mydiary"
         minSdkVersion 17
-        targetSdkVersion 23
+        targetSdkVersion 25
         // versionName rule
         // version.yyMMDD_BuildCount_OPTION ,
         // BuildCount_OPTION: D = demo , A = alpha,  H = hotfix
@@ -28,11 +28,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //Android lib
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:gridlayout-v7:23.4.0'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
+    compile 'com.android.support:support-v13:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:gridlayout-v7:25.3.0'
 
     testCompile 'junit:junit:4.12'
     //Lib
@@ -42,16 +43,20 @@ dependencies {
     compile 'commons-io:commons-io:2.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.7.0'
-    compile 'com.github.daimajia:AndroidSwipeLayout:f66ac6942b'
-
+    compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.10.4@aar'){
+        transitive=true
+    }
     compile 'com.facebook.fresco:fresco:1.0.1'
+    compile 'com.facebook.device.yearclass:yearclass:2.0.0'
+
     compile 'com.google.code.gson:gson:2.8.0'
 
     compile 'com.nononsenseapps:filepicker:4.0.0'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
 
     compile files('libs/pinyin4j-2.5.0.jar')
 
     //Google Lib
-    compile 'com.google.android.gms:play-services-places:10.0.1'
+    compile 'com.google.android.gms:play-services-places:10.2.0'
 }

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/transparent">
 
     <RelativeLayout
         android:id="@+id/RL_diary_edit_bar"
@@ -204,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/RL_diary_info"
+                android:background="@android:color/white"
                 android:orientation="vertical"
                 android:padding="5dp">
 

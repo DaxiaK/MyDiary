@@ -44,7 +44,7 @@
 
 
         <EditText
-            android:id="@+id/EDT_main_topic_search"
+            android:id="@+id/EDT_main_contacts_search"
             android:layout_width="match_parent"
             android:layout_height="26dp"
             android:layout_centerVertical="true"

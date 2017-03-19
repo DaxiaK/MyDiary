@@ -1,12 +1,17 @@
 package com.kiminonawa.mydiary.entries.entries;
 
+import android.support.annotation.NonNull;
+
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.util.Calendar;
 import java.util.Date;
 
 /**
  * Created by daxia on 2016/10/17.
  */
 
-public class EntriesEntity {
+public class EntriesEntity implements Comparable<CalendarDay> {
 
     private long id;
     private Date createDate;
@@ -60,4 +65,16 @@ public class EntriesEntity {
     }
 
 
+    @Override
+    public int compareTo(@NonNull CalendarDay calendarDay) {
+        //TODO improve the compare performance
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(createDate);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return Long.valueOf(calendarDay.getCalendar().getTimeInMillis()).compareTo(
+                cal.getTimeInMillis());
+    }
 }

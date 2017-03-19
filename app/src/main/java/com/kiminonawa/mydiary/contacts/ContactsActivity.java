@@ -54,7 +54,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     private ThemeManager themeManager;
     private RelativeLayout RL_contacts_content;
     private TextView IV_contacts_title;
-    private EditText EDT_main_topic_search;
+    private EditText EDT_main_contacts_search;
     private LatterSortLayout STL_contacts;
     private ImageView IV_contacts_add;
     private TextView TV_contact_short_sort;
@@ -102,7 +102,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         STL_contacts.setSortTextView(TV_contact_short_sort);
         STL_contacts.setOnTouchingLetterChangedListener(this);
 
-        EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
+        EDT_main_contacts_search = (EditText) findViewById(R.id.EDT_main_contacts_search);
         IV_contacts_add = (ImageView) findViewById(R.id.IV_contacts_add);
         IV_contacts_add.setOnClickListener(this);
 
@@ -141,7 +141,7 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
     }
 
     private void initTopbar() {
-        EDT_main_topic_search.getBackground().setColorFilter(themeManager.getThemeMainColor(this),
+        EDT_main_contacts_search.getBackground().setColorFilter(themeManager.getThemeMainColor(this),
                 PorterDuff.Mode.SRC_ATOP);
         IV_contacts_title.setTextColor(themeManager.getThemeMainColor(this));
         IV_contacts_add.setColorFilter(themeManager.getThemeMainColor(this));

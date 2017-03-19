@@ -2,11 +2,13 @@ package com.kiminonawa.mydiary.main;
 
 import android.database.Cursor;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.Contacts;
@@ -36,7 +44,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
-        TopicDeleteDialogFragment.DeleteCallback {
+        TopicDeleteDialogFragment.DeleteCallback, TextWatcher {
 
 
     /*
@@ -45,7 +53,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView RecyclerView_topic;
     private MainTopicAdapter mainTopicAdapter;
     private List<ITopic> topicList;
-    private ItemTouchHelper touchHelper;
+
+    //swipe
+    private RecyclerViewSwipeManager mRecyclerViewSwipeManager;
+    private RecyclerView.Adapter mWrappedAdapter;
+    private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
+
+    //drag
+    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
 
     /*
      * DB
@@ -87,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TV_main_profile_username = (TextView) findViewById(R.id.TV_main_profile_username);
 
         EDT_main_topic_search = (EditText) findViewById(R.id.EDT_main_topic_search);
+        EDT_main_topic_search.addTextChangedListener(this);
+
         IV_main_setting = (ImageView) findViewById(R.id.IV_main_setting);
         IV_main_setting.setOnClickListener(this);
 
@@ -100,24 +117,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTopicAdapter();
         loadProfilePicture();
 
+        //Init topic adapter
+        loadTopic();
+        mainTopicAdapter.notifyDataSetChanged(true);
+
         //Release note dialog
-        if (getIntent().getBooleanExtra("showReleaseNote", true)) {
+        if (getIntent().getBooleanExtra("showReleaseNote", false)) {
             ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
             releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
         }
     }
 
+
     @Override
-    protected void onResume() {
-        super.onResume();
-        //Init topic adapter
-        loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+    protected void onPause() {
+        mRecyclerViewDragDropManager.cancelDrag();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+
+        if (mRecyclerViewDragDropManager != null) {
+            mRecyclerViewDragDropManager.release();
+            mRecyclerViewDragDropManager = null;
+        }
+        if (mRecyclerViewSwipeManager != null) {
+            mRecyclerViewSwipeManager.release();
+            mRecyclerViewSwipeManager = null;
+        }
+
+        if (mRecyclerViewTouchActionGuardManager != null) {
+            mRecyclerViewTouchActionGuardManager.release();
+            mRecyclerViewTouchActionGuardManager = null;
+        }
+
+        if (RecyclerView_topic != null) {
+            RecyclerView_topic.setItemAnimator(null);
+            RecyclerView_topic.setAdapter(null);
+            RecyclerView_topic = null;
+        }
+
+        if (mWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+            mWrappedAdapter = null;
+        }
+        mainTopicAdapter = null;
+        super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
-        if (isExit == false) {
+        if (!isExit) {
             isExit = true;
             Toast.makeText(this, getString(R.string.main_activity_exit_app), Toast.LENGTH_SHORT).show();
             TimerTask task;
@@ -186,25 +237,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void initTopicAdapter() {
+
+        // For swipe
+
+        // swipe manager
+        mRecyclerViewSwipeManager = new RecyclerViewSwipeManager();
+
+        // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
+        mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
+        mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
+        mRecyclerViewTouchActionGuardManager.setEnabled(true);
+
         //Init topic adapter
         LinearLayoutManager lmr = new LinearLayoutManager(this);
         RecyclerView_topic.setLayoutManager(lmr);
         RecyclerView_topic.setHasFixedSize(true);
         mainTopicAdapter = new MainTopicAdapter(this, topicList, dbManager);
-        RecyclerView_topic.setAdapter(mainTopicAdapter);
+        mWrappedAdapter = mRecyclerViewSwipeManager.createWrappedAdapter(mainTopicAdapter);
 
-        //Set ItemTouchHelper
-        ItemTouchHelper.Callback callback =
-                new TopicItemTouchHelperCallback(mainTopicAdapter);
-        touchHelper = new ItemTouchHelper(callback);
-        touchHelper.attachToRecyclerView(RecyclerView_topic);
+
+        final GeneralItemAnimator animator = new DraggableItemAnimator();
+
+        // Change animations are enabled by default since support-v7-recyclerview v22.
+        // Disable the change animation in order to make turning back animation of swiped item works properly.
+        animator.setSupportsChangeAnimations(false);
+
+
+        //For Drag
+
+        // Setup D&D feature and RecyclerView
+        mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+
+        mRecyclerViewDragDropManager.setInitiateOnMove(false);
+        mRecyclerViewDragDropManager.setInitiateOnLongPress(true);
+        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mWrappedAdapter);
+
+
+        RecyclerView_topic.setAdapter(mWrappedAdapter);// requires *wrapped* adapter
+        RecyclerView_topic.setItemAnimator(animator);
+
+        //For Attach the all manager
+
+        // NOTE:
+        // The initialization order is very important! This order determines the priority of touch event handling.
+        //
+        // priority: TouchActionGuard > Swipe > DragAndDrop
+        mRecyclerViewTouchActionGuardManager.attachRecyclerView(RecyclerView_topic);
+        mRecyclerViewSwipeManager.attachRecyclerView(RecyclerView_topic);
+
+        mRecyclerViewDragDropManager.attachRecyclerView(RecyclerView_topic);
+
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
         switch (topicBgStatus) {
             case TopicDetailDialogFragment.TOPIC_BG_ADD_PHOTO:
                 File outputFile = themeManager.getTopicBgSavePathFile(
-                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                        this, mainTopicAdapter.getList().get(position).getId(),
+                        mainTopicAdapter.getList().get(position).getType());
                 //Copy file into topic dir
                 try {
                     if (outputFile.exists()) {
@@ -215,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             + "/" + newTopicBgFileName),
                             outputFile);
                     //Enter the topic
-                    mainTopicAdapter.gotoTopic(topicList.get(position).getType(), position);
+                    mainTopicAdapter.gotoTopic(mainTopicAdapter.getList().get(position).getType(), position);
                 } catch (IOException e) {
                     Toast.makeText(this, getString(R.string.topic_topic_bg_fail), Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -223,13 +313,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case TopicDetailDialogFragment.TOPIC_BG_REVERT_DEFAULT:
                 File topicBgFile = themeManager.getTopicBgSavePathFile(
-                        this, topicList.get(position).getId(), topicList.get(position).getType());
+                        this, mainTopicAdapter.getList().get(position).getId(),
+                        mainTopicAdapter.getList().get(position).getType());
                 //Just delete the file  , the topic's activity will check file for changing the bg
                 if (topicBgFile.exists()) {
                     topicBgFile.delete();
                 }
                 break;
         }
+    }
+
+
+    private boolean supportsViewElevation() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
 
     @Override
@@ -249,15 +345,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void TopicCreated(final String topicTitle, final int type, final int color) {
         dbManager.opeDB();
-
         //Create newTopic into List first
         final long newTopicId = dbManager.insertTopic(topicTitle, type, color);
-        //This ITopic is temp object
+        //This ITopic is temp object to order
         topicList.add(0,
                 new ITopic() {
                     @Override
                     public String getTitle() {
                         return topicTitle;
+                    }
+
+                    @Override
+                    public void setTitle(String title) {
+                        //do nothing
                     }
 
                     @Override
@@ -284,6 +384,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public int getColor() {
                         return color;
                     }
+
+                    @Override
+                    public void setColor(int color) {
+                        //do nothing
+                    }
+
+                    @Override
+                    public void setPinned(boolean pinned) {
+                        //do nothing
+                    }
+
+                    @Override
+                    public boolean isPinned() {
+                        return false;
+                    }
                 });
         //Get size
         int orderNumber = topicList.size();
@@ -295,7 +410,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         dbManager.closeDB();
         loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+        mainTopicAdapter.notifyDataSetChanged(true);
+        //Clear the filter
+        EDT_main_topic_search.setText("");
     }
 
 
@@ -303,12 +420,70 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void TopicUpdated(int position, String newTopicTitle, int color, int topicBgStatus, String newTopicBgFileName) {
         DBManager dbManager = new DBManager(this);
         dbManager.opeDB();
-        dbManager.updateTopic(topicList.get(position).getId(), newTopicTitle, color);
+        dbManager.updateTopic(mainTopicAdapter.getList().get(position).getId(), newTopicTitle, color);
         dbManager.closeDB();
-        loadTopic();
-        mainTopicAdapter.notifyDataSetChanged();
+        //Update filter list
+        mainTopicAdapter.getList().get(position).setTitle(newTopicTitle);
+        mainTopicAdapter.getList().get(position).setColor(color);
+        mainTopicAdapter.notifyDataSetChanged(false);
+
         updateTopicBg(position, topicBgStatus, newTopicBgFileName);
+        //Clear the filter
+        EDT_main_topic_search.setText("");
     }
+
+    @Override
+    public void onTopicDelete(final int position) {
+        DBManager dbManager = new DBManager(MainActivity.this);
+        dbManager.opeDB();
+        switch (mainTopicAdapter.getList().get(position).getType()) {
+            case ITopic.TYPE_CONTACTS:
+                dbManager.delAllContactsInTopic(mainTopicAdapter.getList().get(position).getId());
+                break;
+            case ITopic.TYPE_MEMO:
+                dbManager.delAllMemoInTopic(mainTopicAdapter.getList().get(position).getId());
+                dbManager.deleteAllCurrentMemoOrder(mainTopicAdapter.getList().get(position).getId());
+                break;
+            case ITopic.TYPE_DIARY:
+                //Because FOREIGN key is not work in this version,
+                //so delete diary item first , then delete diary
+                Cursor diaryCursor = dbManager.selectDiaryList(mainTopicAdapter.getList().get(position).getId());
+                for (int i = 0; i < diaryCursor.getCount(); i++) {
+                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
+                    diaryCursor.moveToNext();
+                }
+                diaryCursor.close();
+                dbManager.delAllDiaryInTopic(mainTopicAdapter.getList().get(position).getId());
+                break;
+        }
+        //Delete the dir if it exist.
+        try {
+            FileUtils.deleteDirectory(new FileManager(MainActivity.this,
+                    mainTopicAdapter.getList().get(position).getType(),
+                    mainTopicAdapter.getList().get(position).getId()).getDir());
+        } catch (IOException e) {
+            //Do nothing if delete fail
+            e.printStackTrace();
+        }
+        dbManager.delTopic(mainTopicAdapter.getList().get(position).getId());
+        //Don't delete the topic order, it will be refreshed next moving time.
+        dbManager.closeDB();
+        //Search for remove the topiclist
+        for (int i = 0; i < topicList.size(); i++) {
+            if (topicList.get(i).getId() == mainTopicAdapter.getList().get(position).getId()) {
+                topicList.remove(i);
+                break;
+            }
+        }
+        //remove the filter list
+        mainTopicAdapter.getList().remove(position);
+        //Notify recycle view
+        mainTopicAdapter.notifyItemRemoved(position);
+        mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
+        //Clear the filter
+        EDT_main_topic_search.setText("");
+    }
+
 
     @Override
     public void updateName() {
@@ -316,43 +491,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadProfilePicture();
     }
 
+    /*
+     * For search
+     */
+
     @Override
-    public void onTopicDelete(final int position) {
-        DBManager dbManager = new DBManager(MainActivity.this);
-        dbManager.opeDB();
-        switch (topicList.get(position).getType()) {
-            case ITopic.TYPE_CONTACTS:
-                dbManager.delAllContactsInTopic(topicList.get(position).getId());
-                break;
-            case ITopic.TYPE_MEMO:
-                dbManager.delAllMemoInTopic(topicList.get(position).getId());
-                dbManager.deleteAllCurrentMemoOrder(topicList.get(position).getId());
-                break;
-            case ITopic.TYPE_DIARY:
-                //Because FOREIGN key is not work in this version,
-                //so delete diary item first , then delete diary
-                Cursor diaryCursor = dbManager.selectDiaryList(topicList.get(position).getId());
-                for (int i = 0; i < diaryCursor.getCount(); i++) {
-                    dbManager.delAllDiaryItemByDiaryId(diaryCursor.getLong(0));
-                    diaryCursor.moveToNext();
-                }
-                diaryCursor.close();
-                dbManager.delAllDiaryInTopic(topicList.get(position).getId());
-                break;
-        }
-        //Delete the dir if it exist.
-        try {
-            FileUtils.deleteDirectory(new FileManager(MainActivity.this, topicList.get(position).getType(),
-                    topicList.get(position).getId()).getDir());
-        } catch (IOException e) {
-            //Do nothing if delete fail
-            e.printStackTrace();
-        }
-        dbManager.delTopic(topicList.get(position).getId());
-        //Don't delete the topic order, it will be refreshed next moving time.
-        dbManager.closeDB();
-        topicList.remove(position);
-        mainTopicAdapter.notifyItemRemoved(position);
-        mainTopicAdapter.notifyItemRangeChanged(position, mainTopicAdapter.getItemCount());
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mainTopicAdapter.getFilter().filter(s);
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }

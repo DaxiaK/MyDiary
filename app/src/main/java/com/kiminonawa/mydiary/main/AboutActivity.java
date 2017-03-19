@@ -50,13 +50,19 @@ public class AboutActivity extends AppCompatActivity {
                 new LicenseObj("UltimateRecyclerView", "Marshal Chen", "2014-present", LicenseObj.APACHE)
                         .getLicense());
         license.append(
-                new LicenseObj("AndroidSwipeLayout", "代码家", "2014", LicenseObj.MIT)
-                        .getLicense());
-        license.append(
                 new LicenseObj("Fresco", "Facebook, Inc.", "2015-present", LicenseObj.BSD)
                         .getLicense());
         license.append(
                 new LicenseObj("NoNonsense-FilePicker", "spacecowboy", "", LicenseObj.MPLv2)
+                        .getLicense());
+        license.append(
+                new LicenseObj("device-year-class", "Facebook, Inc.", "2015", LicenseObj.BSD)
+                        .getLicense());
+        license.append(
+                new LicenseObj("android-advancedrecyclerview", "Haruki Hasegawa", "2015", LicenseObj.APACHE)
+                        .getLicense());
+        license.append(
+                new LicenseObj("Material Calendar View", "prolificinteractive", "2016", LicenseObj.MIT)
                         .getLicense());
 
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
@@ -168,7 +174,7 @@ public class AboutActivity extends AppCompatActivity {
                             "SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n" +
                             "\n\n=====\n";
                 case MPLv2:
-                    return "==" + softwareName + " , " + author + "==\n\n" +
+                    return "\n==" + softwareName + " , " + author + "==\n\n" +
                             " This Source Code Form is subject to the terms of the Mozilla Public\n" +
                             "  License, v. 2.0. If a copy of the MPL was not distributed with this\n" +
                             "  file, You can obtain one at http://mozilla.org/MPL/2.0/.\n" +
@@ -178,8 +184,8 @@ public class AboutActivity extends AppCompatActivity {
                             "file in a relevant directory) where a recipient would be likely to look\n" +
                             "for such a notice.\n" +
                             "\n" +
-                            "You may add additional accurate notices of copyright ownership.";
-
+                            "You may add additional accurate notices of copyright ownership."+
+                            "\n\n=====\n";
                 default:
                     return "";
             }

@@ -64,6 +64,7 @@ import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -161,7 +162,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private boolean firstAllowLocationPermission = false;
     private boolean firstAllowCameraPermission = false;
 
-    //TODO Make this dialog's background has radius.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,6 +192,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         };
         // request a window without the title
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        //Set background is transparent , for dialog radius
+        dialog.getWindow().getDecorView().getBackground().setAlpha(0);
+
         isEditMode = getArguments().getBoolean("isEditMode", false);
         return dialog;
     }
@@ -208,8 +211,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
         RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
-        RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
-        RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+        RL_diary_info.setBackground(ThemeManager.getInstance().createDiaryViewerInfoBg(getActivity()));
+        RL_diary_edit_bar.setBackground(ThemeManager.getInstance().createDiaryViewerEditBarBg(getActivity()));
 
         PB_diary_item_content_hint = (ProgressBar) rootView.findViewById(R.id.PB_diary_item_content_hint);
 
@@ -328,10 +331,17 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         //Modify dialog size
         Dialog dialog = getDialog();
         if (dialog != null) {
-            int dialogHeight = ScreenHelper.getScreenHeight(getActivity()) -
-                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
-            int dialogWidth = ScreenHelper.getScreenWidth(getActivity()) -
-                    ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 5);
+            int dialogHeight;
+            if (ChinaPhoneHelper.getDeviceStatusBarType() == ChinaPhoneHelper.OTHER) {
+                dialogHeight = ScreenHelper.getScreenHeight(getActivity())
+                        - ScreenHelper.getStatusBarHeight(getActivity())
+                        - ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
+            } else {
+                dialogHeight = ScreenHelper.getScreenHeight(getActivity())
+                        - ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 10);
+            }
+            int dialogWidth = ScreenHelper.getScreenWidth(getActivity())
+                    - ScreenHelper.dpToPixel(getActivity().getResources(), 2 * 5);
             dialog.getWindow().setLayout(dialogWidth, dialogHeight);
         }
     }

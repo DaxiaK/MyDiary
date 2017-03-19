@@ -17,7 +17,7 @@
     <color name="theme_dark_color_custom_default">#388E3C</color>
 
     <!--Button-->
-    <color name="button_board_color">#b2b2b2</color>
+    <color name="button_board_color">#cccccc</color>
     <color name="button_text_color">#b2b2b2</color>
     <color name="button_text_color_p">#ffffff</color>
     <color name="button_disable_color">#9D9FA2</color>
