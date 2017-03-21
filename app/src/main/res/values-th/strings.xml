@@ -39,7 +39,7 @@
     <string name="init_message">กำลังอัพเดทข้อมูล กรุณาอย่าปิด MyDiary</string>
 
     <!--Profile-->
-    <string name="profile_username_taki">ทาคิ</string>
+    <string name="profile_username_taki">ทากิ</string>
     <string name="profile_username_mitsuha">มิสึฮะ</string>
     <string name="toast_change_theme">กำลังเปลี่ยนธีม&#8230;</string>
     <string name="your_name_is">ชื่อของคุณคือ</string>
@@ -74,7 +74,7 @@
     <!--Entries -->
     <string name="entries_single_count">%1$d รายการ</string>
     <string name="entries_multi_count">%1$d รายการ</string>
-    <string name="entries_edit_view">แตะที่ไดอารี่เพื่อแก้ไข</string>
+    <string name="entries_edit_view">แตะไดอารี่ที่ต้องการแก้ไข</string>
     <string name="entries_edit_dialog_delete_content">คุณต้องการจะลบไดอารี่นี้จริงๆ หรือไม่?</string>
     <string name="entries_summary_photo">**รูปภาพ**</string>
 
@@ -141,7 +141,7 @@
     <string name="toast_save_profile_picture_fail">การบันทึกภาพโปรไฟล์ล้มเหลว&#8230;</string>
     <string name="toast_crop_profile_picture_fail">การตัดภาพโปรไฟล์ล้มเหลว&#8230;</string>
 
-    <string name="setting_system_title">ระบบ</string>
+    <string name="setting_system_title">แก้ไขรูปภาพ</string>
     <string name="setting_system_fix_dir_hint">ถ้ารูปภาพของคุณหายไปหลังการอัพเดท แตะปุ่มนี้เพื่อแก้ไขรูปภาพ</string>
     <string name="setting_system_fix_dir_button">แก้ไขรูปภาพ</string>
 
@@ -169,28 +169,28 @@
 
 
     <!--Back event-->
-    <string name="main_activity_exit_app">Click back button again to close</string>
+    <string name="main_activity_exit_app">แตะปุ่มย้อนกลับอีกครั้งเพื่อปิดแอปฯ</string>
 
     <!--Backup overwrite string-->
-    <string name="nnf_select_something_first">Please select something first</string>
-    <string name="nnf_permission_external_write_denied">Need permission to access file system</string>
+    <string name="nnf_select_something_first">กรุณาเลือกไฟล์/โฟลเดอร์ ที่ต้องการก่อน</string>
+    <string name="nnf_permission_external_write_denied">ต้องได้รับการอนุญาตจากตัวเครื่องก่อน</string>
 
     <!--Backup-->
-    <string name="backup_title">Backup</string>
-    <string name="backup_export_title">Export</string>
-    <string name="backup_export_hint">Export all data(Not including profile)</string>
-    <string name="backup_export_path_hint">Click to select exporting folder</string>
-    <string name="backup_export_button">export</string>
+    <string name="backup_title">การสำรองข้อมูล</string>
+    <string name="backup_export_title">ส่งออกข้อมูล</string>
+    <string name="backup_export_hint">ส่งออกข้อมูลทั้งหมด (ไม่รวมถึงโปรไฟล์)</string>
+    <string name="backup_export_path_hint">แตะเพื่อเลือกโฟลเดอร์</string>
+    <string name="backup_export_button">ส่งออก</string>
 
-    <string name="toast_export_successful">%1$s\nexport successful</string>
-    <string name="toast_export_fail">export fail&#8230;please checking permission or storage</string>
+    <string name="toast_export_successful">%1$s\nการส่งออกสำเร็จ</string>
+    <string name="toast_export_fail">การส่งออกล้มเหลว&#8230;กรุณาตรวจสอบการได้รับอณุญาตหรือพื้นที่เครื่องของคุณ</string>
 
-    <string name="backup_import_title">Import</string>
-    <string name="backup_import_hint">Import existing file((Not including profile)</string>
-    <string name="backup_import_path_hint">Click to select importing file</string>
-    <string name="backup_import_button">import</string>
+    <string name="backup_import_title">นำเข้าข้อมูล</string>
+    <string name="backup_import_hint">นำเข้าข้อมูลที่มีอยู่ (ไม่รวมถึงโปรไฟล์)</string>
+    <string name="backup_import_path_hint">แตะที่ปุ่มนี้เพื่อนำเข้าข้อมูล</string>
+    <string name="backup_import_button">นำเข้า</string>
 
-    <string name="toast_import_successful">import successful</string>
-    <string name="toast_import_fail">import fail&#8230;please checking file</string>
+    <string name="toast_import_successful">การนำเข้าสำเร็จ</string>
+    <string name="toast_import_fail">การนำเข้าล้มเหลว&#8230;กรุณาตรวจสอบไฟล์ที่ใช้</string>
 
 </resources>
