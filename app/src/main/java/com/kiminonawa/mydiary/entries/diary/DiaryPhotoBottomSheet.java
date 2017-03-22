@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,7 +125,9 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 tempFileName = "/" + fileManager.createRandomFileName();
                 File tmpFile = new File(fileManager.getDir(), tempFileName);
-                Uri outputFileUri = Uri.fromFile(tmpFile);
+                //Fix the Android N+ file can't be send
+                Uri outputFileUri = FileProvider.getUriForFile(getActivity(),
+                        getActivity().getApplicationContext().getPackageName() + ".provider", tmpFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
                 break;
