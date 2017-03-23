@@ -3,7 +3,10 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新日志</string>
-    <string name="release_note">**0.2.8.170319_1_A\n
+    <string name="release_note">**0.2.8.170323_1_AH\n
+        -修复Android N档案存取问题\n
+        -更新泰文补丁\n\n
+        **0.2.8.170319_1_A\n
         -修复低记忆体时造成的异常\n
         -修复bug\n
         -调整版面\n

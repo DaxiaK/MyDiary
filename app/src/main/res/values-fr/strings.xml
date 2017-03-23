@@ -3,7 +3,10 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.2.8.170319_1_A\n
+    <string name="release_note">**0.2.8.170323_1_AH\n
+        -Fix file issue on Android N\n
+        -Merge Thai patch\n\n
+        **0.2.8.170319_1_A\n
         -Fix error when memory is low\n
         -Fix bug\n
         -Modify layout\n
