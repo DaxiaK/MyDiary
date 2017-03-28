@@ -195,5 +195,5 @@
     <string name="toast_import_successful">import successful</string>
     <string name="toast_import_fail">import fail&#8230;please checking file</string>
     <!--OOBE-->
-    <string name="oobe_firsttime_add_title">Do you want to import data form movie(JP)?</string>
+
 </resources>

@@ -196,6 +196,17 @@
     <string name="toast_import_fail">导入失败&#8230;请检查导入的档案</string>
 
     <!--OOBE-->
-    <string name="oobe_firsttime_add_title">是否要导入电影资料(日语)?</string>
+    <string name="oobe_next_button">下一步</string>
+
+    <string name="oobe_main_your_name_title">你的名字</string>
+    <string name="oobe_main_your_name_content">这里可以设定你的个人资料</string>
+    <string name="oobe_main_topic_list_title">主题列表</string>
+    <string name="oobe_main_topic_list_content">属于你个人的日记、备忘录或联络人!\n滑动可以编辑或删除\n(预设的日文资料来自于电影，你可以手动移除)</string>
+    <string name="oobe_main_search_title">搜索</string>
+    <string name="oobe_main_search_content">可以在这里查询搜索的主题</string>
+    <string name="oobe_main_adv_setting_title">进阶设定</string>
+    <string name="oobe_main_adv_setting_content">这里可以打开进阶设定\n包含新增日记、应用程式设定、密码锁、备份和关于</string>
+    <string name="oobe_main_mydiary_title">MyDiary</string>
+    <string name="oobe_main_mydiary_content">无论你是否看过电影\n希望这个应都能给你一些感动\n快点开始写下专属于你的名字的故事吧!</string>
 
 </resources>

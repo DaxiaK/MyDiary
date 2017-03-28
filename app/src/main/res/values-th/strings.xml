@@ -196,5 +196,5 @@
     <string name="toast_import_successful">การนำเข้าสำเร็จ</string>
     <string name="toast_import_fail">การนำเข้าล้มเหลว&#8230;กรุณาตรวจสอบไฟล์ที่ใช้</string>
     <!--OOBE-->
-    <string name="oobe_firsttime_add_title">Do you want to import data form movie(JP)?</string>
+
 </resources>

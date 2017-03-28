@@ -305,36 +305,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initOOBE() {
 
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+
+        final RelativeLayout.LayoutParams centerParams =
+                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        centerParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        centerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        centerParams.setMargins(0, 0, 0, margin);
+
+        final RelativeLayout.LayoutParams leftParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        leftParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        leftParams.setMargins(margin, margin, margin, margin);
+
         View.OnClickListener showcaseViewOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (oobeCount) {
                     case 0:
+                        sv.setButtonPosition(centerParams);
                         sv.setShowcase(new CustomViewTarget(RecyclerView_topic, 4, 4), true);
-                        sv.setContentTitle("主題列表");
-                        sv.setContentText("屬於你個人的日記、備忘錄或聯絡人！\n滑動可以編輯或刪除\n預設的日文資料來自於電影，你可以手動移除");
+                        sv.setContentTitle(getString(R.string.oobe_main_topic_list_title));
+                        sv.setContentText(getString(R.string.oobe_main_topic_list_content));
                         break;
                     case 1:
+                        sv.setButtonPosition(leftParams);
                         sv.setShowcase(new ViewTarget(EDT_main_topic_search), true);
-                        sv.setContentTitle("搜尋");
-                        sv.setContentText("可以在這裡搜尋特定的主題");
+                        sv.setContentTitle(getString(R.string.oobe_main_search_title));
+                        sv.setContentText(getString(R.string.oobe_main_search_content));
                         break;
                     case 2:
+                        sv.setButtonPosition(centerParams);
                         sv.setShowcase(new ViewTarget(IV_main_setting), true);
-                        sv.setContentTitle("進階選單");
-                        sv.setContentText("這裡可以打開進階選單\n包含新增日記、應用程式設定、密碼鎖、備份和關於");
+                        sv.setContentTitle(getString(R.string.oobe_main_adv_setting_title));
+                        sv.setContentText(getString(R.string.oobe_main_adv_setting_content));
                         break;
                     case 3:
+                        sv.setButtonPosition(centerParams);
                         sv.setTarget(Target.NONE);
-                        sv.setContentTitle("MyDiary");
-                        sv.setContentText("無論你是否看過電影\n希望這個應用程式都帶給你一些感動\n快點開始寫下專屬於你的名字的故事吧！");
-                        sv.setButtonText("確定");
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                        params.setMargins(0, 0, 0, margin);
-                        sv.setButtonPosition(params);
+                        sv.setContentTitle(getString(R.string.oobe_main_mydiary_title));
+                        sv.setContentText(getString(R.string.oobe_main_mydiary_content));
+                        sv.setButtonText(getString(R.string.dialog_button_ok));
                         break;
                     case 4:
                         sv.hide();
@@ -344,25 +355,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
 
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin, margin);
 
         Target viewTarget = new ViewTarget(IV_main_profile_picture);
         sv = new ShowcaseView.Builder(this)
                 .withMaterialShowcase()
                 .setTarget(viewTarget)
-                .setContentTitle("你的名字")
-                .setContentText("這裡可以設定你的個人資料")
+                .setContentTitle(getString(R.string.oobe_main_your_name_title))
+                .setContentText(getString(R.string.oobe_main_your_name_content))
                 .setStyle(R.style.OOBEShowcaseTheme)
                 .singleShot(OOBE.MAIN_PAGE)
                 .replaceEndButton(new MyDiaryButton(this))
                 .setOnClickListener(showcaseViewOnClickListener)
                 .build();
-        sv.setButtonText("下一步");
-        sv.setButtonPosition(lps);
+        sv.setButtonText(getString(R.string.oobe_next_button));
+        sv.setButtonPosition(leftParams);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
