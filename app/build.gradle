@@ -50,13 +50,17 @@ dependencies {
     compile 'com.facebook.device.yearclass:yearclass:2.0.0'
 
     compile 'com.google.code.gson:gson:2.8.0'
-
+    //For backup to picker file
     compile 'com.nononsenseapps:filepicker:4.0.0'
+    //For diary to show themonth mode
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
-
+    //For OOBE
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
 
     compile files('libs/pinyin4j-2.5.0.jar')
 
     //Google Lib
     compile 'com.google.android.gms:play-services-places:10.2.0'
+
+
 }

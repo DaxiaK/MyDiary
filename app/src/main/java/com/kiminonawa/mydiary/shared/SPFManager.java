@@ -39,11 +39,22 @@ public class SPFManager {
      * System
      */
     private static final String SPF_SYSTEM = "SYSTEM";
+    //@deprecated
     private static final String FIRST_RUN = "FIRST_RUN";
     private static final String SYSTEM_VERSIONCODE = "VERSIONCODE";
     public static final int DEFAULT_VERSIONCODE = -1;
     private static final String DESCRIPTION_CLOSE = "DESCRIPTION_CLOSE";
     private static final String ENCRYPTED_PASSWORD = "ENCRYPTED_PASSWORD";
+
+    /**
+     * OOBE:
+     * Add in  Version 33
+     * This tag is to check OOBE is run or not.
+     */
+    private static final String OOBE = "OOBE";
+    //Relpace FIRST_RUN
+    private static final String OOBE_FIRST_TIME = "OOBE_FIRST_TIME";
+    private static final String OOBE_MAIN = "OOBE_MAIN_PAGE";
 
 
     /**
@@ -142,6 +153,14 @@ public class SPFManager {
     /**
      * System method
      */
+
+    /**
+     * @deprecated it after version 33
+     * now use the OOBE tag
+     *
+     * @param context
+     * @param firstRun
+     */
     public static void setFirstRun(Context context, boolean firstRun) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         SharedPreferences.Editor PE = settings.edit();
@@ -149,7 +168,13 @@ public class SPFManager {
         PE.commit();
     }
 
-
+    /**
+     * @deprecated it after version 33
+     * now use the OOBE tag
+     *
+     * @param context
+     * @return
+     */
     public static boolean getFirstRun(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         return settings.getBoolean(FIRST_RUN, true);
@@ -194,6 +219,37 @@ public class SPFManager {
         SharedPreferences.Editor PE = settings.edit();
         PE.putString(ENCRYPTED_PASSWORD, password);
         PE.commit();
+    }
+
+    /**
+     * OOBE
+     */
+
+    /**
+     * Replace the @FIRST_RUN
+     * When the user use this app first time ,
+     * I will show the dialog to ask user "do you want to import the data form movie?".
+     *
+     * @param context
+     * @param firstTime
+     */
+    public static void setOOBEFirstTime(Context context, boolean firstTime) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putBoolean(OOBE_FIRST_TIME, firstTime);
+        PE.commit();
+    }
+
+    /**
+     * Replace the @FIRST_RUN
+     * Check does user use it first time.
+     *
+     * @param context
+     * @return
+     */
+    public static boolean getOOBEFirstTime(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        return settings.getBoolean(OOBE_FIRST_TIME, true);
     }
 
 }

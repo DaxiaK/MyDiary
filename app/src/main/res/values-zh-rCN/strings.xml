@@ -195,4 +195,7 @@
     <string name="toast_import_successful">导入成功</string>
     <string name="toast_import_fail">导入失败&#8230;请检查导入的档案</string>
 
+    <!--OOBE-->
+    <string name="oobe_firsttime_add_title">是否要导入电影资料(日语)?</string>
+
 </resources>
