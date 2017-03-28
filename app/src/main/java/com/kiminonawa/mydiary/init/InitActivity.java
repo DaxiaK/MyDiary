@@ -34,12 +34,6 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
     @Override
     protected void onResume() {
         super.onResume();
-        //I add the OOBE tag after Version 33 but many user already use the app.
-        // So I check the OOBE tag & saved version code to control the right OOBE tag
-        if (SPFManager.getOOBEFirstTime(this) &&
-                SPFManager.getVersionCode(this) != SPFManager.DEFAULT_VERSIONCODE) {
-            SPFManager.setOOBEFirstTime(this, false);
-        }
         //This apk is first install or was updated
         if (SPFManager.getVersionCode(InitActivity.this) < BuildConfig.VERSION_CODE) {
             TV_init_message.setVisibility(View.VISIBLE);

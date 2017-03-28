@@ -65,4 +65,8 @@
     <!--Backup-->
     <color name="backup_hint_text_color">#828282</color>
 
+    <!--Backup-->
+    <color name="OOBE_bg_color">#e570A3B4</color>
+
+
 </resources>

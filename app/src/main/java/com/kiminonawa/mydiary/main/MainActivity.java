@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +8,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
@@ -25,16 +28,17 @@ import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchAct
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
-import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
+import com.kiminonawa.mydiary.oobe.CustomViewTarget;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
+import com.kiminonawa.mydiary.shared.statusbar.OOBE;
 
 import org.apache.commons.io.FileUtils;
 
@@ -47,8 +51,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
-        TopicDeleteDialogFragment.DeleteCallback, TextWatcher,
-        OOBEFirstTimeDialogFragment.FirstTimeDialogCallback {
+        TopicDeleteDialogFragment.DeleteCallback, TextWatcher {
 
     private static final String TAG = "MainActivity";
 
@@ -77,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static Boolean isExit = false;
     private Timer backTimer = new Timer();
+    /*
+     * OOBE
+     */
+    private int oobeCount = 0;
+    private ShowcaseView sv;
 
     /*
      * UI
@@ -128,14 +136,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.closeDB();
         mainTopicAdapter.notifyDataSetChanged(true);
 
-        if (SPFManager.getVersionCode(this) == SPFManager.DEFAULT_VERSIONCODE) {
-            showOOBEFirstTimeDialog();
-        } else {
-            //Check show Release note dialog.
-            if (getIntent().getBooleanExtra("showReleaseNote", false)) {
-                ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
-                releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
-            }
+        initOOBE();
+        //Check show Release note dialog.
+        if (getIntent().getBooleanExtra("showReleaseNote", false)) {
+            ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
+            releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
         }
     }
 
@@ -196,74 +201,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void showOOBEFirstTimeDialog() {
-        OOBEFirstTimeDialogFragment firstTimeDialogFragment = new OOBEFirstTimeDialogFragment();
-        firstTimeDialogFragment.show(getSupportFragmentManager(), "firstTimeDialogFragment");
-
-    }
-
-
-    private void WriteMovieSampleData() throws Exception {
-        //Insert sample topic
-        long mitsuhaMemoId = dbManager.insertTopic("ゼッタイ禁止", ITopic.TYPE_MEMO, Color.BLACK);
-        long takiMemoId = dbManager.insertTopic("禁止事項 Ver.5", ITopic.TYPE_MEMO, Color.BLACK);
-        dbManager.insertTopicOrder(mitsuhaMemoId, 0);
-        dbManager.insertTopicOrder(takiMemoId, 1);
-        //Insert sample memo
-        if (mitsuhaMemoId != -1) {
-            dbManager.insertMemoOrder(mitsuhaMemoId,
-                    dbManager.insertMemo("女子にも触るな！", false, mitsuhaMemoId)
-                    , 0);
-            dbManager.insertMemoOrder(mitsuhaMemoId,
-                    dbManager.insertMemo("男子に触るな！", false, mitsuhaMemoId)
-                    , 1);
-            dbManager.insertMemoOrder(mitsuhaMemoId,
-                    dbManager.insertMemo("脚をひらくな！", true, mitsuhaMemoId)
-                    , 2);
-            dbManager.insertMemoOrder(mitsuhaMemoId,
-                    dbManager.insertMemo("体は見ない！/触らない！！", false, mitsuhaMemoId)
-                    , 3);
-            dbManager.insertMemoOrder(mitsuhaMemoId,
-                    dbManager.insertMemo("お風呂ぜっっったい禁止！！！！！！！", true, mitsuhaMemoId)
-                    , 4);
-        }
-        if (takiMemoId != -1) {
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("司とベタベタするな.....", true, takiMemoId)
-                    , 0);
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("奧寺先輩と馴れ馴れしくするな.....", true, takiMemoId)
-                    , 1);
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("女言葉NG！", false, takiMemoId)
-                    , 2);
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("遅刻するな！", true, takiMemoId)
-                    , 3);
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("訛り禁止！", false, takiMemoId)
-                    , 4);
-            dbManager.insertMemoOrder(takiMemoId,
-                    dbManager.insertMemo("無駄つかい禁止！", true, takiMemoId)
-                    , 5);
-        }
-        //Insert sample topic
-        long topicOnDiarySampleId = dbManager.insertTopic("DIARY", ITopic.TYPE_DIARY, Color.BLACK);
-        dbManager.insertTopicOrder(topicOnDiarySampleId, 2);
-        if (topicOnDiarySampleId != -1) {
-            //Insert sample diary
-            long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
-                    DiaryInfoHelper.MOOD_HAPPY, DiaryInfoHelper.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
-            dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "There are many coffee shop in Tokyo!", diarySampleId);
-        }
-        //Insert sample contacts
-        long sampleContactsId = dbManager.insertTopic("緊急時以外かけちゃダメ！", ITopic.TYPE_CONTACTS, Color.BLACK);
-        dbManager.insertTopicOrder(sampleContactsId, 3);
-        //Insert sample contacts
-        if (sampleContactsId != -1) {
-            dbManager.insertContacts(this.getString(R.string.profile_username_mitsuha), "090000000", "", sampleContactsId);
-        }
-    }
 
     private void initProfile() {
         String YourNameIs = SPFManager.getYourName(MainActivity.this);
@@ -364,7 +301,68 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSwipeManager.attachRecyclerView(RecyclerView_topic);
 
         mRecyclerViewDragDropManager.attachRecyclerView(RecyclerView_topic);
+    }
 
+    private void initOOBE() {
+
+        View.OnClickListener showcaseViewOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (oobeCount) {
+                    case 0:
+                        sv.setShowcase(new CustomViewTarget(RecyclerView_topic, 4, 4), true);
+                        sv.setContentTitle("主題列表");
+                        sv.setContentText("屬於你個人的日記、備忘錄或聯絡人！\n滑動可以編輯或刪除\n預設的日文資料來自於電影，你可以手動移除");
+                        break;
+                    case 1:
+                        sv.setShowcase(new ViewTarget(EDT_main_topic_search), true);
+                        sv.setContentTitle("搜尋");
+                        sv.setContentText("可以在這裡搜尋特定的主題");
+                        break;
+                    case 2:
+                        sv.setShowcase(new ViewTarget(IV_main_setting), true);
+                        sv.setContentTitle("進階選單");
+                        sv.setContentText("這裡可以打開進階選單\n包含新增日記、應用程式設定、密碼鎖、備份和關於");
+                        break;
+                    case 3:
+                        sv.setTarget(Target.NONE);
+                        sv.setContentTitle("MyDiary");
+                        sv.setContentText("無論你是否看過電影\n希望這個應用程式都帶給你一些感動\n快點開始寫下專屬於你的名字的故事吧！");
+                        sv.setButtonText("確定");
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                        params.setMargins(0, 0, 0, margin);
+                        sv.setButtonPosition(params);
+                        break;
+                    case 4:
+                        sv.hide();
+                        break;
+                }
+                oobeCount++;
+            }
+        };
+
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+        lps.setMargins(margin, margin, margin, margin);
+
+        Target viewTarget = new ViewTarget(IV_main_profile_picture);
+        sv = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setTarget(viewTarget)
+                .setContentTitle("你的名字")
+                .setContentText("這裡可以設定你的個人資料")
+                .setStyle(R.style.OOBEShowcaseTheme)
+                .singleShot(OOBE.MAIN_PAGE)
+                .replaceEndButton(new MyDiaryButton(this))
+                .setOnClickListener(showcaseViewOnClickListener)
+                .build();
+        sv.setButtonText("下一步");
+        sv.setButtonPosition(lps);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
@@ -584,21 +582,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    /**
-     * Form OOBE first time dialog
-     * If user click ok , it will load some movie data.
-     */
-    @Override
-    public void onAdd() {
-        try {
-            dbManager.opeDB();
-            WriteMovieSampleData();
-            loadTopic();
-            mainTopicAdapter.notifyDataSetChanged(true);
-        } catch (Exception e) {
-            Log.e(TAG, "add sample fail", e);
-        } finally {
-            dbManager.closeDB();
-        }
-    }
 }
