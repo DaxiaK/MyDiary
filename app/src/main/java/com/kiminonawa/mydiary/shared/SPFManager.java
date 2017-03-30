@@ -51,10 +51,9 @@ public class SPFManager {
      * Add in  Version 33
      * This tag is to check OOBE is run or not.
      */
-    private static final String OOBE = "OOBE";
+    private static final String SPF_OOBE = "OOBE";
     //Relpace FIRST_RUN
     private static final String OOBE_FIRST_TIME = "OOBE_FIRST_TIME";
-    private static final String OOBE_MAIN = "OOBE_MAIN_PAGE";
 
 
     /**
@@ -234,7 +233,7 @@ public class SPFManager {
      * @param firstTime
      */
     public static void setOOBEFirstTime(Context context, boolean firstTime) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_OOBE, 0);
         SharedPreferences.Editor PE = settings.edit();
         PE.putBoolean(OOBE_FIRST_TIME, firstTime);
         PE.commit();
@@ -248,7 +247,7 @@ public class SPFManager {
      * @return
      */
     public static boolean getOOBEFirstTime(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
+        SharedPreferences settings = context.getSharedPreferences(SPF_OOBE, 0);
         return settings.getBoolean(OOBE_FIRST_TIME, true);
     }
 

@@ -82,11 +82,11 @@ public class FileManager {
      * 2.diary edit temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/typeId/diaryId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/TOPIC_ID/DIARY_ID/
      * 4.memo path
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/memo/typeId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/memo/TOPIC_ID/
      * 5.contacts path
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/typeId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/TOPIC_ID/
      * 6.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      * 7.Backup temp path
