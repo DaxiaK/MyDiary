@@ -28,7 +28,6 @@ import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_WRITE_ES_PERMISSION;
@@ -181,7 +180,8 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         //Save profile picture
         if (isAddNewProfilePicture) {
             //Remove the old file
-            File oldProfilePictureFile = new File(new FileManager(getActivity(), FileManager.SETTING_DIR).getDir().getAbsoluteFile()
+            FileManager bgFM = new FileManager(getActivity(), FileManager.SETTING_DIR);
+            File oldProfilePictureFile = new File(bgFM.getDirAbsolutePath()
                     + "/" + ThemeManager.CUSTOM_PROFILE_PICTURE_FILENAME);
             if (oldProfilePictureFile.exists()) {
                 oldProfilePictureFile.delete();
@@ -189,9 +189,10 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
             if (!"".equals(profilePictureFileName)) {
                 try {
                     //Copy the profile into setting dir
-                    FileManager.copy(new File(tempFileManager.getDir().getAbsoluteFile() + "/" + profilePictureFileName),
+                    FileManager.copy(
+                            new File(tempFileManager.getDirAbsolutePath() + "/" + profilePictureFileName),
                             oldProfilePictureFile);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), getString(R.string.toast_save_profile_picture_fail), Toast.LENGTH_SHORT).show();
                 }

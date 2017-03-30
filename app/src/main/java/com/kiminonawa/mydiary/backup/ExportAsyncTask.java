@@ -70,7 +70,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         this.backupManager.initBackupManagerExportInfo();
 
         this.dbManager = new DBManager(context);
-        this.backupJsonFilePath = new FileManager(context, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
+        FileManager backupFM = new FileManager(context, FileManager.BACKUP_DIR);
+        this.backupJsonFilePath = backupFM.getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZipFilePath = backupZieFilePath;
         this.backupZipFileName = BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME;

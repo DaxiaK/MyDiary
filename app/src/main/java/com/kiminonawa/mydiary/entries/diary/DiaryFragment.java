@@ -298,7 +298,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + tempFileManager.getDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = FileManager.FILE_HEADER + tempFileManager.getDirAbsolutePath() + "/" + fileName;
 //            Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
 //            if (resizeBmp != null) {
             Log.e("test", "test" + Uri.parse(tempFileSrc).toString());

@@ -102,7 +102,8 @@ public class ThemeManager {
                 bgDrawable = ViewTools.getDrawable(context, R.drawable.profile_theme_bg_mitsuha);
                 break;
             default:
-                File profileBgFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDir().getPath()
+                FileManager settingFM = new FileManager(context, FileManager.SETTING_DIR);
+                File profileBgFile = new File(settingFM.getDirAbsolutePath()
                         + "/" + CUSTOM_PROFILE_BANNER_BG_FILENAME);
                 if (profileBgFile.exists()) {
                     bgDrawable = Drawable.createFromPath(profileBgFile.getAbsolutePath());
@@ -117,7 +118,8 @@ public class ThemeManager {
     public Drawable getProfilePictureDrawable(Context context) {
         Drawable pictureDrawable;
         try {
-            File pictureFile = new File(new FileManager(context, FileManager.SETTING_DIR).getDir().getAbsolutePath()
+            FileManager settingFM= new FileManager(context, FileManager.SETTING_DIR);
+            File pictureFile = new File(settingFM.getDirAbsolutePath()
                     + "/" + CUSTOM_PROFILE_PICTURE_FILENAME);
             if (pictureFile.exists()) {
                 pictureDrawable = Drawable.createFromPath(pictureFile.getAbsolutePath());
@@ -171,8 +173,9 @@ public class ThemeManager {
 
     public Drawable getEntriesBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
+        FileManager diaryFM = new FileManager(context, FileManager.DIARY_ROOT_DIR);
         File entriesBg = new File(
-                new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath()
+                diaryFM.getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
         if (entriesBg.exists()) {
@@ -195,8 +198,9 @@ public class ThemeManager {
 
     public Drawable getMemoBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
+        FileManager memoFM = new FileManager(context, FileManager.MEMO_ROOT_DIR);
         File memoBg = new File(
-                new FileManager(context, FileManager.MEMO_ROOT_DIR).getDirAbsolutePath()
+                memoFM.getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
         if (memoBg.exists()) {
@@ -219,12 +223,13 @@ public class ThemeManager {
 
     public Drawable getContactsBgDrawable(Context context, long topicId) {
         Drawable bgDrawable;
-        File memoBg = new File(
-                new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDirAbsolutePath()
+        FileManager contactsFM = new FileManager(context, FileManager.CONTACTS_ROOT_DIR);
+        File contactsBg = new File(
+                contactsFM.getDirAbsolutePath()
                         + "/" + topicId
                         + "/" + CUSTOM_TOPIC_BG_FILENAME);
-        if (memoBg.exists()) {
-            bgDrawable = Drawable.createFromPath(memoBg.getAbsolutePath());
+        if (contactsBg.exists()) {
+            bgDrawable = Drawable.createFromPath(contactsBg.getAbsolutePath());
         } else {
             switch (currentTheme) {
                 case TAKI:
@@ -421,21 +426,24 @@ public class ThemeManager {
         File outputFile;
         switch (topicType) {
             case ITopic.TYPE_MEMO:
+                FileManager memoFM = new FileManager(context, FileManager.MEMO_ROOT_DIR);
                 outputFile = new File(
-                        new FileManager(context, FileManager.MEMO_ROOT_DIR).getDirAbsolutePath()
+                        memoFM.getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;
             case ITopic.TYPE_CONTACTS:
+                FileManager contactsFM = new FileManager(context, FileManager.CONTACTS_ROOT_DIR);
                 outputFile = new File(
-                        new FileManager(context, FileManager.CONTACTS_ROOT_DIR).getDirAbsolutePath()
+                        contactsFM.getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;
             //TYPE_DIARY
             default:
+                FileManager diaryFM = new FileManager(context, FileManager.DIARY_ROOT_DIR);
                 outputFile = new File(
-                        new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath()
+                        diaryFM.getDirAbsolutePath()
                                 + "/" + topicId
                                 + "/" + ThemeManager.CUSTOM_TOPIC_BG_FILENAME);
                 break;

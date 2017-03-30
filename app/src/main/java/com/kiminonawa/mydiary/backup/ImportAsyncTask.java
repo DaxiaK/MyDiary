@@ -60,8 +60,8 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     public ImportAsyncTask(Context context, ImportCallBack callBack, String backupZieFilePath) {
         this.mContext = context;
         this.dbManager = new DBManager(context);
-
-        this.backupJsonFilePath = new FileManager(context, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/"
+        FileManager backFM = new FileManager(context, FileManager.BACKUP_DIR);
+        this.backupJsonFilePath = backFM.getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZieFilePath = backupZieFilePath;
 
@@ -83,8 +83,10 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         boolean importSuccessful = true;
         try {
             ZipManager zipManager = new ZipManager(mContext);
+
+            FileManager zipBackupFM = new FileManager(mContext, FileManager.BACKUP_DIR);
             zipManager.unzip(backupZieFilePath,
-                    new FileManager(mContext, FileManager.BACKUP_DIR).getDirAbsolutePath() + "/");
+                    zipBackupFM.getDirAbsolutePath() + "/");
             loadBackupJsonFileIntoManager();
             importSuccessful = importTopic();
         } catch (Exception e) {
@@ -205,7 +207,6 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private void copyDiaryPhoto(long oldTopicId, long newTopicId,
                                 long oldDiaryId, long newDiaryId) throws IOException {
-
         File backupDiaryDir = new File(backupFileManager.getDirAbsolutePath() + "/diary/" +
                 oldTopicId + "/" + oldDiaryId + "/");
         if (backupDiaryDir.exists() || backupDiaryDir.isDirectory()) {

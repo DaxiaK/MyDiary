@@ -63,7 +63,7 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void copyPhoto(String filename, FileManager diaryFileManager) throws Exception {
-        FileManager.copy(new File(diaryFileManager.getDir().getAbsoluteFile() + "/" + filename),
-                new File(editCacheFileManage.getDir().getAbsoluteFile() + "/" + filename));
+        FileManager.copy(new File(diaryFileManager.getDirAbsolutePath() + "/" + filename),
+                new File(editCacheFileManage.getDirAbsolutePath() + "/" + filename));
     }
 }

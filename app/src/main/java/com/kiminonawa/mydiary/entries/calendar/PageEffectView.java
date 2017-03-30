@@ -94,7 +94,7 @@ public class PageEffectView extends View {
         //In the Android 4.2 , LAYER_TYPE_SOFTWARE will cause some question
         int year = YearClass.get(context.getApplicationContext());
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1 ||
-                year < 2012) {
+                year < YearClass.CLASS_2013) {
             this.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
 

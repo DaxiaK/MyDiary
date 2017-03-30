@@ -64,6 +64,9 @@ public class AboutActivity extends AppCompatActivity {
         license.append(
                 new LicenseObj("Material Calendar View", "prolificinteractive", "2016", LicenseObj.MIT)
                         .getLicense());
+        license.append(
+                new LicenseObj("ShowcaseView", "Alex Curran ", "2012-2014", LicenseObj.APACHE)
+                        .getLicense());
 
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }

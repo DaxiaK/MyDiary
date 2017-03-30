@@ -382,8 +382,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (outputFile.exists()) {
                         outputFile.delete();
                     }
+                    FileManager tempFM = new FileManager(this, FileManager.TEMP_DIR);
                     FileUtils.moveFile(new File(
-                                    new FileManager(this, FileManager.TEMP_DIR).getDirAbsolutePath()
+                                    tempFM.getDirAbsolutePath()
                                             + "/" + newTopicBgFileName),
                             outputFile);
                     //Enter the topic
