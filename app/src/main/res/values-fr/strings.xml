@@ -194,6 +194,19 @@
 
     <string name="toast_import_successful">import successful</string>
     <string name="toast_import_fail">import fail&#8230;please checking file</string>
+
     <!--OOBE-->
+    <string name="oobe_next_button">Next</string>
+
+    <string name="oobe_main_your_name_title">Your name</string>
+    <string name="oobe_main_your_name_content">You can set your personal information</string>
+    <string name="oobe_main_topic_list_title">Topic list</string>
+    <string name="oobe_main_topic_list_content">Your personal diary, memo or contacts!\nSwipe it to edit or delete\n(The default Japanese data is from movie, you can delete it)</string>
+    <string name="oobe_main_search_title">Search</string>
+    <string name="oobe_main_search_content">You can search some topic</string>
+    <string name="oobe_main_adv_setting_title">Advanced setting</string>
+    <string name="oobe_main_adv_setting_content">Open the advanced setting\nIncluding create diary, app setting, passcode ,backup and about</string>
+    <string name="oobe_main_mydiary_title">MyDiary</string>
+    <string name="oobe_main_mydiary_content">however you see the movie or not\nI hope you can get something on this app\nTo write the story about your name now!</string>
 
 </resources>

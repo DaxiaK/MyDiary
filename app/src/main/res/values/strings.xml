@@ -205,7 +205,7 @@
     <string name="oobe_main_search_title">Search</string>
     <string name="oobe_main_search_content">You can search some topic</string>
     <string name="oobe_main_adv_setting_title">Advanced setting</string>
-    <string name="oobe_main_adv_setting_content">Open the advanced setting\nIncluding create diary, app setting, password lock ,backup and about</string>
+    <string name="oobe_main_adv_setting_content">Open the advanced setting\nIncluding create diary, app setting, passcode ,backup and about</string>
     <string name="oobe_main_mydiary_title">MyDiary</string>
     <string name="oobe_main_mydiary_content">however you see the movie or not\nI hope you can get something on this app\nTo write the story about your name now!</string>
 
