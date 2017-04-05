@@ -68,7 +68,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
         if (getArguments().getBoolean("isEditMode", false)) {
             fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
         } else {
-            fileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
+            fileManager = new FileManager(getActivity(), FileManager.DIARY_TEMP_DIR);
         }
         try {
             callBack = (PhotoCallBack) getTargetFragment();

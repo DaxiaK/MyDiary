@@ -55,6 +55,12 @@ public class SPFManager {
     //Relpace FIRST_RUN
     private static final String OOBE_FIRST_TIME = "OOBE_FIRST_TIME";
 
+    /**
+     * Diary auto save
+     */
+    private static final String SPF_DIARY = "DIARY";
+    //The json file like the backup file
+    private static final String DIARY_AUTO_SAVE = "DIARY_AUTO_SAVE";
 
     /**
      * Config method
@@ -154,11 +160,10 @@ public class SPFManager {
      */
 
     /**
-     * @deprecated it after version 33
-     * now use the OOBE tag
-     *
      * @param context
      * @param firstRun
+     * @deprecated it after version 33
+     * now use the OOBE tag
      */
     public static void setFirstRun(Context context, boolean firstRun) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
@@ -168,11 +173,10 @@ public class SPFManager {
     }
 
     /**
-     * @deprecated it after version 33
-     * now use the OOBE tag
-     *
      * @param context
      * @return
+     * @deprecated it after version 33
+     * now use the OOBE tag
      */
     public static boolean getFirstRun(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
@@ -249,6 +253,36 @@ public class SPFManager {
     public static boolean getOOBEFirstTime(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_OOBE, 0);
         return settings.getBoolean(OOBE_FIRST_TIME, true);
+    }
+
+    /**
+     * Diary
+     */
+
+    /**
+     * Set  the  auto saved diary
+     *
+     * @param context
+     * @param diaryJson
+     */
+    public static void setDiaryAutoSave(Context context, String diaryJson) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putString(DIARY_AUTO_SAVE, diaryJson);
+        PE.commit();
+    }
+
+
+    /**
+     * Get auto saved diary
+     *
+     * @param context
+     * @return the auto saved diary json.
+     * if  no any file in it , it will return null
+     */
+    public static String getDiaryAutoSave(Context context) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        return settings.getString(DIARY_AUTO_SAVE, null);
     }
 
 }
