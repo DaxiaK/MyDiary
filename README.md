@@ -50,26 +50,30 @@ so, maybe I will try to create an iOS version after this app is running.
 * Allow order for topic , memo
 * page curl effect
 * import & export DB(Alpha) (flow finish) 
-
+* Search function
+* OOBE
 
 **Not Work:**
 
 This list is what functionality I will implement , the number is the sequence for coding.
 
-1. Search function
-2. OOBE
+1. Save diary automaily
+2. Photo overview
 3. Code refactoring
-4. Google account backup & including FireBase
-5. UI review & support xxxHpdi \
-6. Implments search
-7. Support Chinese sort
-8. Modify contacts detail (beta)
-9. Tags
-10. load contacts from phone
-11. Add bookmark for diary
-12. Add music in diary
-13. Support Chinese sort
-14. Supprot JP sort
+4. Diary widget
+5. Google account backup & including FireBase
+6. UI review & support xxxHpdi \
+7. Implments contacts search
+8. Support Chinese sort
+9. Modify contacts detail (beta)
+10. Music
+11. web block
+12. Tags
+13. load contacts from phone
+14. Add bookmark for diary
+15. Add music in diary
+16. Support Chinese sort
+17. Supprot JP sort
 
 Coding & Designing:
 
@@ -80,12 +84,21 @@ Coding & Designing:
 1. Add web block in diary ( some memory issue)
 
 
-**Plan**
+**Translation**
 
-Some function will be implemented later ,but some user is asking about them.
-If you want to help this project , you can select them first and let me know:
+Thanks for someone help me to translae this app.
+Now the language percentage  is:
 
-1. Add border and radius in all dialogfragment 
+* English - 100 %
+* 日本語  - 80%
+* 繁體中文 - 100%
+* 简体中文 - 100%
+* 한국어 - 80%
+* ภาษาไทย  - 99%
+* Français  - 70%
+* Español  - 80%
+
+
 
 ## known issue
 
