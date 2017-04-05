@@ -184,6 +184,7 @@
     <string name="backup_export_hint">匯出所有的內容(不包含設定檔)</string>
     <string name="backup_export_path_hint">點擊選擇匯出的目錄</string>
     <string name="backup_export_button">匯出</string>
+    <string name="backup_export_share_title">選擇分享工具</string>
 
     <string name="toast_export_successful">%1$s\n匯出成功</string>
     <string name="toast_export_fail">糟糕，匯出失敗&#8230;請檢查權限或剩餘空間</string>

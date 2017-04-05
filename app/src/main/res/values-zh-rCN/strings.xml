@@ -183,6 +183,7 @@
     <string name="backup_export_hint">导出所有的内容(不包含设定档)</string>
     <string name="backup_export_path_hint">点击选择导出的目录</string>
     <string name="backup_export_button">导出</string>
+    <string name="backup_export_share_title">选择分享工具</string>
 
     <string name="toast_export_successful">%1$s\n导出成功</string>
     <string name="toast_export_fail">导出失败&#8230;请检查权限或剩余空间</string>

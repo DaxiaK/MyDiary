@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -107,15 +109,33 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onExportCompiled(boolean exportSuccessful) {
-        //TODO Add some step later (e.g. copy file or upload file)
-    }
 
     @Override
     public void onImportCompiled(boolean importSuccessful) {
         Intent backMainActivityIntent = new Intent(this, MainActivity.class);
         backMainActivityIntent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(backMainActivityIntent);
+    }
+
+
+    @Override
+    public void onExportCompiled(String backupZipFilePath) {
+        //Opne the shared file intent
+        try {
+            Intent sendIntent = new Intent();
+            if (backupZipFilePath != null) {
+                File backupFile = new File(backupZipFilePath);
+                Uri backupFileUri = FileProvider.getUriForFile(this,
+                        this.getApplicationContext().getPackageName() + ".provider",
+                        backupFile);
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, backupFileUri);
+                sendIntent.setType("application/zip");
+                startActivity(Intent.createChooser(sendIntent,
+                        getResources().getText(R.string.backup_export_share_title)));
+            }
+        } catch (Exception e) {
+            Log.e("Backup", "export share fail", e);
+        }
     }
 }

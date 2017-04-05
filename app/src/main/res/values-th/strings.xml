@@ -184,6 +184,7 @@
     <string name="backup_export_hint">ส่งออกข้อมูลทั้งหมด (ไม่รวมถึงโปรไฟล์)</string>
     <string name="backup_export_path_hint">แตะเพื่อเลือกโฟลเดอร์</string>
     <string name="backup_export_button">ส่งออก</string>
+    <string name="backup_export_share_title">Share with</string>
 
     <string name="toast_export_successful">%1$s\nการส่งออกสำเร็จ</string>
     <string name="toast_export_fail">การส่งออกล้มเหลว&#8230;กรุณาตรวจสอบการได้รับอณุญาตหรือพื้นที่เครื่องของคุณ</string>

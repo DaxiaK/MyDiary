@@ -36,7 +36,7 @@ import static com.kiminonawa.mydiary.backup.BackupManager.BACKUP_ZIP_FILE_SUB_FI
 public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     public interface ExportCallBack {
-        void onExportCompiled(boolean exportSuccessful);
+        void onExportCompiled(String backupZipFilePath);
     }
 
     private final static String TAG = "ExportAsyncTask";
@@ -48,7 +48,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private BackupManager backupManager;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
     private String backupJsonFilePath;
-    private String backupZipFilePath;
+    private String backupZipRootPath;
     private String backupZipFileName;
     /*
      * DB
@@ -63,7 +63,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     private ProgressDialog progressDialog;
     private ExportCallBack callBack;
 
-    public ExportAsyncTask(Context context, ExportCallBack callBack, String backupZieFilePath) {
+    public ExportAsyncTask(Context context, ExportCallBack callBack, String backupZipRootPath) {
 
         this.mContext = context;
         this.backupManager = new BackupManager();
@@ -73,7 +73,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         FileManager backupFM = new FileManager(context, FileManager.BACKUP_DIR);
         this.backupJsonFilePath = backupFM.getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
-        this.backupZipFilePath = backupZieFilePath;
+        this.backupZipRootPath = backupZipRootPath;
         this.backupZipFileName = BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME;
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(context);
@@ -113,10 +113,10 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
             Toast.makeText(mContext,
                     String.format(mContext.getResources().getString(R.string.toast_export_successful), backupZipFileName)
                     , Toast.LENGTH_LONG).show();
+            callBack.onExportCompiled(backupZipRootPath + "/" + backupZipFileName);
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_export_fail), Toast.LENGTH_LONG).show();
         }
-        callBack.onExportCompiled(exportSuccessful);
     }
 
 
@@ -133,7 +133,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private boolean zipBackupFile() throws IOException {
         ZipManager zipManager = new ZipManager(mContext);
-        return zipManager.zipFileAtPath(backupJsonFilePath, backupZipFilePath + "/" + backupZipFileName);
+        return zipManager.zipFileAtPath(backupJsonFilePath, backupZipRootPath + "/" + backupZipFileName);
     }
 
 
