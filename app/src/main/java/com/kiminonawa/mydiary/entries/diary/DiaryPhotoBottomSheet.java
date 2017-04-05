@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -68,7 +69,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
         if (getArguments().getBoolean("isEditMode", false)) {
             fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
         } else {
-            fileManager = new FileManager(getActivity(), FileManager.DIARY_TEMP_DIR);
+            fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId());
         }
         try {
             callBack = (PhotoCallBack) getTargetFragment();

@@ -148,8 +148,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         calendar = Calendar.getInstance();
         timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
         noLocation = getString(R.string.diary_no_location);
-        //The file is not editable
-        diaryTempFileManager = new FileManager(getActivity(), FileManager.DIARY_TEMP_DIR);
+        diaryTempFileManager = new FileManager(getActivity(), getTopicId());
     }
 
     @Override
@@ -184,7 +183,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 PorterDuff.Mode.SRC_ATOP);
 
         TV_diary_item_content_hint = (TextView) rootView.findViewById(R.id.TV_diary_item_content_hint);
-        TV_diary_item_content_hint.setVisibility(View.VISIBLE);
         //For create diary
         LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
         LL_diary_item_content.setOnClickListener(this);
@@ -411,7 +409,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      */
     private void clearDiaryTemp() {
         diaryTempFileManager.clearDir();
-        SPFManager.setDiaryAutoSave(getActivity(), null);
+        SPFManager.clearDiaryAutoSave(getActivity(), getTopicId());
     }
 
     private void autoSaveDiary() {
@@ -423,15 +421,18 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                                 diaryItemHelper.get(x).getPosition(),
                                 diaryItemHelper.get(x).getContent()));
             }
+            String locationName = TV_diary_location.getText().toString();
+            if (noLocation.equals(locationName)) {
+                locationName = "";
+            }
             BUDiaryEntries autoSaveDiary = new BUDiaryEntries(
                     NO_BU_DIARY_ID, NO_BU_DIARY_TIME,
                     EDT_diary_title.getText().toString(),
                     SP_diary_mood.getSelectedItemPosition(),
                     SP_diary_weather.getSelectedItemPosition(),
                     diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                    TV_diary_location.getText().toString(),
-                    diaryItemItemList);
-            SPFManager.setDiaryAutoSave(getActivity(), new Gson().toJson(autoSaveDiary));
+                    locationName, diaryItemItemList);
+            SPFManager.setDiaryAutoSave(getActivity(), getTopicId(), new Gson().toJson(autoSaveDiary));
         }
     }
 
@@ -440,9 +441,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      */
     private void revertAutoSaveDiary() {
 
-        if (SPFManager.getDiaryAutoSave(getActivity()) != null) {
+        if (SPFManager.getDiaryAutoSave(getActivity(), getTopicId()) != null) {
             try {
-                BUDiaryEntries autoSaveDiary = new Gson().fromJson(SPFManager.getDiaryAutoSave(getActivity()), BUDiaryEntries.class);
+                BUDiaryEntries autoSaveDiary = new Gson().fromJson(
+                        SPFManager.getDiaryAutoSave(getActivity(), getTopicId()), BUDiaryEntries.class);
                 //Title
                 EDT_diary_title.setText(autoSaveDiary.getDiaryEntriesTitle());
 
@@ -460,6 +462,11 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             } catch (Exception e) {
                 Log.e(TAG, "Load auto save fail", e);
             }
+            TV_diary_item_content_hint.setVisibility(View.INVISIBLE);
+            setIsCreating(true);
+        } else {
+            TV_diary_item_content_hint.setVisibility(View.VISIBLE);
+            setIsCreating(false);
         }
     }
 

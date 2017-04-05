@@ -60,7 +60,7 @@ public class SPFManager {
      */
     private static final String SPF_DIARY = "DIARY";
     //The json file like the backup file
-    private static final String DIARY_AUTO_SAVE = "DIARY_AUTO_SAVE";
+    private static final String DIARY_AUTO_SAVE = "DIARY_AUTO_SAVE_";
 
     /**
      * Config method
@@ -261,28 +261,47 @@ public class SPFManager {
 
     /**
      * Set  the  auto saved diary
+     * The key is DIARY_AUTO_SAVE_TOPICID
+     * <p>
+     * set String null to clear it
      *
      * @param context
+     * @param topicId
      * @param diaryJson
      */
-    public static void setDiaryAutoSave(Context context, String diaryJson) {
+    public static void setDiaryAutoSave(Context context, long topicId, String diaryJson) {
         SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
         SharedPreferences.Editor PE = settings.edit();
-        PE.putString(DIARY_AUTO_SAVE, diaryJson);
+        PE.putString(DIARY_AUTO_SAVE + topicId, diaryJson);
+        PE.commit();
+    }
+
+    /**
+     * set the null value to clear auto save content
+     *
+     * @param context
+     * @param topicId
+     */
+    public static void clearDiaryAutoSave(Context context, long topicId) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putString(DIARY_AUTO_SAVE + topicId, null);
         PE.commit();
     }
 
 
     /**
      * Get auto saved diary
+     * The key is DIARY_AUTO_SAVE_TOPICID
+     * if  no any file in it , it will return null.
      *
      * @param context
+     * @param topicId
      * @return the auto saved diary json.
-     * if  no any file in it , it will return null
      */
-    public static String getDiaryAutoSave(Context context) {
+    public static String getDiaryAutoSave(Context context, long topicId) {
         SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
-        return settings.getString(DIARY_AUTO_SAVE, null);
+        return settings.getString(DIARY_AUTO_SAVE + topicId, null);
     }
 
 }

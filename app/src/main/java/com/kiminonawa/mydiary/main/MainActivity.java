@@ -524,6 +524,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dbManager.deleteAllCurrentMemoOrder(mainTopicAdapter.getList().get(position).getId());
                 break;
             case ITopic.TYPE_DIARY:
+                //Clear the auto save content
+                SPFManager.clearDiaryAutoSave(this, mainTopicAdapter.getList().get(position).getId());
                 //Because FOREIGN key is not work in this version,
                 //so delete diary item first , then delete diary
                 Cursor diaryCursor = dbManager.selectDiaryList(mainTopicAdapter.getList().get(position).getId());

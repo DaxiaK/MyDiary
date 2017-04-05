@@ -74,7 +74,6 @@ public class FileManager {
     public final static int CONTACTS_ROOT_DIR = 5;
     public final static int SETTING_DIR = 6;
     public final static int BACKUP_DIR = 7;
-    public final static int DIARY_TEMP_DIR = 8;
 
     /**
      * The path is :
@@ -92,9 +91,6 @@ public class FileManager {
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      * 7.Backup temp path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/backup/
-     * <p>
-     * 8.diary temp (Add in version 33 for auto save)
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/temp
      */
     private File fileDir;
     private Context mContext;
@@ -105,7 +101,6 @@ public class FileManager {
     private final static String EDIT_CACHE_DIARY_DIR_STR = "diary/editCache/";
     private final static String SETTING_DIR_STR = "setting/";
     private final static String BACKUP_DIR_STR = "backup/";
-    private final static String DIARY_TEMP_DIR_STR = "diary/temp/";
 
     /**
      * Create trem dir file manager
@@ -139,9 +134,6 @@ public class FileManager {
             case BACKUP_DIR:
                 this.fileDir = mContext.getExternalFilesDir(BACKUP_DIR_STR);
                 break;
-            case DIARY_TEMP_DIR:
-                this.fileDir = mContext.getExternalFilesDir(DIARY_TEMP_DIR_STR);
-                break;
         }
     }
 
@@ -151,6 +143,15 @@ public class FileManager {
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
         this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
+    }
+
+    /**
+     * Create diary temp file manager for auto save
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/TOPIC_ID/temp
+     */
+    public FileManager(Context context, long diaryTopicId) {
+        this.mContext = context;
+        this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + diaryTopicId + "/temp/");
     }
 
     /**
