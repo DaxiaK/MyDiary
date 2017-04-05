@@ -48,12 +48,9 @@ public class SPFManager {
 
     /**
      * OOBE:
-     * Add in  Version 33
-     * This tag is to check OOBE is run or not.
+     * Add in  Version 33 , Not use now.
      */
     private static final String SPF_OOBE = "OOBE";
-    //Relpace FIRST_RUN
-    private static final String OOBE_FIRST_TIME = "OOBE_FIRST_TIME";
 
     /**
      * Diary auto save
@@ -163,7 +160,7 @@ public class SPFManager {
      * @param context
      * @param firstRun
      * @deprecated it after version 33
-     * now use the OOBE tag
+     * now use ShowcaseView - singleShot to run OOBE onve.
      */
     public static void setFirstRun(Context context, boolean firstRun) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
@@ -176,7 +173,7 @@ public class SPFManager {
      * @param context
      * @return
      * @deprecated it after version 33
-     * now use the OOBE tag
+     * now use ShowcaseView - singleShot to run OOBE onve.
      */
     public static boolean getFirstRun(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
@@ -224,36 +221,6 @@ public class SPFManager {
         PE.commit();
     }
 
-    /**
-     * OOBE
-     */
-
-    /**
-     * Replace the @FIRST_RUN
-     * When the user use this app first time ,
-     * I will show the dialog to ask user "do you want to import the data form movie?".
-     *
-     * @param context
-     * @param firstTime
-     */
-    public static void setOOBEFirstTime(Context context, boolean firstTime) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_OOBE, 0);
-        SharedPreferences.Editor PE = settings.edit();
-        PE.putBoolean(OOBE_FIRST_TIME, firstTime);
-        PE.commit();
-    }
-
-    /**
-     * Replace the @FIRST_RUN
-     * Check does user use it first time.
-     *
-     * @param context
-     * @return
-     */
-    public static boolean getOOBEFirstTime(Context context) {
-        SharedPreferences settings = context.getSharedPreferences(SPF_OOBE, 0);
-        return settings.getBoolean(OOBE_FIRST_TIME, true);
-    }
 
     /**
      * Diary
