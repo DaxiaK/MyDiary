@@ -40,13 +40,17 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.gson.Gson;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.backup.obj.BUDiaryEntries;
+import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.shared.FileManager;
@@ -58,6 +62,7 @@ import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -67,6 +72,8 @@ import java.util.Observer;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
 import static com.kiminonawa.mydiary.R.id.IV_diary_location_name_icon;
+import static com.kiminonawa.mydiary.backup.obj.BUDiaryEntries.NO_BU_DIARY_ID;
+import static com.kiminonawa.mydiary.backup.obj.BUDiaryEntries.NO_BU_DIARY_TIME;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
@@ -210,7 +217,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
         clearDiaryPage();
         //Revert the auto saved diary
-//        revertAutoSaveDiary();
+        revertAutoSaveDiary();
     }
 
 
@@ -235,6 +242,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Auto Save the diary
+        autoSaveDiary();
+    }
 
     @Override
     public void onStop() {
@@ -400,58 +414,85 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SPFManager.setDiaryAutoSave(getActivity(), null);
     }
 
-//    /**
-//     * Revert diray from SPF
-//     */
-//    private void revertAutoSaveDiary() {
-//
-//        //Title
-//        EDT_diary_title.setText(diaryInfoCursor.getString(2));
-//
-//        //load location
-//        String locationName = diaryInfoCursor.getString(7);
-//        if (locationName != null && !"".equals(locationName)) {
-//            isLocation = true;
-//            TV_diary_location.setText(locationName);
-//        } else {
-//            isLocation = false;
-//        }
-//        initLocationIcon();
-//        setIcon()
-//        loadDiaryItemContent();
-//    }
-//
-//    private void setIcon(int mood, int weather) {
-//        SP_diary_mood.setSelection(mood);
-//        SP_diary_weather.setSelection(weather);
-//    }
-//
-//    private void loadDiaryItemContent() {
-//        for (int i = 0; i < diaryContentCursor.getCount(); i++) {
-//            IDairyRow diaryItem = null;
-//            String content = "";
-//            if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
-//                diaryItem = new DiaryPhoto(getActivity());
-//                content = FileManager.FILE_HEADER +
-//                        diaryTempFileManager.getDirAbsolutePath() + "/" +
-//                        diaryContentCursor.getString(3);
-//                diaryItem.setEditMode(true);
-//                ((DiaryPhoto) diaryItem).setDeleteClickListener(diaryContentCursor.getInt(2), this);
-//                //For get the right file name
-//                ((DiaryPhoto) diaryItem).setPhotoFileName(diaryContentCursor.getString(3));
-//            } else if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_TEXT) {
-//                diaryItem = new DiaryText(getActivity());
-//                content = diaryContentCursor.getString(3);
-//                if (!isEditMode) {
-//                    diaryItem.setEditMode(false);
-//                }
-//            }
-//            diaryItem.setContent(content);
-//            diaryItem.setPosition(i);
-//            diaryItemHelper.createItem(diaryItem);
-//            diaryContentCursor.moveToNext();
-//        }
-//    }
+    private void autoSaveDiary() {
+        if (diaryItemHelper.getItemSize() > 0) {
+            List<BUDiaryItem> diaryItemItemList = new ArrayList<>();
+            for (int x = 0; x < diaryItemHelper.getItemSize(); x++) {
+                diaryItemItemList.add(
+                        new BUDiaryItem(diaryItemHelper.get(x).getType(),
+                                diaryItemHelper.get(x).getPosition(),
+                                diaryItemHelper.get(x).getContent()));
+            }
+            BUDiaryEntries autoSaveDiary = new BUDiaryEntries(
+                    NO_BU_DIARY_ID, NO_BU_DIARY_TIME,
+                    EDT_diary_title.getText().toString(),
+                    SP_diary_mood.getSelectedItemPosition(),
+                    SP_diary_weather.getSelectedItemPosition(),
+                    diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
+                    TV_diary_location.getText().toString(),
+                    diaryItemItemList);
+            SPFManager.setDiaryAutoSave(getActivity(), new Gson().toJson(autoSaveDiary));
+        }
+    }
+
+    /**
+     * Revert diray from SPF
+     */
+    private void revertAutoSaveDiary() {
+
+        if (SPFManager.getDiaryAutoSave(getActivity()) != null) {
+            try {
+                BUDiaryEntries autoSaveDiary = new Gson().fromJson(SPFManager.getDiaryAutoSave(getActivity()), BUDiaryEntries.class);
+                //Title
+                EDT_diary_title.setText(autoSaveDiary.getDiaryEntriesTitle());
+
+                //load location
+                String locationName = autoSaveDiary.getDiaryEntriesLocation();
+                if (locationName != null && !"".equals(locationName)) {
+                    isLocation = true;
+                    TV_diary_location.setText(locationName);
+                } else {
+                    isLocation = false;
+                }
+                initLocationIcon();
+                setIcon(autoSaveDiary.getDiaryEntriesMood(), autoSaveDiary.getDiaryEntriesWeather());
+                loadDiaryItemContent(autoSaveDiary);
+            } catch (Exception e) {
+                Log.e(TAG, "Load auto save fail", e);
+            }
+        }
+    }
+
+    private void setIcon(int mood, int weather) {
+        SP_diary_mood.setSelection(mood);
+        SP_diary_weather.setSelection(weather);
+    }
+
+    private void loadDiaryItemContent(BUDiaryEntries autoSaveDiary) {
+        for (int i = 0; i < autoSaveDiary.getDiaryItemList().size(); i++) {
+            IDairyRow diaryItem = null;
+            String content = "";
+            if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_PHOTO) {
+                diaryItem = new DiaryPhoto(getActivity());
+                content = FileManager.FILE_HEADER +
+                        diaryTempFileManager.getDirAbsolutePath() + "/" +
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
+                ((DiaryPhoto) diaryItem).setDeleteClickListener(
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemPosition(), this);
+                //For get the right file name
+                ((DiaryPhoto) diaryItem).setPhotoFileName(
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent());
+            } else if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_TEXT) {
+                diaryItem = new DiaryText(getActivity());
+                content = autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
+            }
+            //In this page , it always is  edit mode.
+            diaryItem.setEditMode(true);
+            diaryItem.setContent(content);
+            diaryItem.setPosition(i);
+            diaryItemHelper.createItem(diaryItem);
+        }
+    }
 
     private void saveDiary() {
         //Create locationName
