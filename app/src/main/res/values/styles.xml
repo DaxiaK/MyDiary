@@ -8,6 +8,33 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--Init Activity-->
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Start OOBE -->
+    <style name="OOBEShowcaseTheme" parent="ShowcaseView">
+        <item name="sv_backgroundColor">@color/OOBE_bg_color</item>
+        <item name="sv_showcaseColor">@android:color/white</item>
+        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+        <item name="sv_detailTextAppearance">@style/CustomText</item>
+    </style>
+
+    <style name="CustomTitle" parent="TextAppearance.ShowcaseView.Title.Light">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomText" parent="TextAppearance.ShowcaseView.Detail.Light">
+        <item name="android:textColor">#deffffff</item>
+    </style>
+    <!-- End OOBE -->
+
+
     <!--Start For NoNonsense-FilePicker-->
     <!--It must set the theme or lib will crash.-->
     <style name="FilePickerTheme" parent="NNF_BaseTheme">

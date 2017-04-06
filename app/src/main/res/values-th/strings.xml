@@ -184,6 +184,7 @@
     <string name="backup_export_hint">ส่งออกข้อมูลทั้งหมด (ไม่รวมถึงโปรไฟล์)</string>
     <string name="backup_export_path_hint">แตะเพื่อเลือกโฟลเดอร์</string>
     <string name="backup_export_button">ส่งออก</string>
+    <string name="backup_export_share_title">Share with</string>
 
     <string name="toast_export_successful">%1$s\nการส่งออกสำเร็จ</string>
     <string name="toast_export_fail">การส่งออกล้มเหลว&#8230;กรุณาตรวจสอบการได้รับอณุญาตหรือพื้นที่เครื่องของคุณ</string>
@@ -195,5 +196,19 @@
 
     <string name="toast_import_successful">การนำเข้าสำเร็จ</string>
     <string name="toast_import_fail">การนำเข้าล้มเหลว&#8230;กรุณาตรวจสอบไฟล์ที่ใช้</string>
+
+    <!--OOBE-->
+    <string name="oobe_next_button">Next</string>
+
+    <string name="oobe_main_your_name_title">Your name</string>
+    <string name="oobe_main_your_name_content">You can set your personal information.</string>
+    <string name="oobe_main_topic_list_title">Topic list</string>
+    <string name="oobe_main_topic_list_content">Your personal diary, memo or contacts!\nSwipe it to edit or delete.\n(The default Japanese data is from movie, you can delete it)</string>
+    <string name="oobe_main_search_title">Search</string>
+    <string name="oobe_main_search_content">You can search some topic.</string>
+    <string name="oobe_main_adv_setting_title">Advanced setting.</string>
+    <string name="oobe_main_adv_setting_content">Open the advanced setting.\nIncluding create topic, app setting, passcode ,backup and about.</string>
+    <string name="oobe_main_mydiary_title">MyDiary</string>
+    <string name="oobe_main_mydiary_content">however you see the movie or not.\nI hope you can get something from this app.\nTo write the story about your name now!</string>
 
 </resources>

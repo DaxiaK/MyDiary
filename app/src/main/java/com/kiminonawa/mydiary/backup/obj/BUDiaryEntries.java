@@ -8,6 +8,10 @@ import java.util.List;
 
 public class BUDiaryEntries {
 
+
+    public final static long NO_BU_DIARY_ID = -1;
+    public final static long NO_BU_DIARY_TIME = -1;
+
     private long diary_entries_id;
     private String diary_entries_title;
     private long diary_entries_time;

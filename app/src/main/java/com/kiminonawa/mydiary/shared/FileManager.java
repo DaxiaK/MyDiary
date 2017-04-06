@@ -77,16 +77,16 @@ public class FileManager {
 
     /**
      * The path is :
-     * 1.diary & setting temp
+     * 1.setting , topic bg & profile photo  temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/temp
      * 2.diary edit temp
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/editCache
      * 3.diary saved
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/typeId/diaryId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/TOPIC_ID/DIARY_ID/
      * 4.memo path
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/memo/typeId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/memo/TOPIC_ID/
      * 5.contacts path
-     * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/typeId/
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/contacts/TOPIC_ID/
      * 6.Setting path
      * /sdcard/Android/data/com.kiminonawa.mydiary/files/setting/
      * 7.Backup temp path
@@ -143,6 +143,15 @@ public class FileManager {
     public FileManager(Context context, long topicId, long diaryId) {
         this.mContext = context;
         this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + topicId + "/" + diaryId + "/");
+    }
+
+    /**
+     * Create diary temp file manager for auto save
+     * /sdcard/Android/data/com.kiminonawa.mydiary/files/diary/TOPIC_ID/temp
+     */
+    public FileManager(Context context, long diaryTopicId) {
+        this.mContext = context;
+        this.fileDir = mContext.getExternalFilesDir(DIARY_ROOT_DIR_STR + "/" + diaryTopicId + "/temp/");
     }
 
     /**

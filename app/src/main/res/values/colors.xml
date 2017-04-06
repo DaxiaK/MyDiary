@@ -17,7 +17,7 @@
     <color name="theme_dark_color_custom_default">#388E3C</color>
 
     <!--Button-->
-    <color name="button_board_color">#cccccc</color>
+    <color name="button_boarder_color">#cccccc</color>
     <color name="button_text_color">#b2b2b2</color>
     <color name="button_text_color_p">#ffffff</color>
     <color name="button_disable_color">#9D9FA2</color>
@@ -36,6 +36,7 @@
 
     <!--diary-->
     <color name="diary_photo_layout_delete_bg">#003400</color>
+    <color name="diary_photo_layout_boarder">#e6e6e6</color>
 
     <!--radio_button-->
     <color name="radio_button_unselected_color">@android:color/transparent</color>
@@ -64,5 +65,9 @@
 
     <!--Backup-->
     <color name="backup_hint_text_color">#828282</color>
+
+    <!--OOBE-->
+    <color name="OOBE_bg_color">#e570A3B4</color>
+
 
 </resources>

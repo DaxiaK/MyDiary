@@ -277,11 +277,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     if (isAddNewProfileBg) {
                         //For checking new profile bg is image or color.
                         boolean hasCustomProfileBannerBg = false;
+                        FileManager settingFM = new FileManager(this, FileManager.SETTING_DIR);
                         if (!"".equals(profileBgFileName)) {
                             try {
                                 //Copy the profile into setting dir
-                                FileManager.copy(new File(tempFileManager.getDir().getAbsoluteFile() + "/" + profileBgFileName),
-                                        new File(new FileManager(this, FileManager.SETTING_DIR).getDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
+                                FileManager.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + profileBgFileName),
+                                        new File(settingFM.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
                                 hasCustomProfileBannerBg = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -289,7 +290,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                                 break;
                             }
                         } else {
-                            new File(new FileManager(this, FileManager.SETTING_DIR).getDir().getAbsoluteFile() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
+                            new File(settingFM.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
                         }
                         SPFManager.setCustomProfileBannerBg(this, hasCustomProfileBannerBg);
                     }

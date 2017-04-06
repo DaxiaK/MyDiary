@@ -119,7 +119,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(editCrashFileManager.getDir().getAbsoluteFile() + "/" + filename),
-                new File(diaryFileManager.getDir().getAbsoluteFile() + "/" + filename));
+        FileManager.copy(new File(editCrashFileManager.getDirAbsolutePath() + "/" + filename),
+                new File(diaryFileManager.getDirAbsolutePath() + "/" + filename));
     }
 }

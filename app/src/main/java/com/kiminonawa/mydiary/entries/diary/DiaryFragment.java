@@ -40,23 +40,29 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.gson.Gson;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.backup.obj.BUDiaryEntries;
+import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryPhoto;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryText;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
+import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -65,6 +71,9 @@ import java.util.Observer;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LOCATION_SERVICE;
+import static com.kiminonawa.mydiary.R.id.IV_diary_location_name_icon;
+import static com.kiminonawa.mydiary.backup.obj.BUDiaryEntries.NO_BU_DIARY_ID;
+import static com.kiminonawa.mydiary.backup.obj.BUDiaryEntries.NO_BU_DIARY_TIME;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_ACCESS_FINE_LOCATION_PERMISSION;
 import static com.kiminonawa.mydiary.shared.PermissionHelper.REQUEST_CAMERA_AND_WRITE_ES_PERMISSION;
 
@@ -116,7 +125,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * File
      */
-    private FileManager tempFileManager;
+    private FileManager diaryTempFileManager;
 
     /**
      * Google Place API
@@ -139,8 +148,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         calendar = Calendar.getInstance();
         timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
         noLocation = getString(R.string.diary_no_location);
-        //The file is not editable
-        tempFileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
+        diaryTempFileManager = new FileManager(getActivity(), getTopicId());
     }
 
     @Override
@@ -163,7 +171,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         TV_diary_day = (TextView) rootView.findViewById(R.id.TV_diary_day);
         TV_diary_time = (TextView) rootView.findViewById(R.id.TV_diary_time);
         TV_diary_location = (TextView) rootView.findViewById(R.id.TV_diary_location);
-        rootView.findViewById(R.id.IV_diary_location_name_icon).setVisibility(View.VISIBLE);
+        rootView.findViewById(IV_diary_location_name_icon).setVisibility(View.VISIBLE);
 
         SP_diary_weather = (Spinner) rootView.findViewById(R.id.SP_diary_weather);
         SP_diary_weather.setVisibility(View.VISIBLE);
@@ -175,7 +183,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 PorterDuff.Mode.SRC_ATOP);
 
         TV_diary_item_content_hint = (TextView) rootView.findViewById(R.id.TV_diary_item_content_hint);
-        TV_diary_item_content_hint.setVisibility(View.VISIBLE);
         //For create diary
         LL_diary_item_content = (LinearLayout) rootView.findViewById(R.id.LL_diary_item_content);
         LL_diary_item_content.setOnClickListener(this);
@@ -207,6 +214,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         initProgressDialog();
         diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
         clearDiaryPage();
+        //Revert the auto saved diary
+        revertAutoSaveDiary();
     }
 
 
@@ -231,6 +240,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         }
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Auto Save the diary
+        autoSaveDiary();
+    }
 
     @Override
     public void onStop() {
@@ -298,10 +314,9 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + tempFileManager.getDir().getAbsolutePath() + "/" + fileName;
+            String tempFileSrc = FileManager.FILE_HEADER + diaryTempFileManager.getDirAbsolutePath() + "/" + fileName;
 //            Bitmap resizeBmp = BitmapFactory.decodeFile(tempFileSrc);
 //            if (resizeBmp != null) {
-            Log.e("test", "test" + Uri.parse(tempFileSrc).toString());
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             DiaryTextTag tag = checkoutOldDiaryContent();
@@ -379,12 +394,111 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         SP_diary_mood.setAdapter(moodArrayAdapter);
     }
 
+    /**
+     * Clear and set the UUI
+     */
     private void clearDiaryPage() {
         SP_diary_mood.setSelection(0);
         SP_diary_weather.setSelection(0);
         EDT_diary_title.setText("");
         diaryItemHelper.initDiary();
-        tempFileManager.clearDir();
+    }
+
+    /**
+     * The temp file only be clear when click clear button & diary save
+     */
+    private void clearDiaryTemp() {
+        diaryTempFileManager.clearDir();
+        SPFManager.clearDiaryAutoSave(getActivity(), getTopicId());
+    }
+
+    private void autoSaveDiary() {
+        if (diaryItemHelper.getItemSize() > 0) {
+            List<BUDiaryItem> diaryItemItemList = new ArrayList<>();
+            for (int x = 0; x < diaryItemHelper.getItemSize(); x++) {
+                diaryItemItemList.add(
+                        new BUDiaryItem(diaryItemHelper.get(x).getType(),
+                                diaryItemHelper.get(x).getPosition(),
+                                diaryItemHelper.get(x).getContent()));
+            }
+            String locationName = TV_diary_location.getText().toString();
+            if (noLocation.equals(locationName)) {
+                locationName = "";
+            }
+            BUDiaryEntries autoSaveDiary = new BUDiaryEntries(
+                    NO_BU_DIARY_ID, NO_BU_DIARY_TIME,
+                    EDT_diary_title.getText().toString(),
+                    SP_diary_mood.getSelectedItemPosition(),
+                    SP_diary_weather.getSelectedItemPosition(),
+                    diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
+                    locationName, diaryItemItemList);
+            SPFManager.setDiaryAutoSave(getActivity(), getTopicId(), new Gson().toJson(autoSaveDiary));
+        }
+    }
+
+    /**
+     * Revert diray from SPF
+     */
+    private void revertAutoSaveDiary() {
+
+        if (SPFManager.getDiaryAutoSave(getActivity(), getTopicId()) != null) {
+            try {
+                BUDiaryEntries autoSaveDiary = new Gson().fromJson(
+                        SPFManager.getDiaryAutoSave(getActivity(), getTopicId()), BUDiaryEntries.class);
+                //Title
+                EDT_diary_title.setText(autoSaveDiary.getDiaryEntriesTitle());
+
+                //load location
+                String locationName = autoSaveDiary.getDiaryEntriesLocation();
+                if (locationName != null && !"".equals(locationName)) {
+                    isLocation = true;
+                    TV_diary_location.setText(locationName);
+                } else {
+                    isLocation = false;
+                }
+                initLocationIcon();
+                setIcon(autoSaveDiary.getDiaryEntriesMood(), autoSaveDiary.getDiaryEntriesWeather());
+                loadDiaryItemContent(autoSaveDiary);
+            } catch (Exception e) {
+                Log.e(TAG, "Load auto save fail", e);
+            }
+            TV_diary_item_content_hint.setVisibility(View.INVISIBLE);
+            setIsCreating(true);
+        } else {
+            TV_diary_item_content_hint.setVisibility(View.VISIBLE);
+            setIsCreating(false);
+        }
+    }
+
+    private void setIcon(int mood, int weather) {
+        SP_diary_mood.setSelection(mood);
+        SP_diary_weather.setSelection(weather);
+    }
+
+    private void loadDiaryItemContent(BUDiaryEntries autoSaveDiary) {
+        for (int i = 0; i < autoSaveDiary.getDiaryItemList().size(); i++) {
+            IDairyRow diaryItem = null;
+            String content = "";
+            if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_PHOTO) {
+                diaryItem = new DiaryPhoto(getActivity());
+                content = FileManager.FILE_HEADER +
+                        diaryTempFileManager.getDirAbsolutePath() + "/" +
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
+                ((DiaryPhoto) diaryItem).setDeleteClickListener(
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemPosition(), this);
+                //For get the right file name
+                ((DiaryPhoto) diaryItem).setPhotoFileName(
+                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent());
+            } else if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_TEXT) {
+                diaryItem = new DiaryText(getActivity());
+                content = autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
+            }
+            //In this page , it always is  edit mode.
+            diaryItem.setEditMode(true);
+            diaryItem.setContent(content);
+            diaryItem.setPosition(i);
+            diaryItemHelper.createItem(diaryItem);
+        }
     }
 
     private void saveDiary() {
@@ -398,7 +512,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                locationName, diaryItemHelper, tempFileManager, this).execute(getTopicId());
+                locationName, diaryItemHelper, diaryTempFileManager, this).execute(getTopicId());
     }
 
     private void startGetLocation() {
@@ -506,7 +620,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                    tempFileManager, this).execute();
+                    diaryTempFileManager, this).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
@@ -518,7 +632,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                tempFileManager, this).execute();
+                diaryTempFileManager, this).execute();
     }
 
     @Override
@@ -544,6 +658,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         setCurrentTime(true);
         //Clear
         clearDiaryPage();
+        clearDiaryTemp();
         //Set flag
         ((DiaryActivity) getActivity()).callEntriesListRefresh();
         //Goto entries page
@@ -575,6 +690,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     @Override
     public void onClear() {
         clearDiaryPage();
+        clearDiaryTemp();
     }
 
 

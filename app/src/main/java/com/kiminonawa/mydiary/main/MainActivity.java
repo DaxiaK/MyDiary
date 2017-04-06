@@ -9,12 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.h6ah4i.android.widget.advrecyclerview.animator.DraggableItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
@@ -27,10 +32,13 @@ import com.kiminonawa.mydiary.main.topic.Contacts;
 import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
+import com.kiminonawa.mydiary.oobe.CustomViewTarget;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
+import com.kiminonawa.mydiary.shared.statusbar.OOBE;
 
 import org.apache.commons.io.FileUtils;
 
@@ -45,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TopicDetailDialogFragment.TopicCreatedCallback, YourNameDialogFragment.YourNameCallback,
         TopicDeleteDialogFragment.DeleteCallback, TextWatcher {
 
+    private static final String TAG = "MainActivity";
 
     /*
      * RecyclerView
@@ -71,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static Boolean isExit = false;
     private Timer backTimer = new Timer();
+    /*
+     * OOBE
+     */
+    private int oobeCount = 0;
+    private ShowcaseView sv;
 
     /*
      * UI
@@ -117,10 +131,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadProfilePicture();
 
         //Init topic adapter
+        dbManager.opeDB();
         loadTopic();
+        dbManager.closeDB();
         mainTopicAdapter.notifyDataSetChanged(true);
 
-        //Release note dialog
+        initOOBE();
+        //Check show Release note dialog.
         if (getIntent().getBooleanExtra("showReleaseNote", false)) {
             ReleaseNoteDialogFragment releaseNoteDialogFragment = new ReleaseNoteDialogFragment();
             releaseNoteDialogFragment.show(getSupportFragmentManager(), "releaseNoteDialogFragment");
@@ -184,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
     private void initProfile() {
         String YourNameIs = SPFManager.getYourName(MainActivity.this);
         if (YourNameIs == null || "".equals(YourNameIs)) {
@@ -201,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadTopic() {
         topicList.clear();
-        dbManager.opeDB();
         Cursor topicCursor = dbManager.selectTopic();
         for (int i = 0; i < topicCursor.getCount(); i++) {
             switch (topicCursor.getInt(2)) {
@@ -227,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             topicCursor.moveToNext();
         }
         topicCursor.close();
-        dbManager.closeDB();
     }
 
     private void loadProfilePicture() {
@@ -285,7 +301,74 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerViewSwipeManager.attachRecyclerView(RecyclerView_topic);
 
         mRecyclerViewDragDropManager.attachRecyclerView(RecyclerView_topic);
+    }
 
+    private void initOOBE() {
+
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+
+        final RelativeLayout.LayoutParams centerParams =
+                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        centerParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        centerParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        centerParams.setMargins(0, 0, 0, margin);
+
+        final RelativeLayout.LayoutParams leftParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        leftParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        leftParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        leftParams.setMargins(margin, margin, margin, margin);
+
+        View.OnClickListener showcaseViewOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (oobeCount) {
+                    case 0:
+                        sv.setButtonPosition(centerParams);
+                        sv.setShowcase(new CustomViewTarget(RecyclerView_topic, 4, 4), true);
+                        sv.setContentTitle(getString(R.string.oobe_main_topic_list_title));
+                        sv.setContentText(getString(R.string.oobe_main_topic_list_content));
+                        break;
+                    case 1:
+                        sv.setButtonPosition(leftParams);
+                        sv.setShowcase(new ViewTarget(EDT_main_topic_search), true);
+                        sv.setContentTitle(getString(R.string.oobe_main_search_title));
+                        sv.setContentText(getString(R.string.oobe_main_search_content));
+                        break;
+                    case 2:
+                        sv.setButtonPosition(centerParams);
+                        sv.setShowcase(new ViewTarget(IV_main_setting), true);
+                        sv.setContentTitle(getString(R.string.oobe_main_adv_setting_title));
+                        sv.setContentText(getString(R.string.oobe_main_adv_setting_content));
+                        break;
+                    case 3:
+                        sv.setButtonPosition(centerParams);
+                        sv.setTarget(Target.NONE);
+                        sv.setContentTitle(getString(R.string.oobe_main_mydiary_title));
+                        sv.setContentText(getString(R.string.oobe_main_mydiary_content));
+                        sv.setButtonText(getString(R.string.dialog_button_ok));
+                        break;
+                    case 4:
+                        sv.hide();
+                        break;
+                }
+                oobeCount++;
+            }
+        };
+
+
+        Target viewTarget = new ViewTarget(IV_main_profile_picture);
+        sv = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setTarget(viewTarget)
+                .setContentTitle(getString(R.string.oobe_main_your_name_title))
+                .setContentText(getString(R.string.oobe_main_your_name_content))
+                .setStyle(R.style.OOBEShowcaseTheme)
+                .singleShot(OOBE.MAIN_PAGE)
+                .replaceEndButton(new MyDiaryButton(this))
+                .setOnClickListener(showcaseViewOnClickListener)
+                .build();
+        sv.setButtonText(getString(R.string.oobe_next_button));
+        sv.setButtonPosition(leftParams);
     }
 
     private void updateTopicBg(int position, int topicBgStatus, String newTopicBgFileName) {
@@ -299,8 +382,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (outputFile.exists()) {
                         outputFile.delete();
                     }
+                    FileManager tempFM = new FileManager(this, FileManager.TEMP_DIR);
                     FileUtils.moveFile(new File(
-                                    new FileManager(this, FileManager.TEMP_DIR).getDirAbsolutePath()
+                                    tempFM.getDirAbsolutePath()
                                             + "/" + newTopicBgFileName),
                             outputFile);
                     //Enter the topic
@@ -321,7 +405,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
 
 
     @Override
@@ -404,8 +487,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (ITopic topic : topicList) {
             dbManager.insertTopicOrder(topic.getId(), --orderNumber);
         }
-        dbManager.closeDB();
         loadTopic();
+        dbManager.closeDB();
         mainTopicAdapter.notifyDataSetChanged(true);
         //Clear the filter
         EDT_main_topic_search.setText("");
@@ -441,6 +524,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dbManager.deleteAllCurrentMemoOrder(mainTopicAdapter.getList().get(position).getId());
                 break;
             case ITopic.TYPE_DIARY:
+                //Clear the auto save content
+                SPFManager.clearDiaryAutoSave(this, mainTopicAdapter.getList().get(position).getId());
                 //Because FOREIGN key is not work in this version,
                 //so delete diary item first , then delete diary
                 Cursor diaryCursor = dbManager.selectDiaryList(mainTopicAdapter.getList().get(position).getId());
@@ -505,4 +590,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void afterTextChanged(Editable s) {
 
     }
+
 }

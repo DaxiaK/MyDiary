@@ -26,7 +26,8 @@ public class OldVersionHelper {
         }
         //If the numeric dir is exist , move it
         if (moveIntoNewDir) {
-            File destDir = new FileManager(context, FileManager.DIARY_ROOT_DIR).getDir();
+            FileManager diaryFM = new FileManager(context, FileManager.DIARY_ROOT_DIR);
+            File destDir = diaryFM.getDir();
             FileUtils.deleteDirectory(destDir);
             for (int i = 0; i < dataFiles.length; i++) {
                 if (FileManager.isNumeric(dataFiles[i].getName())) {
@@ -36,7 +37,7 @@ public class OldVersionHelper {
                 }
             }
             //Remove the diary/temp/
-            FileUtils.deleteDirectory(new File(new FileManager(context, FileManager.DIARY_ROOT_DIR).getDirAbsolutePath() + "/temp"));
+            FileUtils.deleteDirectory(new File(diaryFM.getDirAbsolutePath() + "/temp"));
         }
         return moveIntoNewDir;
     }

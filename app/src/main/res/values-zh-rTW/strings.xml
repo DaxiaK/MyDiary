@@ -184,6 +184,7 @@
     <string name="backup_export_hint">匯出所有的內容(不包含設定檔)</string>
     <string name="backup_export_path_hint">點擊選擇匯出的目錄</string>
     <string name="backup_export_button">匯出</string>
+    <string name="backup_export_share_title">選擇分享工具</string>
 
     <string name="toast_export_successful">%1$s\n匯出成功</string>
     <string name="toast_export_fail">糟糕，匯出失敗&#8230;請檢查權限或剩餘空間</string>
@@ -196,6 +197,18 @@
     <string name="toast_import_successful">匯入成功</string>
     <string name="toast_import_fail">糟糕，匯入失敗&#8230;請檢查匯入的檔案</string>
 
+    <!--OOBE-->
+    <string name="oobe_next_button">下一步</string>
 
+    <string name="oobe_main_your_name_title">你的名字</string>
+    <string name="oobe_main_your_name_content">這裡可以設定你的個人資料</string>
+    <string name="oobe_main_topic_list_title">主題列表</string>
+    <string name="oobe_main_topic_list_content">屬於你個人的日記、備忘錄或聯絡人！\n滑動可以編輯或刪除\n(預設的日文資料來自於電影，你可以手動移除)</string>
+    <string name="oobe_main_search_title">搜尋</string>
+    <string name="oobe_main_search_content">可以在這裡搜尋特定的主題</string>
+    <string name="oobe_main_adv_setting_title">進階設定</string>
+    <string name="oobe_main_adv_setting_content">這裡可以打開進階設定\n包含新增主題、應用程式設定、密碼鎖、備份和關於</string>
+    <string name="oobe_main_mydiary_title">MyDiary</string>
+    <string name="oobe_main_mydiary_content">無論你是否看過電影\n希望這個應用程式都能帶給你一些感動\n快點開始寫下專屬於你的名字的故事吧！</string>
 
 </resources>

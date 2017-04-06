@@ -39,12 +39,25 @@ public class SPFManager {
      * System
      */
     private static final String SPF_SYSTEM = "SYSTEM";
+    //@deprecated
     private static final String FIRST_RUN = "FIRST_RUN";
     private static final String SYSTEM_VERSIONCODE = "VERSIONCODE";
     public static final int DEFAULT_VERSIONCODE = -1;
     private static final String DESCRIPTION_CLOSE = "DESCRIPTION_CLOSE";
     private static final String ENCRYPTED_PASSWORD = "ENCRYPTED_PASSWORD";
 
+    /**
+     * OOBE:
+     * Add in  Version 33 , Not use now.
+     */
+    private static final String SPF_OOBE = "OOBE";
+
+    /**
+     * Diary auto save
+     */
+    private static final String SPF_DIARY = "DIARY";
+    //The json file like the backup file
+    private static final String DIARY_AUTO_SAVE = "DIARY_AUTO_SAVE_";
 
     /**
      * Config method
@@ -142,6 +155,13 @@ public class SPFManager {
     /**
      * System method
      */
+
+    /**
+     * @param context
+     * @param firstRun
+     * @deprecated it after version 33
+     * now use ShowcaseView - singleShot to run OOBE onve.
+     */
     public static void setFirstRun(Context context, boolean firstRun) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         SharedPreferences.Editor PE = settings.edit();
@@ -149,7 +169,12 @@ public class SPFManager {
         PE.commit();
     }
 
-
+    /**
+     * @param context
+     * @return
+     * @deprecated it after version 33
+     * now use ShowcaseView - singleShot to run OOBE onve.
+     */
     public static boolean getFirstRun(Context context) {
         SharedPreferences settings = context.getSharedPreferences(SPF_SYSTEM, 0);
         return settings.getBoolean(FIRST_RUN, true);
@@ -194,6 +219,56 @@ public class SPFManager {
         SharedPreferences.Editor PE = settings.edit();
         PE.putString(ENCRYPTED_PASSWORD, password);
         PE.commit();
+    }
+
+
+    /**
+     * Diary
+     */
+
+    /**
+     * Set  the  auto saved diary
+     * The key is DIARY_AUTO_SAVE_TOPICID
+     * <p>
+     * set String null to clear it
+     *
+     * @param context
+     * @param topicId
+     * @param diaryJson
+     */
+    public static void setDiaryAutoSave(Context context, long topicId, String diaryJson) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putString(DIARY_AUTO_SAVE + topicId, diaryJson);
+        PE.commit();
+    }
+
+    /**
+     * set the null value to clear auto save content
+     *
+     * @param context
+     * @param topicId
+     */
+    public static void clearDiaryAutoSave(Context context, long topicId) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        SharedPreferences.Editor PE = settings.edit();
+        PE.putString(DIARY_AUTO_SAVE + topicId, null);
+        PE.commit();
+    }
+
+
+    /**
+     * Get auto saved diary
+     * The key is DIARY_AUTO_SAVE_TOPICID
+     * if  no any file in it , it will return null.
+     *
+     * @param context
+     * @param topicId
+     * @return the auto saved diary json.
+     */
+    public static String getDiaryAutoSave(Context context, long topicId) {
+        SharedPreferences settings = context.getSharedPreferences(SPF_DIARY, 0);
+        return settings.getString(DIARY_AUTO_SAVE + topicId, null);
     }
 
 }

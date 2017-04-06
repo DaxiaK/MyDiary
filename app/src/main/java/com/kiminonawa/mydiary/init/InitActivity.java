@@ -19,7 +19,7 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
 
     private TextView TV_init_message;
 
-    private int initTime = 3000; // 3S
+    private int initTime = 2500; // 3S
     private Handler initHandler;
 
     @Override
