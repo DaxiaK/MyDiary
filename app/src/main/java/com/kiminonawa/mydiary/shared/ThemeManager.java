@@ -359,7 +359,7 @@ public class ThemeManager {
     private Drawable createCustomPressedDrawable(Context context) {
         int padding = ScreenHelper.dpToPixel(context.getResources(), 5);
         int mainColorCode = ThemeManager.getInstance().getThemeMainColor(context);
-        int boardColor = ColorTools.getColor(context, R.color.button_board_color);
+        int boardColor = ColorTools.getColor(context, R.color.button_boarder_color);
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.getPadding(new Rect(padding, padding, padding, padding));
         gradientDrawable.setCornerRadius(ScreenHelper.dpToPixel(context.getResources(), 3));
