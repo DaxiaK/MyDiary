@@ -210,7 +210,6 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         initMoodSpinner();
         setCurrentTime(true);
         initLocationManager();
-        initLocationIcon();
         initProgressDialog();
         diaryItemHelper = new DiaryItemHelper(LL_diary_item_content);
         clearDiaryPage();
@@ -398,6 +397,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * Clear and set the UUI
      */
     private void clearDiaryPage() {
+        isLocation = false;
+        initLocationIcon();
         SP_diary_mood.setSelection(0);
         SP_diary_weather.setSelection(0);
         EDT_diary_title.setText("");

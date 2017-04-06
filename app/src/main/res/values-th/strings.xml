@@ -3,7 +3,12 @@
 
     <!--Release Note-->
     <string name="release_note_title">ข้อมูลการอัพเดท</string>
-    <string name="release_note">**0.2.8.170323_1_AH\n
+    <string name="release_note">**0.2.9.170406_1_A\n
+        -Support auto temp save for diary \n
+        -Add cloudy option to share backup file\n
+        -Add OOBE\n
+        -Fix bug\n\n
+        **0.2.8.170323_1_AH\n
         -Fix file issue on Android N\n
         -Merge Thai patch\n\n
         **0.2.8.170319_1_A\n
@@ -19,22 +24,6 @@
         -Fix calendar shadow bug on Android 4.2\n
         (If your device still have calendar issue , send mail for me!)\n
         -Fix click fail on topic list\n\n
-        **0.2.6.170213_1_d_h2\n
-        -Fix left swipe fail\n
-        -Optimize calendar\n
-        -Fix calendar shadow bug(Android 4.2 and some device not yet)\n
-        -Fix bug\n\n
-        **0.2.6.170209_1_d_h\n
-        -Fix calendar shadow is not right on some devices\n
-        -Fix left swipe fail on some device\n\n
-        **0.2.6.170205_1_d\n
-        -Now you can sort the topic list\n
-        -Modify edit and delete function into left swipe\n
-        -Add simple page effect\n
-        -fix bug\n\n
-        **0.2.5.161018_1_d\n
-        -Add password\n
-        -Fix bug\n\n
     </string>
     <string name="release_note_close_remind">ไม่ต้องแสดงอีกครั้ง</string>
 
