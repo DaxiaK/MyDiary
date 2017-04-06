@@ -207,7 +207,7 @@
     <string name="oobe_main_search_title">搜尋</string>
     <string name="oobe_main_search_content">可以在這裡搜尋特定的主題</string>
     <string name="oobe_main_adv_setting_title">進階設定</string>
-    <string name="oobe_main_adv_setting_content">這裡可以打開進階設定\n包含新增日記、應用程式設定、密碼鎖、備份和關於</string>
+    <string name="oobe_main_adv_setting_content">這裡可以打開進階設定\n包含新增主題、應用程式設定、密碼鎖、備份和關於</string>
     <string name="oobe_main_mydiary_title">MyDiary</string>
     <string name="oobe_main_mydiary_content">無論你是否看過電影\n希望這個應用程式都能帶給你一些感動\n快點開始寫下專屬於你的名字的故事吧！</string>
 
