@@ -5,8 +5,9 @@ dependencies {
     provided "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
     provided "com.android.support:support-core-utils:${SUPPORT_LIB_VERSION}"
     provided "com.google.code.findbugs:jsr305:${JSR_305_VERSION}"
-
-    compile project(':drawee-pipeline')
+    compile 'com.facebook.fresco:drawee:1.2.0'
+    compile 'com.facebook.fresco:fbcore:1.2.0'
+    compile 'com.facebook.fresco:imagepipeline:1.2.0'
     compile project(':gestures')
 }
 

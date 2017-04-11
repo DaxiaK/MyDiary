@@ -1,9 +1,7 @@
 package com.kiminonawa.mydiary.shared;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.res.Configuration;
-import android.support.multidex.MultiDex;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -107,10 +105,4 @@ public class MyDiaryApplication extends Application {
         this.hasPassword = hasPassword;
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        //65K issue
-        MultiDex.install(this);
-    }
 }
