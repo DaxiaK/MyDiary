@@ -1,1 +1,4 @@
-include ':app'
+include ':app', ':gestures', ':zoomable', ':drawee-pipeline'
+project(':gestures').projectDir = new File('lib_module/freso/gestures')
+project(':zoomable').projectDir = new File('lib_module/freso/zoomable')
+project(':drawee-pipeline').projectDir = new File('lib_module/freso/drawee-pipeline')

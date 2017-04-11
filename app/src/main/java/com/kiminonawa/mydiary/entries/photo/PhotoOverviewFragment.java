@@ -11,7 +11,6 @@
  */
 package com.kiminonawa.mydiary.entries.photo;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.FileManager;
 
@@ -92,6 +90,12 @@ public class PhotoOverviewFragment extends Fragment {
         initRecyclerView();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
     private List<File> getFilesList(File parentDir) {
         ArrayList<File> inFiles = new ArrayList<>();
         File[] files = parentDir.listFiles();
@@ -108,51 +112,7 @@ public class PhotoOverviewFragment extends Fragment {
     private void initRecyclerView() {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new SimpleAdapter(theDairyPhotoList));
+        recyclerView.setAdapter(new PhotoOverviewAdapter(getActivity(), theDairyPhotoList));
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    public static class SimpleAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
-
-        private final List<File> mFileList;
-
-        public SimpleAdapter(List<File> fileList) {
-            mFileList = fileList;
-        }
-
-        @Override
-        public SimpleViewHolder onCreateViewHolder(
-                ViewGroup parent,
-                int viewType) {
-            View itemView = LayoutInflater.from(
-                    parent.getContext()).inflate(R.layout.rv_diary_photo_overview_item, parent, false);
-            return new SimpleViewHolder(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(SimpleViewHolder holder, int position) {
-            holder.mSimpleDraweeView.setImageURI(Uri.fromFile(mFileList.get(position)));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mFileList.size();
-        }
-    }
-
-    public static class SimpleViewHolder extends RecyclerView.ViewHolder {
-
-        private final SimpleDraweeView mSimpleDraweeView;
-
-        public SimpleViewHolder(View itemView) {
-            super(itemView);
-            mSimpleDraweeView = (SimpleDraweeView) itemView.findViewById(R.id.drawee_view);
-        }
-    }
 }

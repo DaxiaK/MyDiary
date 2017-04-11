@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+    compile "com.nineoldandroids:library:${NINEOLDANDROID_VERSION}"
+    provided "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+    provided "com.android.support:support-core-utils:${SUPPORT_LIB_VERSION}"
+    provided "com.google.code.findbugs:jsr305:${JSR_305_VERSION}"
+
+    compile project(':drawee-pipeline')
+    compile project(':gestures')
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.1'
+
+    packagingOptions {
+        exclude 'NOTICE'
+        exclude 'LICENSE'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
