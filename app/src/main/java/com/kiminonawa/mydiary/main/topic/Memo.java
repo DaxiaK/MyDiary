@@ -10,14 +10,13 @@ public class Memo implements ITopic {
 
     private String title;
     private long id;
-    private int count;
+    private long count;
     private int color;
     private boolean pinned = false;
 
-    public Memo(long id, String title, int count, int color) {
+    public Memo(long id, String title, int color) {
         this.id = id;
         this.title = title;
-        this.count = count;
         this.color = color;
     }
 
@@ -47,9 +46,13 @@ public class Memo implements ITopic {
         return R.drawable.ic_topic_memo;
     }
 
+    @Override
+    public void setCount(long count) {
+        this.count = count;
+    }
 
     @Override
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 

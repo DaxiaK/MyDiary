@@ -10,14 +10,13 @@ public class Contacts implements ITopic {
 
     private String title;
     private long id;
-    private int count;
+    private long count;
     private int color;
     private boolean pinned = false;
 
-    public Contacts(long id, String title, int count, int color) {
+    public Contacts(long id, String title, int color) {
         this.id = id;
         this.title = title;
-        this.count = count;
         this.color = color;
     }
 
@@ -47,7 +46,12 @@ public class Contacts implements ITopic {
     }
 
     @Override
-    public int getCount() {
+    public void setCount(long count) {
+        this.count = count;
+    }
+
+    @Override
+    public long getCount() {
         return count;
     }
 

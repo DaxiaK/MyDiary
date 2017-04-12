@@ -144,6 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //It should be reload
+        countTopicContent();
+    }
 
     @Override
     protected void onPause() {
@@ -224,20 +230,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (topicCursor.getInt(2)) {
                 case ITopic.TYPE_CONTACTS:
                     topicList.add(
-                            new Contacts(topicCursor.getLong(0), topicCursor.getString(1),
-                                    dbManager.getContactsCountByTopicId(topicCursor.getLong(0)),
-                                    topicCursor.getInt(5)));
+                            new Contacts(topicCursor.getLong(0),
+                                    topicCursor.getString(1),topicCursor.getInt(5)));
                     break;
                 case ITopic.TYPE_DIARY:
                     topicList.add(
-                            new Diary(topicCursor.getLong(0), topicCursor.getString(1),
-                                    dbManager.getDiaryCountByTopicId(topicCursor.getLong(0)),
+                            new Diary(topicCursor.getLong(0),
+                                    topicCursor.getString(1),
                                     topicCursor.getInt(5)));
                     break;
                 case ITopic.TYPE_MEMO:
                     topicList.add(
-                            new Memo(topicCursor.getLong(0), topicCursor.getString(1),
-                                    dbManager.getMemoCountByTopicId(topicCursor.getLong(0)),
+                            new Memo(topicCursor.getLong(0),
+                                    topicCursor.getString(1),
                                     topicCursor.getInt(5)));
                     break;
             }
@@ -248,6 +253,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadProfilePicture() {
         IV_main_profile_picture.setImageDrawable(themeManager.getProfilePictureDrawable(this));
+    }
+
+    private void countTopicContent() {
+        dbManager.opeDB();
+        for (int i = 0; i < topicList.size(); i++) {
+            switch (topicList.get(i).getType()) {
+                case ITopic.TYPE_CONTACTS:
+                    topicList.get(i).setCount(
+                            dbManager.getContactsCountByTopicId(topicList.get(i).getId()));
+                    break;
+                case ITopic.TYPE_DIARY:
+                    topicList.get(i).setCount(
+                            dbManager.getDiaryCountByTopicId(topicList.get(i).getId()));
+                    break;
+                case ITopic.TYPE_MEMO:
+                    topicList.get(i).setCount(
+                            dbManager.getMemoCountByTopicId(topicList.get(i).getId()));
+                    break;
+            }
+        }
+        dbManager.closeDB();
+        mWrappedAdapter.notifyDataSetChanged();
     }
 
 
@@ -455,7 +482,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     @Override
-                    public int getCount() {
+                    public void setCount(long count) {
+
+                    }
+                    @Override
+                    public long getCount() {
                         return 0;
                     }
 

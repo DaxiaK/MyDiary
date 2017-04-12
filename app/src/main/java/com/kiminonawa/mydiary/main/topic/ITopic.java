@@ -35,7 +35,12 @@ public interface ITopic {
     @DrawableRes
     int getIcon();
 
-    int getCount();
+    /**
+     * For update count in Main Page
+     */
+    void setCount(long count);
+
+    long getCount();
 
     int getColor();
 
