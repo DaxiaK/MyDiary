@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.entries.diary;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -126,9 +127,14 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 tempFileName = "/" + fileManager.createRandomFileName();
                 File tmpFile = new File(fileManager.getDir(), tempFileName);
-                //Fix the Android N+ file can't be send
-                Uri outputFileUri = FileProvider.getUriForFile(getActivity(),
-                        getActivity().getApplicationContext().getPackageName() + ".provider", tmpFile);
+                Uri outputFileUri;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                    outputFileUri = Uri.fromFile(tmpFile);
+                } else {
+                    //Fix the Android N+ file can't be send
+                    outputFileUri = FileProvider.getUriForFile(getActivity(),
+                            getActivity().getApplicationContext().getPackageName() + ".provider", tmpFile);
+                }
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
                 startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
                 break;
