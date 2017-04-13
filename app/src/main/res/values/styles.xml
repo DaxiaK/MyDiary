@@ -35,6 +35,20 @@
     <!-- End OOBE -->
 
 
+    <!--For photo overview full screen dialog-->
+    <style name="TransparentDialog" parent="@android:style/Theme">
+
+        <!-- Fill the screen -->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <!--Start For NoNonsense-FilePicker-->
     <!--It must set the theme or lib will crash.-->
     <style name="FilePickerTheme" parent="NNF_BaseTheme">

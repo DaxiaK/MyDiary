@@ -31,24 +31,27 @@ public class PhotoDetailViewerFragment extends DialogFragment {
     ZoomableDraweeView zdvPhotoDetail;
     Unbinder unbinder;
 
-//    public static PhotoDetailViewerFragment newInstance(long topicId) {
-//        Bundle args = new Bundle();
-//        PhotoDetailViewerFragment fragment = new PhotoDetailViewerFragment();
-//        args.putLong("topicId", topicId);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setStyle(DialogFragment.STYLE_NORMAL, R.style.MY_DIALOG);
-//    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        // request a window without the title
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TransparentDialog);
+
+
+        return dialog;
+    }
 
 
     @Override
     public void onStart() {
         super.onStart();
+//        ScreenHelper.openInmmersiveMode(getDialog().getWindow().getDecorView());
         Dialog d = getDialog();
         if (d != null) {
             int width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -76,7 +79,7 @@ public class PhotoDetailViewerFragment extends DialogFragment {
         unbinder.unbind();
     }
 
-    private void initZoomableDraweeView(){
+    private void initZoomableDraweeView() {
         zdvPhotoDetail.setAllowTouchInterceptionWhileZoomed(true);
         // needed for double tap to zoom
         zdvPhotoDetail.setIsLongpressEnabled(false);
