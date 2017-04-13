@@ -3,6 +3,7 @@ package com.kiminonawa.mydiary.entries.diary;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
@@ -23,6 +24,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         void onDiarySaved();
     }
 
+    public final static String TAG = "SaveDiaryTask";
     public final static int RESULT_INSERT_SUCCESSFUL = 1;
     public final static int RESULT_INSERT_ERROR = 2;
 
@@ -44,7 +46,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     public SaveDiaryTask(Context context, long time, String title,
                          int moodPosition, int weatherPosition,
                          boolean attachment, String locationName,
-                         DiaryItemHelper diaryItemHelper, FileManager fileManager, SaveDiaryCallBack callBack) {
+                         DiaryItemHelper diaryItemHelper, long topicId, SaveDiaryCallBack callBack) {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.process_dialog_saving));
         progressDialog.setCancelable(false);
@@ -59,7 +61,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.attachment = attachment;
         this.locationName = locationName;
         this.diaryItemHelper = diaryItemHelper;
-        this.tempFileManager = fileManager;
+        this.tempFileManager = new FileManager(context, topicId);
         this.callBack = callBack;
 
         progressDialog.show();
@@ -96,8 +98,11 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
                 saveResult = RESULT_INSERT_ERROR;
             }
         } catch (Exception e) {
+            Log.e(TAG, "save diary fail", e);
             //Revert the Data
-            diaryFileManager.clearDir();
+            if (diaryFileManager != null) {
+                diaryFileManager.clearDir();
+            }
             saveResult = RESULT_INSERT_ERROR;
         } finally {
             dbManager.endTransaction();

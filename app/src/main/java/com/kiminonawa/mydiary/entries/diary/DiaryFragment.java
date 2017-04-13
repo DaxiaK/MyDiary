@@ -513,7 +513,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 SP_diary_mood.getSelectedItemPosition(), SP_diary_weather.getSelectedItemPosition(),
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                locationName, diaryItemHelper, diaryTempFileManager, this).execute(getTopicId());
+                locationName, diaryItemHelper, getTopicId(), this).execute(getTopicId());
     }
 
     private void startGetLocation() {

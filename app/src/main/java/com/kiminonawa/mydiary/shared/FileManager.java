@@ -185,7 +185,8 @@ public class FileManager {
     }
 
     public void clearDir() {
-        if (fileDir.isDirectory()) {
+        File[] fList = fileDir.listFiles();
+        if (fList != null && fileDir.isDirectory()) {
             try {
                 FileUtils.cleanDirectory(fileDir);
             } catch (IOException e) {
