@@ -3,7 +3,9 @@
 
     <!--Release Note-->
     <string name="release_note_title">アップデート情報</string>
-    <string name="release_note">**0.2.9.170406_1_A\n
+    <string name="release_note">**0.2.9.170416_1_AH\n
+        -fix bug\n\n
+        **0.2.9.170406_1_A\n
         -Support auto temp save for diary \n
         -Add cloudy option to share backup file\n
         -Add OOBE\n

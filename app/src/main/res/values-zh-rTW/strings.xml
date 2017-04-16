@@ -3,7 +3,9 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.2.9.170406_1_A\n
+    <string name="release_note">**0.2.9.170416_1_AH\n
+        -修復bug\n\n
+        **0.2.9.170406_1_A\n
         -日記支援自動暫存\n
         -新增備份後分享檔案到雲端的選單\n
         -加入第一次使用的簡單說明\n
