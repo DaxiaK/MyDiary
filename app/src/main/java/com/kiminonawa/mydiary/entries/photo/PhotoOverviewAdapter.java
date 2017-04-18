@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.content.Context;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -14,9 +15,13 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.ScreenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +42,10 @@ public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdap
     private Map<Uri, Integer> heightMap = new HashMap<>();
     private Map<Uri, Integer> widthMap = new HashMap<>();
     private OnItemClickListener mItemClickListener;
+    private Context mContext;
 
-    public PhotoOverviewAdapter(ArrayList<Uri> diaryPhotoFileList) {
+    public PhotoOverviewAdapter(Context context, ArrayList<Uri> diaryPhotoFileList) {
+        this.mContext = context;
         this.diaryPhotoFileList = diaryPhotoFileList;
     }
 
@@ -46,8 +53,7 @@ public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdap
     public SimpleViewHolder onCreateViewHolder(
             ViewGroup parent,
             int viewType) {
-        View itemView = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.rv_diary_photo_overview_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_diary_photo_overview_item, parent, false);
         return new SimpleViewHolder(itemView);
     }
 
@@ -87,10 +93,16 @@ public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdap
             public void onFailure(String id, Throwable throwable) {
             }
         };
+        //The temp height
+        ImageRequest request = ImageRequestBuilder.newBuilderWithSource(diaryPhotoFileList.get(position))
+                .setResizeOptions(
+                        new ResizeOptions(ScreenHelper.dpToPixel(mContext.getResources(), 150),
+                                ScreenHelper.dpToPixel(mContext.getResources(), 150)))
+                .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri(diaryPhotoFileList.get(position))
+                .setImageRequest(request)
                 .setControllerListener(controllerListener)
-                .setTapToRetryEnabled(true)
+                .setTapToRetryEnabled(false)
                 .build();
         holder.SDV_CV_diary_photo_overview.setController(controller);
 

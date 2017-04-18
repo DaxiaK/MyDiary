@@ -111,7 +111,7 @@ public class PhotoOverviewFragment extends Fragment {
     private void initRecyclerView() {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        PhotoOverviewAdapter photoOverviewAdapter = new PhotoOverviewAdapter(diaryPhotoFileList);
+        PhotoOverviewAdapter photoOverviewAdapter = new PhotoOverviewAdapter(getActivity(), diaryPhotoFileList);
         recyclerView.setAdapter(photoOverviewAdapter);
         photoOverviewAdapter.setOnItemClickListener(new PhotoOverviewAdapter.OnItemClickListener() {
             @Override

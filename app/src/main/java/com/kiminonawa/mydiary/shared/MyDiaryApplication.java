@@ -29,6 +29,7 @@ public class MyDiaryApplication extends Application {
         listeners.add(new RequestLoggingListener());
         ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
                 .setRequestListeners(listeners)
+                .setDownsampleEnabled(true)
                 .build();
         Fresco.initialize(this, config);
 
