@@ -11,6 +11,7 @@
  */
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,7 @@ public class PhotoOverviewFragment extends Fragment {
      * The topic info
      */
     private long topicId;
-    private List<File> theDairyPhotoList;
+    private ArrayList<Uri> diaryPhotoFileList;
 
     /**
      * The bind UI
@@ -71,10 +72,7 @@ public class PhotoOverviewFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(
-            LayoutInflater inflater,
-            @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diary_photo_overview, container, false);
         unbinder = ButterKnife.bind(this, view);
         topicId = getArguments().getLong("topicId");
@@ -86,7 +84,10 @@ public class PhotoOverviewFragment extends Fragment {
         FileManager diaryRoot = new FileManager(getActivity(), DIARY_ROOT_DIR);
         File topicRootFile = new File(diaryRoot.getDirAbsolutePath() + "/" + topicId);
         //Load all file form topic dir
-        theDairyPhotoList = getFilesList(topicRootFile);
+        diaryPhotoFileList = new ArrayList<>();
+        for (File photoFile : getFilesList(topicRootFile)) {
+            diaryPhotoFileList.add(Uri.fromFile(photoFile));
+        }
         initRecyclerView();
     }
 
@@ -112,7 +113,7 @@ public class PhotoOverviewFragment extends Fragment {
     private void initRecyclerView() {
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new PhotoOverviewAdapter(getActivity(), theDairyPhotoList));
+        recyclerView.setAdapter(new PhotoOverviewAdapter(getActivity(), diaryPhotoFileList));
     }
 
 }

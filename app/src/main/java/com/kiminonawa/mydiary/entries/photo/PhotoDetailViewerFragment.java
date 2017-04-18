@@ -1,9 +1,9 @@
 package com.kiminonawa.mydiary.entries.photo;
 
-import android.app.Dialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,49 +22,35 @@ import butterknife.Unbinder;
  * Created by daxia on 2017/4/12.
  */
 
-public class PhotoDetailViewerFragment extends DialogFragment {
+public class PhotoDetailViewerFragment extends Fragment {
 
-    /**
-     * The UI
-     */
+
     @BindView(R.id.zdv_photo_detail)
-    ZoomableDraweeView zdvPhotoDetail;
-    Unbinder unbinder;
+    public ZoomableDraweeView zdvPhotoDetail;
+    public Unbinder unbinder;
+
+    private Uri photoUri;
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static PhotoDetailViewerFragment newInstance(Uri photoUri) {
+        Bundle args = new Bundle();
+        PhotoDetailViewerFragment fragment = new PhotoDetailViewerFragment();
+        args.putParcelable("photoUri", photoUri);
+        fragment.setArguments(args);
+        return fragment;
     }
 
+    @Nullable
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = super.onCreateDialog(savedInstanceState);
-        // request a window without the title
-        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.TransparentDialog);
-
-
-        return dialog;
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-//        ScreenHelper.openInmmersiveMode(getDialog().getWindow().getDecorView());
-        Dialog d = getDialog();
-        if (d != null) {
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            d.getWindow().setLayout(width, height);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_diary_photo_detail_viewer, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        photoUri = getArguments().getParcelable("photoUri");
+        if (photoUri == null) {
+            //TODO set The default error photo
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.dialog_fragment_diary_photo_detail_viewer, container, false);
-        unbinder = ButterKnife.bind(this, root);
-        return root;
+        return view;
     }
 
     @Override
@@ -72,6 +58,7 @@ public class PhotoDetailViewerFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         initZoomableDraweeView();
     }
+
 
     @Override
     public void onDestroyView() {
@@ -85,10 +72,9 @@ public class PhotoDetailViewerFragment extends DialogFragment {
         zdvPhotoDetail.setIsLongpressEnabled(false);
         zdvPhotoDetail.setTapListener(new DoubleTapGestureListener(zdvPhotoDetail));
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setUri("https://www.gstatic.com/webp/gallery/1.sm.jpg")
+                .setUri(photoUri)
                 .build();
         zdvPhotoDetail.setController(controller);
     }
-
-
 }
+

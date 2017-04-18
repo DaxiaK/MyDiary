@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.kiminonawa.mydiary.R;
 
-import java.io.File;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by daxia on 2017/4/11.
@@ -19,12 +18,12 @@ import java.util.List;
 
 public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdapter.SimpleViewHolder> {
 
-    private final List<File> mFileList;
-    private FragmentActivity actvity;
+    private final ArrayList<Uri> diaryPhotoFileList;
+    private FragmentActivity activity;
 
-    public PhotoOverviewAdapter(FragmentActivity actvity, List<File> fileList) {
-        this.actvity = actvity;
-        mFileList = fileList;
+    public PhotoOverviewAdapter(FragmentActivity activity, ArrayList<Uri> diaryPhotoFileList) {
+        this.activity = activity;
+        this.diaryPhotoFileList = diaryPhotoFileList;
     }
 
     @Override
@@ -37,13 +36,14 @@ public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdap
     }
 
     @Override
-    public void onBindViewHolder(SimpleViewHolder holder, int position) {
-        holder.mSimpleDraweeView.setImageURI(Uri.fromFile(mFileList.get(position)));
+    public void onBindViewHolder(SimpleViewHolder holder, final int position) {
+        holder.mSimpleDraweeView.setImageURI(diaryPhotoFileList.get(position));
         holder.mSimpleDraweeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PhotoDetailViewerFragment photoDetailViewerFragment = new PhotoDetailViewerFragment();
-                photoDetailViewerFragment.show(actvity.getSupportFragmentManager(), "diaryPhotoBottomSheet");
+                PhotoDetailViewerDialogFragment photoDetailViewerDialogFragment =
+                        PhotoDetailViewerDialogFragment.newInstance(diaryPhotoFileList, position);
+                photoDetailViewerDialogFragment.show(activity.getSupportFragmentManager(), "diaryPhotoBottomSheet");
 
             }
         });
@@ -51,7 +51,7 @@ public class PhotoOverviewAdapter extends RecyclerView.Adapter<PhotoOverviewAdap
 
     @Override
     public int getItemCount() {
-        return mFileList.size();
+        return diaryPhotoFileList.size();
     }
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
