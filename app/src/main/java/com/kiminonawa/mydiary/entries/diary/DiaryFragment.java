@@ -328,11 +328,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 diaryItemHelper.createItem(diaryText, tag.getPositionTag() + 1);
                 diaryText.getView().requestFocus();
                 //Add photo
-                diaryPhoto.setDeleteClickListener(tag.getPositionTag() + 1, this);
+                diaryPhoto.setPosition(tag.getPositionTag() + 1);
+                diaryPhoto.setDeleteClickListener(this);
                 diaryItemHelper.createItem(diaryPhoto, tag.getPositionTag() + 1);
             } else {
                 //Add photo
-                diaryPhoto.setDeleteClickListener(diaryItemHelper.getItemSize(), this);
+                diaryPhoto.setPosition(diaryItemHelper.getItemSize());
+                diaryPhoto.setDeleteClickListener(this);
                 diaryItemHelper.createItem(diaryPhoto);
                 //Add new edittext
                 DiaryText diaryText = new DiaryText(getActivity());
@@ -485,8 +487,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 content = FileManager.FILE_HEADER +
                         diaryTempFileManager.getDirAbsolutePath() + "/" +
                         autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
-                ((DiaryPhoto) diaryItem).setDeleteClickListener(
-                        autoSaveDiary.getDiaryItemList().get(i).getDiaryItemPosition(), this);
+                ((DiaryPhoto) diaryItem).setDeleteClickListener(this);
                 //For get the right file name
                 ((DiaryPhoto) diaryItem).setPhotoFileName(
                         autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent());

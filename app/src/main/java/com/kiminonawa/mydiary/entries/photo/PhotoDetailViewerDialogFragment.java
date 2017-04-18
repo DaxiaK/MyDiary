@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 
@@ -34,7 +35,7 @@ public class PhotoDetailViewerDialogFragment extends DialogFragment {
 
     private PhotoDetailPagerAdapter mAdapter;
     /**
-     * Open this dialog from diay photo overview.
+     * Open this dialog from diary photo overview.
      */
     private ArrayList<Uri> diaryPhotoFileList;
     private int selectPosition;
@@ -47,17 +48,6 @@ public class PhotoDetailViewerDialogFragment extends DialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-    public static PhotoDetailViewerDialogFragment newInstance(long topicId, long diaryId, String photoFileName) {
-        Bundle args = new Bundle();
-        PhotoDetailViewerDialogFragment fragment = new PhotoDetailViewerDialogFragment();
-        args.putLong("topicId", topicId);
-        args.putLong("diaryId", diaryId);
-        args.putString("photoFileName", photoFileName);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +77,13 @@ public class PhotoDetailViewerDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //get args
+
         //The arraylist is form overview
         diaryPhotoFileList = getArguments().getParcelableArrayList("diaryPhotoFileList");
         selectPosition = getArguments().getInt("selectPosition", -1);
         if (diaryPhotoFileList == null || selectPosition == -1) {
-            //TODO Do something to close this dialog
+            Toast.makeText(getActivity(), "取得照片路徑錯誤", Toast.LENGTH_LONG).show();
+            dismiss();
         } else {
             //Init The view pager
             //**Notice** It MUST use getChildFragmentManager()
