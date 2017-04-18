@@ -59,6 +59,7 @@ import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerDialogFragment;
+import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
@@ -449,6 +450,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
             IV_diary_delete.setVisibility(View.GONE);
             IV_diary_clear.setVisibility(View.GONE);
+
+            IV_diary_photo.setImageResource(R.drawable.ic_photo_camera_white_24dp);
+            IV_diary_photo.setOnClickListener(this);
         } else {
             EDT_diary_title.setVisibility(View.GONE);
             RL_diary_weather = (RelativeLayout) rootView.findViewById(R.id.RL_diary_weather);
@@ -470,7 +474,9 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             IV_diary_delete.setOnClickListener(this);
             IV_diary_clear.setVisibility(View.GONE);
             IV_diary_save.setVisibility(View.GONE);
-            IV_diary_photo.setColorFilter(R.color.button_disable_color);
+
+            IV_diary_photo.setImageResource(R.drawable.ic_photo_white_24dp);
+            IV_diary_photo.setOnClickListener(this);
         }
     }
 
@@ -785,7 +791,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             //Open the click listener
             IV_diary_clear.setOnClickListener(this);
             IV_diary_save.setOnClickListener(this);
-            IV_diary_photo.setOnClickListener(this);
         } else {
             dismissAllowingStateLoss();
         }
@@ -833,19 +838,28 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 photoDetailViewerDialogFragment.show(getActivity().getSupportFragmentManager(), "diaryPhotoBottomSheet");
                 break;
             case R.id.IV_diary_photo:
-                if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
-                    if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
-                        if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
-                            openPhotoBottomSheet();
-                        } else {
-                            Toast.makeText(getActivity(),
-                                    String.format(getResources().getString(R.string.toast_max_photo), DiaryItemHelper.MAX_PHOTO_COUNT),
-                                    Toast.LENGTH_SHORT).show();
+                if (isEditMode) {
+                    //Allow add photo
+                    if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                        if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
+                            if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
+                                openPhotoBottomSheet();
+                            } else {
+                                Toast.makeText(getActivity(),
+                                        String.format(getResources().getString(R.string.toast_max_photo), DiaryItemHelper.MAX_PHOTO_COUNT),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
+                    } else {
+                        //Insufficient
+                        Toast.makeText(getActivity(), getString(R.string.toast_space_insufficient), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    //Insufficient
-                    Toast.makeText(getActivity(), getString(R.string.toast_space_insufficient), Toast.LENGTH_SHORT).show();
+                    //Show the gallery
+                    Intent gotoPhotoOverviewIntent = new Intent(getActivity(), PhotoOverviewActivity.class);
+                    gotoPhotoOverviewIntent.putExtra(PhotoOverviewActivity.PHOTO_OVERVIEW_TOPIC_ID, ((DiaryActivity) getActivity()).getTopicId());
+                    gotoPhotoOverviewIntent.putExtra(PhotoOverviewActivity.PHOTO_OVERVIEW_DIARY_ID, diaryId);
+                    getActivity().startActivity(gotoPhotoOverviewIntent);
                 }
                 break;
             case R.id.IV_diary_close_dialog:

@@ -50,7 +50,7 @@ public class PhotoOverviewFragment extends Fragment {
     /**
      * The topic info
      */
-    private long topicId;
+    private long topicId, diaryId;
     private ArrayList<Uri> diaryPhotoFileList;
 
     /**
@@ -61,10 +61,11 @@ public class PhotoOverviewFragment extends Fragment {
     Unbinder unbinder;
 
 
-    public static PhotoOverviewFragment newInstance(long topicId) {
+    public static PhotoOverviewFragment newInstance(long topicId, long diaryId) {
         Bundle args = new Bundle();
         PhotoOverviewFragment fragment = new PhotoOverviewFragment();
         args.putLong("topicId", topicId);
+        args.putLong("diaryId", diaryId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -75,14 +76,20 @@ public class PhotoOverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_diary_photo_overview, container, false);
         unbinder = ButterKnife.bind(this, view);
-        topicId = getArguments().getLong("topicId");
+        topicId = getArguments().getLong("topicId", -1);
+        diaryId = getArguments().getLong("diaryId", -1);
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         FileManager diaryRoot = new FileManager(getActivity(), DIARY_ROOT_DIR);
-        File topicRootFile = new File(diaryRoot.getDirAbsolutePath() + "/" + topicId);
+        File topicRootFile;
+        if (diaryId != -1) {
+            topicRootFile = new File(diaryRoot.getDirAbsolutePath() + "/" + topicId + "/" + diaryId);
+        } else {
+            topicRootFile = new File(diaryRoot.getDirAbsolutePath() + "/" + topicId);
+        }
         //Load all file form topic dir
         diaryPhotoFileList = new ArrayList<>();
         for (File photoFile : getFilesList(topicRootFile)) {
