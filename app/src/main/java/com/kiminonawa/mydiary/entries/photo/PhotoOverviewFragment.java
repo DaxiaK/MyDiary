@@ -15,8 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,15 +38,6 @@ import static com.kiminonawa.mydiary.shared.FileManager.DIARY_ROOT_DIR;
  * Simple drawee recycler view fragment that displays a grid of images.
  */
 public class PhotoOverviewFragment extends Fragment {
-
-    /**
-     * Total number of images displayed
-     */
-    private static final int TOTAL_NUM_ENTRIES = 200;
-    /**
-     * Number of recycler view spans
-     */
-    private static final int SPAN_COUNT = 3;
     /**
      * The topic info
      */
@@ -118,9 +109,19 @@ public class PhotoOverviewFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), SPAN_COUNT);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new PhotoOverviewAdapter(getActivity(), diaryPhotoFileList));
+        PhotoOverviewAdapter photoOverviewAdapter = new PhotoOverviewAdapter(diaryPhotoFileList);
+        recyclerView.setAdapter(photoOverviewAdapter);
+        photoOverviewAdapter.setOnItemClickListener(new PhotoOverviewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                PhotoDetailViewerDialogFragment photoDetailViewerDialogFragment =
+                        PhotoDetailViewerDialogFragment.newInstance(diaryPhotoFileList, position);
+                photoDetailViewerDialogFragment.show(getActivity().getSupportFragmentManager(), "diaryPhotoBottomSheet");
+            }
+        });
+        recyclerView.setHasFixedSize(false);
     }
 
 }
