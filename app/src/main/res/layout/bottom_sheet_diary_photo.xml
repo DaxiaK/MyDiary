@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_photo_white_36dp" />
+                android:src="@drawable/ic_photo_library_white_36dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -14,6 +14,7 @@ public class DiaryPhoto implements IDairyRow {
 
     private DiaryPhotoLayout diaryPhotoLayout;
     private String photoFileName;
+    private Uri photoUri;
     private int position;
 
     public DiaryPhoto(Activity activity) {
@@ -22,14 +23,37 @@ public class DiaryPhoto implements IDairyRow {
         setEditMode(true);
     }
 
-    public void setDeleteClickListener(int positionTag, View.OnClickListener clickListener) {
-        diaryPhotoLayout.setDeleteOnClick(clickListener);
-        diaryPhotoLayout.setPositiontag(positionTag);
+    /**
+     * This tag is only used in view mode
+     * @param draweeViewPositionTag
+     */
+    public void setDraweeViewPositionTag(int draweeViewPositionTag) {
+        diaryPhotoLayout.setDraweeViewPositionTag(draweeViewPositionTag);
     }
 
+    /**
+     * Edit mode , the delete button
+     *
+     * @param clickListener
+     */
+    public void setDeleteClickListener(View.OnClickListener clickListener) {
+        diaryPhotoLayout.setDeleteOnClick(clickListener);
+    }
+
+    /**
+     * The view mode , you can click to open the large imgae
+     *
+     * @param clickListener
+     */
+    public void setDraweeViewClickListener(View.OnClickListener clickListener) {
+        diaryPhotoLayout.setDraweeViewClick(clickListener);
+    }
+
+
     public void setPhoto(Uri photoUri, String photoFileName) {
+        this.photoUri = photoUri;
         this.photoFileName = photoFileName;
-        diaryPhotoLayout.setPhotoUri( photoUri);
+        diaryPhotoLayout.setPhotoUri(photoUri);
     }
 
 
@@ -45,7 +69,8 @@ public class DiaryPhoto implements IDairyRow {
     @Override
     public void setPosition(int position) {
         this.position = position;
-        diaryPhotoLayout.setPositiontag(position);
+        //When  content is modified(e.g.insert or delete) , update setDeletePositionTag
+        diaryPhotoLayout.setDeletePositionTag(position);
     }
 
     @Override

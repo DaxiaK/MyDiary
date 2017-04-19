@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-core:${MOCKITO_CORE_VERSION}"
+    testCompile("org.robolectric:robolectric:${ROBOLECTRIC_VERSION}") {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.1'
+
+    packagingOptions {
+        exclude 'NOTICE'
+        exclude 'LICENSE'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    sourceSets {
+        test {
+            java {
+                srcDir 'src'
+                exclude '**/MultiPointerGestureDetectorTest.java'
+            }
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
