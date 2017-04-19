@@ -202,4 +202,9 @@
     <string name="oobe_main_mydiary_title">MyDiary</string>
     <string name="oobe_main_mydiary_content">無論你是否看過電影\n希望這個應用程式都能帶給你一些感動\n快點開始寫下專屬於你的名字的故事吧！</string>
 
+    <!--Photo viewer-->
+    <string name="photo_viewer_topic_fail">取得日記資料錯誤</string>
+    <string name="photo_viewer_photo_path_fail">取得照片路徑錯誤</string>
+
+
 </resources>

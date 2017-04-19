@@ -30,6 +30,10 @@ public class AboutActivity extends AppCompatActivity {
         license.append(
                 new LicenseObj("MyDiary", "Daxia", "2016 - 2017", LicenseObj.MIT)
                         .getLicense());
+        license.append("\nSome icon is Flaticon Basic License from www.flaticon.com\n");
+        license.append(
+                new LicenseObj("", "Freepik", "", LicenseObj.Flaticon)
+                        .getLicense());
         license.append("\nI use some lib from:\n");
         license.append(
                 new LicenseObj("android-segmented-control", "Le Van Hoang", "2014", LicenseObj.MIT)
@@ -78,6 +82,7 @@ public class AboutActivity extends AppCompatActivity {
         public final static int GPLv2 = 2;
         public final static int BSD = 3;
         public final static int MPLv2 = 4;
+        public final static int Flaticon = 5;
 
         private String softwareName;
         private String author;
@@ -187,8 +192,10 @@ public class AboutActivity extends AppCompatActivity {
                             "file in a relevant directory) where a recipient would be likely to look\n" +
                             "for such a notice.\n" +
                             "\n" +
-                            "You may add additional accurate notices of copyright ownership."+
+                            "You may add additional accurate notices of copyright ownership." +
                             "\n\n=====\n";
+                case Flaticon:
+                    return "designed by " + author + " from Flaticon\n";
                 default:
                     return "";
             }

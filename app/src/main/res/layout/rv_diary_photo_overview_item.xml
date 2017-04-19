@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:background="@android:color/white">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/CV_diary_photo_overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        card_view:cardCornerRadius="2dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/SDV_CV_diary_photo_overview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            fresco:failureImage="@drawable/ic_error_outline_black_36dp"
+            fresco:placeholderImage="@drawable/ic_photo_overview_loading" />
+    </android.support.v7.widget.CardView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+</LinearLayout>

@@ -57,8 +57,16 @@ public class DiaryPhotoLayout extends LinearLayout {
         IV_diary_photo_delete.setOnClickListener(listener);
     }
 
-    public void setPositiontag(int position) {
+    public void setDeletePositionTag(int position) {
         IV_diary_photo_delete.setTag(position);
+    }
+
+    public void setDraweeViewClick(OnClickListener listener) {
+        SDV_diary_new_photo.setOnClickListener(listener);
+    }
+
+    public void setDraweeViewPositionTag(int position) {
+        SDV_diary_new_photo.setTag(position);
     }
 
     public void setVisibleViewByMode(boolean isEditMode) {

@@ -22,9 +22,17 @@ public interface IDairyRow {
 
     void setEditMode(boolean isEditMode);
 
-    //For resort after add new item
+    /**
+     * For resort after add new item
+     *
+     * @param position
+     */
     void setPosition(int position);
 
+    /**
+     * get position for auto save
+     * @return
+     */
     int getPosition();
 
 }

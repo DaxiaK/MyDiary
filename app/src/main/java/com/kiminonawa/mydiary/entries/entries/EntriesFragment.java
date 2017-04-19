@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.entries;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.BaseDiaryFragment;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 
@@ -49,6 +51,7 @@ public class EntriesFragment extends BaseDiaryFragment implements
         IV_entries_edit = (ImageView) rootView.findViewById(R.id.IV_entries_edit);
         IV_entries_edit.setOnClickListener(this);
         IV_entries_photo = (ImageView) rootView.findViewById(R.id.IV_entries_photo);
+        IV_entries_photo.setOnClickListener(this);
         TV_entries_edit_msg = (TextView) rootView.findViewById(R.id.TV_entries_edit_msg);
         TV_entries_edit_msg.setTextColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
@@ -133,7 +136,9 @@ public class EntriesFragment extends BaseDiaryFragment implements
                 setEditModeUI(entriesAdapter.isEditMode());
                 break;
             case R.id.IV_entries_photo:
-                //TODO show some thing like album
+                Intent gotoPhotoOverviewIntent = new Intent(getActivity(), PhotoOverviewActivity.class);
+                gotoPhotoOverviewIntent.putExtra(PhotoOverviewActivity.PHOTO_OVERVIEW_TOPIC_ID, getTopicId());
+                getActivity().startActivity(gotoPhotoOverviewIntent);
                 break;
 
         }

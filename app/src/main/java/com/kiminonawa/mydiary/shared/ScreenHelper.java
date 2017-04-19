@@ -3,9 +3,12 @@ package com.kiminonawa.mydiary.shared;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import java.io.File;
 import java.text.DecimalFormat;
 
 /**
@@ -48,5 +51,18 @@ public class ScreenHelper {
         return result;
     }
 
+    /**
+     * @param uri
+     * @return {imageHeight,imageWidth}
+     */
+    public static int[] getImageSize(Uri uri) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(new File(uri.getPath()).getAbsolutePath(), options);
+        int imageHeight = options.outHeight;
+        int imageWidth = options.outWidth;
+        int[] returnSize = {imageHeight, imageWidth};
+        return returnSize;
+    }
 
 }
