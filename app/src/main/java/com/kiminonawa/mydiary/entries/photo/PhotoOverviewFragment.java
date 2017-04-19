@@ -15,8 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +109,7 @@ public class PhotoOverviewFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),3);
         recyclerView.setLayoutManager(layoutManager);
         PhotoOverviewAdapter photoOverviewAdapter = new PhotoOverviewAdapter(getActivity(), diaryPhotoFileList);
         recyclerView.setAdapter(photoOverviewAdapter);
