@@ -199,4 +199,8 @@
     <string name="oobe_main_mydiary_title">MyDiary</string>
     <string name="oobe_main_mydiary_content">无论你是否看过电影\n希望这个应都能给你一些感动\n快点开始写下专属于你的名字的故事吧!</string>
 
+    <!--Photo viewer-->
+    <string name="photo_viewer_topic_fail">取得日记资料错误</string>
+    <string name="photo_viewer_photo_path_fail">取得照片路径错误</string>
+
 </resources>

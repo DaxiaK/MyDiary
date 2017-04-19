@@ -82,7 +82,7 @@ public class PhotoDetailViewerDialogFragment extends DialogFragment {
         diaryPhotoFileList = getArguments().getParcelableArrayList("diaryPhotoFileList");
         selectPosition = getArguments().getInt("selectPosition", -1);
         if (diaryPhotoFileList == null || selectPosition == -1) {
-            Toast.makeText(getActivity(), "取得照片路徑錯誤", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.photo_viewer_photo_path_fail), Toast.LENGTH_LONG).show();
             dismiss();
         } else {
             //Init The view pager

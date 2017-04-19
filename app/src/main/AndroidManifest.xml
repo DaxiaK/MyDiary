@@ -51,7 +51,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".entries.photo.PhotoOverviewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
             android:name=".memo.MemoActivity"
             android:screenOrientation="portrait"

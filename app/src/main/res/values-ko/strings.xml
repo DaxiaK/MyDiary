@@ -197,4 +197,8 @@
     <string name="oobe_main_mydiary_title">MyDiary</string>
     <string name="oobe_main_mydiary_content">however you see the movie or not.\nI hope you can get something from this app.\nTo write the story about your name now!</string>
 
+    <!--Photo viewer-->
+    <string name="photo_viewer_topic_fail">get diary fail</string>
+    <string name="photo_viewer_photo_path_fail">get photo path fail</string>
+
 </resources>

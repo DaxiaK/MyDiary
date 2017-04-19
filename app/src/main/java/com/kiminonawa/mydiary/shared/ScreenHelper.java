@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.View;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -67,34 +65,4 @@ public class ScreenHelper {
         return returnSize;
     }
 
-    /**
-     * Open Immersive Full-Screen Mode
-     * Only work on API 19+
-     */
-
-    public static void openInmmersiveMode(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            view.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
-    /**
-     * Close Immersive Full-Screen Mode
-     * Only work on API 19+
-     */
-
-    public static void closeInmmersiveMode(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            view.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        }
-    }
 }
