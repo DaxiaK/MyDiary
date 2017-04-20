@@ -4,10 +4,27 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <RelativeLayout
-        android:id="@+id/RL_diary_photo_overview_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RV_diary_photo_overview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/RL_diary_photo_overview_no_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/photo_viewer_no_images"
+            android:textColor="@color/textview_hint"
+            android:textSize="40dp" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

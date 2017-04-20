@@ -1,10 +1,14 @@
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
@@ -22,8 +26,8 @@ import butterknife.ButterKnife;
 public class PhotoDetailViewerActivity extends AppCompatActivity {
 
 
-    public final  static String DIARY_PHOTO_FILE_LIST ="DIARY_PHOTO_FILE_LIST";
-    public final  static String SELECT_POSITION ="SELECT_POSITION";
+    public final static String DIARY_PHOTO_FILE_LIST = "DIARY_PHOTO_FILE_LIST";
+    public final static String SELECT_POSITION = "SELECT_POSITION";
 
     /**
      * GUI
@@ -42,6 +46,9 @@ public class PhotoDetailViewerActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //Modify this activity into full screen mode
             ScreenHelper.closeInmmersiveMode(getWindow().getDecorView());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setStatusBarColor();
+            }
         } else {
             setTheme(R.style.Theme_NoActionBar_FullScreen);
         }
@@ -50,6 +57,7 @@ public class PhotoDetailViewerActivity extends AppCompatActivity {
         setContentView(R.layout.dialog_fragment_diary_photo_detail_viewer);
         ButterKnife.bind(this);
 
+        //Modify the status bar color
         diaryPhotoFileList = getIntent().getParcelableArrayListExtra(DIARY_PHOTO_FILE_LIST);
         selectPosition = getIntent().getIntExtra(SELECT_POSITION, -1);
         if (diaryPhotoFileList == null || selectPosition == -1) {
@@ -61,6 +69,14 @@ public class PhotoDetailViewerActivity extends AppCompatActivity {
             VPDiaryPhotoDetail.setAdapter(mAdapter);
             VPDiaryPhotoDetail.setCurrentItem(selectPosition);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBarColor() {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(Color.BLACK);
     }
 
 }

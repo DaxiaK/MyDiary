@@ -207,5 +207,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">取得日记资料错误</string>
     <string name="photo_viewer_photo_path_fail">取得照片路径错误</string>
+    <string name="photo_viewer_no_images">无图片</string>
 
 </resources>

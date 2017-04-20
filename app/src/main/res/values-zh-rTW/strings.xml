@@ -207,6 +207,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">取得日記資料錯誤</string>
     <string name="photo_viewer_photo_path_fail">取得照片路徑錯誤</string>
-
+    <string name="photo_viewer_no_images">無圖片</string>
 
 </resources>

@@ -208,5 +208,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">get diary fail</string>
     <string name="photo_viewer_photo_path_fail">get photo path fail</string>
+    <string name="photo_viewer_no_images">No images</string>
 
 </resources>
