@@ -11,6 +11,7 @@
  */
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -109,16 +110,18 @@ public class PhotoOverviewFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),3);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(layoutManager);
         PhotoOverviewAdapter photoOverviewAdapter = new PhotoOverviewAdapter(getActivity(), diaryPhotoFileList);
         recyclerView.setAdapter(photoOverviewAdapter);
         photoOverviewAdapter.setOnItemClickListener(new PhotoOverviewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                PhotoDetailViewerDialogFragment photoDetailViewerDialogFragment =
-                        PhotoDetailViewerDialogFragment.newInstance(diaryPhotoFileList, position);
-                photoDetailViewerDialogFragment.show(getActivity().getSupportFragmentManager(), "diaryPhotoBottomSheet");
+                Intent gotoPhotoDetailViewer = new Intent(getActivity(), PhotoDetailViewerActivity.class);
+                gotoPhotoDetailViewer.putParcelableArrayListExtra(
+                        PhotoDetailViewerActivity.DIARY_PHOTO_FILE_LIST, diaryPhotoFileList);
+                gotoPhotoDetailViewer.putExtra(PhotoDetailViewerActivity.SELECT_POSITION, position);
+                getActivity().startActivity(gotoPhotoDetailViewer);
             }
         });
         recyclerView.setHasFixedSize(false);

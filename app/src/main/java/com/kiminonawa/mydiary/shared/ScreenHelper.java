@@ -1,14 +1,14 @@
 package com.kiminonawa.mydiary.shared;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.View;
 
-import java.io.File;
 import java.text.DecimalFormat;
 
 /**
@@ -51,18 +51,48 @@ public class ScreenHelper {
         return result;
     }
 
+
+    public static void hideSystemUI(View decorView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            openInmmersiveMode(decorView);
+        } else {
+            //Do nothing
+        }
+    }
+
+    public static void showSystemUI(View decorView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            closeInmmersiveMode(decorView);
+        } else {
+            //Do nothing
+        }
+    }
+
     /**
-     * @param uri
-     * @return {imageHeight,imageWidth}
+     * Open Immersive Full-Screen Mode
+     * Only work on API 19+
      */
-    public static int[] getImageSize(Uri uri) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(new File(uri.getPath()).getAbsolutePath(), options);
-        int imageHeight = options.outHeight;
-        int imageWidth = options.outWidth;
-        int[] returnSize = {imageHeight, imageWidth};
-        return returnSize;
+    @TargetApi(19)
+    private static void openInmmersiveMode(View view) {
+        view.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE);
+    }
+
+    /**
+     * Close Immersive Full-Screen Mode
+     * Only work on API 19+
+     */
+    @TargetApi(19)
+    public static void closeInmmersiveMode(View view) {
+        view.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
 }

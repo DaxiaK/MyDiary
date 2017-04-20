@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.photo;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,6 @@ public class PhotoDetailViewerFragment extends Fragment {
 
     private Uri photoUri;
 
-
     public static PhotoDetailViewerFragment newInstance(Uri photoUri) {
         Bundle args = new Bundle();
         PhotoDetailViewerFragment fragment = new PhotoDetailViewerFragment();
@@ -46,10 +46,6 @@ public class PhotoDetailViewerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_diary_photo_detail_viewer, container, false);
         unbinder = ButterKnife.bind(this, view);
         photoUri = getArguments().getParcelable("photoUri");
-        if (photoUri == null) {
-            //TODO set The default error photo
-        }
-
         return view;
     }
 
@@ -70,7 +66,15 @@ public class PhotoDetailViewerFragment extends Fragment {
         zdvPhotoDetail.setAllowTouchInterceptionWhileZoomed(true);
         // needed for double tap to zoom
         zdvPhotoDetail.setIsLongpressEnabled(false);
-        zdvPhotoDetail.setTapListener(new DoubleTapGestureListener(zdvPhotoDetail));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //Implement the InmmersiveMode
+            zdvPhotoDetail.setTapListener(
+                    new TapGestureListener(getActivity().getWindow().getDecorView(), zdvPhotoDetail));
+        } else {
+            //Only implement double tap
+            zdvPhotoDetail.setTapListener(
+                    new DoubleTapGestureListener(zdvPhotoDetail));
+        }
         DraweeController controller = Fresco.newDraweeControllerBuilder()
                 .setUri(photoUri)
                 .build();

@@ -30,7 +30,7 @@
         <activity
             android:name=".init.InitActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            android:theme="@style/Theme_NoActionBar_FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,7 +52,10 @@
         <activity
             android:name=".entries.photo.PhotoOverviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+            android:theme="@style/Theme_NoActionBar_FullScreen"/>
+        <activity
+            android:name=".entries.photo.PhotoDetailViewerActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".memo.MemoActivity"
             android:screenOrientation="portrait"

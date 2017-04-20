@@ -58,7 +58,7 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
-import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerDialogFragment;
+import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerActivity;
 import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
@@ -837,9 +837,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 break;
             case R.id.SDV_diary_new_photo:
                 int draweeViewPosition = (int) v.getTag();
-                PhotoDetailViewerDialogFragment photoDetailViewerDialogFragment =
-                        PhotoDetailViewerDialogFragment.newInstance(diaryPhotoFileList, draweeViewPosition);
-                photoDetailViewerDialogFragment.show(getActivity().getSupportFragmentManager(), "diaryPhotoBottomSheet");
+                Intent gotoPhotoDetailViewer = new Intent(getActivity(), PhotoDetailViewerActivity.class);
+                gotoPhotoDetailViewer.putParcelableArrayListExtra(
+                        PhotoDetailViewerActivity.DIARY_PHOTO_FILE_LIST, diaryPhotoFileList);
+                gotoPhotoDetailViewer.putExtra(PhotoDetailViewerActivity.SELECT_POSITION, draweeViewPosition);
+                getActivity().startActivity(gotoPhotoDetailViewer);
                 break;
             case R.id.IV_diary_photo:
                 if (isEditMode) {
