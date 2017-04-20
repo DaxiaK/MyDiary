@@ -6,8 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.entries.ActivityBackDialogFragmentFrom;
-import com.kiminonawa.mydiary.shared.gui.CommonDialogFragment;
+import com.kiminonawa.mydiary.shared. gui.CommonDialogFragment;
 
 /**
  * Created by daxia on 2016/11/14.

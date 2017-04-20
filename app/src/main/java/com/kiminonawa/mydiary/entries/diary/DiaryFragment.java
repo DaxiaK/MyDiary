@@ -96,7 +96,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      */
     private ScrollView ScrollView_diary_content;
     private LinearLayout LL_diary_item_content, LL_diary_time_information;
-    private RelativeLayout RL_diary_info, RL_diary_edit_bar;
+    private RelativeLayout RL_diary_info;
     private TextView TV_diary_month, TV_diary_date, TV_diary_day, TV_diary_time, TV_diary_location;
 
     private Spinner SP_diary_weather, SP_diary_mood;
@@ -160,9 +160,10 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         ViewTools.setScrollBarColor(getActivity(), ScrollView_diary_content);
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
-        RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
         RL_diary_info.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
-        RL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
+
+        LinearLayout LL_diary_edit_bar = (LinearLayout) rootView.findViewById(R.id.LL_diary_edit_bar);
+        LL_diary_edit_bar.setBackgroundColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
 
         LL_diary_time_information = (LinearLayout) rootView.findViewById(R.id.LL_diary_time_information);
         LL_diary_time_information.setOnClickListener(this);

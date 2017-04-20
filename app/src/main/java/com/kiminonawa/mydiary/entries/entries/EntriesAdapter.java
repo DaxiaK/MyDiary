@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -233,7 +232,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
                 mFragment.setEditModeUI(isEditMode);
             }
             diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
-            Toast.makeText(mFragment.getActivity(), mFragment.getString(R.string.toast_diary_long_click_edit), Toast.LENGTH_SHORT).show();
             return true;
         }
     }
