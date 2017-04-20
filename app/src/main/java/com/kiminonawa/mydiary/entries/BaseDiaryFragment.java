@@ -15,9 +15,6 @@ public class BaseDiaryFragment extends Fragment {
         return ((DiaryActivity) getActivity()).getTopicId();
     }
 
-    public void setIsCreating(boolean isCreating) {
-        ((DiaryActivity) getActivity()).setCreating(isCreating);
-    }
 
     public List<EntriesEntity> getEntriesList() {
         return ((DiaryActivity) getActivity()).getEntriesList();

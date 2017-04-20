@@ -73,6 +73,9 @@
     <string name="entries_edit_dialog_delete_content">确定要删除日记吗？</string>
     <string name="entries_summary_photo">**图片**</string>
 
+    <string name="toast_diary_long_click_edit">编辑中&#8230;</string>
+
+
     <!--Diary -->
     <string name="diary_no_location">无法定位</string>
     <string name="diary_location_permission_title">授权</string>

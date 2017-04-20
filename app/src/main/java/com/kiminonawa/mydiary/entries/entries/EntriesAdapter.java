@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.DiaryInfoHelper;
@@ -82,19 +83,6 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
         } else {
             holder.getIVAttachment().setVisibility(View.GONE);
         }
-        holder.getRLContent().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DiaryViewerDialogFragment diaryViewerDialog =
-                        DiaryViewerDialogFragment.newInstance(entriesList.get(position).getId(), isEditMode);
-                diaryViewerDialog.setTargetFragment(mFragment, 0);
-                if (isEditMode) {
-                    mFragment.setEditModeUI(isEditMode);
-                }
-                diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
-
-            }
-        });
     }
 
 
@@ -129,20 +117,18 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
     }
 
 
-    protected class EntriesViewHolder extends RecyclerView.ViewHolder {
+    protected class EntriesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private TextView TV_entries_item_header;
         private TextView TV_entries_item_date, TV_entries_item_day, TV_entries_item_time,
                 TV_entries_item_title, TV_entries_item_summary;
-        private View rootView;
 
         private ImageView IV_entries_item_weather, IV_entries_item_mood, IV_entries_item_bookmark, IV_entries_item_attachment;
 
         private RelativeLayout RL_entries_item_content;
 
-        protected EntriesViewHolder(View view, @ColorInt int color) {
-            super(view);
-            this.rootView = view;
+        protected EntriesViewHolder(View rootView, @ColorInt int color) {
+            super(rootView);
             this.TV_entries_item_header = (TextView) rootView.findViewById(R.id.TV_entries_item_header);
 
             this.TV_entries_item_date = (TextView) rootView.findViewById(R.id.TV_entries_item_date);
@@ -157,6 +143,9 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             this.IV_entries_item_attachment = (ImageView) rootView.findViewById(R.id.IV_entries_item_attachment);
 
             this.RL_entries_item_content = (RelativeLayout) rootView.findViewById(R.id.RL_entries_item_content);
+            this.itemView.setOnClickListener(this);
+            this.itemView.setOnLongClickListener(this);
+
             initThemeColor(color);
         }
 
@@ -218,5 +207,34 @@ public class EntriesAdapter extends RecyclerView.Adapter<EntriesAdapter.EntriesV
             return RL_entries_item_content;
         }
 
+        @Override
+        public void onClick(View v) {
+            //single click to open diary
+            DiaryViewerDialogFragment diaryViewerDialog =
+                    DiaryViewerDialogFragment.newInstance(entriesList.get(getAdapterPosition()).getId(),
+                            isEditMode);
+            diaryViewerDialog.setTargetFragment(mFragment, 0);
+            //Revert the icon
+            if (isEditMode) {
+                mFragment.setEditModeUI(isEditMode);
+            }
+            diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            //Long click is always going to edit diary
+            DiaryViewerDialogFragment diaryViewerDialog =
+                    DiaryViewerDialogFragment.newInstance(entriesList.get(getAdapterPosition()).getId(),
+                            true);
+            diaryViewerDialog.setTargetFragment(mFragment, 0);
+            //Revert the icon
+            if (isEditMode) {
+                mFragment.setEditModeUI(isEditMode);
+            }
+            diaryViewerDialog.show(mFragment.getFragmentManager(), "diaryViewerDialog");
+            Toast.makeText(mFragment.getActivity(), mFragment.getString(R.string.toast_diary_long_click_edit), Toast.LENGTH_SHORT).show();
+            return true;
+        }
     }
 }

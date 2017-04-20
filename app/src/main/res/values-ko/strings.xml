@@ -71,6 +71,9 @@
     <string name="entries_edit_dialog_delete_content">이 일기를 삭제하시겠습니까?</string>
     <string name="entries_summary_photo">**사진**</string>
 
+    <string name="toast_diary_long_click_edit">편집&#8230;</string>
+
+
     <!--Diary -->
     <string name="diary_no_location">위치를 찾을 수 없습니다.</string>
     <string name="diary_location_permission_title">권한</string>

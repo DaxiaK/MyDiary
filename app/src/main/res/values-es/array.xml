@@ -59,14 +59,14 @@
 
     <array name="language_list">
         <item>Sistema</item>
-        <item>English</item>
-        <item>日本語</item>
-        <item>繁體中文</item>
-        <item>简体中文</item>
-        <item>한국어</item>
-        <item>ภาษาไทย</item>
-        <item>Français</item>
-        <item>Español</item>
+        <item>English(100%)</item>
+        <item>日本語(80%)</item>
+        <item>繁體中文(100%)</item>
+        <item>简体中文(100%)</item>
+        <item>한국어(80%)</item>
+        <item>ภาษาไทย(99%)</item>
+        <item>Français(70%)</item>
+        <item>Español(80%)</item>
     </array>
 
 </resources>
