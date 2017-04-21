@@ -2,59 +2,59 @@
 <resources>
 
     <array name="months_full_name">
-        <item>January</item>
-        <item>February</item>
-        <item>March</item>
-        <item>April</item>
-        <item>May</item>
-        <item>June</item>
-        <item>July</item>
-        <item>August</item>
-        <item>September</item>
-        <item>October</item>
-        <item>November</item>
-        <item>December</item>
+        <item>มาราคม</item>
+        <item>กุมภาพันธ์</item>
+        <item>มีนาคม</item>
+        <item>เมษายน</item>
+        <item>พฤษภาคม</item>
+        <item>มิถุนายน</item>
+        <item>กรกฎาคม</item>
+        <item>สิงหาคม</item>
+        <item>กันยายน</item>
+        <item>ตุลาคม</item>
+        <item>พฤศจิกายน</item>
+        <item>ธันวาคม</item>
     </array>
 
     <array name="days_simple_name">
-        <item>Sun.</item>
-        <item>Mon.</item>
-        <item>Tue.</item>
-        <item>Wed.</item>
-        <item>Thu.</item>
-        <item>Fri.</item>
-        <item>Sat.</item>
+        <item>อา.</item>
+        <item>จ.</item>
+        <item>อ.</item>
+        <item>พ.</item>
+        <item>พฤ.</item>
+        <item>ศ.</item>
+        <item>ส.</item>
     </array>
 
     <array name="days_full_name">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
+        <item>อาทิตย์</item>
+        <item>จันทร์</item>
+        <item>อังคาร</item>
+        <item>พุธ</item>
+        <item>พฤหัสบดี</item>
+        <item>ศุกร์</item>
+        <item>เสาร์</item>
     </array>
 
     <array name="topic_type">
-        <item>Contacts</item>
-        <item>Diary</item>
-        <item>Memo</item>
+        <item>รายชื่อติดต่อ</item>
+        <item>ไดอารี่</item>
+        <item>โน๊ตย่อ</item>
     </array>
 
     <array name="theme_list">
-        <item>Taki</item>
-        <item>Mitsuha</item>
-        <item>Custom</item>
+        <item>ทาคิ</item>
+        <item>มิตสึฮะ</item>
+        <item>ปรับแต่งเอง</item>
     </array>
 
     <array name="weather_list">
-        <item>sunny</item>
-        <item>cloudy</item>
-        <item>windy</item>
-        <item>rainy</item>
-        <item>snowy</item>
-        <item>foggy</item>
+        <item>แดดออก</item>
+        <item>เมฆปกคลุม</item>
+        <item>ลมแรง</item>
+        <item>ฝนตก</item>
+        <item>หิมะตก</item>
+        <item>หมอกขึ้น</item>
     </array>
 
     <array name="language_list">
