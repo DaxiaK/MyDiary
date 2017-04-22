@@ -60,6 +60,7 @@
     <string name="process_dialog_saving">Saving&#8230;</string>
 
     <!--Diary Activity-->
+    <!-- todo: This string resource should use a https://developer.android.com/guide/topics/resources/string-resource.html#Plurals -->
     <string name="segmented_entries">Entries</string>
     <string name="segmented_calendar">Calendar</string>
     <string name="segmented_Diary">Diary</string>
@@ -197,9 +198,9 @@
     <string name="oobe_main_search_title">Search</string>
     <string name="oobe_main_search_content">You can search some topic.</string>
     <string name="oobe_main_adv_setting_title">Advanced setting.</string>
-    <string name="oobe_main_adv_setting_content">Open the advanced setting.\nIncluding create topic, app setting, passcode ,backup and about.</string>
+    <string name="oobe_main_adv_setting_content">Open the advanced settings.\nIncluding create topic, app setting, passcode, backup and about.</string>
     <string name="oobe_main_mydiary_title">MyDiary</string>
-    <string name="oobe_main_mydiary_content">however you see the movie or not.\nI hope you can get something from this app.\nTo write the story about your name now!</string>
+    <string name="oobe_main_mydiary_content">Either you\'ve seen the movie or not,\nI hope you\'ll enjoy this app.\nWrite the story of your name now!</string>
 
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">get diary fail</string>
