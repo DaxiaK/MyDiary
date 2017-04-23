@@ -54,7 +54,7 @@ public class PhotoDetailViewerActivity extends AppCompatActivity {
         }
 
         //Set the layout
-        setContentView(R.layout.dialog_fragment_diary_photo_detail_viewer);
+        setContentView(R.layout.activity_diary_photo_detail_viewer);
         ButterKnife.bind(this);
 
         //Modify the status bar color

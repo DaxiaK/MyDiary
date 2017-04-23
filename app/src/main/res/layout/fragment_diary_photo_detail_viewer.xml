@@ -12,6 +12,6 @@
         android:id="@+id/zdv_photo_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        fresco:failureImage="@drawable/ic_error_outline_white_48dp"/>
+        fresco:failureImage="@drawable/ic_error_outline_white_48dp" />
 
 </RelativeLayout>
