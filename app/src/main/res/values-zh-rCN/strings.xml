@@ -178,6 +178,7 @@
     <string name="backup_export_path_hint">点击选择导出的目录</string>
     <string name="backup_export_button">导出</string>
     <string name="backup_export_share_title">选择分享工具</string>
+    <string name="backup_export_can_not_write">此路径无法写入，请重新选择</string>
 
     <string name="toast_export_successful">%1$s\n导出成功</string>
     <string name="toast_export_fail">导出失败&#8230;请检查权限或剩余空间</string>
@@ -186,6 +187,8 @@
     <string name="backup_import_hint">导入已存在内容(不包含设定档)</string>
     <string name="backup_import_path_hint">点击选择导入的档案</string>
     <string name="backup_import_button">导入</string>
+    <string name="backup_import_can_not_read">无法读档，请重新选择</string>
+
 
     <string name="toast_import_successful">导入成功</string>
     <string name="toast_import_fail">导入失败&#8230;请检查导入的档案</string>
