@@ -92,7 +92,8 @@ public class MyDiaryApplication extends Application {
     }
 
     private void overwriteConfigurationLocale(Configuration config, Locale locale) {
-        config.locale = locale;
+        //TODO FIX updateConfiguration on Android N
+        config.setLocale(locale);
         getBaseContext().getResources()
                 .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
