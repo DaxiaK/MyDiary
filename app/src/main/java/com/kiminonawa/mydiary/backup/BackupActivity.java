@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.MainActivity;
@@ -63,15 +64,26 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
             Uri uri = intent.getData();
             if (uri != null) {
                 File file = com.nononsenseapps.filepicker.Utils.getFileForUri(uri);
-                TV_backup_export_src.setText(file.getAbsolutePath());
-                But_backup_export.setEnabled(true);
+                if (file.canWrite()) {
+
+                    TV_backup_export_src.setText(file.getAbsolutePath());
+                    But_backup_export.setEnabled(true);
+                } else {
+                    Toast.makeText(this, getString(R.string.backup_export_can_not_write),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (requestCode == IMPORT_SRC_PICKER_CODE && resultCode == Activity.RESULT_OK) {
             Uri uri = intent.getData();
             if (uri != null) {
                 File file = com.nononsenseapps.filepicker.Utils.getFileForUri(uri);
-                TV_backup_import_src.setText(file.getAbsolutePath());
-                But_backup_import.setEnabled(true);
+                if (file.canRead()) {
+                    TV_backup_import_src.setText(file.getAbsolutePath());
+                    But_backup_import.setEnabled(true);
+                } else {
+                    Toast.makeText(this, getString(R.string.backup_import_can_not_read),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

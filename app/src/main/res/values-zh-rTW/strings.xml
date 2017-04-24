@@ -73,6 +73,8 @@
     <string name="entries_edit_dialog_delete_content">確定要刪除日記嗎?</string>
     <string name="entries_summary_photo">**圖片**</string>
 
+    <string name="toast_diary_long_click_edit">編輯中&#8230;</string>
+
     <!--Diary -->
     <string name="diary_no_location">無定位</string>
     <string name="diary_location_permission_title">權限</string>
@@ -176,6 +178,7 @@
     <string name="backup_export_path_hint">點擊選擇匯出的目錄</string>
     <string name="backup_export_button">匯出</string>
     <string name="backup_export_share_title">選擇分享工具</string>
+    <string name="backup_export_can_not_write">此路徑無法寫入，請重新選擇</string>
 
     <string name="toast_export_successful">%1$s\n匯出成功</string>
     <string name="toast_export_fail">糟糕，匯出失敗&#8230;請檢查權限或剩餘空間</string>
@@ -184,6 +187,8 @@
     <string name="backup_import_hint">匯入已存在內容(不包含設定檔)</string>
     <string name="backup_import_path_hint">點擊選擇匯入的檔案</string>
     <string name="backup_import_button">匯入</string>
+    <string name="backup_import_can_not_read">無法讀取該檔，請重新選擇</string>
+
 
     <string name="toast_import_successful">匯入成功</string>
     <string name="toast_import_fail">糟糕，匯入失敗&#8230;請檢查匯入的檔案</string>
@@ -205,6 +210,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">取得日記資料錯誤</string>
     <string name="photo_viewer_photo_path_fail">取得照片路徑錯誤</string>
-
+    <string name="photo_viewer_no_images">無圖片</string>
 
 </resources>

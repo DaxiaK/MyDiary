@@ -58,7 +58,7 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
-import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerDialogFragment;
+import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerActivity;
 import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
@@ -106,7 +106,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      * UI
      */
     private ScrollView ScrollView_diary_content;
-    private RelativeLayout RL_diary_info, RL_diary_edit_bar;
+    private RelativeLayout RL_diary_info;
     private ProgressBar PB_diary_item_content_hint;
     private LinearLayout LL_diary_time_information;
 
@@ -170,10 +170,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     private boolean firstAllowLocationPermission = false;
     private boolean firstAllowCameraPermission = false;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     public static DiaryViewerDialogFragment newInstance(long diaryId, boolean isEditMode) {
         Bundle args = new Bundle();
@@ -182,6 +178,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         args.putBoolean("isEditMode", isEditMode);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        isEditMode = getArguments().getBoolean("isEditMode", false);
+        if (isEditMode) {
+            Toast.makeText(getActivity(),
+                    getString(R.string.toast_diary_long_click_edit), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -202,8 +208,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         //Set background is transparent , for dialog radius
         dialog.getWindow().getDecorView().getBackground().setAlpha(0);
-
-        isEditMode = getArguments().getBoolean("isEditMode", false);
         return dialog;
     }
 
@@ -213,14 +217,14 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                              Bundle savedInstanceState) {
         this.getDialog().setCanceledOnTouchOutside(false);
         View rootView = inflater.inflate(R.layout.fragment_diary, container);
-
         ScrollView_diary_content = (ScrollView) rootView.findViewById(R.id.ScrollView_diary_content);
         ViewTools.setScrollBarColor(getActivity(), ScrollView_diary_content);
 
         RL_diary_info = (RelativeLayout) rootView.findViewById(R.id.RL_diary_info);
-        RL_diary_edit_bar = (RelativeLayout) rootView.findViewById(R.id.RL_diary_edit_bar);
         RL_diary_info.setBackground(ThemeManager.getInstance().createDiaryViewerInfoBg(getActivity()));
-        RL_diary_edit_bar.setBackground(ThemeManager.getInstance().createDiaryViewerEditBarBg(getActivity()));
+
+        LinearLayout LL_diary_edit_bar = (LinearLayout) rootView.findViewById(R.id.LL_diary_edit_bar);
+        LL_diary_edit_bar.setBackground(ThemeManager.getInstance().createDiaryViewerEditBarBg(getActivity()));
 
         PB_diary_item_content_hint = (ProgressBar) rootView.findViewById(R.id.PB_diary_item_content_hint);
 
@@ -448,7 +452,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             initWeatherSpinner();
             IV_diary_location.setOnClickListener(this);
 
-            IV_diary_delete.setVisibility(View.GONE);
+            IV_diary_delete.setOnClickListener(this);
             IV_diary_clear.setVisibility(View.GONE);
 
             IV_diary_photo.setImageResource(R.drawable.ic_photo_camera_white_24dp);
@@ -833,9 +837,11 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 break;
             case R.id.SDV_diary_new_photo:
                 int draweeViewPosition = (int) v.getTag();
-                PhotoDetailViewerDialogFragment photoDetailViewerDialogFragment =
-                        PhotoDetailViewerDialogFragment.newInstance(diaryPhotoFileList, draweeViewPosition);
-                photoDetailViewerDialogFragment.show(getActivity().getSupportFragmentManager(), "diaryPhotoBottomSheet");
+                Intent gotoPhotoDetailViewer = new Intent(getActivity(), PhotoDetailViewerActivity.class);
+                gotoPhotoDetailViewer.putParcelableArrayListExtra(
+                        PhotoDetailViewerActivity.DIARY_PHOTO_FILE_LIST, diaryPhotoFileList);
+                gotoPhotoDetailViewer.putExtra(PhotoDetailViewerActivity.SELECT_POSITION, draweeViewPosition);
+                getActivity().startActivity(gotoPhotoDetailViewer);
                 break;
             case R.id.IV_diary_photo:
                 if (isEditMode) {

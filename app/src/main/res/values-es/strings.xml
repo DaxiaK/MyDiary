@@ -72,6 +72,8 @@
     <string name="entries_edit_dialog_delete_content">¿Seguro que quieres eliminar este diario?</string>
     <string name="entries_summary_photo">**foto**</string>
 
+    <string name="toast_diary_long_click_edit">edición&#8230;</string>
+
     <!--Diary -->
     <string name="diary_no_location">Sin ubicación</string>
     <string name="diary_location_permission_title">Permiso</string>
@@ -174,6 +176,7 @@
     <string name="backup_export_path_hint">Click to select exporting folder</string>
     <string name="backup_export_button">export</string>
     <string name="backup_export_share_title">Share with</string>
+    <string name="backup_export_can_not_write">Can\'t write into this path, please select again</string>
 
     <string name="toast_export_successful">%1$s\nexport successful</string>
     <string name="toast_export_fail">export fail&#8230;please checking permission or storage</string>
@@ -182,6 +185,7 @@
     <string name="backup_import_hint">Import existing file((Not including profile)</string>
     <string name="backup_import_path_hint">Click to select importing file</string>
     <string name="backup_import_button">import</string>
+    <string name="backup_import_can_not_read">Can\'t read this file, please select again</string>
 
     <string name="toast_import_successful">import successful</string>
     <string name="toast_import_fail">import fail&#8230;please checking file</string>
@@ -203,5 +207,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">get diary fail</string>
     <string name="photo_viewer_photo_path_fail">get photo path fail</string>
+    <string name="photo_viewer_no_images">No images</string>
 
 </resources>

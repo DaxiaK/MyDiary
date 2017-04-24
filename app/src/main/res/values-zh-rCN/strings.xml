@@ -73,6 +73,9 @@
     <string name="entries_edit_dialog_delete_content">确定要删除日记吗？</string>
     <string name="entries_summary_photo">**图片**</string>
 
+    <string name="toast_diary_long_click_edit">编辑中&#8230;</string>
+
+
     <!--Diary -->
     <string name="diary_no_location">无法定位</string>
     <string name="diary_location_permission_title">授权</string>
@@ -175,6 +178,7 @@
     <string name="backup_export_path_hint">点击选择导出的目录</string>
     <string name="backup_export_button">导出</string>
     <string name="backup_export_share_title">选择分享工具</string>
+    <string name="backup_export_can_not_write">此路径无法写入，请重新选择</string>
 
     <string name="toast_export_successful">%1$s\n导出成功</string>
     <string name="toast_export_fail">导出失败&#8230;请检查权限或剩余空间</string>
@@ -183,6 +187,8 @@
     <string name="backup_import_hint">导入已存在内容(不包含设定档)</string>
     <string name="backup_import_path_hint">点击选择导入的档案</string>
     <string name="backup_import_button">导入</string>
+    <string name="backup_import_can_not_read">无法读档，请重新选择</string>
+
 
     <string name="toast_import_successful">导入成功</string>
     <string name="toast_import_fail">导入失败&#8230;请检查导入的档案</string>
@@ -204,5 +210,6 @@
     <!--Photo viewer-->
     <string name="photo_viewer_topic_fail">取得日记资料错误</string>
     <string name="photo_viewer_photo_path_fail">取得照片路径错误</string>
+    <string name="photo_viewer_no_images">无图片</string>
 
 </resources>

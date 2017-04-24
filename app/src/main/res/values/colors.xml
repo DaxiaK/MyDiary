@@ -54,6 +54,7 @@
 
     <!--Textview-->
     <color name="textview_shadow">#000000</color>
+    <color name="textview_hint">#d4d2d4</color>
 
     <!--Contacts-->
     <color name="contacts_photo_tint">#AFABAE</color>

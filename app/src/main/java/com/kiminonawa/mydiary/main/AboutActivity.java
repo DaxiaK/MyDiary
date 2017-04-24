@@ -25,16 +25,16 @@ public class AboutActivity extends AppCompatActivity {
         license = new StringBuilder();
         license.append("This open source project is coding by Daxia. You can copy and modify it for free.\n" +
                 "But please don't release into Google Play again without any modifying. To see more information:\n" +
-                "https://github.com/erttyy8821/MyDiary\n\n");
+                "https://github.com/DaxiaK/MyDiary\n\n");
         license.append("This project release by MIT License:\n");
         license.append(
                 new LicenseObj("MyDiary", "Daxia", "2016 - 2017", LicenseObj.MIT)
                         .getLicense());
-        license.append("\nSome icon is Flaticon Basic License from www.flaticon.com\n");
+        license.append("\nSome icon is Flaticon Basic License from Flaticon:\n(www.flaticon.com)\n");
         license.append(
                 new LicenseObj("", "Freepik", "", LicenseObj.Flaticon)
                         .getLicense());
-        license.append("\nI use some lib from:\n");
+        license.append("\n\nI use some lib from:\n");
         license.append(
                 new LicenseObj("android-segmented-control", "Le Van Hoang", "2014", LicenseObj.MIT)
                         .getLicense());
@@ -195,7 +195,7 @@ public class AboutActivity extends AppCompatActivity {
                             "You may add additional accurate notices of copyright ownership." +
                             "\n\n=====\n";
                 case Flaticon:
-                    return "designed by " + author + " from Flaticon\n";
+                    return "\ndesigned by " + author + " from Flaticon\n---\n";
                 default:
                     return "";
             }

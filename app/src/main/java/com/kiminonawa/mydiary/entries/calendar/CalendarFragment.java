@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.calendar;
 
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,6 +85,9 @@ public class CalendarFragment extends BaseDiaryFragment implements View.OnClickL
         RL_calendar_content = (RelativeLayout) rootView.findViewById(R.id.RL_calendar_content);
 
         FAB_calendar_change_mode = (FloatingActionButton) rootView.findViewById(R.id.FAB_calendar_change_mode);
+        //Set the color
+        FAB_calendar_change_mode.getDrawable()
+                .setColorFilter(themeManager.getThemeMainColor(getActivity()), PorterDuff.Mode.SRC_ATOP);
         FAB_calendar_change_mode.setOnClickListener(this);
         return rootView;
     }

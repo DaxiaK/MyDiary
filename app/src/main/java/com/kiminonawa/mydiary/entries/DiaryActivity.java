@@ -36,14 +36,13 @@ import java.util.List;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DiaryActivity extends FragmentActivity implements RadioGroup.OnCheckedChangeListener,
-        ActivityBackDialogFragmentFrom.BackDialogCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
     /**
      * Public data
      */
     private long topicId;
-    private boolean isCreating;
     private boolean hasEntries;
 
     /**
@@ -69,7 +68,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
      * The diary list for every fragment
      */
     private List<EntriesEntity> entriesList = new ArrayList<>();
-    ;
     private final static int MAX_TEXT_LENGTH = 18;
 
 
@@ -123,15 +121,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         mGoogleApiClient.disconnect();
     }
 
-    @Override
-    public void onBackPressed() {
-        if (isCreating) {
-            ActivityBackDialogFragmentFrom activityBackDialogFragmentFrom = new ActivityBackDialogFragmentFrom();
-            activityBackDialogFragmentFrom.show(getSupportFragmentManager(), "activityBackDialogFragmentFrom");
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     /**
      *
@@ -213,9 +202,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     }
 
 
-    public void setCreating(boolean creating) {
-        isCreating = creating;
-    }
 
     public long getTopicId() {
         return topicId;
@@ -282,10 +268,6 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
         }
     };
 
-    @Override
-    public void onBack() {
-        super.onBackPressed();
-    }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
 
