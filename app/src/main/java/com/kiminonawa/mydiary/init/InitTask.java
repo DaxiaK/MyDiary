@@ -127,7 +127,7 @@ public class InitTask extends AsyncTask<Long, Void, Boolean> {
                 //Insert sample diary
                 long diarySampleId = dbManager.insertDiaryInfo(1475665800000L, "東京生活3❤",
                         DiaryInfoHelper.MOOD_HAPPY, DiaryInfoHelper.WEATHER_RAINY, true, topicOnDiarySampleId, "Tokyo");
-                dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "There are many coffee shop in Tokyo!", diarySampleId);
+                dbManager.insertDiaryContent(IDairyRow.TYPE_TEXT, 0, "There are many coffee shops in Tokyo!", diarySampleId);
             }
         }
 

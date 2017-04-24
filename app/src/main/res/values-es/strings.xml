@@ -3,7 +3,11 @@
 
     <!--Release Note-->
     <string name="release_note_title">Actualizaciónes</string>
-    <string name="release_note">**0.2.9.170416_1_AH\n
+    <string name="release_note">**0.3.0.170424_1_A\n
+        -Fix bug\n
+        -Support simple photo function\n
+        -Modify layout\n\n
+        **0.2.9.170416_1_AH\n
         -fix bug\n\n
         **0.2.9.170406_1_A\n
         -Support auto temp save for diary \n

@@ -1,4 +1,4 @@
-# MyDiary
+#  MyDiary
 
 ## Summary
 
@@ -52,28 +52,28 @@ So, maybe I will try to create an iOS version after this app is running.
 * import & export DB(Alpha) (flow finish) 
 * Search function
 * OOBE
-
+* Save diary automatically
+* Photo overview
 **To do:**
 
 This is the list of functionality I will implement, ordered by priority.
 
-1. Save diary automatically
-2. Photo overview
-3. Code refactoring
-4. Diary widget
-5. Google account backup & including FireBase
-6. UI review & support xxxHpdi \
-7. Implement contacts search
-8. Support Chinese sort
-9. Modify contacts detail (beta)
-10. Music
-11. web block
-12. Tags
-13. load contacts from phone
-14. Add bookmark for diary
-15. Add music in diary
-16. Support Chinese sort
-17. Support JP sort
+1. Modfiy location
+2. Code refactoring
+3. Diary widget
+4. Google account backup & including FireBase
+5. UI review & support xxxHpdi \
+6. Implement contacts search
+7. Support Chinese sort
+8. Modify contacts detail (beta)
+9. Music
+10. web block
+11. Tags
+12. load contacts from phone
+13. Add bookmark for diary
+14. Add music in diary
+15. Support Chinese sort
+16. Support JP sort
 
 Coding & Designing:
 
@@ -95,7 +95,7 @@ Now the language percentage is:
 * 简体中文 - 100%
 * 한국어 - 80%
 * ภาษาไทย  - 99%
-* Français  - 70%
+* Français  - 99%
 * Español  - 80%
 
 
