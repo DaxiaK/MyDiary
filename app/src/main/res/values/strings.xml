@@ -27,7 +27,7 @@
         (If your device still have calendar issue , send mail for me!)\n
         -Fix click fail on topic list\n\n
     </string>
-    <string name="release_note_close_remind">Don\'t ask again</string>
+    <string name="release_note_close_remind">Don\'t show again</string>
 
     <!--init-->
     <string name="init_message">Data is updating now, please don\'t close MyDairy</string>
@@ -42,7 +42,7 @@
     <string name="topic_detail_name">Topic name</string>
     <string name="topic_detail_text_color">Text color</string>
     <string name="topic_dialog_delete_title">Delete</string>
-    <string name="topic_dialog_delete_content">Do you want to delete %1$s ?</string>
+    <string name="topic_dialog_delete_content">Do you want to delete %1$s?</string>
 
     <string name="toast_topic_empty">Topic name is empty</string>
     <string name="topic_topic_bg_fail">To change background of topic fail&#8230;</string>
@@ -51,10 +51,10 @@
     <string name="topic_detail_default_bg">default background</string>
 
     <!--Dialog -->
-    <string name="dialog_button_ok">ok</string>
-    <string name="dialog_button_call">call</string>
-    <string name="dialog_button_cancel">cancel</string>
-    <string name="dialog_button_delete">delete</string>
+    <string name="dialog_button_ok">Ok</string>
+    <string name="dialog_button_call">Call</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="dialog_button_delete">Delete</string>
 
     <string name="process_dialog_loading">Loading&#8230;</string>
     <string name="process_dialog_saving">Saving&#8230;</string>
@@ -63,7 +63,7 @@
     <string name="segmented_entries">Entries</string>
     <string name="segmented_calendar">Calendar</string>
     <string name="segmented_Diary">Diary</string>
-    <string name="diary_back_message">There are a diary in editing ,do you want to leave it?</string>
+    <string name="diary_back_message">There are a diary in editing, do you want to leave it?</string>
 
     <!--Entries -->
     <string name="entries_single_count">%1$d Entry</string>
@@ -91,8 +91,8 @@
     <string name="toast_photo_path_error">Photo path has some problem</string>
     <string name="toast_photo_intent_error">To get image resource of device fail</string>
     <string name="toast_max_photo">Max selected photo is %1$d</string>
-    <string name="toast_space_insufficient">Free space Insufficient</string>
-    <string name="toast_diary_update_successful">Updating diary is successful</string>
+    <string name="toast_space_insufficient">Free space insufficient</string>
+    <string name="toast_diary_update_successful">Updating diary successful</string>
     <string name="toast_diary_update_fail">Updating diary fail</string>
     <string name="toast_diary_insert_successful">Diary was inserted successfully</string>
     <string name="toast_diary_insert_fail">Diary was inserted unsuccessfully&#8230;</string>
@@ -119,16 +119,16 @@
 
     <!--Setting-->
     <string name="setting_theme_title">Theme</string>
-    <string name="setting_theme_hint">Choose your theme</string>
+    <string name="setting_theme_hint">Pick your theme</string>
     <string name="setting_theme_main_color">Main color</string>
     <string name="setting_theme_sec_color">Sec. color</string>
     <string name="setting_theme_default_profile_bg">default\n background</string>
     <string name="setting_theme_default_color">default color</string>
-    <string name="setting_theme_apply">apply</string>
+    <string name="setting_theme_apply">Apply</string>
     <string name="setting_theme_profile_bg">Profile Background</string>
 
     <string name="setting_language_title">Language</string>
-    <string name="setting_language_hint">Choose your language</string>
+    <string name="setting_language_hint">Pick your language</string>
 
     <string name="toast_save_profile_banner_fail">To save banner of profile fail&#8230;</string>
     <string name="toast_crop_profile_banner_fail">To crop banner of profile fail&#8230;</string>
@@ -137,7 +137,7 @@
 
     <string name="setting_system_title">System</string>
     <string name="setting_system_fix_dir_hint">If your photo is gone after updating, click it to fix</string>
-    <string name="setting_system_fix_dir_button">fix photo</string>
+    <string name="setting_system_fix_dir_button">Fix photo</string>
 
     <string name="toast_setting_successful">Successful</string>
     <string name="toast_setting_wont_fix">You don\'t need to fix anything</string>
