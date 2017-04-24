@@ -86,14 +86,9 @@ public class EntriesFragment extends BaseDiaryFragment implements
 
 
     private void countEntries() {
-
-        if (getEntriesList().size() >= 2) {
-            TV_entries_count.setText(
-                    String.format(getResources().getString(R.string.entries_multi_count), getEntriesList().size()));
-        } else {
-            TV_entries_count.setText(
-                    String.format(getResources().getString(R.string.entries_single_count), getEntriesList().size()));
-        }
+        TV_entries_count.setText(
+                getResources().getQuantityString(R.plurals.entries_count,
+                        getEntriesList().size(),getEntriesList().size()));
     }
 
     public void setEditModeUI(boolean isEditMode) {

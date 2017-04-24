@@ -65,8 +65,9 @@
     <string name="diary_back_message">編集中の日記を破棄してもよろしいですか？</string>
 
     <!--Entries -->
-    <string name="entries_single_count">%1$d エントリー</string>
-    <string name="entries_multi_count">%1$d エントリー</string>
+    <plurals name="entries_count">
+        <item quantity="other">%1$d エントリー</item>
+    </plurals>
     <string name="entries_edit_view">編集したいエントリーを選んでください</string>
     <string name="entries_edit_dialog_delete_content">このエントリーを削除しますか?</string>
     <string name="entries_summary_photo">**写真**</string>
