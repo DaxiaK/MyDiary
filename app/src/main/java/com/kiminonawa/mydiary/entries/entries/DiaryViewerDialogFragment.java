@@ -641,14 +641,16 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         }
     }
 
-    private void loadFileFromTemp(String fileName) {
+    private void loadFileFromTemp(String fileName, DiaryTextTag tag) {
         try {
             String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDirAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
-            DiaryTextTag tag = checkoutOldDiaryContent();
             //Check edittext is focused
             if (tag != null) {
+                //Delete duplicate text
+                EditText currentEditText = (EditText) diaryItemHelper.get(tag.getPositionTag()).getView();
+                currentEditText.getText().delete(tag.getEdittextIndex(), currentEditText.getText().toString().length());
                 //Add new edittext
                 DiaryText diaryText = new DiaryText(getActivity());
                 diaryText.setPosition(tag.getPositionTag());
@@ -689,7 +691,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 int index = currentEditText.getSelectionStart();
                 String nextEditTextStr = currentEditText.getText().toString()
                         .substring(index, currentEditText.getText().toString().length());
-                currentEditText.getText().delete(index, currentEditText.getText().toString().length());
+                //Set index & text string
+                tag.setEdittextIndex(index);
                 tag.setNextEditTextStr(nextEditTextStr);
             }
         }
@@ -713,7 +716,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     private void openPhotoBottomSheet() {
-        DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(true);
+        DiaryPhotoBottomSheet diaryPhotoBottomSheet = DiaryPhotoBottomSheet.newInstance(true, checkoutOldDiaryContent());
         diaryPhotoBottomSheet.setTargetFragment(this, 0);
         diaryPhotoBottomSheet.show(getFragmentManager(), "diaryPhotoBottomSheet");
     }
@@ -725,31 +728,31 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void selectPhoto(Uri uri) {
+    public void selectPhoto(Uri uri, DiaryTextTag tag) {
         if (FileManager.isImage(
                 FileManager.getFileNameByUri(getActivity(), uri))) {
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                    diaryFileManager, this).execute();
+                    diaryFileManager, this, tag).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
-    public void addPhoto(String fileName) {
+    public void addPhoto(String fileName, DiaryTextTag tag) {
         //1.get saved file for rotating & resize from temp
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                diaryFileManager, this).execute();
+                diaryFileManager, this, tag).execute();
     }
 
     @Override
-    public void onCopyCompiled(String fileName) {
-        loadFileFromTemp(fileName);
+    public void onCopyCompiled(String fileName, DiaryTextTag tag) {
+        loadFileFromTemp(fileName, tag);
     }
 
 
@@ -790,11 +793,12 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
     @Override
     public void onCopyToEditCacheCompiled(int result) {
         if (result == CopyDiaryToEditCacheTask.RESULT_COPY_SUCCESSFUL) {
-            PB_diary_item_content_hint.setVisibility(View.GONE);
             initData();
             //Open the click listener
             IV_diary_clear.setOnClickListener(this);
             IV_diary_save.setOnClickListener(this);
+            //hide the loading process bar
+            PB_diary_item_content_hint.setVisibility(View.GONE);
         } else {
             dismissAllowingStateLoss();
         }
@@ -829,7 +833,6 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 break;
             case R.id.IV_diary_photo_delete:
                 int deletePosition = (int) v.getTag();
-                Log.e("test", "deletePosition = " + deletePosition);
                 diaryItemHelper.remove(deletePosition);
                 LL_diary_item_content.removeViewAt(deletePosition);
                 diaryItemHelper.mergerAdjacentText(deletePosition);

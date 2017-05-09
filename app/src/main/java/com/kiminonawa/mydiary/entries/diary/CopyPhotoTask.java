@@ -8,9 +8,10 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
 import com.kiminonawa.mydiary.shared.photo.ExifUtil;
-import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +24,7 @@ import java.io.IOException;
 public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
     public interface CopyPhotoCallBack {
-        void onCopyCompiled(String fileName);
+        void onCopyCompiled(String fileName, DiaryTextTag tag);
     }
 
     private Uri uri;
@@ -34,16 +35,17 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     private int reqWidth, reqHeight;
     private FileManager fileManager;
     private boolean isAddPicture = false;
-
+    private DiaryTextTag tag;
 
     /**
      * From select image
      */
     public CopyPhotoTask(Context context, Uri uri,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, CopyPhotoCallBack callBack) {
+                         FileManager fileManager, CopyPhotoCallBack callBack, DiaryTextTag tag) {
         this.uri = uri;
-        isAddPicture = false;
+        this.isAddPicture = false;
+        this.tag = tag;
         initTask(context, reqWidth, reqHeight, fileManager, callBack);
 
     }
@@ -54,8 +56,9 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
      */
     public CopyPhotoTask(Context context, String srcFileName,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, CopyPhotoCallBack callBack) {
+                         FileManager fileManager, CopyPhotoCallBack callBack, DiaryTextTag tag) {
         this.srcFileName = fileManager.getDirAbsolutePath() + "/" + srcFileName;
+        this.tag = tag;
         isAddPicture = true;
         initTask(context, reqWidth, reqHeight, fileManager, callBack);
     }
@@ -103,7 +106,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String fileName) {
         super.onPostExecute(fileName);
         progressDialog.dismiss();
-        callBack.onCopyCompiled(fileName);
+        callBack.onCopyCompiled(fileName,tag);
     }
 
 

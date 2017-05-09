@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 
@@ -32,9 +33,9 @@ import static android.app.Activity.RESULT_OK;
 public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements View.OnClickListener {
 
     public interface PhotoCallBack {
-        void addPhoto(String fileName);
+        void addPhoto(String fileName, DiaryTextTag tag);
 
-        void selectPhoto(Uri uri);
+        void selectPhoto(Uri uri, DiaryTextTag tag);
     }
 
     private RelativeLayout RL_diary_photo_dialog;
@@ -55,10 +56,11 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     private PhotoCallBack callBack;
 
 
-    public static DiaryPhotoBottomSheet newInstance(boolean isEditMode) {
+    public static DiaryPhotoBottomSheet newInstance(boolean isEditMode, DiaryTextTag tag) {
         Bundle args = new Bundle();
         DiaryPhotoBottomSheet fragment = new DiaryPhotoBottomSheet();
         args.putBoolean("isEditMode", isEditMode);
+        args.putParcelable("diaryTextTag", tag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,16 +103,22 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        DiaryTextTag tag = null;
+        if (getArguments().getParcelable("diaryTextTag") instanceof DiaryTextTag) {
+            tag = getArguments().getParcelable("diaryTextTag");
+        }
+
         if (requestCode == REQUEST_START_CAMERA_CODE) {
             if (resultCode == RESULT_OK) {
-                callBack.addPhoto(tempFileName);
+                callBack.addPhoto(tempFileName, tag);
             }
             dismiss();
         } else if (requestCode == REQUEST_SELECT_IMAGE_CODE) {
             if (resultCode == RESULT_OK) {
                 //fix the ZenPhone C & HTC 626 crash issues
                 if (data != null && data.getData() != null && callBack != null) {
-                    callBack.selectPhoto(data.getData());
+                    callBack.selectPhoto(data.getData(), tag);
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_photo_intent_error), Toast.LENGTH_LONG).show();
                 }
