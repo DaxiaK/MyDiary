@@ -3,7 +3,9 @@
 
     <!--Release Note-->
     <string name="release_note_title">更新情報</string>
-    <string name="release_note">**0.3.0.170424_1_A\n
+    <string name="release_note">**0.3.0.170509_1_AH\n
+        -修復編輯日記bug\n\n
+        **0.3.0.170424_1_A\n
         -修復bug\n
         -支援簡易的照片功能\n
         -調整畫面\n\n
