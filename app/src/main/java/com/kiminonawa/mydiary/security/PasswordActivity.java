@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.security;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.shared.Encryption;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
@@ -122,6 +125,12 @@ public class PasswordActivity extends AppCompatActivity implements View.OnClickL
         clearUiPassword();
         initUI();
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     private void initUI() {
         IV_password_number_1.requestFocus();

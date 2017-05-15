@@ -1,7 +1,10 @@
 package com.kiminonawa.mydiary.backup;
 
+import android.content.Context;
 import android.os.Environment;
 
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.nononsenseapps.filepicker.AbstractFilePickerFragment;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
@@ -37,6 +40,12 @@ public class DirectoryPickerActivity extends FilePickerActivity {
                 allowExistingFile, singleClick);
         return currentFragment;
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     /**
      * Override the back-button.

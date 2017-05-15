@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.memo;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
@@ -108,6 +111,12 @@ public class MemoActivity extends FragmentActivity implements
         loadMemo(true);
         initTopicAdapter();
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     private void loadMemo(boolean openDB) {
         memoList.clear();

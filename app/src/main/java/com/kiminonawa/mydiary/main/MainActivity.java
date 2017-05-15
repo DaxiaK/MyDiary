@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -34,6 +35,8 @@ import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.oobe.CustomViewTarget;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
@@ -187,6 +190,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTopicAdapter = null;
         super.onDestroy();
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     @Override
     public void onBackPressed() {

@@ -1,10 +1,13 @@
 package com.kiminonawa.mydiary.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 /**
@@ -74,6 +77,12 @@ public class AboutActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.TV_about_text)).setText(license.toString());
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     public class LicenseObj {
 

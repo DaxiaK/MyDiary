@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -70,6 +73,12 @@ public class PhotoOverviewActivity extends AppCompatActivity {
             RLDiaryPhotoOverviewNoImages.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     private void loadDiaryImageData(long topicId, long diaryId) {
         FileManager diaryRoot = new FileManager(PhotoOverviewActivity.this, DIARY_ROOT_DIR);
