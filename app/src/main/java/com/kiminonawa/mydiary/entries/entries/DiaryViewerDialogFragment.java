@@ -775,7 +775,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             setDiaryTime();
             TimePickerFragment timePickerFragment = TimePickerFragment.newInstance(calendar.getTimeInMillis());
             timePickerFragment.setOnTimeSetListener(this);
-            timePickerFragment.show(getFragmentManager(), "timePickerFragment");
+            timePickerFragment.show(getActivity().getSupportFragmentManager(), "timePickerFragment");
         }
     }
 

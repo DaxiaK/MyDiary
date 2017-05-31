@@ -114,13 +114,13 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
+        progressDialog.dismiss();
         if (result == SaveDiaryTask.RESULT_INSERT_SUCCESSFUL) {
             Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_successful), Toast.LENGTH_LONG).show();
+            callBack.onDiarySaved();
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_fail), Toast.LENGTH_LONG).show();
         }
-        progressDialog.dismiss();
-        callBack.onDiarySaved();
     }
 
     private void savePhoto(String filename) throws Exception {
