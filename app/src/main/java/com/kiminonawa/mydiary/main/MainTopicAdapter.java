@@ -185,6 +185,11 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
     @Override
+    public void onSwipeItemStarted(TopicViewHolder holder, int position) {
+
+    }
+
+    @Override
     public void onSetSwipeBackground(TopicViewHolder holder, int position, int type) {
         if (type == SwipeableItemConstants.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND) {
             holder.getTopicLeftSettingView().setVisibility(View.GONE);
@@ -213,7 +218,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public boolean onCheckCanStartDrag(TopicViewHolder holder, int position, int x, int y) {
-
+        //TODO need to fix 0.11.0 lib bug
         // x, y --- relative from the itemView's top-left
         final View containerView = holder.getSwipeableContainerView();
 
@@ -242,6 +247,20 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         final ITopic filteredItem = filteredTopicList.remove(fromPosition);
         filteredTopicList.add(toPosition, filteredItem);
 
+        notifyDataSetChanged(false);
+    }
+
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return true;
+    }
+
+    @Override
+    public void onItemDragStarted(int position) {
+    }
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
         //save the new topic order
         int orderNumber = originalTopicList.size();
         dbManager.opeDB();
@@ -250,12 +269,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             dbManager.insertTopicOrder(topic.getId(), --orderNumber);
         }
         dbManager.closeDB();
-        notifyDataSetChanged(false);
-    }
-
-    @Override
-    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
-        return true;
     }
 
     private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {

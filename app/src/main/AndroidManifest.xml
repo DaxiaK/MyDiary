@@ -19,6 +19,8 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="false"
+        android:supportsPictureInPicture="false"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
 
@@ -52,10 +54,10 @@
         <activity
             android:name=".entries.photo.PhotoOverviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme_NoActionBar_FullScreen"/>
+            android:theme="@style/Theme_NoActionBar_FullScreen" />
         <activity
             android:name=".entries.photo.PhotoDetailViewerActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".memo.MemoActivity"
             android:screenOrientation="portrait"
