@@ -53,12 +53,13 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -314,7 +315,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName,DiaryTextTag tag) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + diaryTempFileManager.getDirAbsolutePath() + "/" + fileName;
+            String tempFileSrc = MyDiaryFileUtils.FILE_HEADER + diaryTempFileManager.getDirAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             //Check edittext is focused
@@ -480,7 +481,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             String content = "";
             if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = FileManager.FILE_HEADER +
+                content = MyDiaryFileUtils.FILE_HEADER +
                         diaryTempFileManager.getDirAbsolutePath() + "/" +
                         autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
                 ((DiaryPhoto) diaryItem).setDeleteClickListener(this);
@@ -613,8 +614,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void selectPhoto(Uri uri,DiaryTextTag tag) {
-        if (FileManager.isImage(
-                FileManager.getFileNameByUri(getActivity(), uri))) {
+        if (MyDiaryFileUtils.isImage(
+                MyDiaryFileUtils.getFileNameByUri(getActivity(), uri))) {
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
@@ -743,7 +744,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_photo:
-                if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                if (MyDiaryFileUtils.getSDCardFreeSize() > MyDiaryFileUtils.MIN_FREE_SPACE) {
                     if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                         if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                             openPhotoBottomSheet();

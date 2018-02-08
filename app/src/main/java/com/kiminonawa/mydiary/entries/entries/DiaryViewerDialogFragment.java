@@ -60,12 +60,13 @@ import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerActivity;
 import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.lang.ref.WeakReference;
@@ -504,7 +505,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String content = "";
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = FileManager.FILE_HEADER +
+                content = MyDiaryFileUtils.FILE_HEADER +
                         diaryFileManager.getDirAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
@@ -643,7 +644,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void loadFileFromTemp(String fileName, DiaryTextTag tag) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDirAbsolutePath() + "/" + fileName;
+            String tempFileSrc = MyDiaryFileUtils.FILE_HEADER + diaryFileManager.getDirAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             //Check edittext is focused
@@ -729,8 +730,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     @Override
     public void selectPhoto(Uri uri, DiaryTextTag tag) {
-        if (FileManager.isImage(
-                FileManager.getFileNameByUri(getActivity(), uri))) {
+        if (MyDiaryFileUtils.isImage(
+                MyDiaryFileUtils.getFileNameByUri(getActivity(), uri))) {
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
@@ -849,7 +850,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             case R.id.IV_diary_photo:
                 if (isEditMode) {
                     //Allow add photo
-                    if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                    if (MyDiaryFileUtils.getSDCardFreeSize() > MyDiaryFileUtils.MIN_FREE_SPACE) {
                         if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                             if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                                 openPhotoBottomSheet();

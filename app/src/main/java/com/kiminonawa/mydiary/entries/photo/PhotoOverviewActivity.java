@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
 import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
 import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 
@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kiminonawa.mydiary.shared.FileManager.DIARY_ROOT_DIR;
+import static com.kiminonawa.mydiary.shared.file.FileManager.DIARY_ROOT_DIR;
 
 /**
  * Created by daxia on 2017/4/12.

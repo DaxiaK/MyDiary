@@ -2,6 +2,9 @@ package com.kiminonawa.mydiary.shared;
 
 import android.content.Context;
 
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -19,7 +22,7 @@ public class OldVersionHelper {
         boolean moveIntoNewDir = false;
         //router all dir first
         for (int i = 0; i < dataFiles.length; i++) {
-            if (FileManager.isNumeric(dataFiles[i].getName()) && dataFiles[i].listFiles().length > 0) {
+            if (MyDiaryFileUtils.isNumeric(dataFiles[i].getName()) && dataFiles[i].listFiles().length > 0) {
                 moveIntoNewDir = true;
                 break;
             }
@@ -30,7 +33,7 @@ public class OldVersionHelper {
             File destDir = diaryFM.getDir();
             FileUtils.deleteDirectory(destDir);
             for (int i = 0; i < dataFiles.length; i++) {
-                if (FileManager.isNumeric(dataFiles[i].getName())) {
+                if (MyDiaryFileUtils.isNumeric(dataFiles[i].getName())) {
                     FileUtils.moveDirectoryToDirectory(dataFiles[i],
                             new FileManager(context, FileManager.DIARY_ROOT_DIR).getDir()
                             , true);

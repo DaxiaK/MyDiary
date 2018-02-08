@@ -17,14 +17,15 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.shared.ColorTools;
-import com.kiminonawa.mydiary.shared.FileManager;
-import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
-import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.OldVersionHelper;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import com.yalantis.ucrop.UCrop;
 
@@ -114,7 +115,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(this));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(this));
-                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
                             .withMaxResultSize(bgWidth, bgHeight)
                             .withOptions(options)
                             .withAspectRatio(bgWidth, bgHeight)
@@ -128,7 +129,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 if (data != null) {
                     final Uri resultUri = UCrop.getOutput(data);
                     IV_setting_profile_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
-                    profileBgFileName = FileManager.getFileNameByUri(this, resultUri);
+                    profileBgFileName = MyDiaryFileUtils.getFileNameByUri(this, resultUri);
                     isAddNewProfileBg = true;
                 } else {
                     Toast.makeText(this, getString(R.string.toast_crop_profile_banner_fail), Toast.LENGTH_LONG).show();
@@ -151,7 +152,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
             if (grantResults.length > 0
                     && PermissionHelper.checkAllPermissionResult(grantResults)) {
-                FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+                MyDiaryFileUtils.startBrowseImageFile(this, SELECT_PROFILE_BG);
             } else {
                 PermissionHelper.showAddPhotoDialog(this);
             }
@@ -265,7 +266,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.IV_setting_profile_bg:
                 if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
-                    FileManager.startBrowseImageFile(this, SELECT_PROFILE_BG);
+                    MyDiaryFileUtils.startBrowseImageFile(this, SELECT_PROFILE_BG);
                 }
                 break;
             case R.id.But_setting_theme_default:
@@ -290,7 +291,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         if (!"".equals(profileBgFileName)) {
                             try {
                                 //Copy the profile into setting dir
-                                FileManager.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + profileBgFileName),
+                                MyDiaryFileUtils.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + profileBgFileName),
                                         new File(settingFM.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
                                 hasCustomProfileBannerBg = true;
                             } catch (IOException e) {

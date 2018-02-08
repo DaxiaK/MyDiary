@@ -9,7 +9,8 @@ import android.util.Log;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
 import com.kiminonawa.mydiary.shared.photo.ExifUtil;
 
@@ -113,7 +114,7 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     private String savePhotoToTemp(Bitmap bitmap) throws Exception {
 
         FileOutputStream out = null;
-        String fileName = FileManager.createRandomFileName();
+        String fileName = MyDiaryFileUtils.createRandomFileName();
         try {
             out = new FileOutputStream(fileManager.getDirAbsolutePath() + "/" + fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance

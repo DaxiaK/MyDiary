@@ -3,7 +3,7 @@ package com.kiminonawa.mydiary.backup;
 import android.content.Context;
 import android.util.Log;
 
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

@@ -10,7 +10,8 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
 
@@ -72,9 +73,9 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
 
         int saveResult = RESULT_INSERT_SUCCESSFUL;
         long topicId = params[0];
+        dbManager.opeDB();
+        dbManager.beginTransaction();
         try {
-            dbManager.opeDB();
-            dbManager.beginTransaction();
             //Save info
             long diaryId = dbManager.insertDiaryInfo(time,
                     title, moodPosition, weatherPosition,
@@ -124,7 +125,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + filename),
+        MyDiaryFileUtils.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + filename),
                 new File(diaryFileManager.getDirAbsolutePath() + "/" + filename));
     }
 }

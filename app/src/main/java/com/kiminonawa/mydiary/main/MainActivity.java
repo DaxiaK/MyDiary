@@ -34,7 +34,7 @@ import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.oobe.CustomViewTarget;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
 import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
 import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.SPFManager;

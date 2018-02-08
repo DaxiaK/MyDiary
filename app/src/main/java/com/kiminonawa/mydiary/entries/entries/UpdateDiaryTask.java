@@ -9,7 +9,8 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -119,7 +120,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(editCrashFileManager.getDirAbsolutePath() + "/" + filename),
+        MyDiaryFileUtils.copy(new File(editCrashFileManager.getDirAbsolutePath() + "/" + filename),
                 new File(diaryFileManager.getDirAbsolutePath() + "/" + filename));
     }
 }

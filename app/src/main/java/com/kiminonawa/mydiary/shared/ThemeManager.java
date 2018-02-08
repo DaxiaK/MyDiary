@@ -13,6 +13,7 @@ import android.support.v4.media.RatingCompat;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.topic.ITopic;
+import com.kiminonawa.mydiary.shared.file.FileManager;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.io.File;

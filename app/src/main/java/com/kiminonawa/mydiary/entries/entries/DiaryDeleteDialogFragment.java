@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
 import com.kiminonawa.mydiary.shared.gui.CommonDialogFragment;
 
 import java.io.IOException;

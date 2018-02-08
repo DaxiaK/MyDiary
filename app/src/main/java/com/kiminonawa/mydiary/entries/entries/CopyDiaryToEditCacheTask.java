@@ -5,7 +5,8 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
 
@@ -63,7 +64,7 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void copyPhoto(String filename, FileManager diaryFileManager) throws Exception {
-        FileManager.copy(new File(diaryFileManager.getDirAbsolutePath() + "/" + filename),
+        MyDiaryFileUtils.copy(new File(diaryFileManager.getDirAbsolutePath() + "/" + filename),
                 new File(editCacheFileManage.getDirAbsolutePath() + "/" + filename));
     }
 }

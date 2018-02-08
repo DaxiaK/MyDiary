@@ -19,8 +19,9 @@ import android.widget.Toast;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
 
@@ -133,7 +134,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
         switch (v.getId()) {
             case R.id.IV_diary_photo_add_a_photo:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                tempFileName = "/" + fileManager.createRandomFileName();
+                tempFileName = "/" + MyDiaryFileUtils.createRandomFileName();
                 File tmpFile = new File(fileManager.getDir(), tempFileName);
                 Uri outputFileUri;
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -147,7 +148,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
                 startActivityForResult(intent, REQUEST_START_CAMERA_CODE);
                 break;
             case R.id.IV_diary_photo_select_a_photo:
-                FileManager.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
+                MyDiaryFileUtils.startBrowseImageFile(this, REQUEST_SELECT_IMAGE_CODE);
                 break;
         }
     }
