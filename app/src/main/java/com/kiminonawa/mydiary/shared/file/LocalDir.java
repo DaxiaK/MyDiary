@@ -56,8 +56,7 @@ public class LocalDir implements IDir {
 
     public void clearDir() {
         try {
-            File[] fList = fileDir.listFiles();
-            if (fList != null && fileDir.isDirectory()) {
+            if (fileDir != null && fileDir.isDirectory()) {
                 FileUtils.cleanDirectory(fileDir);
             }
         } catch (Exception e) {
