@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import java.io.InputStream;
  */
 
 public class BitmapHelper {
+
+    private final static String TAG = "BitmapHelper";
 
     public static Bitmap getBitmapFromReturnedImage(Context context, Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(selectedImage);
@@ -90,7 +93,10 @@ public class BitmapHelper {
 
         int inSampleSize = 1;
         try {
-            if ((height > reqHeight || width > reqWidth) && options.outHeight > 0 && options.outWidth > 0) {
+            if (reqHeight > 0 && reqWidth > 0
+                    && (height > reqHeight || width > reqWidth)
+                    && options.outHeight > 0
+                    && options.outWidth > 0) {
 
                 final int halfHeight = height / 2;
                 final int halfWidth = width / 2;
@@ -118,9 +124,9 @@ public class BitmapHelper {
                     inSampleSize *= 2;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             //For avoid crash
-            e.printStackTrace();
+            Log.e(TAG, "calculateInSampleSize fail", e);
             inSampleSize = 1;
         }
         return inSampleSize;

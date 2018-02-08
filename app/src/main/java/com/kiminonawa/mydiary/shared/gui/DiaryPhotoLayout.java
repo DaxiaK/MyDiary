@@ -41,10 +41,19 @@ public class DiaryPhotoLayout extends LinearLayout {
         IV_diary_photo_delete = (ImageView) v.findViewById(R.id.IV_diary_photo_delete);
     }
 
-    public void setPhotoUri( Uri photoUri) {
+    public void setPhotoUri(Uri photoUri) {
+        int width = DiaryItemHelper.getVisibleWidth(getContext());
+        int height = DiaryItemHelper.getVisibleHeight(getContext());
+
+        if (width <= 0) {
+            width = ScreenHelper.getScreenWidth(getContext());
+        }
+        if (height <= 0) {
+            height = ScreenHelper.getScreenHeight(getContext());
+        }
+
         ImageRequest request = ImageRequestBuilder.newBuilderWithSource(photoUri)
-                .setResizeOptions(new ResizeOptions(DiaryItemHelper.getVisibleWidth(getContext()),
-                        DiaryItemHelper.getVisibleHeight(getContext())))
+                .setResizeOptions(new ResizeOptions(width, height))
                 .setRotationOptions(RotationOptions.autoRotate())
                 .build();
         DraweeController controller = Fresco.newDraweeControllerBuilder()
