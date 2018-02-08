@@ -16,7 +16,9 @@ import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
 import com.kiminonawa.mydiary.backup.obj.BUMemoEntries;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -70,8 +72,8 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         this.backupManager.initBackupManagerExportInfo();
 
         this.dbManager = new DBManager(context);
-        FileManager backupFM = new FileManager(context, FileManager.BACKUP_DIR);
-        this.backupJsonFilePath = backupFM.getDirAbsolutePath() + "/"
+        IDir backupDir = DirFactory.CreateDirByType(context, LocalDir.BACKUP_DIR);
+        this.backupJsonFilePath = backupDir.getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZipRootPath = backupZipRootPath;
         this.backupZipFileName = BACKUP_ZIP_FILE_HEADER + sdf.format(new Date()) + BACKUP_ZIP_FILE_SUB_FILE_NAME;
@@ -121,7 +123,7 @@ public class ExportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
 
     private void deleteBackupJsonFile() {
-        new FileManager(mContext, FileManager.BACKUP_DIR).clearDir();
+        DirFactory.CreateDirByType(mContext, LocalDir.BACKUP_DIR).clearDir();
     }
 
     private void outputBackupJson() throws IOException {

@@ -9,7 +9,9 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import org.apache.commons.io.FileUtils;
 
@@ -37,7 +39,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     private String location;
     private boolean attachment;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager editCrashFileManager, diaryFileManager;
+    private IDir editCrashLocalDir, diaryLocalDir;
     private ProgressDialog progressDialog;
 
     private UpdateDiaryCallBack callBack;
@@ -46,7 +48,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     public UpdateDiaryTask(Context context, long time, String title,
                            int moodPosition, int weatherPosition, String location,
                            boolean attachment, DiaryItemHelper diaryItemHelper,
-                           FileManager fileManager, UpdateDiaryCallBack callBack) {
+                           IDir localDir, UpdateDiaryCallBack callBack) {
 
         this.dbManager = new DBManager(context);
         this.mContext = context;
@@ -57,7 +59,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.weatherPosition = weatherPosition;
         this.attachment = attachment;
         this.diaryItemHelper = diaryItemHelper;
-        this.editCrashFileManager = fileManager;
+        this.editCrashLocalDir = localDir;
         this.callBack = callBack;
 
         progressDialog = new ProgressDialog(context);
@@ -80,8 +82,8 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
             //Delete all item first
             dbManager.delAllDiaryItemByDiaryId(diaryId);
             //Delete old photo
-            diaryFileManager = new FileManager(mContext, topicId, diaryId);
-            diaryFileManager.clearDir();
+            diaryLocalDir = DirFactory.CreateDiaryDir(mContext, topicId, diaryId);
+            diaryLocalDir.clearDir();
             //Update Diary
             dbManager.updateDiary(diaryId, time, title, moodPosition, weatherPosition, location, attachment);
             for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
@@ -94,14 +96,14 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
                         , diaryItemHelper.get(i).getContent(), diaryId);
             }
             //Delete all dir if it is no file.
-            if (diaryFileManager.getDir().listFiles().length == 0) {
-                FileUtils.deleteDirectory(diaryFileManager.getDir());
+            if (diaryLocalDir.getDir().listFiles().length == 0) {
+                FileUtils.deleteDirectory(diaryLocalDir.getDir());
             }
         } catch (Exception e) {
             updateResult = RESULT_UPDATE_ERROR;
         } finally {
             dbManager.closeDB();
-            editCrashFileManager.clearDir();
+            editCrashLocalDir.clearDir();
         }
         return updateResult;
     }
@@ -119,7 +121,7 @@ public class UpdateDiaryTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(editCrashFileManager.getDirAbsolutePath() + "/" + filename),
-                new File(diaryFileManager.getDirAbsolutePath() + "/" + filename));
+        MyDiaryFileUtils.copy(new File(editCrashLocalDir.getDirAbsolutePath() + "/" + filename),
+                new File(diaryLocalDir.getDirAbsolutePath() + "/" + filename));
     }
 }

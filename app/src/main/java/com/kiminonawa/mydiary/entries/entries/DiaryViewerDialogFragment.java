@@ -60,12 +60,15 @@ import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
 import com.kiminonawa.mydiary.entries.photo.PhotoDetailViewerActivity;
 import com.kiminonawa.mydiary.entries.photo.PhotoOverviewActivity;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
 import java.lang.ref.WeakReference;
@@ -131,7 +134,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
      */
     private long diaryId;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager diaryFileManager;
+    private IDir diaryLocalDir;
 
     /**
      * Edit Mode
@@ -267,10 +270,10 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         if (diaryId != -1) {
             if (isEditMode) {
                 diaryViewerHandler = new DiaryViewerHandler(this);
-                diaryFileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
-                diaryFileManager.clearDir();
+                diaryLocalDir = DirFactory.CreateDirByType(getActivity(), LocalDir.DIARY_EDIT_CACHE_DIR);
+                diaryLocalDir.clearDir();
                 PB_diary_item_content_hint.setVisibility(View.VISIBLE);
-                mTask = new CopyDiaryToEditCacheTask(getActivity(), diaryFileManager, this);
+                mTask = new CopyDiaryToEditCacheTask(getActivity(), diaryLocalDir, this);
                 //Make ths ProgressBar show 0.7s+.
                 loadDiaryHandler = new Handler();
                 initHandlerOrTaskIsRunning = true;
@@ -282,7 +285,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                     }
                 }, 700);
             } else {
-                diaryFileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
+                diaryLocalDir = DirFactory.CreateDiaryDir(getActivity(), ((DiaryActivity) getActivity()).getTopicId(), diaryId);
                 diaryPhotoFileList = new ArrayList<>();
                 initData();
             }
@@ -504,8 +507,8 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             String content = "";
             if (diaryContentCursor.getInt(1) == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = FileManager.FILE_HEADER +
-                        diaryFileManager.getDirAbsolutePath() + "/" + diaryContentCursor.getString(3);
+                content = MyDiaryFileUtils.FILE_HEADER +
+                        diaryLocalDir.getDirAbsolutePath() + "/" + diaryContentCursor.getString(3);
                 if (isEditMode) {
                     diaryItem.setEditMode(true);
                     ((DiaryPhoto) diaryItem).setDeleteClickListener(this);
@@ -643,7 +646,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     private void loadFileFromTemp(String fileName, DiaryTextTag tag) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + diaryFileManager.getDirAbsolutePath() + "/" + fileName;
+            String tempFileSrc = MyDiaryFileUtils.FILE_HEADER + diaryLocalDir.getDirAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             //Check edittext is focused
@@ -711,7 +714,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
                 locationName,
                 //Check  attachment
                 diaryItemHelper.getNowPhotoCount() > 0 ? true : false,
-                diaryItemHelper, diaryFileManager, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
+                diaryItemHelper, diaryLocalDir, this).execute(((DiaryActivity) getActivity()).getTopicId(), diaryId);
 
     }
 
@@ -729,13 +732,13 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
 
     @Override
     public void selectPhoto(Uri uri, DiaryTextTag tag) {
-        if (FileManager.isImage(
-                FileManager.getFileNameByUri(getActivity(), uri))) {
+        if (MyDiaryFileUtils.isImage(
+                MyDiaryFileUtils.getFileNameByUri(getActivity(), uri))) {
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                    diaryFileManager, this, tag).execute();
+                    diaryLocalDir, this, tag).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
@@ -747,7 +750,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                diaryFileManager, this, tag).execute();
+                diaryLocalDir, this, tag).execute();
     }
 
     @Override
@@ -849,7 +852,7 @@ public class DiaryViewerDialogFragment extends DialogFragment implements View.On
             case R.id.IV_diary_photo:
                 if (isEditMode) {
                     //Allow add photo
-                    if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                    if (MyDiaryFileUtils.getSDCardFreeSize() > MyDiaryFileUtils.MIN_FREE_SPACE) {
                         if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                             if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                                 openPhotoBottomSheet();

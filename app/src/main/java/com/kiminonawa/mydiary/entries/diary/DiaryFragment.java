@@ -53,12 +53,14 @@ import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.diary.picker.DatePickerFragment;
 import com.kiminonawa.mydiary.entries.diary.picker.TimePickerFragment;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.TimeTools;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -125,7 +127,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
     /**
      * File
      */
-    private FileManager diaryTempFileManager;
+    private IDir diaryTempLocalDir;
 
     /**
      * Google Place API
@@ -148,7 +150,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         calendar = Calendar.getInstance();
         timeTools = TimeTools.getInstance(getActivity().getApplicationContext());
         noLocation = getString(R.string.diary_no_location);
-        diaryTempFileManager = new FileManager(getActivity(), getTopicId());
+        diaryTempLocalDir = DirFactory.CreateDiaryAutoSaveDir(getActivity(), getTopicId());
     }
 
     @Override
@@ -314,7 +316,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     private void loadFileFromTemp(String fileName,DiaryTextTag tag) {
         try {
-            String tempFileSrc = FileManager.FILE_HEADER + diaryTempFileManager.getDirAbsolutePath() + "/" + fileName;
+            String tempFileSrc = MyDiaryFileUtils.FILE_HEADER + diaryTempLocalDir.getDirAbsolutePath() + "/" + fileName;
             DiaryPhoto diaryPhoto = new DiaryPhoto(getActivity());
             diaryPhoto.setPhoto(Uri.parse(tempFileSrc), fileName);
             //Check edittext is focused
@@ -409,7 +411,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
      * The temp file only be clear when click clear button & diary save
      */
     private void clearDiaryTemp() {
-        diaryTempFileManager.clearDir();
+        diaryTempLocalDir.clearDir();
         SPFManager.clearDiaryAutoSave(getActivity(), getTopicId());
     }
 
@@ -480,8 +482,8 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
             String content = "";
             if (autoSaveDiary.getDiaryItemList().get(i).getDiaryItemType() == IDairyRow.TYPE_PHOTO) {
                 diaryItem = new DiaryPhoto(getActivity());
-                content = FileManager.FILE_HEADER +
-                        diaryTempFileManager.getDirAbsolutePath() + "/" +
+                content = MyDiaryFileUtils.FILE_HEADER +
+                        diaryTempLocalDir.getDirAbsolutePath() + "/" +
                         autoSaveDiary.getDiaryItemList().get(i).getDiaryItemContent();
                 ((DiaryPhoto) diaryItem).setDeleteClickListener(this);
                 //For get the right file name
@@ -613,13 +615,13 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
 
     @Override
     public void selectPhoto(Uri uri,DiaryTextTag tag) {
-        if (FileManager.isImage(
-                FileManager.getFileNameByUri(getActivity(), uri))) {
+        if (MyDiaryFileUtils.isImage(
+                MyDiaryFileUtils.getFileNameByUri(getActivity(), uri))) {
             //1.Copy bitmap to temp for rotating & resize
             //2.Then Load bitmap call back ;
             new CopyPhotoTask(getActivity(), uri,
                     DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                    diaryTempFileManager, this,tag).execute();
+                    diaryTempLocalDir, this,tag).execute();
         } else {
             Toast.makeText(getActivity(), getString(R.string.toast_not_image), Toast.LENGTH_LONG).show();
         }
@@ -631,7 +633,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
         //2.Then , Load bitmap in call back ;
         new CopyPhotoTask(getActivity(), fileName,
                 DiaryItemHelper.getVisibleWidth(getActivity()), DiaryItemHelper.getVisibleHeight(getActivity()),
-                diaryTempFileManager, this,tag).execute();
+                diaryTempLocalDir, this,tag).execute();
     }
 
     @Override
@@ -743,7 +745,7 @@ public class DiaryFragment extends BaseDiaryFragment implements View.OnClickList
                 }
                 break;
             case R.id.IV_diary_photo:
-                if (FileManager.getSDCardFreeSize() > FileManager.MIN_FREE_SPACE) {
+                if (MyDiaryFileUtils.getSDCardFreeSize() > MyDiaryFileUtils.MIN_FREE_SPACE) {
                     if (PermissionHelper.checkPermission(this, REQUEST_CAMERA_AND_WRITE_ES_PERMISSION)) {
                         if (diaryItemHelper.getNowPhotoCount() < DiaryItemHelper.MAX_PHOTO_COUNT) {
                             openPhotoBottomSheet();

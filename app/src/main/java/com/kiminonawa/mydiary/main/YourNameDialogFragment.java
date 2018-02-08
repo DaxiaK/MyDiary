@@ -18,12 +18,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.yalantis.ucrop.UCrop;
 
@@ -51,7 +54,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
     /**
      * File
      */
-    private FileManager tempFileManager;
+    private IDir tempLocalDir;
     private final static int SELECT_PROFILE_PICTURE_BG = 0;
     /**
      * Profile picture
@@ -122,7 +125,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
             if (grantResults.length > 0
                     && PermissionHelper.checkAllPermissionResult(grantResults)) {
-                FileManager.startBrowseImageFile(this, SELECT_PROFILE_PICTURE_BG);
+                MyDiaryFileUtils.startBrowseImageFile(this, SELECT_PROFILE_PICTURE_BG);
             } else {
                 PermissionHelper.showAddPhotoDialog(getActivity());
             }
@@ -136,15 +139,15 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 if (data != null && data.getData() != null) {
 
                     //Create fileManager for get temp folder
-                    tempFileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
-                    tempFileManager.clearDir();
+                    tempLocalDir = DirFactory.CreateDirByType(getActivity(), LocalDir.TEMP_DIR);
+                    tempLocalDir.clearDir();
                     //Compute the bg size
                     int photoSize = ScreenHelper.dpToPixel(getResources(), 50);
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
                     UCrop.of(data.getData(), Uri.fromFile(
-                            new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
+                            new File(tempLocalDir.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
                             .withMaxResultSize(photoSize, photoSize)
                             .withAspectRatio(1, 1)
                             .withOptions(options)
@@ -158,7 +161,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 if (data != null) {
                     final Uri resultUri = UCrop.getOutput(data);
                     IV_your_name_profile_picture.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
-                    profilePictureFileName = FileManager.getFileNameByUri(getActivity(), resultUri);
+                    profilePictureFileName = MyDiaryFileUtils.getFileNameByUri(getActivity(), resultUri);
                     isAddNewProfilePicture = true;
                 } else {
                     Toast.makeText(getActivity(), getString(R.string.toast_crop_profile_picture_fail), Toast.LENGTH_LONG).show();
@@ -180,7 +183,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         //Save profile picture
         if (isAddNewProfilePicture) {
             //Remove the old file
-            FileManager bgFM = new FileManager(getActivity(), FileManager.SETTING_DIR);
+            IDir bgFM = DirFactory.CreateDirByType(getActivity(), LocalDir.SETTING_DIR);
             File oldProfilePictureFile = new File(bgFM.getDirAbsolutePath()
                     + "/" + ThemeManager.CUSTOM_PROFILE_PICTURE_FILENAME);
             if (oldProfilePictureFile.exists()) {
@@ -189,8 +192,8 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
             if (!"".equals(profilePictureFileName)) {
                 try {
                     //Copy the profile into setting dir
-                    FileManager.copy(
-                            new File(tempFileManager.getDirAbsolutePath() + "/" + profilePictureFileName),
+                    MyDiaryFileUtils.copy(
+                            new File(tempLocalDir.getDirAbsolutePath() + "/" + profilePictureFileName),
                             oldProfilePictureFile);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -206,7 +209,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         switch (v.getId()) {
             case R.id.IV_your_name_profile_picture:
                 if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
-                    FileManager.startBrowseImageFile(this, SELECT_PROFILE_PICTURE_BG);
+                    MyDiaryFileUtils.startBrowseImageFile(this, SELECT_PROFILE_PICTURE_BG);
                 }
                 break;
             case R.id.IV_your_name_profile_picture_cancel:

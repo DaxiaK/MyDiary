@@ -7,7 +7,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class ExifUtil {
     }
 
     public static Bitmap rotateBitmap(Context context, Uri uri, Bitmap bitmap) {
-        String path = FileManager.getRealPathFromURI(context, uri);
+        String path = MyDiaryFileUtils.getRealPathFromURI(context, uri);
         if (path == null) {
             return bitmap;
         }
