@@ -5,7 +5,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
-import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.widget.ScrollView;
 
@@ -47,8 +46,8 @@ public class ViewTools {
         }
     }
     public static boolean hitTest(View v, int x, int y) {
-        final int tx = (int) (ViewCompat.getTranslationX(v) + 0.5f);
-        final int ty = (int) (ViewCompat.getTranslationY(v) + 0.5f);
+        final int tx = (int) (v.getTranslationX() + 0.5f);
+        final int ty = (int) (v.getTranslationY() + 0.5f);
         final int left = v.getLeft() + tx;
         final int right = v.getRight() + tx;
         final int top = v.getTop() + ty;
