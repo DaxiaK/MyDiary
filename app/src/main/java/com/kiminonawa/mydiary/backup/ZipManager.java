@@ -3,7 +3,9 @@ package com.kiminonawa.mydiary.backup;
 import android.content.Context;
 import android.util.Log;
 
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -23,18 +25,18 @@ import static android.content.ContentValues.TAG;
 
 public class ZipManager {
 
-    private FileManager diaryFileManager;
+    private IDir diaryLocalDir;
     private final int BUFFER_SIZE = 2048;
 
 
     public ZipManager(Context context) {
         //Copy data form diary
-        diaryFileManager = new FileManager(context, FileManager.DIARY_ROOT_DIR);
+        diaryLocalDir = DirFactory.CreateDirByType(context, LocalDir.DIARY_ROOT_DIR);
     }
 
     public boolean zipFileAtPath(String backupJsonFilePath, String toLocation) {
 
-        File sourceFile = diaryFileManager.getDir();
+        File sourceFile = diaryLocalDir.getDir();
         try {
             BufferedInputStream origin = null;
             FileOutputStream dest = new FileOutputStream(toLocation);

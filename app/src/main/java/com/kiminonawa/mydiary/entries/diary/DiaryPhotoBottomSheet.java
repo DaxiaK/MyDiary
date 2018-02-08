@@ -20,7 +20,9 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.entries.DiaryActivity;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
@@ -51,7 +53,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     /**
      * File
      */
-    private FileManager fileManager;
+    private IDir localDir;
     private String tempFileName;
 
     private PhotoCallBack callBack;
@@ -71,9 +73,9 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         if (getArguments().getBoolean("isEditMode", false)) {
-            fileManager = new FileManager(getActivity(), FileManager.DIARY_EDIT_CACHE_DIR);
+            localDir = DirFactory.CreateDirByType(getActivity(), LocalDir.DIARY_EDIT_CACHE_DIR);
         } else {
-            fileManager = new FileManager(getActivity(), ((DiaryActivity) getActivity()).getTopicId());
+            localDir = DirFactory.CreateDiaryAutoSaveDir(getActivity(), ((DiaryActivity) getActivity()).getTopicId());
         }
         try {
             callBack = (PhotoCallBack) getTargetFragment();
@@ -135,7 +137,7 @@ public class DiaryPhotoBottomSheet extends BottomSheetDialogFragment implements 
             case R.id.IV_diary_photo_add_a_photo:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 tempFileName = "/" + MyDiaryFileUtils.createRandomFileName();
-                File tmpFile = new File(fileManager.getDir(), tempFileName);
+                File tmpFile = new File(localDir.getDir(), tempFileName);
                 Uri outputFileUri;
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                     outputFileUri = Uri.fromFile(tmpFile);

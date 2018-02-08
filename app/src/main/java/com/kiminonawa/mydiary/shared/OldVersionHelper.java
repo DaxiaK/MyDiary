@@ -2,7 +2,9 @@ package com.kiminonawa.mydiary.shared;
 
 import android.content.Context;
 
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -17,8 +19,8 @@ public class OldVersionHelper {
 
 
     public static boolean Version17MoveTheDiaryIntoNewDir(Context context) throws Exception {
-        FileManager rootFileManager = new FileManager(context, FileManager.ROOT_DIR);
-        File[] dataFiles = rootFileManager.getDir().listFiles();
+        IDir rootLocalDir = DirFactory.CreateDirByType(context, LocalDir.ROOT_DIR);
+        File[] dataFiles = rootLocalDir.getDir().listFiles();
         boolean moveIntoNewDir = false;
         //router all dir first
         for (int i = 0; i < dataFiles.length; i++) {
@@ -29,18 +31,18 @@ public class OldVersionHelper {
         }
         //If the numeric dir is exist , move it
         if (moveIntoNewDir) {
-            FileManager diaryFM = new FileManager(context, FileManager.DIARY_ROOT_DIR);
-            File destDir = diaryFM.getDir();
+            IDir diaryDir = DirFactory.CreateDirByType(context, LocalDir.DIARY_ROOT_DIR);
+            File destDir = diaryDir.getDir();
             FileUtils.deleteDirectory(destDir);
             for (int i = 0; i < dataFiles.length; i++) {
                 if (MyDiaryFileUtils.isNumeric(dataFiles[i].getName())) {
                     FileUtils.moveDirectoryToDirectory(dataFiles[i],
-                            new FileManager(context, FileManager.DIARY_ROOT_DIR).getDir()
+                            DirFactory.CreateDirByType(context, LocalDir.DIARY_ROOT_DIR).getDir()
                             , true);
                 }
             }
             //Remove the diary/temp/
-            FileUtils.deleteDirectory(new File(diaryFM.getDirAbsolutePath() + "/temp"));
+            FileUtils.deleteDirectory(new File(diaryDir.getDirAbsolutePath() + "/temp"));
         }
         return moveIntoNewDir;
     }

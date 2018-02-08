@@ -23,7 +23,9 @@ import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.ViewTools;
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.yalantis.ucrop.UCrop;
@@ -52,7 +54,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
     /**
      * File
      */
-    private FileManager tempFileManager;
+    private IDir tempLocalDir;
     private final static int SELECT_PROFILE_PICTURE_BG = 0;
     /**
      * Profile picture
@@ -137,15 +139,15 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 if (data != null && data.getData() != null) {
 
                     //Create fileManager for get temp folder
-                    tempFileManager = new FileManager(getActivity(), FileManager.TEMP_DIR);
-                    tempFileManager.clearDir();
+                    tempLocalDir = DirFactory.CreateDirByType(getActivity(), LocalDir.TEMP_DIR);
+                    tempLocalDir.clearDir();
                     //Compute the bg size
                     int photoSize = ScreenHelper.dpToPixel(getResources(), 50);
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
                     UCrop.of(data.getData(), Uri.fromFile(
-                            new File(tempFileManager.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
+                            new File(tempLocalDir.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
                             .withMaxResultSize(photoSize, photoSize)
                             .withAspectRatio(1, 1)
                             .withOptions(options)
@@ -181,7 +183,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
         //Save profile picture
         if (isAddNewProfilePicture) {
             //Remove the old file
-            FileManager bgFM = new FileManager(getActivity(), FileManager.SETTING_DIR);
+            IDir bgFM = DirFactory.CreateDirByType(getActivity(), LocalDir.SETTING_DIR);
             File oldProfilePictureFile = new File(bgFM.getDirAbsolutePath()
                     + "/" + ThemeManager.CUSTOM_PROFILE_PICTURE_FILENAME);
             if (oldProfilePictureFile.exists()) {
@@ -191,7 +193,7 @@ public class YourNameDialogFragment extends DialogFragment implements View.OnCli
                 try {
                     //Copy the profile into setting dir
                     MyDiaryFileUtils.copy(
-                            new File(tempFileManager.getDirAbsolutePath() + "/" + profilePictureFileName),
+                            new File(tempLocalDir.getDirAbsolutePath() + "/" + profilePictureFileName),
                             oldProfilePictureFile);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -22,7 +22,9 @@ import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
 import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
@@ -60,7 +62,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * File
      */
-    private FileManager tempFileManager;
+    private IDir tempLocalDir;
     private final static int SELECT_PROFILE_BG = 0;
 
     /**
@@ -82,8 +84,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         themeManager = ThemeManager.getInstance();
         //Create fileManager for get temp folder
-        tempFileManager = new FileManager(this, FileManager.TEMP_DIR);
-        tempFileManager.clearDir();
+        tempLocalDir = DirFactory.CreateDirByType(this, LocalDir.TEMP_DIR);
+        tempLocalDir.clearDir();
 
         SP_setting_theme = (Spinner) findViewById(R.id.SP_setting_theme);
         IV_setting_profile_bg = (ImageView) findViewById(R.id.IV_setting_profile_bg);
@@ -115,7 +117,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(this));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(this));
-                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempLocalDir.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
                             .withMaxResultSize(bgWidth, bgHeight)
                             .withOptions(options)
                             .withAspectRatio(bgWidth, bgHeight)
@@ -287,12 +289,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     if (isAddNewProfileBg) {
                         //For checking new profile bg is image or color.
                         boolean hasCustomProfileBannerBg = false;
-                        FileManager settingFM = new FileManager(this, FileManager.SETTING_DIR);
+                        IDir settingDir = DirFactory.CreateDirByType(this, LocalDir.SETTING_DIR);
                         if (!"".equals(profileBgFileName)) {
                             try {
                                 //Copy the profile into setting dir
-                                MyDiaryFileUtils.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + profileBgFileName),
-                                        new File(settingFM.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
+                                MyDiaryFileUtils.copy(new File(tempLocalDir.getDirAbsolutePath() + "/" + profileBgFileName),
+                                        new File(settingDir.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME));
                                 hasCustomProfileBannerBg = true;
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -300,7 +302,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                                 break;
                             }
                         } else {
-                            new File(settingFM.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
+                            new File(settingDir.getDirAbsolutePath() + "/" + ThemeManager.CUSTOM_PROFILE_BANNER_BG_FILENAME).delete();
                         }
                         SPFManager.setCustomProfileBannerBg(this, hasCustomProfileBannerBg);
                     }

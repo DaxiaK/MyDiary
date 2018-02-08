@@ -14,7 +14,9 @@ import com.kiminonawa.mydiary.backup.obj.BUDiaryItem;
 import com.kiminonawa.mydiary.backup.obj.BUMemoEntries;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.shared.file.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 
 import org.apache.commons.io.FileUtils;
 
@@ -41,7 +43,7 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
      * Backup
      */
     private BackupManager backupManager;
-    private FileManager backupFileManager, diartFileManager;
+    private IDir backupLocalDir, diaryLocalDir;
     private String backupJsonFilePath;
     private String backupZieFilePath;
     /*
@@ -60,13 +62,13 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
     public ImportAsyncTask(Context context, ImportCallBack callBack, String backupZieFilePath) {
         this.mContext = context;
         this.dbManager = new DBManager(context);
-        FileManager backFM = new FileManager(context, FileManager.BACKUP_DIR);
-        this.backupJsonFilePath = backFM.getDirAbsolutePath() + "/"
+        IDir backDir = DirFactory.CreateDirByType(context, LocalDir.BACKUP_DIR);
+        this.backupJsonFilePath = backDir.getDirAbsolutePath() + "/"
                 + BackupManager.BACKUP_JSON_FILE_NAME;
         this.backupZieFilePath = backupZieFilePath;
 
-        this.backupFileManager = new FileManager(mContext, FileManager.BACKUP_DIR);
-        this.diartFileManager = new FileManager(mContext, FileManager.DIARY_ROOT_DIR);
+        this.backupLocalDir = DirFactory.CreateDirByType(mContext, LocalDir.BACKUP_DIR);
+        this.diaryLocalDir = DirFactory.CreateDirByType(mContext, LocalDir.DIARY_ROOT_DIR);
 
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(context);
@@ -84,7 +86,7 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
         try {
             ZipManager zipManager = new ZipManager(mContext);
 
-            FileManager zipBackupFM = new FileManager(mContext, FileManager.BACKUP_DIR);
+            IDir zipBackupFM = DirFactory.CreateDirByType(mContext, LocalDir.BACKUP_DIR);
             zipManager.unzip(backupZieFilePath,
                     zipBackupFM.getDirAbsolutePath() + "/");
             loadBackupJsonFileIntoManager();
@@ -93,7 +95,7 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
             Log.e(TAG, "import flow fail", e);
             importSuccessful = false;
         } finally {
-            backupFileManager.clearDir();
+            backupLocalDir.clearDir();
         }
         return importSuccessful;
     }
@@ -207,10 +209,10 @@ public class ImportAsyncTask extends AsyncTask<Void, Void, Boolean> {
 
     private void copyDiaryPhoto(long oldTopicId, long newTopicId,
                                 long oldDiaryId, long newDiaryId) throws IOException {
-        File backupDiaryDir = new File(backupFileManager.getDirAbsolutePath() + "/diary/" +
+        File backupDiaryDir = new File(backupLocalDir.getDirAbsolutePath() + "/diary/" +
                 oldTopicId + "/" + oldDiaryId + "/");
         if (backupDiaryDir.exists() || backupDiaryDir.isDirectory()) {
-            File newDiaryDir = new File(diartFileManager.getDirAbsolutePath() + "/" +
+            File newDiaryDir = new File(diaryLocalDir.getDirAbsolutePath() + "/" +
                     newTopicId + "/" + newDiaryId + "/");
             FileUtils.moveDirectory(backupDiaryDir, newDiaryDir);
         }
