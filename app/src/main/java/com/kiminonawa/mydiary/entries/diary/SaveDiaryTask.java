@@ -10,7 +10,9 @@ import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
 import com.kiminonawa.mydiary.entries.diary.item.DiaryItemHelper;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
 
@@ -37,7 +39,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     private boolean attachment;
     private String locationName;
     private DiaryItemHelper diaryItemHelper;
-    private FileManager tempFileManager, diaryFileManager;
+    private IDir tempLocalDir, diaryLocalDir;
     private ProgressDialog progressDialog;
 
     private SaveDiaryCallBack callBack;
@@ -61,7 +63,7 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         this.attachment = attachment;
         this.locationName = locationName;
         this.diaryItemHelper = diaryItemHelper;
-        this.tempFileManager = new FileManager(context, topicId);
+        this.tempLocalDir = DirFactory.CreateDiaryAutoSaveDir(context, topicId);
         this.callBack = callBack;
 
         progressDialog.show();
@@ -72,17 +74,17 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
 
         int saveResult = RESULT_INSERT_SUCCESSFUL;
         long topicId = params[0];
+        dbManager.opeDB();
+        dbManager.beginTransaction();
         try {
-            dbManager.opeDB();
-            dbManager.beginTransaction();
             //Save info
             long diaryId = dbManager.insertDiaryInfo(time,
                     title, moodPosition, weatherPosition,
                     attachment, topicId, locationName);
             //Save content
-            diaryFileManager = new FileManager(mContext, topicId, diaryId);
+            diaryLocalDir = DirFactory.CreateDiaryDir(mContext, topicId, diaryId);
             //Check no any garbage in this diary.
-            diaryFileManager.clearDir();
+            diaryLocalDir.clearDir();
             if (diaryId != -1) {
                 for (int i = 0; i < diaryItemHelper.getItemSize(); i++) {
                     //Copy photo from temp to diary dir
@@ -100,8 +102,8 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
         } catch (Exception e) {
             Log.e(TAG, "save diary fail", e);
             //Revert the Data
-            if (diaryFileManager != null) {
-                diaryFileManager.clearDir();
+            if (diaryLocalDir != null) {
+                diaryLocalDir.clearDir();
             }
             saveResult = RESULT_INSERT_ERROR;
         } finally {
@@ -114,17 +116,17 @@ public class SaveDiaryTask extends AsyncTask<Long, Void, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         super.onPostExecute(result);
+        progressDialog.dismiss();
         if (result == SaveDiaryTask.RESULT_INSERT_SUCCESSFUL) {
             Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_successful), Toast.LENGTH_LONG).show();
+            callBack.onDiarySaved();
         } else {
             Toast.makeText(mContext, mContext.getString(R.string.toast_diary_insert_fail), Toast.LENGTH_LONG).show();
         }
-        progressDialog.dismiss();
-        callBack.onDiarySaved();
     }
 
     private void savePhoto(String filename) throws Exception {
-        FileManager.copy(new File(tempFileManager.getDirAbsolutePath() + "/" + filename),
-                new File(diaryFileManager.getDirAbsolutePath() + "/" + filename));
+        MyDiaryFileUtils.copy(new File(tempLocalDir.getDirAbsolutePath() + "/" + filename),
+                new File(diaryLocalDir.getDirAbsolutePath() + "/" + filename));
     }
 }

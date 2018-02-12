@@ -1,6 +1,11 @@
 package com.kiminonawa.mydiary.main.topic;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * Created by daxia on 2016/10/17.
@@ -21,6 +26,11 @@ public interface ITopic {
      */
     int TYPE_MEMO = 2;
 
+    @Retention(SOURCE)
+    @IntDef({TYPE_CONTACTS, TYPE_DIARY, TYPE_MEMO})
+    public @interface TopicType {
+    }
+
     String getTitle();
 
     /**
@@ -28,6 +38,7 @@ public interface ITopic {
      */
     void setTitle(String title);
 
+    @TopicType
     int getType();
 
     long getId();

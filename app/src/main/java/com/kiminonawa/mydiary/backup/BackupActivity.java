@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.backup;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.MainActivity;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.nononsenseapps.filepicker.FilePickerActivity;
 
@@ -86,6 +89,11 @@ public class BackupActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
     }
 
 

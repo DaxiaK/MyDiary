@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 
 import java.io.File;
 
@@ -20,14 +22,14 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
     }
 
     private EditTaskCallBack callBack;
-    private FileManager editCacheFileManage;
+    private IDir editCacheFileManage;
     private Context mContext;
 
     public final static int RESULT_COPY_SUCCESSFUL = 1;
     public final static int RESULT_COPY_ERROR = 2;
 
 
-    public CopyDiaryToEditCacheTask(Context context, FileManager editCacheFileManage,
+    public CopyDiaryToEditCacheTask(Context context, IDir editCacheFileManage,
                                     EditTaskCallBack callBack) {
         this.mContext = context;
         this.editCacheFileManage = editCacheFileManage;
@@ -41,10 +43,10 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
         long topicId = params[0];
         long diaryId = params[1];
         try {
-            FileManager diaryFileManager = new FileManager(mContext, topicId, diaryId);
-            File[] childrenPhoto = diaryFileManager.getDir().listFiles();
-            for (int i = 0; i < diaryFileManager.getDir().listFiles().length; i++) {
-                copyPhoto(childrenPhoto[i].getName(), diaryFileManager);
+            IDir diaryLocalDir = DirFactory.CreateDiaryDir(mContext, topicId, diaryId);
+            File[] childrenPhoto = diaryLocalDir.getDir().listFiles();
+            for (int i = 0; i < diaryLocalDir.getDir().listFiles().length; i++) {
+                copyPhoto(childrenPhoto[i].getName(), diaryLocalDir);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,8 +64,8 @@ public class CopyDiaryToEditCacheTask extends AsyncTask<Long, Void, Integer> {
         callBack.onCopyToEditCacheCompiled(result);
     }
 
-    private void copyPhoto(String filename, FileManager diaryFileManager) throws Exception {
-        FileManager.copy(new File(diaryFileManager.getDirAbsolutePath() + "/" + filename),
+    private void copyPhoto(String filename, IDir diaryLocalDir) throws Exception {
+        MyDiaryFileUtils.copy(new File(diaryLocalDir.getDirAbsolutePath() + "/" + filename),
                 new File(editCacheFileManage.getDirAbsolutePath() + "/" + filename));
     }
 }

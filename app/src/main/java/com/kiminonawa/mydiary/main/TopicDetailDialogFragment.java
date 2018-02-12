@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.topic.ITopic;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.PermissionHelper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
 import com.yalantis.ucrop.UCrop;
 
@@ -180,7 +183,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
         if (requestCode == PermissionHelper.REQUEST_WRITE_ES_PERMISSION) {
             if (grantResults.length > 0
                     && PermissionHelper.checkAllPermissionResult(grantResults)) {
-                FileManager.startBrowseImageFile(this, SELECT_TOPIC_BG);
+                MyDiaryFileUtils.startBrowseImageFile(this, SELECT_TOPIC_BG);
             } else {
                 PermissionHelper.showAddPhotoDialog(getActivity());
             }
@@ -200,13 +203,13 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                     } else {
                         topicBgHeight = ThemeManager.getInstance().getTopicBgWithoutEditBarHeight(getActivity());
                     }
-                    FileManager tempFileManager = new FileManager(getContext(), FileManager.TEMP_DIR);
+                    IDir tempLocalDir = DirFactory.CreateDirByType(getContext(), LocalDir.TEMP_DIR);
                     //Clear the old photo file
-                    tempFileManager.clearDir();
+                    tempLocalDir.clearDir();
                     UCrop.Options options = new UCrop.Options();
                     options.setToolbarColor(ThemeManager.getInstance().getThemeMainColor(getActivity()));
                     options.setStatusBarColor(ThemeManager.getInstance().getThemeDarkColor(getActivity()));
-                    UCrop.of(data.getData(), Uri.fromFile(new File(tempFileManager.getDir() + "/" + FileManager.createRandomFileName())))
+                    UCrop.of(data.getData(), Uri.fromFile(new File(tempLocalDir.getDir() + "/" + MyDiaryFileUtils.createRandomFileName())))
                             .withMaxResultSize(topicBgWidth, topicBgHeight)
                             .withAspectRatio(topicBgWidth, topicBgHeight)
                             .withOptions(options)
@@ -220,7 +223,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
                 if (data != null) {
                     final Uri resultUri = UCrop.getOutput(data);
                     IV_topic_detail_topic_bg.setImageBitmap(BitmapFactory.decodeFile(resultUri.getPath()));
-                    newTopicBgFileName = FileManager.getFileNameByUri(getActivity(), resultUri);
+                    newTopicBgFileName = MyDiaryFileUtils.getFileNameByUri(getActivity(), resultUri);
                     But_topic_detail_default_bg.setEnabled(true);
                     topicBgStatus = TOPIC_BG_ADD_PHOTO;
                 } else {
@@ -272,7 +275,7 @@ public class TopicDetailDialogFragment extends DialogFragment implements View.On
 
             case R.id.IV_topic_detail_topic_bg:
                 if (PermissionHelper.checkPermission(this, REQUEST_WRITE_ES_PERMISSION)) {
-                    FileManager.startBrowseImageFile(this, SELECT_TOPIC_BG);
+                    MyDiaryFileUtils.startBrowseImageFile(this, SELECT_TOPIC_BG);
                 }
                 break;
             case R.id.But_topic_detail_default_bg:

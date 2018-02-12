@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -33,10 +34,14 @@ import com.kiminonawa.mydiary.main.topic.Diary;
 import com.kiminonawa.mydiary.main.topic.ITopic;
 import com.kiminonawa.mydiary.main.topic.Memo;
 import com.kiminonawa.mydiary.oobe.CustomViewTarget;
-import com.kiminonawa.mydiary.shared.FileManager;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.LocalDir;
 import com.kiminonawa.mydiary.shared.gui.MyDiaryButton;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 import com.kiminonawa.mydiary.shared.statusbar.OOBE;
 
@@ -187,6 +192,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainTopicAdapter = null;
         super.onDestroy();
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -409,9 +420,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (outputFile.exists()) {
                         outputFile.delete();
                     }
-                    FileManager tempFM = new FileManager(this, FileManager.TEMP_DIR);
+                    IDir tempDir = DirFactory.CreateDirByType(this, LocalDir.TEMP_DIR);
                     FileUtils.moveFile(new File(
-                                    tempFM.getDirAbsolutePath()
+                                    tempDir.getDirAbsolutePath()
                                             + "/" + newTopicBgFileName),
                             outputFile);
                     //Enter the topic
@@ -570,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Delete the dir if it exist.
         try {
-            FileUtils.deleteDirectory(new FileManager(MainActivity.this,
+            FileUtils.deleteDirectory(DirFactory.CreateTopicDir(MainActivity.this,
                     mainTopicAdapter.getList().get(position).getType(),
                     mainTopicAdapter.getList().get(position).getId()).getDir());
         } catch (IOException e) {

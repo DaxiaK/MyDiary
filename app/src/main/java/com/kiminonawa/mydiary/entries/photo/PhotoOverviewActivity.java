@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries.photo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.kiminonawa.mydiary.shared.FileManager.DIARY_ROOT_DIR;
+import static com.kiminonawa.mydiary.shared.file.LocalDir.DIARY_ROOT_DIR;
 
 /**
  * Created by daxia on 2017/4/12.
@@ -71,8 +75,14 @@ public class PhotoOverviewActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
+
     private void loadDiaryImageData(long topicId, long diaryId) {
-        FileManager diaryRoot = new FileManager(PhotoOverviewActivity.this, DIARY_ROOT_DIR);
+        IDir diaryRoot = DirFactory.CreateDirByType(PhotoOverviewActivity.this, DIARY_ROOT_DIR);
         File topicRootFile;
         if (diaryId != -1) {
             topicRootFile = new File(diaryRoot.getDirAbsolutePath() + "/" + topicId + "/" + diaryId);

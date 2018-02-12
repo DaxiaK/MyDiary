@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-
-import java.text.DecimalFormat;
 
 /**
  * Created by daxia on 2016/9/23.
@@ -21,8 +20,8 @@ public class ScreenHelper {
     public static float getScreenRatio(Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        DecimalFormat mDecimalFormat = new DecimalFormat("#.##");
-        float ScreenRatio = Float.valueOf(mDecimalFormat.format(metrics.heightPixels / metrics.widthPixels));
+        float ScreenRatio = (float) metrics.heightPixels / (float) metrics.widthPixels;
+        Log.e("Test", "screenRation = " + ScreenRatio);
         return ScreenRatio;
     }
 

@@ -71,9 +71,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/RL_diary_info"

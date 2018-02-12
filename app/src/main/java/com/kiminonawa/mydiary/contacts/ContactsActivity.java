@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.contacts;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.SPFManager;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.gui.LetterComparator;
@@ -125,6 +128,11 @@ public class ContactsActivity extends FragmentActivity implements View.OnClickLi
         initTopbar();
         loadContacts();
         initTopicAdapter();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
     }
 
     private void initLanguageStr() {

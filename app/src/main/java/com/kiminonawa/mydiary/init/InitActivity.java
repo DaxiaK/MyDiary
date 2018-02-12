@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.init;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import com.kiminonawa.mydiary.BuildConfig;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.main.MainActivity;
 import com.kiminonawa.mydiary.security.PasswordActivity;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.MyDiaryApplication;
 import com.kiminonawa.mydiary.shared.SPFManager;
 
@@ -50,6 +53,11 @@ public class InitActivity extends Activity implements InitTask.InitCallBack {
     protected void onPause() {
         super.onPause();
         initHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
     }
 
 

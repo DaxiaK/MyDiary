@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.shared;
 
 import android.app.Application;
-import android.content.res.Configuration;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -10,7 +9,6 @@ import com.facebook.imagepipeline.listener.RequestListener;
 import com.facebook.imagepipeline.listener.RequestLoggingListener;
 
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -45,7 +43,6 @@ public class MyDiaryApplication extends Application {
 
         //init Theme & language
         initTheme();
-        setLocaleLanguage();
 
     }
 
@@ -54,49 +51,6 @@ public class MyDiaryApplication extends Application {
         themeManager.setCurrentTheme(SPFManager.getTheme(this));
     }
 
-    private void setLocaleLanguage() {
-        Locale locale;
-        switch (SPFManager.getLocalLanguageCode(this)) {
-            case 1:
-                locale = Locale.ENGLISH;
-                break;
-            case 2:
-                locale = Locale.JAPANESE;
-                break;
-            case 3:
-                locale = Locale.TRADITIONAL_CHINESE;
-                break;
-            case 4:
-                locale = Locale.SIMPLIFIED_CHINESE;
-                break;
-            case 5:
-                locale = Locale.KOREAN;
-                break;
-            case 6:
-                locale = new Locale("th", "");
-                break;
-            case 7:
-                locale = Locale.FRENCH;
-                break;
-            case 8:
-                locale = new Locale("es", "");
-                break;
-            // 0 = default = language of system
-            default:
-                locale = Locale.getDefault();
-                break;
-        }
-        Locale.setDefault(locale);
-        Configuration config = getBaseContext().getResources().getConfiguration();
-        overwriteConfigurationLocale(config, locale);
-    }
-
-    private void overwriteConfigurationLocale(Configuration config, Locale locale) {
-        //TODO FIX updateConfiguration on Android N
-        config.setLocale(locale);
-        getBaseContext().getResources()
-                .updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-    }
 
 
     public boolean isHasPassword() {

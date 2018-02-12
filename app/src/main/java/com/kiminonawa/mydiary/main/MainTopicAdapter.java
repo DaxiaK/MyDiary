@@ -1,7 +1,6 @@
 package com.kiminonawa.mydiary.main;
 
 import android.content.Intent;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
-import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
-import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.SwipeableItemConstants;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultAction;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionDefault;
 import com.h6ah4i.android.widget.advrecyclerview.swipeable.action.SwipeResultActionMoveToSwipedDirection;
-import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractDraggableSwipeableItemViewHolder;
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.contacts.ContactsActivity;
 import com.kiminonawa.mydiary.db.DBManager;
@@ -49,6 +46,7 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     private MainActivity activity;
     private TopicFilter topicFilter;
     private DBManager dbManager;
+
 
     public MainTopicAdapter(MainActivity activity, List<ITopic> topicList, DBManager dbManager) {
         this.activity = activity;
@@ -185,6 +183,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
     @Override
+    public void onSwipeItemStarted(TopicViewHolder holder, int position) {
+    }
+
+    @Override
     public void onSetSwipeBackground(TopicViewHolder holder, int position, int type) {
         if (type == SwipeableItemConstants.DRAWABLE_SWIPE_NEUTRAL_BACKGROUND) {
             holder.getTopicLeftSettingView().setVisibility(View.GONE);
@@ -213,14 +215,14 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
 
     @Override
     public boolean onCheckCanStartDrag(TopicViewHolder holder, int position, int x, int y) {
-
         // x, y --- relative from the itemView's top-left
         final View containerView = holder.getSwipeableContainerView();
+        final View dragHandleView = holder.getDragHandleView();
 
-        final int offsetX = containerView.getLeft() + (int) (ViewCompat.getTranslationX(containerView) + 0.5f);
-        final int offsetY = containerView.getTop() + (int) (ViewCompat.getTranslationY(containerView) + 0.5f);
+        final int offsetX = containerView.getLeft() + (int) (containerView.getTranslationX() + 0.5f);
+        final int offsetY = containerView.getTop() + (int) (containerView.getTranslationY() + 0.5f);
 
-        return !topicFilter.isFilter() && ViewTools.hitTest(containerView, x - offsetX, y - offsetY);
+        return !topicFilter.isFilter() && ViewTools.hitTest(dragHandleView, x - offsetX, y - offsetY);
     }
 
     @Override
@@ -233,7 +235,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         if (fromPosition == toPosition) {
             return;
         }
-
         //modify the original list
         final ITopic originalItem = originalTopicList.remove(fromPosition);
         originalTopicList.add(toPosition, originalItem);
@@ -242,6 +243,21 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         final ITopic filteredItem = filteredTopicList.remove(fromPosition);
         filteredTopicList.add(toPosition, filteredItem);
 
+        notifyDataSetChanged(false);
+    }
+
+    @Override
+    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
+        return true;
+    }
+
+    @Override
+    public void onItemDragStarted(int position) {
+        notifyDataSetChanged(false);
+    }
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
         //save the new topic order
         int orderNumber = originalTopicList.size();
         dbManager.opeDB();
@@ -251,11 +267,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         }
         dbManager.closeDB();
         notifyDataSetChanged(false);
-    }
-
-    @Override
-    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
-        return true;
     }
 
     private static class SwipeRightResultAction extends SwipeResultActionMoveToSwipedDirection {
@@ -328,11 +339,10 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
     }
 
 
-    protected class TopicViewHolder extends AbstractSwipeableItemViewHolder implements DraggableItemViewHolder {
+    public static class TopicViewHolder extends AbstractDraggableSwipeableItemViewHolder {
 
-        @DraggableItemStateFlags
-        private int mDragStateFlags;
 
+        private View View_drag_handle;
         private ImageView IV_topic_icon;
         private TextView TV_topic_title;
         private TextView TV_topic_count;
@@ -342,8 +352,9 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
         private RelativeLayout RL_topic_content;
         private ImageView IV_topic_left_setting_edit, IV_topic_left_setting_delete;
 
-        protected TopicViewHolder(View rootView) {
+        TopicViewHolder(View rootView) {
             super(rootView);
+            this.View_drag_handle = (View) rootView.findViewById(R.id.View_drag_handle);
             this.RL_topic_content = (RelativeLayout) rootView.findViewById(R.id.RL_topic_content);
             this.IV_topic_icon = (ImageView) rootView.findViewById(R.id.IV_topic_icon);
             this.TV_topic_title = (TextView) rootView.findViewById(R.id.TV_topic_title);
@@ -355,8 +366,6 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             this.LL_topic_left_setting = (LinearLayout) rootView.findViewById(R.id.LL_topic_left_setting);
             this.IV_topic_left_setting_edit = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_edit);
             this.IV_topic_left_setting_delete = (ImageView) rootView.findViewById(R.id.IV_topic_left_setting_delete);
-
-
         }
 
         @Override
@@ -364,47 +373,39 @@ public class MainTopicAdapter extends RecyclerView.Adapter<MainTopicAdapter.Topi
             return RL_topic_content;
         }
 
-        @Override
-        public void setDragStateFlags(@DraggableItemStateFlags int flags) {
-            mDragStateFlags = flags;
-        }
-
-        @Override
-        @DraggableItemStateFlags
-        public int getDragStateFlags() {
-            return mDragStateFlags;
-        }
-
-        protected ImageView getIconView() {
+        ImageView getIconView() {
             return IV_topic_icon;
         }
 
-
-        protected RelativeLayout getRLTopic() {
+        RelativeLayout getRLTopic() {
             return RL_topic_view;
         }
 
-        protected TextView getTitleView() {
+        TextView getTitleView() {
             return TV_topic_title;
         }
 
-        protected TextView getTVCount() {
+        TextView getTVCount() {
             return TV_topic_count;
         }
 
-        protected ImageView getArrow() {
+        ImageView getArrow() {
             return IV_topic_arrow_right;
         }
 
-        protected View getTopicLeftSettingView() {
+        View getDragHandleView() {
+            return View_drag_handle;
+        }
+
+        View getTopicLeftSettingView() {
             return LL_topic_left_setting;
         }
 
-        protected View getTopicLeftSettingEditView() {
+        View getTopicLeftSettingEditView() {
             return IV_topic_left_setting_edit;
         }
 
-        protected View getTopicLeftSettingDeleteView() {
+        View getTopicLeftSettingDeleteView() {
             return IV_topic_left_setting_delete;
         }
     }

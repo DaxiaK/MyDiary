@@ -8,9 +8,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.entries.diary.item.DiaryTextTag;
+import com.kiminonawa.mydiary.shared.file.IDir;
+import com.kiminonawa.mydiary.shared.file.MyDiaryFileUtils;
 import com.kiminonawa.mydiary.shared.photo.BitmapHelper;
 import com.kiminonawa.mydiary.shared.photo.ExifUtil;
-import com.kiminonawa.mydiary.shared.FileManager;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +25,7 @@ import java.io.IOException;
 public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
 
     public interface CopyPhotoCallBack {
-        void onCopyCompiled(String fileName);
+        void onCopyCompiled(String fileName, DiaryTextTag tag);
     }
 
     private Uri uri;
@@ -32,19 +34,20 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     private CopyPhotoTask.CopyPhotoCallBack callBack;
     private Context mContext;
     private int reqWidth, reqHeight;
-    private FileManager fileManager;
+    private IDir localDir;
     private boolean isAddPicture = false;
-
+    private DiaryTextTag tag;
 
     /**
      * From select image
      */
     public CopyPhotoTask(Context context, Uri uri,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, CopyPhotoCallBack callBack) {
+                         IDir localDir, CopyPhotoCallBack callBack, DiaryTextTag tag) {
         this.uri = uri;
-        isAddPicture = false;
-        initTask(context, reqWidth, reqHeight, fileManager, callBack);
+        this.isAddPicture = false;
+        this.tag = tag;
+        initTask(context, reqWidth, reqHeight, localDir, callBack);
 
     }
 
@@ -54,19 +57,20 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
      */
     public CopyPhotoTask(Context context, String srcFileName,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, CopyPhotoCallBack callBack) {
-        this.srcFileName = fileManager.getDirAbsolutePath() + "/" + srcFileName;
+                         IDir localDir, CopyPhotoCallBack callBack, DiaryTextTag tag) {
+        this.srcFileName = localDir.getDirAbsolutePath() + "/" + srcFileName;
+        this.tag = tag;
         isAddPicture = true;
-        initTask(context, reqWidth, reqHeight, fileManager, callBack);
+        initTask(context, reqWidth, reqHeight, localDir, callBack);
     }
 
     public void initTask(Context context,
                          int reqWidth, int reqHeight,
-                         FileManager fileManager, CopyPhotoCallBack callBack) {
+                         IDir localDir, CopyPhotoCallBack callBack) {
         this.mContext = context;
         this.reqWidth = reqWidth;
         this.reqHeight = reqHeight;
-        this.fileManager = fileManager;
+        this.localDir = localDir;
         this.callBack = callBack;
         this.progressDialog = new ProgressDialog(context);
 
@@ -103,16 +107,16 @@ public class CopyPhotoTask extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String fileName) {
         super.onPostExecute(fileName);
         progressDialog.dismiss();
-        callBack.onCopyCompiled(fileName);
+        callBack.onCopyCompiled(fileName,tag);
     }
 
 
     private String savePhotoToTemp(Bitmap bitmap) throws Exception {
 
         FileOutputStream out = null;
-        String fileName = FileManager.createRandomFileName();
+        String fileName = MyDiaryFileUtils.createRandomFileName();
         try {
-            out = new FileOutputStream(fileManager.getDirAbsolutePath() + "/" + fileName);
+            out = new FileOutputStream(localDir.getDirAbsolutePath() + "/" + fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
         } finally {
             try {

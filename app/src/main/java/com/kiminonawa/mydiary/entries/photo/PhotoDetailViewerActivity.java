@@ -1,6 +1,7 @@
 package com.kiminonawa.mydiary.entries.photo;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.kiminonawa.mydiary.R;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.ScreenHelper;
 
 import java.util.ArrayList;
@@ -70,6 +73,12 @@ public class PhotoDetailViewerActivity extends AppCompatActivity {
             VPDiaryPhotoDetail.setCurrentItem(selectPosition);
         }
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
+    }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void setStatusBarColor() {

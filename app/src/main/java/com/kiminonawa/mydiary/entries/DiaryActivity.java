@@ -1,5 +1,6 @@
 package com.kiminonawa.mydiary.entries;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +27,8 @@ import com.kiminonawa.mydiary.entries.diary.DiaryFragment;
 import com.kiminonawa.mydiary.entries.diary.item.IDairyRow;
 import com.kiminonawa.mydiary.entries.entries.EntriesEntity;
 import com.kiminonawa.mydiary.entries.entries.EntriesFragment;
+import com.kiminonawa.mydiary.shared.language.LanguagerHelper;
+import com.kiminonawa.mydiary.shared.language.MyContextWrapper;
 import com.kiminonawa.mydiary.shared.ThemeManager;
 import com.kiminonawa.mydiary.shared.statusbar.ChinaPhoneHelper;
 
@@ -119,6 +122,11 @@ public class DiaryActivity extends FragmentActivity implements RadioGroup.OnChec
     protected void onStop() {
         super.onStop();
         mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, LanguagerHelper.getLocaleLanguage(newBase)));
     }
 
 

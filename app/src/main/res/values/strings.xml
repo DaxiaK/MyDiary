@@ -4,7 +4,9 @@
 
     <!--Release Note-->
     <string name="release_note_title">Release note</string>
-    <string name="release_note">**0.3.0.170424_1_A\n
+    <string name="release_note">**0.3.0.170509_1_AH\n
+        -fix bug on editing diary\n\n
+        **0.3.0.170424_1_A\n
         -Fix bug\n
         -Support simple photo function\n
         -Modify layout\n\n

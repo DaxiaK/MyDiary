@@ -37,13 +37,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!-- NOTE: the drag handle should set android:clickable=true not to propagate click events to the parent views -->
+            <View
+                android:id="@+id/View_drag_handle"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:background="#20000000"
+                android:clickable="true" />
 
             <ImageView
                 android:id="@+id/IV_topic_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="30dp" />
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/View_drag_handle" />
 
             <ImageView
                 android:id="@+id/IV_topic_arrow_right"

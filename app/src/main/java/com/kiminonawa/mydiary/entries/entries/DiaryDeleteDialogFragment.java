@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.kiminonawa.mydiary.R;
 import com.kiminonawa.mydiary.db.DBManager;
-import com.kiminonawa.mydiary.shared.FileManager;
+import com.kiminonawa.mydiary.shared.file.DirFactory;
 import com.kiminonawa.mydiary.shared.gui.CommonDialogFragment;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class DiaryDeleteDialogFragment extends CommonDialogFragment {
         dbManager.closeDB();
         //Delete photo data
         try {
-            deleteDirectory(new FileManager(getActivity(), topicId, diaryId).getDir());
+            deleteDirectory(DirFactory.CreateDiaryDir(getActivity(), topicId, diaryId).getDir());
         } catch (IOException e) {
             //just do nothing
             e.printStackTrace();
